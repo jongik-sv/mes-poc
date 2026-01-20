@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666666">
+    SCR-01: Login Page - Loading State
+  </text>
+
+  <!-- Login Card -->
+  <rect x="200" y="120" width="400" height="380" rx="8" ry="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Card Shadow (simulated) -->
+  <rect x="202" y="122" width="400" height="380" rx="8" ry="8" fill="none" stroke="#E8E8E8" stroke-width="2" opacity="0.5"/>
+
+  <!-- Overlay for disabled state (semi-transparent) -->
+  <rect x="200" y="120" width="400" height="340" rx="8" ry="8" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- Logo/Title Area -->
+  <text x="400" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#1677FF" opacity="0.6">
+    MES Portal
+  </text>
+  <text x="400" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#8C8C8C" opacity="0.6">
+    Manufacturing Execution System
+  </text>
+
+  <!-- Email Field (Disabled) -->
+  <text x="240" y="260" font-family="Arial, sans-serif" font-size="14" fill="#262626" opacity="0.6">
+    Email
+  </text>
+  <text x="248" y="260" font-family="Arial, sans-serif" font-size="14" fill="#FF4D4F" opacity="0.6">
+    *
+  </text>
+
+  <!-- Email Input (Disabled State) -->
+  <rect x="240" y="270" width="320" height="40" rx="6" ry="6" fill="#F5F5F5" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Email Icon (Disabled) -->
+  <g transform="translate(252, 282)" opacity="0.5">
+    <rect width="16" height="12" rx="2" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <path d="M0,0 L8,6 L16,0" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+
+  <!-- Email Value (filled) -->
+  <text x="280" y="296" font-family="Arial, sans-serif" font-size="14" fill="#595959">
+    admin@mesportal.com
+  </text>
+
+  <!-- Password Field (Disabled) -->
+  <text x="240" y="340" font-family="Arial, sans-serif" font-size="14" fill="#262626" opacity="0.6">
+    Password
+  </text>
+  <text x="295" y="340" font-family="Arial, sans-serif" font-size="14" fill="#FF4D4F" opacity="0.6">
+    *
+  </text>
+
+  <!-- Password Input (Disabled State) -->
+  <rect x="240" y="350" width="320" height="40" rx="6" ry="6" fill="#F5F5F5" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Lock Icon (Disabled) -->
+  <g transform="translate(252, 362)" opacity="0.5">
+    <rect x="2" y="6" width="12" height="10" rx="2" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <path d="M4,6 L4,4 A4,4 0 0,1 12,4 L12,6" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+
+  <!-- Password Value (masked) -->
+  <text x="280" y="376" font-family="Arial, sans-serif" font-size="14" fill="#595959">
+    ************
+  </text>
+
+  <!-- Loading Button -->
+  <rect x="240" y="420" width="320" height="44" rx="6" ry="6" fill="#69B1FF"/>
+
+  <!-- Spinner Animation (static representation) -->
+  <g transform="translate(360, 442)">
+    <!-- Spinner circle -->
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.3"/>
+    <!-- Spinner arc (animated part - shown as static) -->
+    <path d="M0,-8 A8,8 0 0,1 8,0" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Loading Text -->
+  <text x="420" y="448" font-family="Arial, sans-serif" font-size="16" font-weight="500" fill="#FFFFFF">
+    Logging in...
+  </text>
+
+  <!-- Footer -->
+  <text x="400" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    (c) 2026 MES Portal v1.0.0
+  </text>
+
+  <!-- Annotations -->
+  <g font-family="Arial, sans-serif" font-size="10" fill="#1677FF">
+    <!-- Button annotation -->
+    <line x1="620" y1="442" x2="560" y2="442" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="625" y="428">Button: loading=true</text>
+    <text x="625" y="442">Background: #69B1FF</text>
+    <text x="625" y="456">(Primary + opacity)</text>
+
+    <!-- Input disabled annotation -->
+    <line x1="180" y1="290" x2="200" y2="290" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="70" y="280">Input: disabled</text>
+    <text x="70" y="294">Background: #F5F5F5</text>
+
+    <!-- Overlay annotation -->
+    <line x1="180" y1="200" x2="200" y2="200" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="60" y="190">Form: disabled</text>
+    <text x="60" y="204">Opacity: 0.6</text>
+  </g>
+
+  <!-- State indicator -->
+  <rect x="20" y="560" width="100" height="24" rx="4" fill="#1677FF"/>
+  <text x="70" y="576" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    Loading State
+  </text>
+
+  <!-- Loading State Legend -->
+  <g transform="translate(20, 80)">
+    <rect width="160" height="100" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#262626">Loading State:</text>
+    <circle cx="20" cy="40" r="4" fill="#69B1FF"/>
+    <text x="30" y="44" font-family="Arial, sans-serif" font-size="10" fill="#595959">Button with spinner</text>
+    <circle cx="20" cy="60" r="4" fill="#F5F5F5" stroke="#D9D9D9"/>
+    <text x="30" y="64" font-family="Arial, sans-serif" font-size="10" fill="#595959">Inputs disabled</text>
+    <circle cx="20" cy="80" r="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="30" y="84" font-family="Arial, sans-serif" font-size="10" fill="#595959">Form overlay (0.6)</text>
+  </g>
+
+  <!-- Spinner Detail -->
+  <g transform="translate(620, 80)">
+    <rect width="160" height="80" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#262626">Spinner:</text>
+    <text x="10" y="40" font-family="Arial, sans-serif" font-size="10" fill="#595959">Ant Design Spin</text>
+    <text x="10" y="55" font-family="Arial, sans-serif" font-size="10" fill="#595959">Size: small (16px)</text>
+    <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" fill="#595959">Color: #FFFFFF</text>
+  </g>
+</svg>
