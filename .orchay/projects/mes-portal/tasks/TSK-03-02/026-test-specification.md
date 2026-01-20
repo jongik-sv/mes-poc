@@ -117,6 +117,47 @@ describe('MenuService', () => {
 | **커버리지 대상** | `getMenusByRole()` 메서드 일반 역할 분기 |
 | **관련 요구사항** | FR-001, BR-01 |
 
+**테스트 코드 스켈레톤:**
+```typescript
+describe('MenuService', () => {
+  describe('getMenusByRole', () => {
+    it('should return mapped menus for MANAGER role', async () => {
+      // Arrange
+      const managerRoleId = 2
+      mockPrisma.roleMenu.findMany.mockResolvedValue([
+        { menuId: 1 }, // DASHBOARD
+        { menuId: 2 }, // PRODUCTION
+        { menuId: 3 }, // WORK_ORDER
+        { menuId: 4 }, // PRODUCTION_RESULT
+        { menuId: 5 }, // PRODUCTION_HISTORY
+        { menuId: 10 }, // QUALITY
+        { menuId: 11 }, // EQUIPMENT
+      ])
+      mockPrisma.menu.findMany.mockResolvedValue([
+        { id: 1, code: 'DASHBOARD', name: '대시보드', isActive: true },
+        { id: 2, code: 'PRODUCTION', name: '생산 관리', isActive: true },
+        { id: 3, code: 'WORK_ORDER', name: '작업 지시', isActive: true },
+        { id: 4, code: 'PRODUCTION_RESULT', name: '생산 실적', isActive: true },
+        { id: 5, code: 'PRODUCTION_HISTORY', name: '생산 이력', isActive: true },
+        { id: 10, code: 'QUALITY', name: '품질 관리', isActive: true },
+        { id: 11, code: 'EQUIPMENT', name: '설비 관리', isActive: true },
+      ])
+
+      // Act
+      const result = await menuService.getMenusByRole(managerRoleId)
+
+      // Assert
+      expect(result).toHaveLength(7)
+      expect(result.map(m => m.code)).toEqual(
+        expect.arrayContaining(['DASHBOARD', 'PRODUCTION', 'QUALITY', 'EQUIPMENT'])
+      )
+      expect(result.map(m => m.code)).not.toContain('SYSTEM')
+      expect(result.map(m => m.code)).not.toContain('USER_MGMT')
+    })
+  })
+})
+```
+
 #### UT-003: 자식 권한 시 부모 메뉴 자동 포함
 
 | 항목 | 내용 |
@@ -326,7 +367,7 @@ test.describe('Menu Permission', () => {
 | 1 | MANAGER 계정으로 로그인 |
 | 2 | 사이드바 메뉴 확인 |
 | **검증 포인트** | |
-| - | 대시보드, 생산 관리, 품질 관리 메뉴 표시 |
+| - | 대시보드, 생산 관리, 품질 관리(QUALITY), 설비 관리(EQUIPMENT) 메뉴 표시 |
 | - | 시스템 관리 메뉴 미표시 |
 | **스크린샷** | `e2e-003-manager-menu.png` |
 | **관련 요구사항** | FR-001, BR-01 |
@@ -359,7 +400,7 @@ test.describe('Menu Permission', () => {
 | TC-002 | 부모 메뉴 자동 표시 | OPERATOR 로그인 | 1. 생산 관리 확인 | 부모 폴더 보임 | High | FR-002, BR-02 |
 | TC-003 | ADMIN 전체 메뉴 | ADMIN 로그인 | 1. 사이드바 확인 | 모든 메뉴 표시 | High | BR-03 |
 | TC-004 | 권한 없는 URL 접근 | OPERATOR 로그인 | 1. /system/users 직접 입력 | 403 페이지 표시 | Medium | UC-02 |
-| TC-005 | 메뉴 정렬 순서 | 로그인 | 1. 사이드바 메뉴 순서 확인 | sortOrder 순 표시 | Low | FR-003 |
+| TC-005 | 메뉴 정렬 순서 | 로그인 | 1. 사이드바 메뉴 순서 확인 2. 부모 메뉴 내 자식 정렬 확인 | sortOrder 순 표시 | Low | FR-003 |
 
 ### 4.2 매뉴얼 테스트 상세
 
@@ -440,6 +481,25 @@ test.describe('Menu Permission', () => {
 - [ ] 미허용 경로 접근 시 403 에러
 - [ ] 적절한 에러 메시지 표시
 - [ ] 사용자가 이전 화면으로 돌아갈 수 있음
+
+#### TC-005: 메뉴 정렬 순서
+
+**테스트 목적**: 메뉴가 sortOrder 순서대로 정렬되어 표시되는지 확인
+
+**테스트 단계**:
+1. 임의 역할 계정으로 로그인
+2. 사이드바에서 최상위 메뉴 순서 확인
+3. 생산 관리 메뉴 펼쳐서 서브메뉴 순서 확인
+
+**예상 결과**:
+- 최상위 메뉴: 대시보드(1) → 생산 관리(2) → 시스템 관리(10) 순서
+- 생산 관리 하위: 작업 지시(1) → 생산 실적(2) → 생산 이력(3) 순서
+- 시스템 관리 하위: 사용자 관리(1) → 메뉴 관리(2) → 권한 관리(3) 순서
+
+**검증 기준**:
+- [ ] 메뉴가 sortOrder 오름차순으로 정렬됨
+- [ ] 부모 메뉴 내 자식 메뉴도 sortOrder 순서 준수
+- [ ] 동일 sortOrder인 경우 일관된 순서 유지
 
 ---
 
@@ -547,3 +607,4 @@ test.describe('Menu Permission', () => {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰 반영 - E2E-003 검증 포인트(QUALITY/EQUIPMENT 추가), TC-005 상세 절차 추가, UT-002 테스트 코드 스켈레톤 추가 |
