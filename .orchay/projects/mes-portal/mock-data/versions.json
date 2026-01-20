@@ -1,0 +1,135 @@
+{
+  "documentTitle": "작업 지시서 비교",
+  "versions": [
+    {
+      "id": "v1",
+      "version": "1.0",
+      "label": "이전 버전",
+      "createdAt": "2026-01-15 10:00:00",
+      "createdBy": "김철수"
+    },
+    {
+      "id": "v2",
+      "version": "1.1",
+      "label": "현재 버전",
+      "createdAt": "2026-01-20 14:30:00",
+      "createdBy": "이영희"
+    }
+  ],
+  "comparisonData": [
+    {
+      "field": "작업지시번호",
+      "label": "작업지시번호",
+      "v1": "WO-20260115-001",
+      "v2": "WO-20260115-001",
+      "changed": false
+    },
+    {
+      "field": "제품명",
+      "label": "제품명",
+      "v1": "메모리 칩 8GB",
+      "v2": "메모리 칩 8GB",
+      "changed": false
+    },
+    {
+      "field": "계획수량",
+      "label": "계획 수량",
+      "v1": "1000",
+      "v2": "1200",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "시작일시",
+      "label": "시작 일시",
+      "v1": "2026-01-16 08:00",
+      "v2": "2026-01-17 08:00",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "종료일시",
+      "label": "종료 일시",
+      "v1": "2026-01-16 17:00",
+      "v2": "2026-01-18 17:00",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "담당자",
+      "label": "담당자",
+      "v1": "박민수",
+      "v2": "정수진",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "생산라인",
+      "label": "생산 라인",
+      "v1": "라인1",
+      "v2": "라인1",
+      "changed": false
+    },
+    {
+      "field": "설비",
+      "label": "설비",
+      "v1": "CNC 선반 1호기",
+      "v2": "CNC 선반 1호기, CNC 선반 2호기",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "우선순위",
+      "label": "우선순위",
+      "v1": "보통",
+      "v2": "긴급",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "비고",
+      "label": "비고",
+      "v1": null,
+      "v2": "긴급 주문 건으로 수량 증가 및 일정 변경",
+      "changed": true,
+      "changeType": "added"
+    },
+    {
+      "field": "검사항목",
+      "label": "검사 항목",
+      "v1": "외관검사, 치수검사",
+      "v2": "외관검사, 치수검사, 기능검사",
+      "changed": true,
+      "changeType": "modified"
+    },
+    {
+      "field": "품질기준",
+      "label": "품질 기준",
+      "v1": "불량률 2% 이하",
+      "v2": "불량률 1% 이하",
+      "changed": true,
+      "changeType": "modified"
+    }
+  ],
+  "changeStats": {
+    "total": 12,
+    "unchanged": 3,
+    "modified": 8,
+    "added": 1,
+    "removed": 0
+  },
+  "changeHistory": [
+    {
+      "timestamp": "2026-01-20 14:30:00",
+      "user": "이영희",
+      "action": "수정",
+      "description": "긴급 주문 건으로 인한 수량 및 일정 변경"
+    },
+    {
+      "timestamp": "2026-01-15 10:00:00",
+      "user": "김철수",
+      "action": "생성",
+      "description": "작업지시서 최초 생성"
+    }
+  ]
+}

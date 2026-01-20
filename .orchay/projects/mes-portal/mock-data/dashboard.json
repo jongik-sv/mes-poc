@@ -1,0 +1,120 @@
+{
+  "kpiCards": [
+    {
+      "id": "production",
+      "title": "금일 생산량",
+      "value": 1247,
+      "unit": "개",
+      "change": 12.5,
+      "changeType": "increase",
+      "icon": "package"
+    },
+    {
+      "id": "efficiency",
+      "title": "가동률",
+      "value": 87.3,
+      "unit": "%",
+      "change": 2.1,
+      "changeType": "increase",
+      "icon": "activity"
+    },
+    {
+      "id": "defect",
+      "title": "불량률",
+      "value": 1.2,
+      "unit": "%",
+      "change": -0.3,
+      "changeType": "decrease",
+      "icon": "alert-triangle"
+    },
+    {
+      "id": "orders",
+      "title": "작업지시",
+      "value": 15,
+      "unit": "건",
+      "change": 0,
+      "changeType": "neutral",
+      "icon": "clipboard"
+    }
+  ],
+  "lineChart": {
+    "title": "주간 생산 추이",
+    "labels": ["월", "화", "수", "목", "금", "토", "일"],
+    "datasets": [
+      {
+        "label": "생산량",
+        "data": [1100, 1250, 1180, 1320, 1247, 980, 850]
+      },
+      {
+        "label": "목표",
+        "data": [1200, 1200, 1200, 1200, 1200, 1000, 800]
+      }
+    ]
+  },
+  "barChart": {
+    "title": "라인별 생산 현황",
+    "labels": ["라인1", "라인2", "라인3", "라인4", "라인5"],
+    "datasets": [
+      {
+        "label": "실적",
+        "data": [320, 280, 250, 220, 177]
+      },
+      {
+        "label": "계획",
+        "data": [300, 300, 280, 250, 200]
+      }
+    ]
+  },
+  "pieChart": {
+    "title": "불량 유형별 분포",
+    "labels": ["외관불량", "치수불량", "기능불량", "포장불량", "기타"],
+    "data": [35, 25, 20, 12, 8]
+  },
+  "recentActivities": [
+    {
+      "id": 1,
+      "type": "production",
+      "message": "라인1 작업지시 WO-20260120-001 완료",
+      "timestamp": "2026-01-20 10:30:00",
+      "status": "success"
+    },
+    {
+      "id": 2,
+      "type": "quality",
+      "message": "라인3 품질 검사 이상 발생",
+      "timestamp": "2026-01-20 10:15:00",
+      "status": "warning"
+    },
+    {
+      "id": 3,
+      "type": "facility",
+      "message": "설비 MC-005 예방 정비 완료",
+      "timestamp": "2026-01-20 09:45:00",
+      "status": "info"
+    },
+    {
+      "id": 4,
+      "type": "production",
+      "message": "라인2 작업지시 WO-20260120-002 시작",
+      "timestamp": "2026-01-20 09:00:00",
+      "status": "info"
+    },
+    {
+      "id": 5,
+      "type": "alert",
+      "message": "라인4 설비 이상 알림",
+      "timestamp": "2026-01-20 08:30:00",
+      "status": "error"
+    }
+  ],
+  "equipmentStatus": [
+    { "id": "MC-001", "name": "CNC 선반 1호기", "line": "라인1", "status": "running" },
+    { "id": "MC-002", "name": "CNC 선반 2호기", "line": "라인1", "status": "running" },
+    { "id": "MC-003", "name": "밀링 머신 1호기", "line": "라인2", "status": "idle" },
+    { "id": "MC-004", "name": "밀링 머신 2호기", "line": "라인2", "status": "running" },
+    { "id": "MC-005", "name": "프레스 1호기", "line": "라인3", "status": "maintenance" },
+    { "id": "MC-006", "name": "프레스 2호기", "line": "라인3", "status": "running" },
+    { "id": "MC-007", "name": "용접기 1호기", "line": "라인4", "status": "error" },
+    { "id": "MC-008", "name": "용접기 2호기", "line": "라인4", "status": "running" }
+  ]
+}

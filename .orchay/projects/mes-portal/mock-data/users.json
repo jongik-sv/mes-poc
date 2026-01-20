@@ -1,0 +1,121 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "김철수",
+      "email": "kim.cs@example.com",
+      "department": "생산팀",
+      "role": "관리자",
+      "status": "active",
+      "phone": "010-1234-5678",
+      "createdAt": "2024-01-15",
+      "lastLogin": "2026-01-20 09:30:00"
+    },
+    {
+      "id": 2,
+      "name": "이영희",
+      "email": "lee.yh@example.com",
+      "department": "품질팀",
+      "role": "사용자",
+      "status": "active",
+      "phone": "010-2345-6789",
+      "createdAt": "2024-02-20",
+      "lastLogin": "2026-01-19 14:22:00"
+    },
+    {
+      "id": 3,
+      "name": "박민수",
+      "email": "park.ms@example.com",
+      "department": "설비팀",
+      "role": "사용자",
+      "status": "inactive",
+      "phone": "010-3456-7890",
+      "createdAt": "2024-03-10",
+      "lastLogin": "2026-01-10 11:00:00"
+    },
+    {
+      "id": 4,
+      "name": "정수진",
+      "email": "jung.sj@example.com",
+      "department": "생산팀",
+      "role": "사용자",
+      "status": "active",
+      "phone": "010-4567-8901",
+      "createdAt": "2024-04-05",
+      "lastLogin": "2026-01-20 08:15:00"
+    },
+    {
+      "id": 5,
+      "name": "최동훈",
+      "email": "choi.dh@example.com",
+      "department": "관리팀",
+      "role": "관리자",
+      "status": "active",
+      "phone": "010-5678-9012",
+      "createdAt": "2024-05-12",
+      "lastLogin": "2026-01-18 16:45:00"
+    },
+    {
+      "id": 6,
+      "name": "강미라",
+      "email": "kang.mr@example.com",
+      "department": "품질팀",
+      "role": "사용자",
+      "status": "pending",
+      "phone": "010-6789-0123",
+      "createdAt": "2026-01-15",
+      "lastLogin": null
+    },
+    {
+      "id": 7,
+      "name": "윤서준",
+      "email": "yoon.sj@example.com",
+      "department": "생산팀",
+      "role": "사용자",
+      "status": "active",
+      "phone": "010-7890-1234",
+      "createdAt": "2024-07-22",
+      "lastLogin": "2026-01-20 10:00:00"
+    },
+    {
+      "id": 8,
+      "name": "임지은",
+      "email": "lim.je@example.com",
+      "department": "설비팀",
+      "role": "사용자",
+      "status": "active",
+      "phone": "010-8901-2345",
+      "createdAt": "2024-08-30",
+      "lastLogin": "2026-01-19 09:30:00"
+    }
+  ],
+  "statusOptions": [
+    { "value": "active", "label": "활성" },
+    { "value": "inactive", "label": "비활성" },
+    { "value": "pending", "label": "대기중" }
+  ],
+  "roleOptions": [
+    { "value": "admin", "label": "관리자" },
+    { "value": "user", "label": "사용자" },
+    { "value": "viewer", "label": "조회자" }
+  ],
+  "departmentOptions": [
+    { "value": "production", "label": "생산팀" },
+    { "value": "quality", "label": "품질팀" },
+    { "value": "facility", "label": "설비팀" },
+    { "value": "admin", "label": "관리팀" }
+  ],
+  "activityHistory": [
+    { "userId": 1, "action": "로그인", "timestamp": "2026-01-20 09:30:00", "ip": "192.168.1.100" },
+    { "userId": 1, "action": "작업지시 등록", "timestamp": "2026-01-20 09:45:00", "details": "WO-2026012001" },
+    { "userId": 1, "action": "실적 입력", "timestamp": "2026-01-20 10:30:00", "details": "100개 완료" },
+    { "userId": 1, "action": "리포트 조회", "timestamp": "2026-01-20 11:00:00", "details": "일일 생산 현황" }
+  ],
+  "permissions": [
+    { "userId": 1, "menu": "대시보드", "read": true, "write": true, "delete": true },
+    { "userId": 1, "menu": "생산관리", "read": true, "write": true, "delete": false },
+    { "userId": 1, "menu": "품질관리", "read": true, "write": false, "delete": false },
+    { "userId": 1, "menu": "설비관리", "read": true, "write": true, "delete": true },
+    { "userId": 1, "menu": "사용자관리", "read": true, "write": true, "delete": true }
+  ]
+}

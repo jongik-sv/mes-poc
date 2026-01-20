@@ -1,0 +1,126 @@
+{
+  "wizardTitle": "시스템 초기 설정",
+  "steps": [
+    {
+      "id": 1,
+      "title": "기본 정보",
+      "description": "회사 및 공장 기본 정보를 입력합니다.",
+      "fields": [
+        {
+          "name": "companyName",
+          "label": "회사명",
+          "type": "text",
+          "required": true,
+          "placeholder": "회사명을 입력하세요"
+        },
+        {
+          "name": "factoryName",
+          "label": "공장명",
+          "type": "text",
+          "required": true,
+          "placeholder": "공장명을 입력하세요"
+        },
+        {
+          "name": "address",
+          "label": "주소",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "공장 주소를 입력하세요"
+        },
+        {
+          "name": "contactPhone",
+          "label": "연락처",
+          "type": "text",
+          "required": true,
+          "placeholder": "000-0000-0000"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "상세 설정",
+      "description": "운영 시간 및 생산 라인을 설정합니다.",
+      "fields": [
+        {
+          "name": "workStartTime",
+          "label": "근무 시작 시간",
+          "type": "time",
+          "required": true,
+          "defaultValue": "08:00"
+        },
+        {
+          "name": "workEndTime",
+          "label": "근무 종료 시간",
+          "type": "time",
+          "required": true,
+          "defaultValue": "17:00"
+        },
+        {
+          "name": "lineCount",
+          "label": "생산 라인 수",
+          "type": "number",
+          "required": true,
+          "min": 1,
+          "max": 20,
+          "defaultValue": 5
+        },
+        {
+          "name": "shiftType",
+          "label": "교대 유형",
+          "type": "select",
+          "required": true,
+          "options": [
+            { "value": "single", "label": "주간 단일" },
+            { "value": "double", "label": "2교대" },
+            { "value": "triple", "label": "3교대" }
+          ]
+        },
+        {
+          "name": "useWeekend",
+          "label": "주말 운영",
+          "type": "checkbox",
+          "defaultValue": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "확인",
+      "description": "입력한 정보를 확인합니다.",
+      "type": "summary",
+      "summaryFields": [
+        { "label": "회사명", "field": "companyName" },
+        { "label": "공장명", "field": "factoryName" },
+        { "label": "주소", "field": "address" },
+        { "label": "연락처", "field": "contactPhone" },
+        { "label": "근무 시간", "field": "workTime", "format": "{workStartTime} ~ {workEndTime}" },
+        { "label": "생산 라인 수", "field": "lineCount", "suffix": "개" },
+        { "label": "교대 유형", "field": "shiftType" },
+        { "label": "주말 운영", "field": "useWeekend", "format": "boolean" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "완료",
+      "description": "설정이 완료되었습니다.",
+      "type": "complete",
+      "completeMessage": "시스템 초기 설정이 완료되었습니다.\n이제 MES Portal을 사용할 수 있습니다.",
+      "nextActions": [
+        { "label": "대시보드로 이동", "action": "navigate", "target": "/dashboard" },
+        { "label": "사용자 관리", "action": "navigate", "target": "/users" },
+        { "label": "추가 설정", "action": "navigate", "target": "/settings" }
+      ]
+    }
+  ],
+  "sampleData": {
+    "companyName": "샘플 제조(주)",
+    "factoryName": "서울 제1공장",
+    "address": "서울시 금천구 가산디지털1로 100",
+    "contactPhone": "02-1234-5678",
+    "workStartTime": "08:00",
+    "workEndTime": "17:00",
+    "lineCount": 5,
+    "shiftType": "double",
+    "useWeekend": false
+  }
+}

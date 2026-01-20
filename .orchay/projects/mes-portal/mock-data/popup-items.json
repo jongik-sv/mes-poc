@@ -1,0 +1,102 @@
+{
+  "items": [
+    {
+      "id": "EMP-001",
+      "code": "EMP-001",
+      "name": "김철수",
+      "type": "employee",
+      "department": "생산팀",
+      "position": "팀장"
+    },
+    {
+      "id": "EMP-002",
+      "code": "EMP-002",
+      "name": "이영희",
+      "type": "employee",
+      "department": "품질팀",
+      "position": "대리"
+    },
+    {
+      "id": "EMP-003",
+      "code": "EMP-003",
+      "name": "박민수",
+      "type": "employee",
+      "department": "설비팀",
+      "position": "과장"
+    },
+    {
+      "id": "EMP-004",
+      "code": "EMP-004",
+      "name": "정수진",
+      "type": "employee",
+      "department": "생산팀",
+      "position": "사원"
+    },
+    {
+      "id": "EMP-005",
+      "code": "EMP-005",
+      "name": "최동훈",
+      "type": "employee",
+      "department": "관리팀",
+      "position": "부장"
+    },
+    {
+      "id": "EQP-001",
+      "code": "EQP-001",
+      "name": "CNC 선반 1호기",
+      "type": "equipment",
+      "location": "A동 1층",
+      "status": "가동중"
+    },
+    {
+      "id": "EQP-002",
+      "code": "EQP-002",
+      "name": "CNC 선반 2호기",
+      "type": "equipment",
+      "location": "A동 1층",
+      "status": "가동중"
+    },
+    {
+      "id": "EQP-003",
+      "code": "EQP-003",
+      "name": "밀링 머신 1호기",
+      "type": "equipment",
+      "location": "A동 2층",
+      "status": "대기중"
+    },
+    {
+      "id": "MAT-001",
+      "code": "MAT-001",
+      "name": "스테인리스 강판",
+      "type": "material",
+      "spec": "SUS304, 1.5T",
+      "unit": "KG"
+    },
+    {
+      "id": "MAT-002",
+      "code": "MAT-002",
+      "name": "알루미늄 봉",
+      "type": "material",
+      "spec": "AL6061, Ø20",
+      "unit": "M"
+    },
+    {
+      "id": "MAT-003",
+      "code": "MAT-003",
+      "name": "절삭유",
+      "type": "material",
+      "spec": "수용성",
+      "unit": "L"
+    }
+  ],
+  "typeOptions": [
+    { "value": "employee", "label": "작업자" },
+    { "value": "equipment", "label": "설비" },
+    { "value": "material", "label": "자재" }
+  ],
+  "columns": {
+    "employee": ["code", "name", "department", "position"],
+    "equipment": ["code", "name", "location", "status"],
+    "material": ["code", "name", "spec", "unit"]
+  }
+}

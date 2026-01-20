@@ -1,0 +1,188 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "전자부품",
+      "icon": "cpu",
+      "parentId": null,
+      "children": [
+        {
+          "id": 11,
+          "name": "반도체",
+          "icon": "chip",
+          "parentId": 1
+        },
+        {
+          "id": 12,
+          "name": "커넥터",
+          "icon": "plug",
+          "parentId": 1
+        },
+        {
+          "id": 13,
+          "name": "PCB",
+          "icon": "circuit-board",
+          "parentId": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "기계부품",
+      "icon": "settings",
+      "parentId": null,
+      "children": [
+        {
+          "id": 21,
+          "name": "베어링",
+          "icon": "circle",
+          "parentId": 2
+        },
+        {
+          "id": 22,
+          "name": "기어",
+          "icon": "cog",
+          "parentId": 2
+        },
+        {
+          "id": 23,
+          "name": "샤프트",
+          "icon": "minus",
+          "parentId": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "포장재",
+      "icon": "box",
+      "parentId": null,
+      "children": [
+        {
+          "id": 31,
+          "name": "박스",
+          "icon": "package",
+          "parentId": 3
+        },
+        {
+          "id": 32,
+          "name": "완충재",
+          "icon": "layers",
+          "parentId": 3
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": 101,
+      "categoryId": 11,
+      "code": "SC-001",
+      "name": "메모리 칩 8GB",
+      "spec": "DDR4-3200",
+      "unit": "EA",
+      "price": 15000,
+      "stock": 500,
+      "status": "active"
+    },
+    {
+      "id": 102,
+      "categoryId": 11,
+      "code": "SC-002",
+      "name": "메모리 칩 16GB",
+      "spec": "DDR4-3200",
+      "unit": "EA",
+      "price": 28000,
+      "stock": 320,
+      "status": "active"
+    },
+    {
+      "id": 103,
+      "categoryId": 12,
+      "code": "CN-001",
+      "name": "USB 커넥터 Type-A",
+      "spec": "USB 3.0",
+      "unit": "EA",
+      "price": 500,
+      "stock": 2000,
+      "status": "active"
+    },
+    {
+      "id": 104,
+      "categoryId": 12,
+      "code": "CN-002",
+      "name": "USB 커넥터 Type-C",
+      "spec": "USB 3.1",
+      "unit": "EA",
+      "price": 800,
+      "stock": 1500,
+      "status": "active"
+    },
+    {
+      "id": 105,
+      "categoryId": 13,
+      "code": "PB-001",
+      "name": "4층 PCB 기판",
+      "spec": "100x80mm",
+      "unit": "EA",
+      "price": 5000,
+      "stock": 800,
+      "status": "active"
+    },
+    {
+      "id": 201,
+      "categoryId": 21,
+      "code": "BR-001",
+      "name": "볼 베어링 6205",
+      "spec": "25x52x15mm",
+      "unit": "EA",
+      "price": 3500,
+      "stock": 1200,
+      "status": "active"
+    },
+    {
+      "id": 202,
+      "categoryId": 22,
+      "code": "GR-001",
+      "name": "스퍼 기어 M2",
+      "spec": "Z20, 모듈2",
+      "unit": "EA",
+      "price": 12000,
+      "stock": 150,
+      "status": "active"
+    },
+    {
+      "id": 203,
+      "categoryId": 23,
+      "code": "SF-001",
+      "name": "스테인리스 샤프트",
+      "spec": "Ø20 x 300mm",
+      "unit": "EA",
+      "price": 8500,
+      "stock": 200,
+      "status": "inactive"
+    },
+    {
+      "id": 301,
+      "categoryId": 31,
+      "code": "BX-001",
+      "name": "골판지 박스 (소)",
+      "spec": "200x150x100mm",
+      "unit": "EA",
+      "price": 500,
+      "stock": 5000,
+      "status": "active"
+    },
+    {
+      "id": 302,
+      "categoryId": 32,
+      "code": "CF-001",
+      "name": "에어캡",
+      "spec": "폭 500mm, 롤",
+      "unit": "ROLL",
+      "price": 15000,
+      "stock": 100,
+      "status": "active"
+    }
+  ]
+}
