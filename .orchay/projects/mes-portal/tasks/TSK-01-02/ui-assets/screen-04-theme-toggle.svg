@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="140" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg-light { fill: #FFFFFF; }
+      .bg-dark { fill: #1F2937; }
+      .border-light { stroke: #E5E7EB; }
+      .border-dark { stroke: #374151; }
+      .text-light { fill: #1F2937; font-family: system-ui, sans-serif; }
+      .text-dark { fill: #F9FAFB; font-family: system-ui, sans-serif; }
+      .text-secondary-light { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .text-secondary-dark { fill: #9CA3AF; font-family: system-ui, sans-serif; }
+      .text-brand { fill: #3B82F6; font-family: system-ui, sans-serif; font-weight: bold; }
+      .btn-light { fill: #F3F4F6; }
+      .btn-dark { fill: #374151; }
+      .btn-active { fill: #3B82F6; }
+    </style>
+  </defs>
+
+  <!-- Light Mode Header -->
+  <g transform="translate(0, 0)">
+    <rect class="bg-light" x="0" y="0" width="240" height="60" />
+    <line x1="0" y1="60" x2="240" y2="60" class="border-light" stroke-width="1" />
+
+    <text class="text-brand" x="16" y="36" font-size="14">MES Portal</text>
+    <text class="text-light" x="100" y="36" font-size="11" font-family="monospace">14:32:45</text>
+
+    <!-- Theme Button (Sun - Light Mode) -->
+    <rect class="btn-light" x="170" y="16" width="32" height="28" rx="4" />
+    <rect fill="none" class="border-light" x="170" y="16" width="32" height="28" rx="4" stroke-width="1" />
+    <circle cx="186" cy="30" r="6" fill="none" stroke="#6B7280" stroke-width="1.5" />
+    <line x1="186" y1="20" x2="186" y2="22" stroke="#6B7280" stroke-width="1.5" />
+    <line x1="186" y1="38" x2="186" y2="40" stroke="#6B7280" stroke-width="1.5" />
+    <line x1="176" y1="30" x2="174" y2="30" stroke="#6B7280" stroke-width="1.5" />
+    <line x1="196" y1="30" x2="198" y2="30" stroke="#6B7280" stroke-width="1.5" />
+
+    <!-- Avatar -->
+    <circle cx="220" cy="30" r="12" fill="#E5E7EB" />
+  </g>
+
+  <!-- Arrow -->
+  <text x="245" y="36" font-size="16" fill="#6B7280">&#8594;</text>
+
+  <!-- Dark Mode Header -->
+  <g transform="translate(260, 0)">
+    <rect class="bg-dark" x="0" y="0" width="240" height="60" />
+    <line x1="0" y1="60" x2="240" y2="60" class="border-dark" stroke-width="1" />
+
+    <text class="text-brand" x="16" y="36" font-size="14">MES Portal</text>
+    <text class="text-dark" x="100" y="36" font-size="11" font-family="monospace">14:32:45</text>
+
+    <!-- Theme Button (Moon - Dark Mode) -->
+    <rect class="btn-dark" x="170" y="16" width="32" height="28" rx="4" />
+    <rect fill="none" class="border-dark" x="170" y="16" width="32" height="28" rx="4" stroke-width="1" />
+    <circle cx="186" cy="30" r="7" fill="none" stroke="#F9FAFB" stroke-width="1.5" />
+    <circle cx="190" cy="26" r="5" fill="#374151" />
+
+    <!-- Avatar -->
+    <circle cx="220" cy="30" r="12" fill="#374151" />
+  </g>
+
+  <!-- Labels -->
+  <rect x="80" y="70" width="80" height="24" rx="4" fill="#F3F4F6" />
+  <text x="120" y="87" font-size="11" fill="#1F2937" text-anchor="middle">Light Mode</text>
+
+  <rect x="340" y="70" width="80" height="24" rx="4" fill="#374151" />
+  <text x="380" y="87" font-size="11" fill="#F9FAFB" text-anchor="middle">Dark Mode</text>
+
+  <!-- Toggle Action Annotation -->
+  <rect x="200" y="110" width="100" height="20" rx="3" fill="#EBF5FF" />
+  <text x="250" y="124" font-size="10" fill="#3B82F6" text-anchor="middle">Click to Toggle</text>
+</svg>

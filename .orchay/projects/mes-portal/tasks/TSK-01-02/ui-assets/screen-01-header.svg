@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="100" viewBox="0 0 1200 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { fill: none; stroke: #E5E7EB; stroke-width: 1; }
+      .text-primary { fill: #1F2937; font-family: system-ui, sans-serif; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .text-brand { fill: #3B82F6; font-family: system-ui, sans-serif; font-weight: bold; }
+      .icon { fill: #6B7280; }
+      .icon-active { fill: #3B82F6; }
+      .btn { fill: #F3F4F6; }
+      .btn-border { fill: none; stroke: #E5E7EB; stroke-width: 1; }
+      .avatar { fill: #E5E7EB; }
+      .badge { fill: #EF4444; }
+      .badge-text { fill: #FFFFFF; font-family: system-ui, sans-serif; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" x="0" y="0" width="1200" height="60" />
+  <line x1="0" y1="60" x2="1200" y2="60" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Left Section -->
+  <!-- Logo -->
+  <text class="text-brand" x="16" y="36" font-size="18">MES Portal</text>
+
+  <!-- Quick Menu Button -->
+  <rect class="btn" x="120" y="16" width="32" height="28" rx="4" />
+  <rect class="btn-border" x="120" y="16" width="32" height="28" rx="4" />
+  <text class="icon" x="130" y="35" font-size="14">&#9733;</text>
+
+  <!-- Separator -->
+  <line x1="164" y1="20" x2="164" y2="40" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Breadcrumb -->
+  <text class="text-secondary" x="176" y="35" font-size="13">Home</text>
+  <text class="text-secondary" x="217" y="35" font-size="13">/</text>
+  <text class="text-secondary" x="230" y="35" font-size="13">Production</text>
+  <text class="text-secondary" x="310" y="35" font-size="13">/</text>
+  <text class="text-primary" x="323" y="35" font-size="13">Work Order</text>
+
+  <!-- Right Section -->
+  <!-- Clock -->
+  <text class="text-primary" x="850" y="35" font-size="13" font-family="monospace">14:32:45</text>
+
+  <!-- Separator -->
+  <line x1="920" y1="20" x2="920" y2="40" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Search Button -->
+  <rect class="btn" x="932" y="16" width="32" height="28" rx="4" />
+  <rect class="btn-border" x="932" y="16" width="32" height="28" rx="4" />
+  <circle cx="944" cy="28" r="6" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <line x1="948" y1="32" x2="953" y2="37" stroke="#6B7280" stroke-width="1.5" />
+
+  <!-- Notification Button with Badge -->
+  <rect class="btn" x="976" y="16" width="32" height="28" rx="4" />
+  <rect class="btn-border" x="976" y="16" width="32" height="28" rx="4" />
+  <path d="M992 22 L992 31 Q992 34 989 34 L995 34 Q992 34 992 31 L992 22 Z" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <circle cx="992" cy="21" r="4" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <line x1="989" y1="36" x2="995" y2="36" stroke="#6B7280" stroke-width="1.5" />
+  <!-- Badge -->
+  <circle class="badge" cx="1000" cy="20" r="8" />
+  <text class="badge-text" x="997" y="24">5</text>
+
+  <!-- Theme Toggle Button -->
+  <rect class="btn" x="1020" y="16" width="32" height="28" rx="4" />
+  <rect class="btn-border" x="1020" y="16" width="32" height="28" rx="4" />
+  <circle cx="1036" cy="30" r="7" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <circle cx="1039" cy="27" r="5" fill="#F3F4F6" />
+
+  <!-- Profile Section -->
+  <rect class="btn" x="1064" y="12" width="120" height="36" rx="4" />
+  <rect class="btn-border" x="1064" y="12" width="120" height="36" rx="4" />
+  <!-- Avatar -->
+  <circle class="avatar" cx="1084" cy="30" r="14" />
+  <circle cx="1084" cy="26" r="5" fill="#9CA3AF" />
+  <path d="M1073 42 Q1084 34 1095 42" fill="#9CA3AF" />
+  <!-- Name -->
+  <text class="text-primary" x="1104" y="34" font-size="13">Hong Gil-dong</text>
+
+  <!-- Annotation Labels -->
+  <rect x="16" y="70" width="80" height="20" rx="3" fill="#EBF5FF" />
+  <text x="56" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Logo</text>
+
+  <rect x="116" y="70" width="60" height="20" rx="3" fill="#EBF5FF" />
+  <text x="146" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Quick</text>
+
+  <rect x="230" y="70" width="90" height="20" rx="3" fill="#EBF5FF" />
+  <text x="275" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Breadcrumb</text>
+
+  <rect x="850" y="70" width="60" height="20" rx="3" fill="#EBF5FF" />
+  <text x="880" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Clock</text>
+
+  <rect x="932" y="70" width="50" height="20" rx="3" fill="#EBF5FF" />
+  <text x="957" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Search</text>
+
+  <rect x="976" y="70" width="40" height="20" rx="3" fill="#EBF5FF" />
+  <text x="996" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Noti</text>
+
+  <rect x="1020" y="70" width="50" height="20" rx="3" fill="#EBF5FF" />
+  <text x="1045" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Theme</text>
+
+  <rect x="1100" y="70" width="60" height="20" rx="3" fill="#EBF5FF" />
+  <text x="1130" y="84" font-size="10" fill="#3B82F6" text-anchor="middle">Profile</text>
+</svg>

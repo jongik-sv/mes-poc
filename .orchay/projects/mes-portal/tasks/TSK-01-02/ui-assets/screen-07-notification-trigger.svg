@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="150" viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { fill: none; stroke: #E5E7EB; stroke-width: 1; }
+      .text-primary { fill: #1F2937; font-family: system-ui, sans-serif; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .text-brand { fill: #3B82F6; font-family: system-ui, sans-serif; font-weight: bold; }
+      .icon { fill: #6B7280; }
+      .btn { fill: #F3F4F6; }
+      .btn-hover { fill: #E5E7EB; }
+      .badge { fill: #EF4444; }
+      .badge-text { fill: #FFFFFF; font-family: system-ui, sans-serif; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Header Background -->
+  <rect class="bg" x="0" y="0" width="300" height="60" />
+  <line x1="0" y1="60" x2="300" y2="60" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Logo -->
+  <text class="text-brand" x="16" y="36" font-size="16">MES Portal</text>
+
+  <!-- Notification Button (Hover State) -->
+  <rect class="btn-hover" x="200" y="16" width="36" height="28" rx="4" />
+  <rect class="border" x="200" y="16" width="36" height="28" rx="4" />
+
+  <!-- Bell Icon -->
+  <path d="M218 22 L218 32 Q218 35 215 35 L221 35 Q218 35 218 32 L218 22 Z" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <circle cx="218" cy="21" r="4" fill="none" stroke="#6B7280" stroke-width="1.5" />
+  <line x1="215" y1="37" x2="221" y2="37" stroke="#6B7280" stroke-width="1.5" />
+
+  <!-- Badge with count -->
+  <circle class="badge" cx="228" cy="20" r="9" />
+  <text class="badge-text" x="225" y="24">5</text>
+
+  <!-- Avatar -->
+  <circle cx="260" cy="30" r="14" fill="#E5E7EB" />
+
+  <!-- Explanation -->
+  <rect x="50" y="75" width="200" height="60" rx="6" fill="#FEF2F2" />
+  <rect fill="none" stroke="#FECACA" x="50" y="75" width="200" height="60" rx="6" stroke-width="1" />
+
+  <g transform="translate(70, 90)">
+    <circle class="badge" cx="10" cy="10" r="10" />
+    <text class="badge-text" x="7" y="14">5</text>
+    <text class="text-primary" x="30" y="14" font-size="11">= 5 unread notifications</text>
+  </g>
+
+  <text class="text-secondary" x="150" y="122" font-size="10" text-anchor="middle">Click to open notification panel</text>
+
+  <!-- Arrow pointing to notification -->
+  <path d="M150 75 L200 50" fill="none" stroke="#EF4444" stroke-width="1" stroke-dasharray="4" />
+</svg>

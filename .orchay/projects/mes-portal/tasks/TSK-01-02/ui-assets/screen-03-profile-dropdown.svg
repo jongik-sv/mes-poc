@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { fill: none; stroke: #E5E7EB; stroke-width: 1; }
+      .text-primary { fill: #1F2937; font-family: system-ui, sans-serif; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .text-brand { fill: #3B82F6; font-family: system-ui, sans-serif; font-weight: bold; }
+      .text-danger { fill: #EF4444; font-family: system-ui, sans-serif; }
+      .icon { fill: #6B7280; }
+      .icon-danger { fill: #EF4444; }
+      .btn { fill: #F3F4F6; }
+      .btn-active { fill: #EBF5FF; }
+      .avatar { fill: #E5E7EB; }
+      .dropdown { fill: #FFFFFF; }
+      .dropdown-item-hover { fill: #F3F4F6; }
+      .shadow { filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1)); }
+    </style>
+  </defs>
+
+  <!-- Header Background -->
+  <rect class="bg" x="0" y="0" width="400" height="60" />
+  <line x1="0" y1="60" x2="400" y2="60" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Logo -->
+  <text class="text-brand" x="16" y="36" font-size="18">MES Portal</text>
+
+  <!-- Clock -->
+  <text class="text-primary" x="120" y="35" font-size="13" font-family="monospace">14:32:45</text>
+
+  <!-- Profile Section (Active) -->
+  <rect class="btn-active" x="264" y="12" width="120" height="36" rx="4" />
+  <rect class="border" x="264" y="12" width="120" height="36" rx="4" />
+  <!-- Avatar -->
+  <circle class="avatar" cx="284" cy="30" r="14" />
+  <circle cx="284" cy="26" r="5" fill="#9CA3AF" />
+  <path d="M273 42 Q284 34 295 42" fill="#9CA3AF" />
+  <!-- Name -->
+  <text class="text-primary" x="304" y="34" font-size="13">Hong Gil-dong</text>
+
+  <!-- Profile Dropdown -->
+  <g class="shadow">
+    <rect class="dropdown" x="264" y="52" width="130" height="200" rx="6" />
+    <rect class="border" x="264" y="52" width="130" height="200" rx="6" />
+
+    <!-- User Info Section -->
+    <rect x="272" y="60" width="114" height="56" rx="4" fill="#F9FAFB" />
+    <circle cx="300" cy="88" r="16" fill="#E5E7EB" />
+    <circle cx="300" cy="84" r="6" fill="#9CA3AF" />
+    <path d="M287 104 Q300 94 313 104" fill="#9CA3AF" />
+    <text class="text-primary" x="324" y="82" font-size="12" font-weight="bold">Hong Gil-dong</text>
+    <text class="text-secondary" x="324" y="98" font-size="10">admin@mes.com</text>
+
+    <!-- Divider -->
+    <line x1="280" y1="124" x2="378" y2="124" stroke="#E5E7EB" stroke-width="1" />
+
+    <!-- Menu Item 1: My Profile -->
+    <rect x="272" y="132" width="114" height="36" rx="4" fill="transparent" />
+    <text x="285" y="155" font-size="14" fill="#6B7280">&#128100;</text>
+    <text class="text-primary" x="308" y="154" font-size="13">My Profile</text>
+
+    <!-- Menu Item 2: Settings (Hover) -->
+    <rect class="dropdown-item-hover" x="272" y="168" width="114" height="36" rx="4" />
+    <text x="285" y="191" font-size="14" fill="#6B7280">&#9881;</text>
+    <text class="text-primary" x="308" y="190" font-size="13">Settings</text>
+
+    <!-- Divider -->
+    <line x1="280" y1="212" x2="378" y2="212" stroke="#E5E7EB" stroke-width="1" />
+
+    <!-- Menu Item 3: Logout -->
+    <rect x="272" y="220" width="114" height="36" rx="4" fill="transparent" />
+    <text x="285" y="243" font-size="14" fill="#EF4444">&#128682;</text>
+    <text class="text-danger" x="308" y="242" font-size="13">Logout</text>
+  </g>
+
+  <!-- Annotation -->
+  <rect x="130" y="175" width="60" height="20" rx="3" fill="#FEF3C7" />
+  <text x="160" y="189" font-size="10" fill="#D97706" text-anchor="middle">Hover</text>
+  <line x1="200" y1="185" x2="270" y2="186" stroke="#D97706" stroke-width="1" stroke-dasharray="3" />
+</svg>

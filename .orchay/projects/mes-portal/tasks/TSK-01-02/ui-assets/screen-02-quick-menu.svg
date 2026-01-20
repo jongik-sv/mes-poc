@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="280" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { fill: none; stroke: #E5E7EB; stroke-width: 1; }
+      .text-primary { fill: #1F2937; font-family: system-ui, sans-serif; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .text-brand { fill: #3B82F6; font-family: system-ui, sans-serif; font-weight: bold; }
+      .icon { fill: #6B7280; }
+      .icon-active { fill: #3B82F6; }
+      .btn { fill: #F3F4F6; }
+      .btn-active { fill: #3B82F6; }
+      .dropdown { fill: #FFFFFF; }
+      .dropdown-item-hover { fill: #F3F4F6; }
+      .shadow { filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1)); }
+    </style>
+  </defs>
+
+  <!-- Header Background -->
+  <rect class="bg" x="0" y="0" width="400" height="60" />
+  <line x1="0" y1="60" x2="400" y2="60" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Logo -->
+  <text class="text-brand" x="16" y="36" font-size="18">MES Portal</text>
+
+  <!-- Quick Menu Button (Active) -->
+  <rect class="btn-active" x="120" y="16" width="32" height="28" rx="4" />
+  <text fill="#FFFFFF" x="130" y="35" font-size="14">&#9733;</text>
+
+  <!-- Breadcrumb -->
+  <text class="text-secondary" x="166" y="35" font-size="13">Home / Production</text>
+
+  <!-- Dropdown Menu -->
+  <g class="shadow">
+    <rect class="dropdown" x="120" y="52" width="200" height="210" rx="6" />
+    <rect class="border" x="120" y="52" width="200" height="210" rx="6" />
+
+    <!-- Header -->
+    <text class="text-secondary" x="136" y="76" font-size="11">FAVORITES</text>
+    <line x1="136" y1="84" x2="304" y2="84" stroke="#E5E7EB" stroke-width="1" />
+
+    <!-- Menu Item 1 (Hover) -->
+    <rect class="dropdown-item-hover" x="128" y="92" width="184" height="36" rx="4" />
+    <circle cx="148" cy="110" r="10" fill="#EBF5FF" />
+    <text x="145" y="114" font-size="10" fill="#3B82F6">&#128200;</text>
+    <text class="text-primary" x="168" y="114" font-size="13">Dashboard</text>
+
+    <!-- Menu Item 2 -->
+    <rect x="128" y="132" width="184" height="36" rx="4" fill="transparent" />
+    <circle cx="148" cy="150" r="10" fill="#F3F4F6" />
+    <text x="145" y="154" font-size="10" fill="#6B7280">&#128196;</text>
+    <text class="text-primary" x="168" y="154" font-size="13">Work Order</text>
+
+    <!-- Menu Item 3 -->
+    <rect x="128" y="172" width="184" height="36" rx="4" fill="transparent" />
+    <circle cx="148" cy="190" r="10" fill="#F3F4F6" />
+    <text x="145" y="194" font-size="10" fill="#6B7280">&#128202;</text>
+    <text class="text-primary" x="168" y="194" font-size="13">Production Status</text>
+
+    <!-- Divider -->
+    <line x1="136" y1="216" x2="304" y2="216" stroke="#E5E7EB" stroke-width="1" />
+
+    <!-- Empty State Link -->
+    <text class="text-secondary" x="136" y="240" font-size="11">Add favorites from sidebar menu</text>
+  </g>
+
+  <!-- Annotation -->
+  <rect x="330" y="90" width="60" height="20" rx="3" fill="#FEF3C7" />
+  <text x="360" y="104" font-size="10" fill="#D97706" text-anchor="middle">Hover</text>
+  <line x1="320" y1="100" x2="312" y2="110" stroke="#D97706" stroke-width="1" stroke-dasharray="3" />
+</svg>
