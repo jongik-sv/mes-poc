@@ -100,7 +100,7 @@ workPackages:
         title: 레이아웃 컴포넌트 구조
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -126,7 +126,6 @@ workPackages:
             - components/layout/PortalLayout.tsx 파일 존재
             - Ant Design Layout, Layout.Header, Layout.Sider, Layout.Content, Layout.Footer 사용
             - app/(portal)/layout.tsx에서 PortalLayout 적용
-        execution: build
       - id: TSK-01-02
         title: 헤더 컴포넌트
         category: development
