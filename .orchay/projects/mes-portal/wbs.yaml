@@ -489,7 +489,7 @@ workPackages:
         title: 역할-메뉴 매핑
         category: development
         domain: backend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -512,12 +512,11 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
-        execution: start
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
         domain: backend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -541,7 +540,6 @@ workPackages:
             - app/api/menus/route.ts 파일 존재
             - Auth.js 세션 확인 로직
             - Prisma로 메뉴 조회 및 트리 구조 변환
-        execution: start
       - id: TSK-03-04
         title: 즐겨찾기 메뉴
         category: development
