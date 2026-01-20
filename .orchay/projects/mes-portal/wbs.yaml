@@ -739,6 +739,7 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
+        execution: review
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
@@ -771,7 +772,7 @@ workPackages:
         title: Toast 알림
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -795,7 +796,6 @@ workPackages:
           integrationCheck:
             - lib/utils/toast.ts 유틸리티 함수
             - showSuccess, showError, showWarning 함수
-        execution: start
       - id: TSK-05-04
         title: 테이블 공통 기능
         category: development
