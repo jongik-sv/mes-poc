@@ -702,6 +702,7 @@ workPackages:
             - app/(auth)/login/page.tsx 파일 존재
             - signIn 함수 사용 (Auth.js)
             - Form rules로 유효성 검사
+        execution: review
   - id: WP-05
     title: 공통 컴포넌트
     status: planned
@@ -828,6 +829,7 @@ workPackages:
           integrationCheck:
             - components/common/DataTable.tsx 래퍼 컴포넌트
             - 공통 테이블 설정 (페이지 크기 옵션 등)
+        execution: start
       - id: TSK-05-05
         title: 날짜 선택기
         category: development
