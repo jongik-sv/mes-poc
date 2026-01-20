@@ -12,7 +12,6 @@
   },
   "commands": {
     "start": { "label": "시작", "labelEn": "Start", "icon": "pi-play", "severity": "primary" },
-    "design": { "label": "설계", "labelEn": "Design", "icon": "pi-pencil", "severity": "info" },
     "draft": { "label": "상세설계", "labelEn": "Draft", "icon": "pi-pencil", "severity": "info" },
     "approve": { "label": "승인", "labelEn": "Approve", "icon": "pi-check", "severity": "success" },
     "build": { "label": "구현", "labelEn": "Build", "icon": "pi-wrench", "severity": "warning" },

@@ -1,7 +1,34 @@
 ---
 subagent:
-  primary: requirements-analyst
-  description: 완료 검증 및 매뉴얼 문서 생성
+  phases:
+    # 공통: 모든 category
+    - id: completion-check
+      agent: requirements-analyst
+      description: 완료 조건 검증 (필수 문서, 테스트 결과)
+
+    # development 카테고리 전용
+    - id: dev-manual
+      agent: requirements-analyst
+      description: 080-manual.md 생성 (사용자 매뉴얼)
+      condition: category == 'development'
+    - id: dev-metrics
+      agent: quality-engineer
+      description: 품질 메트릭 수집 및 완료 보고서
+      condition: category == 'development'
+      depends-on: [dev-manual]
+
+    # defect 카테고리 전용
+    - id: defect-closure
+      agent: quality-engineer
+      description: 결함 종료 검증 및 완료 보고서
+      condition: category == 'defect'
+
+    # infrastructure 카테고리 전용
+    - id: infra-closure
+      agent: devops-architect
+      description: 인프라 완료 검증 및 운영 인계
+      condition: category == 'infrastructure'
+
 hierarchy-input: true
 parallel-processing: true
 ---
@@ -230,5 +257,8 @@ ORCHAY_DONE:orchay/TSK-02-03:done:error:테스트 실패
 
 <!--
 wf:done lite
-Version: 1.1
+Version: 1.2
+Changelog:
+  1.2 - category별 Phase 분기 (development/defect/infrastructure 조건부 실행)
+  1.1 - 초기 버전
 -->

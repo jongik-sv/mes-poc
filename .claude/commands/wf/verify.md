@@ -1,7 +1,44 @@
 ---
 subagent:
-  primary: quality-engineer
-  description: 통합테스트 실행 및 검증
+  phases:
+    # 공통: 모든 category
+    - id: pre-check
+      agent: quality-engineer
+      description: 구현 완료 검증 및 테스트 환경 확인
+
+    # development 카테고리 전용
+    - id: dev-integration-test
+      agent: quality-engineer
+      description: 통합테스트 실행 (API, UI, 연동, 데이터)
+      condition: category == 'development'
+    - id: dev-test-report
+      agent: quality-engineer
+      description: 070-integration-test.md 생성
+      condition: category == 'development'
+      depends-on: [dev-integration-test]
+
+    # defect 카테고리 전용
+    - id: defect-regression-test
+      agent: quality-engineer
+      description: 회귀테스트 실행 (결함 재현, 영향 기능)
+      condition: category == 'defect'
+    - id: defect-test-report
+      agent: quality-engineer
+      description: 070-regression-test.md 생성
+      condition: category == 'defect'
+      depends-on: [defect-regression-test]
+
+    # infrastructure 카테고리 전용
+    - id: infra-validation
+      agent: devops-architect
+      description: 인프라 검증 (환경, 연결, 성능, 보안)
+      condition: category == 'infrastructure'
+    - id: infra-test-report
+      agent: quality-engineer
+      description: 070-infra-test.md 생성
+      condition: category == 'infrastructure'
+      depends-on: [infra-validation]
+
 mcp-servers: [playwright]
 hierarchy-input: true
 parallel-processing: true
@@ -254,5 +291,8 @@ ORCHAY_DONE:{project}/{task-id}:verify:error:{에러 요약}
 
 <!--
 wf:verify lite
-Version: 1.1
+Version: 1.2
+Changelog:
+  1.2 - category별 Phase 분기 (development/defect/infrastructure 조건부 실행)
+  1.1 - 초기 버전
 -->
