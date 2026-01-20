@@ -423,7 +423,7 @@ workPackages:
         title: MDI 컨텐츠 영역
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -449,7 +449,6 @@ workPackages:
             - components/mdi/MDIContent.tsx 파일 존재
             - screens/ 폴더에 화면 컴포넌트 구조
             - 동적 import로 코드 스플리팅
-        execution: start
   - id: WP-03
     title: 동적 메뉴 시스템
     status: planned
