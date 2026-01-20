@@ -100,7 +100,7 @@ workPackages:
         title: 레이아웃 컴포넌트 구조
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[xx]"
         priority: critical
         assignee: "-"
         tags:
@@ -449,6 +449,7 @@ workPackages:
             - components/mdi/MDIContent.tsx 파일 존재
             - screens/ 폴더에 화면 컴포넌트 구조
             - 동적 import로 코드 스플리팅
+        execution: review
   - id: WP-03
     title: 동적 메뉴 시스템
     status: planned
@@ -511,6 +512,7 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
+        execution: review
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
@@ -539,6 +541,7 @@ workPackages:
             - app/api/menus/route.ts 파일 존재
             - Auth.js 세션 확인 로직
             - Prisma로 메뉴 조회 및 트리 구조 변환
+        execution: review
       - id: TSK-03-04
         title: 즐겨찾기 메뉴
         category: development
@@ -606,7 +609,7 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
