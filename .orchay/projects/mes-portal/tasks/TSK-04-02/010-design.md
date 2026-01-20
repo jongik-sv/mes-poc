@@ -5,10 +5,11 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-04-02 |
-| 문서 버전 | 1.0 |
+| 문서 버전 | 1.1 |
 | 작성일 | 2026-01-20 |
 | 상태 | 작성중 |
 | 카테고리 | development |
+| 도메인 | backend |
 
 ---
 
@@ -50,7 +51,7 @@
 **제외:**
 - Auth.js 인증 설정 (TSK-04-03에서 구현)
 - 로그인 페이지 UI (TSK-04-04에서 구현)
-- RoleMenu 매핑 테이블 (TSK-03-02에서 구현)
+- RoleMenu 매핑 테이블 (TSK-03-02에서 구현) - Role 모델에 관계만 선언
 - 사용자 관리 CRUD API (Phase 2 범위)
 
 ### 1.4 참조 문서
@@ -59,6 +60,7 @@
 |------|------|----------|
 | TRD | `.orchay/projects/mes-portal/trd.md` | 2.3 MVP 백엔드 범위 정의, MVP Prisma 스키마 |
 | PRD | `.orchay/projects/mes-portal/prd.md` | 4.1.4 사용자 관리 (공통) |
+| TSK-04-01 설계서 | `.orchay/projects/mes-portal/tasks/TSK-04-01/010-design.md` | Prisma 설정 |
 
 ---
 
@@ -86,6 +88,12 @@
 - 불만: 불필요한 메뉴 노출
 - 시나리오: 로그인 후 대시보드 및 생산 관리 메뉴만 사용
 
+**페르소나 3: 현장 작업자**
+- 역할: 생산 라인 운영자
+- 목표: 작업 지시 확인, 실적 입력
+- 불만: 복잡한 UI, 불필요한 기능
+- 시나리오: 로그인 후 할당된 작업 지시만 조회
+
 ---
 
 ## 3. 유즈케이스
@@ -94,15 +102,17 @@
 
 ```mermaid
 flowchart LR
-    subgraph 시스템
+    subgraph 인증시스템
         UC01[UC-01: 사용자 인증]
         UC02[UC-02: 역할별 권한 확인]
         UC03[UC-03: 초기 데이터 로드]
     end
 
-    관리자((관리자)) --> UC01
-    관리자 --> UC02
+    사용자((사용자)) --> UC01
+    인증된사용자((인증된 사용자)) --> UC02
     시스템((시스템)) --> UC03
+
+    UC01 --> UC02
 ```
 
 ### 3.2 유즈케이스 상세
@@ -144,7 +154,7 @@ flowchart LR
 
 **기본 흐름:**
 1. 시스템이 세션에서 사용자 역할을 확인한다
-2. 시스템이 역할에 해당하는 권한 정보를 조회한다
+2. 시스템이 역할에 해당하는 권한 정보를 조회한다 (RoleMenu 테이블)
 3. 권한에 맞는 메뉴/기능 목록을 반환한다
 
 #### UC-03: 초기 데이터 로드
@@ -182,7 +192,7 @@ flowchart LR
 
 **성공 조건:**
 - 관리자가 성공적으로 로그인됨
-- 세션에 사용자 정보(id, email, role) 저장됨
+- 세션에 사용자 정보(id, email, name, role) 저장됨
 - 관리자 역할에 해당하는 전체 메뉴 표시
 
 ### 4.2 시나리오 2: 잘못된 비밀번호 입력
@@ -196,6 +206,18 @@ flowchart LR
 |------|-----------|------------|----------|
 | 1 | 이메일/잘못된 비밀번호 입력 | bcrypt 검증 실패 | 에러 메시지 확인 |
 | 2 | 로그인 버튼 클릭 | "이메일 또는 비밀번호가 올바르지 않습니다" 표시 | 재입력 |
+
+### 4.3 시나리오 3: 비활성 계정 로그인 시도
+
+**상황 설명:**
+퇴사자 등 비활성화된 계정으로 로그인 시도
+
+**단계별 진행:**
+
+| 단계 | 사용자 행동 | 시스템 반응 | 복구 방법 |
+|------|-----------|------------|----------|
+| 1 | 비활성 계정 이메일/비밀번호 입력 | isActive 확인 | - |
+| 2 | 로그인 버튼 클릭 | "비활성화된 계정입니다. 관리자에게 문의하세요." 표시 | 관리자 문의 |
 
 ---
 
@@ -220,7 +242,21 @@ flowchart LR
 
 ### 6.1 API 응답 형식
 
-**사용자 조회 응답:**
+**사용자 조회 응답 (Auth.js 세션용):**
+```typescript
+interface UserSession {
+  id: number;
+  email: string;
+  name: string;
+  role: {
+    id: number;
+    code: string;  // ADMIN | MANAGER | OPERATOR
+    name: string;
+  };
+}
+```
+
+**사용자 상세 조회 응답:**
 ```typescript
 interface UserResponse {
   id: number;
@@ -232,7 +268,8 @@ interface UserResponse {
     name: string;
   };
   isActive: boolean;
-  createdAt: string;
+  createdAt: string;  // ISO 8601 format
+  updatedAt: string;
 }
 ```
 
@@ -242,6 +279,26 @@ interface RoleResponse {
   id: number;
   code: string;
   name: string;
+}
+```
+
+### 6.2 인증 서비스 인터페이스
+
+```typescript
+// lib/services/auth.ts (향후 구현 참조용)
+
+interface AuthService {
+  /**
+   * 이메일과 비밀번호로 사용자 인증
+   * @throws AUTH_FAILED - 이메일/비밀번호 불일치
+   * @throws ACCOUNT_DISABLED - 비활성 계정
+   */
+  authenticate(email: string, password: string): Promise<UserSession>;
+
+  /**
+   * 사용자 ID로 사용자 조회 (역할 포함)
+   */
+  getUserById(id: number): Promise<UserResponse | null>;
 }
 ```
 
@@ -261,6 +318,7 @@ interface RoleResponse {
 ```mermaid
 erDiagram
     Role ||--o{ User : "has many"
+    Role ||--o{ RoleMenu : "has many (TSK-03-02)"
 
     User {
         int id PK
@@ -279,12 +337,19 @@ erDiagram
         string name
         datetime createdAt
     }
+
+    RoleMenu {
+        int id PK
+        int roleId FK
+        int menuId FK
+    }
 ```
 
 **관계 설명:**
 - Role은 여러 User를 가질 수 있다 (1:N)
 - User는 반드시 하나의 Role을 가진다 (N:1)
 - Role.code는 유니크하여 코드로 역할 식별 가능 (ADMIN, MANAGER, OPERATOR)
+- Role과 RoleMenu 관계는 TSK-03-02에서 구현 (본 Task에서는 관계만 선언)
 
 ### 7.3 데이터 모델 상세
 
@@ -296,7 +361,7 @@ erDiagram
 | email | String | Unique, Not Null | 로그인 이메일 |
 | password | String | Not Null | bcrypt 해시된 비밀번호 |
 | name | String | Not Null | 사용자 표시명 |
-| roleId | Int | FK → Role.id | 역할 참조 |
+| roleId | Int | FK -> Role.id, Not Null | 역할 참조 |
 | isActive | Boolean | Default: true | 계정 활성 상태 |
 | createdAt | DateTime | Default: now() | 생성 일시 |
 | updatedAt | DateTime | Auto Update | 수정 일시 |
@@ -315,6 +380,16 @@ erDiagram
 ```prisma
 // prisma/schema.prisma
 
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 사용자
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
@@ -330,6 +405,7 @@ model User {
   @@map("users")
 }
 
+// 역할
 model Role {
   id        Int      @id @default(autoincrement())
   code      String   @unique // ADMIN, MANAGER, OPERATOR
@@ -337,9 +413,13 @@ model Role {
   createdAt DateTime @default(now())
 
   users     User[]
+  roleMenus RoleMenu[]  // TSK-03-02에서 RoleMenu 모델 구현
 
   @@map("roles")
 }
+
+// RoleMenu 모델은 TSK-03-02에서 구현
+// 여기서는 Role 모델의 관계만 선언
 ```
 
 ### 7.5 초기 시드 데이터
@@ -354,15 +434,111 @@ model Role {
 
 #### 테스트 사용자 데이터
 
-| id | email | password (원문) | name | roleId |
-|----|-------|----------------|------|--------|
-| 1 | admin@example.com | password123 | 관리자 | 1 (ADMIN) |
-| 2 | manager@example.com | password123 | 생산관리자 | 2 (MANAGER) |
-| 3 | operator@example.com | password123 | 작업자 | 3 (OPERATOR) |
+| id | email | password (원문) | name | roleId | isActive |
+|----|-------|----------------|------|--------|----------|
+| 1 | admin@example.com | password123 | 관리자 | 1 (ADMIN) | true |
+| 2 | manager@example.com | password123 | 생산관리자 | 2 (MANAGER) | true |
+| 3 | operator@example.com | password123 | 작업자 | 3 (OPERATOR) | true |
 
-> **참고:** 비밀번호는 DB 저장 시 bcrypt로 해시됩니다.
+> **참고:** 비밀번호는 DB 저장 시 bcrypt로 해시됩니다. (cost factor: 10)
 
-### 7.6 데이터 유효성 규칙
+### 7.6 시드 스크립트 구현
+
+```typescript
+// prisma/seed.ts
+
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+const SALT_ROUNDS = 10;
+
+async function main() {
+  console.log('Seeding database...');
+
+  // 1. 역할 생성
+  const roles = await Promise.all([
+    prisma.role.upsert({
+      where: { code: 'ADMIN' },
+      update: {},
+      create: {
+        code: 'ADMIN',
+        name: '시스템 관리자',
+      },
+    }),
+    prisma.role.upsert({
+      where: { code: 'MANAGER' },
+      update: {},
+      create: {
+        code: 'MANAGER',
+        name: '생산 관리자',
+      },
+    }),
+    prisma.role.upsert({
+      where: { code: 'OPERATOR' },
+      update: {},
+      create: {
+        code: 'OPERATOR',
+        name: '현장 작업자',
+      },
+    }),
+  ]);
+
+  console.log('Created roles:', roles.map(r => r.code).join(', '));
+
+  // 2. 테스트 사용자 생성
+  const defaultPassword = await bcrypt.hash('password123', SALT_ROUNDS);
+
+  const users = await Promise.all([
+    prisma.user.upsert({
+      where: { email: 'admin@example.com' },
+      update: {},
+      create: {
+        email: 'admin@example.com',
+        password: defaultPassword,
+        name: '관리자',
+        roleId: roles[0].id, // ADMIN
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'manager@example.com' },
+      update: {},
+      create: {
+        email: 'manager@example.com',
+        password: defaultPassword,
+        name: '생산관리자',
+        roleId: roles[1].id, // MANAGER
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'operator@example.com' },
+      update: {},
+      create: {
+        email: 'operator@example.com',
+        password: defaultPassword,
+        name: '작업자',
+        roleId: roles[2].id, // OPERATOR
+      },
+    }),
+  ]);
+
+  console.log('Created users:', users.map(u => u.email).join(', '));
+
+  console.log('Seeding completed.');
+}
+
+main()
+  .catch((e) => {
+    console.error('Error seeding database:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+```
+
+### 7.7 데이터 유효성 규칙
 
 | 데이터 필드 | 규칙 | 위반 시 메시지 |
 |------------|------|---------------|
@@ -370,6 +546,7 @@ model Role {
 | password | 필수, 최소 8자 | "비밀번호는 8자 이상이어야 합니다" |
 | name | 필수, 2-50자 | "이름은 2-50자 사이로 입력해주세요" |
 | roleId | 필수, 유효한 Role ID | "유효하지 않은 역할입니다" |
+| code (Role) | 필수, 유니크, 대문자 영문 | "역할 코드가 이미 존재합니다" |
 
 ---
 
@@ -383,6 +560,7 @@ model Role {
 | BR-02 | 이메일은 시스템 내 유일해야 함 | 사용자 생성 시 | 없음 |
 | BR-03 | 비활성 사용자는 로그인 불가 | 인증 시 | 관리자 직접 활성화 |
 | BR-04 | 모든 사용자는 역할이 필수 | 사용자 생성 시 | 없음 |
+| BR-05 | 역할 코드는 유니크해야 함 | 역할 생성 시 | 없음 |
 
 ### 8.2 규칙 상세 설명
 
@@ -395,8 +573,10 @@ model Role {
 ```typescript
 import bcrypt from 'bcrypt';
 
-// 해시 생성 (cost factor: 10)
-const hashedPassword = await bcrypt.hash(plainPassword, 10);
+const SALT_ROUNDS = 10;
+
+// 해시 생성
+const hashedPassword = await bcrypt.hash(plainPassword, SALT_ROUNDS);
 
 // 검증
 const isValid = await bcrypt.compare(inputPassword, hashedPassword);
@@ -406,11 +586,29 @@ const isValid = await bcrypt.compare(inputPassword, hashedPassword);
 
 설명: 동일 이메일로 중복 계정 생성 불가
 이유: 이메일이 로그인 ID로 사용됨
+구현: Prisma @unique 제약 조건으로 자동 적용
 
 **BR-03: 계정 비활성화 처리**
 
 설명: isActive=false인 계정은 인증 시 거부
 용도: 퇴사자 처리, 계정 일시 정지
+구현:
+```typescript
+if (!user.isActive) {
+  throw new Error('ACCOUNT_DISABLED');
+}
+```
+
+**BR-04: 역할 필수**
+
+설명: 모든 사용자는 반드시 하나의 역할을 가져야 함
+이유: 메뉴 권한 필터링의 기준
+구현: Prisma 스키마에서 roleId를 Not Null로 설정
+
+**BR-05: 역할 코드 유니크**
+
+설명: 역할 코드(ADMIN, MANAGER, OPERATOR)는 시스템 내 유일
+이유: 코드 기반 역할 식별 및 권한 처리
 
 ---
 
@@ -423,28 +621,65 @@ const isValid = await bcrypt.compare(inputPassword, hashedPassword);
 | 중복 이메일 | 이미 등록된 이메일 | P2002 (Prisma) | "이미 등록된 이메일입니다" |
 | 역할 미존재 | 잘못된 roleId | P2003 (Prisma) | "유효하지 않은 역할입니다" |
 | 인증 실패 | 이메일/비밀번호 불일치 | AUTH_FAILED | "이메일 또는 비밀번호가 올바르지 않습니다" |
-| 계정 비활성 | isActive=false | ACCOUNT_DISABLED | "비활성화된 계정입니다" |
+| 계정 비활성 | isActive=false | ACCOUNT_DISABLED | "비활성화된 계정입니다. 관리자에게 문의하세요." |
+| 사용자 미존재 | 존재하지 않는 이메일 | AUTH_FAILED | "이메일 또는 비밀번호가 올바르지 않습니다" |
 
 ### 9.2 에러 처리 패턴
 
 ```typescript
-// 사용자 조회 시
-const user = await prisma.user.findUnique({
-  where: { email },
-  include: { role: true }
-});
+// lib/services/auth.ts (참조 구현)
 
-if (!user) {
-  throw new Error('AUTH_FAILED');
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcrypt';
+
+export async function authenticateUser(email: string, password: string) {
+  // 1. 사용자 조회
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { role: true }
+  });
+
+  // 2. 사용자 존재 확인 (보안상 동일 메시지)
+  if (!user) {
+    throw new Error('AUTH_FAILED');
+  }
+
+  // 3. 계정 활성 상태 확인
+  if (!user.isActive) {
+    throw new Error('ACCOUNT_DISABLED');
+  }
+
+  // 4. 비밀번호 검증
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    throw new Error('AUTH_FAILED');
+  }
+
+  // 5. 비밀번호 제외 후 반환
+  const { password: _, ...userWithoutPassword } = user;
+  return userWithoutPassword;
 }
+```
 
-if (!user.isActive) {
-  throw new Error('ACCOUNT_DISABLED');
-}
+### 9.3 Prisma 에러 처리
 
-const isValidPassword = await bcrypt.compare(password, user.password);
-if (!isValidPassword) {
-  throw new Error('AUTH_FAILED');
+```typescript
+import { Prisma } from '@prisma/client';
+
+try {
+  await prisma.user.create({ data });
+} catch (error) {
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error.code === 'P2002') {
+      // 유니크 제약 위반 (이메일 중복)
+      throw new Error('EMAIL_ALREADY_EXISTS');
+    }
+    if (error.code === 'P2003') {
+      // 외래키 제약 위반 (잘못된 roleId)
+      throw new Error('INVALID_ROLE');
+    }
+  }
+  throw error;
 }
 ```
 
@@ -454,7 +689,10 @@ if (!isValidPassword) {
 
 | 문서 | 경로 | 용도 |
 |------|------|------|
-| 요구사항 추적 매트릭스 | `025-traceability-matrix.md` | PRD → 설계 → 테스트 양방향 추적 |
+| TSK-04-01 설계서 | `TSK-04-01/010-design.md` | Prisma/SQLite 설정 |
+| TSK-04-03 설계서 | `TSK-04-03/010-design.md` | Auth.js 인증 설정 |
+| TSK-03-02 설계서 | `TSK-03-02/010-design.md` | 역할-메뉴 매핑 |
+| 요구사항 추적 매트릭스 | `025-traceability-matrix.md` | PRD -> 설계 -> 테스트 양방향 추적 |
 | 테스트 명세서 | `026-test-specification.md` | 단위/E2E/매뉴얼 테스트 상세 정의 |
 
 ---
@@ -467,7 +705,7 @@ if (!isValidPassword) {
 |------|----------|--------|
 | prisma/schema.prisma | User, Role 모델 추가 | 높음 |
 | prisma/seed.ts | 초기 데이터 시드 스크립트 | 높음 |
-| package.json | bcrypt 의존성 추가 | 중간 |
+| package.json | bcrypt 의존성 추가, seed 스크립트 | 중간 |
 | lib/prisma.ts | Prisma Client 싱글톤 (기존 유지) | 낮음 |
 
 ### 11.2 의존성
@@ -476,23 +714,56 @@ if (!isValidPassword) {
 |----------|------|------|
 | TSK-04-01 (Prisma 및 SQLite 설정) | DB 인프라 필요 | 완료 필요 |
 
-### 11.3 제약 사항
+### 11.3 후속 Task에 미치는 영향
+
+| Task | 영향 | 필요 사항 |
+|------|------|----------|
+| TSK-04-03 (Auth.js 인증 설정) | User 모델 사용 | User, Role 모델 |
+| TSK-04-04 (로그인 페이지) | 인증 API 사용 | User 인증 로직 |
+| TSK-03-02 (역할-메뉴 매핑) | Role 모델 사용 | Role 모델, roleMenus 관계 |
+
+### 11.4 제약 사항
 
 | 제약 | 설명 | 대응 방안 |
 |------|------|----------|
-| SQLite 제약 | MVP 단계에서 SQLite 사용 | PostgreSQL 전환 시 마이그레이션 |
-| bcrypt 선택 | 보안 표준 해시 알고리즘 | argon2 대비 범용성 우선 |
+| SQLite 제약 | MVP 단계에서 SQLite 사용 | PostgreSQL 전환 시 Prisma migrate 사용 |
+| bcrypt 선택 | 보안 표준 해시 알고리즘 | argon2 대비 범용성 및 안정성 우선 |
+| RoleMenu 미구현 | 본 Task 범위 외 | TSK-03-02에서 구현, Role 모델에 관계만 선언 |
 
-### 11.4 파일 구조
+### 11.5 파일 구조
 
 ```
 mes-portal/
 ├── prisma/
 │   ├── schema.prisma    # User, Role 모델 추가
-│   └── seed.ts          # 초기 데이터 시드 (신규)
+│   ├── seed.ts          # 초기 데이터 시드 (신규)
+│   └── dev.db           # SQLite 데이터베이스 파일 (생성됨)
 ├── lib/
 │   └── prisma.ts        # Prisma Client (기존)
-└── package.json         # bcrypt 의존성 추가
+└── package.json         # bcrypt 의존성, prisma.seed 설정 추가
+```
+
+### 11.6 package.json 변경사항
+
+```json
+{
+  "scripts": {
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "tsx": "^4.7.0"
+  }
+}
 ```
 
 ---
@@ -511,14 +782,32 @@ mes-portal/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [ ] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
+- [ ] 테스트 명세서 작성 (-> `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
 - [x] 구현 우선순위 결정
-- [x] 의존성 확인 완료
+- [x] 의존성 확인 완료 (TSK-04-01 필요)
 - [x] 제약 사항 검토 완료
+
+### 12.4 수용 기준 (Acceptance Criteria)
+
+| 항목 | 검증 방법 | 기대 결과 |
+|------|----------|----------|
+| prisma migrate 성공 | `pnpm db:push` 실행 | 에러 없이 users, roles 테이블 생성 |
+| 초기 데이터 생성 | `pnpm db:seed` 실행 | 3개 역할, 3개 사용자 생성 |
+| 비밀번호 bcrypt 해시 | Prisma Studio에서 확인 | password 필드가 $2b$ 형식 |
+| User-Role 관계 정상 | User 조회 시 Role include | role 정보 포함하여 조회됨 |
+
+### 12.5 통합 검증
+
+| 검증 항목 | 파일/위치 | 확인 사항 |
+|----------|----------|----------|
+| 스키마 정의 | `prisma/schema.prisma` | User, Role 모델 정의 |
+| 시드 스크립트 | `prisma/seed.ts` | bcrypt 해시, upsert 로직 |
+| 의존성 설치 | `package.json` | bcrypt, @types/bcrypt, tsx |
+| 시드 설정 | `package.json` prisma.seed | tsx prisma/seed.ts |
 
 ---
 
@@ -527,3 +816,4 @@ mes-portal/
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 시드 스크립트 구현 상세 추가, package.json 변경사항 명시, 수용 기준 및 통합 검증 항목 추가, 에러 처리 패턴 보완 |
