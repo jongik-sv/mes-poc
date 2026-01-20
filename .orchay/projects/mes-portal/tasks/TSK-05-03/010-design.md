@@ -7,7 +7,7 @@
 | Task ID | TSK-05-03 |
 | 문서 버전 | 1.0 |
 | 작성일 | 2026-01-20 |
-| 상태 | 작성중 |
+| 상태 | 설계완료 |
 | 카테고리 | development |
 
 ---
@@ -407,8 +407,9 @@ flowchart TD
 |-----------|--------------|------|
 | 성공 (Success) | 3초 | 긍정적 메시지, 빠른 확인 |
 | 정보 (Info) | 3초 | 일반 정보, 빠른 확인 |
-| 경고 (Warning) | 4초 | 주의 필요, 조금 더 긴 노출 |
+| 경고 (Warning) | 5초 | 주의 필요, 충분한 노출 |
 | 에러 (Error) | 5초 | 오류 인지 필요, 충분한 노출 |
+| 로딩 (Loading) | 최대 30초 | 자동 타임아웃 후 제거 (hideToast 미호출 대비) |
 
 ### 6.4 키보드/접근성
 
@@ -466,7 +467,26 @@ function showLoading(content: string, key?: string): void;
 function hideToast(key: string): void;
 
 // 모든 Toast 숨기기
-function hideAllToasts(): void;
+function destroyAllToasts(): void;
+```
+
+**에러 메시지 매핑 예시:**
+```typescript
+// lib/constants/error-messages.ts
+export const ERROR_MESSAGES: Record<string, string> = {
+  NETWORK_ERROR: '네트워크 연결을 확인해주세요.',
+  SERVER_ERROR: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  UNAUTHORIZED: '인증이 만료되었습니다. 다시 로그인해주세요.',
+  FORBIDDEN: '이 작업을 수행할 권한이 없습니다.',
+  NOT_FOUND: '요청한 데이터를 찾을 수 없습니다.',
+  VALIDATION_ERROR: '입력 내용을 확인해주세요.',
+  DEFAULT: '오류가 발생했습니다.',
+};
+
+// API 에러 → Toast 메시지 변환
+function getErrorMessage(error: ApiError): string {
+  return ERROR_MESSAGES[error.code] ?? ERROR_MESSAGES.DEFAULT;
+}
 ```
 
 ### 7.3 사용 예시
@@ -515,8 +535,10 @@ showSuccess('저장되었습니다.');
 | BR-01 | API 성공 시 성공 Toast 표시 | 저장, 수정, 삭제 완료 | 무음 처리가 필요한 경우 |
 | BR-02 | API 에러 시 에러 Toast 표시 | 모든 API 에러 | 별도 에러 페이지로 이동하는 경우 |
 | BR-03 | Toast는 자동으로 닫혀야 함 | 모든 Toast | duration: 0 설정 시 |
-| BR-04 | 에러 Toast는 더 오래 표시 | 에러 발생 시 | 없음 |
+| BR-04 | 에러 Toast는 더 오래 표시 (5초) | 에러 발생 시 | 없음 |
 | BR-05 | 동일 key Toast는 업데이트 | 같은 key로 재호출 | 없음 |
+| BR-06 | API 에러 메시지 직접 표시 금지 | 서버 에러 응답 | 에러 코드 매핑 사용 |
+| BR-07 | showLoading 최대 타임아웃 30초 | 로딩 Toast | 없음 |
 
 ### 8.2 규칙 상세 설명
 
@@ -543,6 +565,21 @@ showSuccess('저장되었습니다.');
 
 예시:
 - 로딩 중 → 성공: 같은 key 사용하여 "로딩 중..." → "저장되었습니다."로 전환
+
+**BR-06: API 에러 메시지 직접 표시 금지**
+
+설명: 서버에서 반환된 에러 메시지를 그대로 Toast에 표시하지 않고, 에러 코드별로 사전 정의된 메시지 사용
+
+예시:
+- 서버 응답: `{"error": "INVALID_TOKEN", "message": "Token expired at /auth/validate"}`
+- Toast 표시: "인증이 만료되었습니다. 다시 로그인해주세요." (매핑된 메시지)
+
+**BR-07: showLoading 최대 타임아웃**
+
+설명: hideToast가 호출되지 않는 예외 상황을 대비하여 로딩 Toast는 최대 30초 후 자동 제거
+
+예시:
+- showLoading 호출 후 네트워크 오류로 hideToast 미호출 시 30초 후 자동 제거
 
 ---
 
@@ -653,8 +690,8 @@ lib/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
@@ -669,3 +706,4 @@ lib/
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰 반영 (P2 이슈 적용) |
