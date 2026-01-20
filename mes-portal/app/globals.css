@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+:root {
+  /* 기본 색상 */
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Ant Design Token과 동기화된 CSS Variables */
+  --color-primary: #1677ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #1677ff;
+
+  /* 레이아웃 고정값 */
+  --header-height: 60px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 60px;
+  --footer-height: 30px;
+  --tab-bar-height: 40px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 다크 모드 */
+[data-theme='dark'] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  /* 다크 모드에서도 동일한 브랜드 색상 유지 */
+  --color-primary: #1677ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #1677ff;
+}
+
+/* 시스템 설정 기반 다크 모드 (next-themes가 data-theme을 설정하기 전) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}

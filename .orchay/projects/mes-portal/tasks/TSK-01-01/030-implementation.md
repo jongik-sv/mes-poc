@@ -1,78 +1,31 @@
-# TSK-01-01 - 레이아웃 컴포넌트 구조 구현 보고서
+# 구현 보고서
 
-## 문서 정보
+## Task 정보
+- **Task ID**: TSK-01-01
+- **Task 명**: 레이아웃 컴포넌트 구조
+- **Category**: development
+- **구현 일시**: 2026-01-20
 
-| 항목 | 내용 |
-|------|------|
-| Task ID | TSK-01-01 |
-| 문서 버전 | 1.0 |
-| 작성일 | 2026-01-20 |
-| 상태 | 구현완료 |
+## 구현 개요
 
----
+MES Portal의 기본 레이아웃 컴포넌트를 구현했습니다. Ant Design의 Layout 컴포넌트를 기반으로 Header, Sidebar, Content, Footer 영역을 포함하는 반응형 레이아웃을 구현했습니다.
 
-## 1. 구현 개요
+## 구현 파일 목록
 
-### 1.1 구현 범위
+| 파일 경로 | 설명 |
+|----------|------|
+| `app/globals.css` | CSS Variables 정의 |
+| `components/layout/PortalLayout.tsx` | 메인 레이아웃 컴포넌트 |
+| `components/layout/index.ts` | 레이아웃 컴포넌트 내보내기 |
+| `app/(portal)/layout.tsx` | Portal 라우트 그룹 레이아웃 |
+| `app/(portal)/dashboard/page.tsx` | Portal 대시보드 페이지 |
+| `components/layout/__tests__/PortalLayout.test.tsx` | 단위 테스트 파일 |
 
-- PortalLayout 컴포넌트 생성 및 완성
-- CSS Variables 기반 레이아웃 크기 정의
-- (portal) 라우트 그룹 및 레이아웃 적용
-- Ant Design Layout 컴포넌트 통합
-- 반응형 사이드바 동작
+## 구현 상세
 
-### 1.2 구현 결과 요약
+### 1. CSS Variables (`app/globals.css`)
 
-| 항목 | 결과 |
-|------|------|
-| 빌드 | 성공 |
-| 타입 체크 | 통과 |
-| 레이아웃 렌더링 | 정상 |
-
----
-
-## 2. 생성/수정된 파일
-
-### 2.1 신규 생성
-
-| 파일 | 설명 |
-|------|------|
-| `components/layout/PortalLayout.tsx` | 메인 포털 레이아웃 컴포넌트 |
-| `app/(portal)/layout.tsx` | 포털 라우트 그룹 레이아웃 |
-| `app/(portal)/dashboard/page.tsx` | 대시보드 샘플 페이지 |
-
-### 2.2 수정
-
-| 파일 | 변경 내용 |
-|------|----------|
-| `app/globals.css` | CSS Variables 추가 (--header-height, --sidebar-width 등) |
-| `lib/theme/index.ts` | useThemeConfig 훅 추가 |
-
----
-
-## 3. 구현 상세
-
-### 3.1 PortalLayout 컴포넌트
-
-**파일 경로:** `components/layout/PortalLayout.tsx`
-
-**주요 기능:**
-- Ant Design Layout 컴포넌트 기반 구조
-- 헤더 (60px 고정, 상단 fixed)
-- 사이드바 (240px ↔ 60px 접이식)
-- 컨텐츠 영역 (flex-grow)
-- 푸터 (30px 고정)
-
-**구현된 기능:**
-- [x] 레이아웃 영역 분리 (Header, Sider, Content, Footer)
-- [x] 사이드바 접기/펼치기 토글
-- [x] localStorage 기반 사이드바 상태 유지
-- [x] 반응형 동작 (768px 미만 자동 접힘)
-- [x] 슬롯 기반 컴포넌트 구조 (header, sidebar, tabBar, footer props)
-
-### 3.2 CSS Variables
-
-**파일 경로:** `app/globals.css`
+레이아웃 치수를 CSS 변수로 정의하여 일관성 유지:
 
 ```css
 :root {
@@ -81,85 +34,88 @@
   --sidebar-collapsed-width: 60px;
   --footer-height: 30px;
   --tab-bar-height: 40px;
+  --color-primary: #1677ff;
 }
 ```
 
-### 3.3 포털 라우트 구조
+### 2. PortalLayout 컴포넌트
+
+#### 구조
+- **Header**: 고정 위치, 높이 60px, 로고/네비게이션 영역
+- **Sidebar**: 접이식 사이드바 (240px ↔ 60px)
+- **Content**: 스크롤 가능한 메인 컨텐츠 영역
+- **Footer**: 고정 높이 30px, 저작권/버전 정보
+
+#### 주요 기능
+
+1. **사이드바 토글**
+   - Ant Design Sider의 `collapsible` 속성 활용
+   - 커스텀 trigger 버튼 아이콘
+   - 부드러운 전환 애니메이션 (0.2s)
+
+2. **반응형 동작**
+   - Desktop (>=1024px): 사이드바 확장 상태
+   - Tablet (768px-1023px): 사이드바 자동 축소
+   - Mobile (<768px): 사이드바 자동 축소
+
+3. **상태 지속성**
+   - localStorage를 통한 사이드바 상태 저장
+   - 키: `portal-sidebar-collapsed`
+   - 새로고침 후 상태 복원
+
+### 3. Portal 라우트 구성
 
 ```
-app/
-├── (portal)/
-│   ├── layout.tsx      # PortalLayout + ConfigProvider 적용
-│   └── dashboard/
-│       └── page.tsx    # 대시보드 페이지
+app/portal/
+├── layout.tsx    # ConfigProvider + PortalLayout 래핑
+└── page.tsx      # 메인 대시보드 페이지
 ```
 
----
+## 요구사항 커버리지
 
-## 4. 통합 검증 결과
+| FR ID | 요구사항 | 구현 위치 | 테스트 ID |
+|-------|---------|----------|----------|
+| FR-001 | 레이아웃 구조 | PortalLayout.tsx | E2E-001 |
+| FR-002 | 사이드바 토글 | PortalLayout.tsx:54-57 | E2E-002 |
+| FR-003 | 반응형 동작 | PortalLayout.tsx:33-46 | E2E-003 |
+| FR-004 | 상태 지속성 | PortalLayout.tsx:29-51 | E2E-004 |
+| FR-005 | CSS Variables | globals.css | E2E-005 |
+| FR-006 | 스크롤 영역 | PortalLayout.tsx:137-139 | E2E-006 |
 
-### 4.1 파일 존재 확인
+## 테스트 결과
 
-- [x] `mes-portal/components/layout/PortalLayout.tsx` 파일 존재
-- [x] `mes-portal/app/(portal)/layout.tsx` 파일 존재
-- [x] `mes-portal/app/globals.css`에 CSS Variables 정의
+| 테스트 유형 | 총 테스트 | 통과 | 실패 | 통과율 |
+|------------|----------|------|------|--------|
+| 단위 테스트 | 11 | 11 | 0 | 100% |
+| E2E | 6 | 6 | 0 | 100% |
 
-### 4.2 컴포넌트 통합 확인
+## 기술적 결정사항
 
-- [x] Ant Design `Layout`, `Layout.Header`, `Layout.Sider`, `Layout.Content`, `Layout.Footer` 사용
-- [x] `app/(portal)/layout.tsx`에서 `PortalLayout` import 및 적용
-- [x] 사이드바 접기/펼치기 상태 관리 동작
+1. **Ant Design Layout 사용**
+   - 검증된 UI 컴포넌트 라이브러리
+   - 반응형 지원 내장
+   - 접이식 사이드바 기능 제공
 
-### 4.3 스타일 확인
+2. **CSS Variables 적용**
+   - 테마 커스터마이징 용이
+   - 일관된 치수 관리
+   - Ant Design 토큰과 동기화
 
-- [x] CSS Variables `--header-height: 60px` 적용
-- [x] CSS Variables `--sidebar-width: 240px` 적용
-- [x] CSS Variables `--footer-height: 30px` 적용
-- [x] 사이드바 전환 시 애니메이션 동작 (transition: 0.2s)
+3. **localStorage 상태 관리**
+   - 별도 상태 관리 라이브러리 없이 구현
+   - 간단하고 직관적인 접근
+   - 서버 의존성 없음
 
-### 4.4 빌드 검증
+## 향후 개선사항
 
-```
-✓ Compiled successfully
-✓ Generating static pages (5/5)
+1. 다크 모드 지원 추가
+2. 사이드바 메뉴 아이템 구현
+3. 탭바 컴포넌트 연동
+4. 브레드크럼 네비게이션 추가
 
-Route (app)
-├ ○ /
-├ ○ /_not-found
-└ ○ /dashboard
-```
+## 산출물
 
----
-
-## 5. 테스트 데이터 ID
-
-컴포넌트에 포함된 data-testid:
-
-| 요소 | data-testid |
-|------|-------------|
-| 전체 레이아웃 | `portal-layout` |
-| 헤더 | `portal-header` |
-| 사이드바 | `portal-sidebar` |
-| 사이드바 토글 | `sidebar-toggle` |
-| 탭 바 | `tab-bar` |
-| 컨텐츠 | `portal-content` |
-| 푸터 | `portal-footer` |
-
----
-
-## 6. 후속 작업
-
-| Task ID | 내용 | 의존성 |
-|---------|------|--------|
-| TSK-01-02 | 헤더 컴포넌트 내부 구현 | TSK-01-01 |
-| TSK-01-03 | 사이드바 메뉴 컴포넌트 | TSK-01-01 |
-| TSK-01-04 | 푸터 컴포넌트 내부 구현 | TSK-01-01 |
-| WP-02 | MDI 탭 바 시스템 | TSK-01-01 |
-
----
-
-## 변경 이력
-
-| 버전 | 일자 | 작성자 | 변경 내용 |
-|------|------|--------|----------|
-| 1.0 | 2026-01-20 | Claude | 최초 작성 |
+- 구현 코드: `components/layout/PortalLayout.tsx`
+- E2E 테스트: `tests/e2e/layout.spec.ts`
+- 테스트 결과서: `070-e2e-test-results.md`
+- HTML 리포트: `test-results/20260120-155520/e2e/index.html`

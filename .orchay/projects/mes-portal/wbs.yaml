@@ -304,7 +304,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -336,7 +336,7 @@ workPackages:
         title: 탭 바 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -368,7 +368,7 @@ workPackages:
         title: 탭 드래그 앤 드롭
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: medium
         assignee: "-"
         tags:
@@ -449,7 +449,6 @@ workPackages:
             - components/mdi/MDIContent.tsx 파일 존재
             - screens/ 폴더에 화면 컴포넌트 구조
             - 동적 import로 코드 스플리팅
-        execution: apply
   - id: WP-03
     title: 동적 메뉴 시스템
     status: planned
@@ -460,7 +459,7 @@ workPackages:
         title: 메뉴 데이터 모델
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -489,7 +488,7 @@ workPackages:
         title: 역할-메뉴 매핑
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -512,12 +511,11 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
-        execution: apply
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ ]"
         priority: high
         assignee: "-"
         tags:
@@ -545,7 +543,7 @@ workPackages:
         title: 즐겨찾기 메뉴
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: low
         assignee: "-"
         tags:
@@ -608,7 +606,7 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -638,7 +636,7 @@ workPackages:
         title: Auth.js 인증 설정
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -670,7 +668,7 @@ workPackages:
         title: 로그인 페이지
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: critical
         assignee: "-"
         tags:
@@ -710,7 +708,7 @@ workPackages:
         title: 로딩 및 에러 상태 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: high
         assignee: "-"
         tags:
@@ -736,12 +734,11 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
-        execution: review
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ ]"
         priority: medium
         assignee: "-"
         tags:
@@ -917,6 +914,7 @@ workPackages:
           integrationCheck:
             - components/templates/ListTemplate.tsx
             - 검색 조건 → API 파라미터 변환 로직
+        execution: start
       - id: TSK-06-02
         title: 상세 화면 템플릿
         category: development
@@ -944,6 +942,7 @@ workPackages:
             - Ant Design Tabs
           integrationCheck:
             - components/templates/DetailTemplate.tsx
+        execution: start
       - id: TSK-06-03
         title: 입력/수정 폼 템플릿
         category: development
@@ -974,6 +973,7 @@ workPackages:
           integrationCheck:
             - components/templates/FormTemplate.tsx
             - useForm 훅 활용
+        execution: start
       - id: TSK-06-04
         title: 마스터-디테일 화면 템플릿
         category: development
@@ -1000,6 +1000,7 @@ workPackages:
             - react-split-pane 또는 Ant Design Splitter
           integrationCheck:
             - components/templates/MasterDetailTemplate.tsx
+        execution: start
       - id: TSK-06-05
         title: 팝업(모달) 화면 템플릿
         category: development
@@ -1027,6 +1028,7 @@ workPackages:
             - Ant Design Modal
           integrationCheck:
             - components/templates/SelectPopupTemplate.tsx
+        execution: start
       - id: TSK-06-06
         title: 마법사(Wizard) 화면 템플릿
         category: development
@@ -1056,6 +1058,7 @@ workPackages:
             - Ant Design Steps
           integrationCheck:
             - components/templates/WizardTemplate.tsx
+        execution: start
       - id: TSK-06-07
         title: "[샘플] 사용자 목록 화면"
         category: development
@@ -1082,6 +1085,7 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
+        execution: start
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
@@ -1106,6 +1110,7 @@ workPackages:
           integrationCheck:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
+        execution: start
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development
@@ -1131,6 +1136,7 @@ workPackages:
           integrationCheck:
             - screens/sample/SettingWizard.tsx
             - WizardTemplate 사용
+        execution: start
   - id: WP-07
     title: 대시보드
     status: planned

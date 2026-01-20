@@ -47,9 +47,9 @@
 Task를 시작부터 완료까지 자동으로 처리합니다.
 
 ```bash
-/ralph-loop:ralph-loop "TSK-01-01 Task를 완료해줘.
-/wf:start로 시작해서 /wf:design, /wf:build, /wf:test, /wf:done까지 순차 실행해줘."
---completion-promise "ORCHAY_DONE:*/TSK-01-01:done:success"
+/ralph-loop "TSK-01-01 Task를 완료해줘.
+/wf:start로 시작해서 /wf:design, /wf:build, /wf:test, /wf:done까지 순차 실행해줘.
+완료되면 <promise>ORCHAY_DONE:*/TSK-01-01:done:success</promise>를 출력해줘." --max-iterations 30 --completion-promise "ORCHAY_DONE:*/TSK-01-01:done:success"
 ```
 
 **동작 방식:**
@@ -65,7 +65,7 @@ Task를 시작부터 완료까지 자동으로 처리합니다.
 Work Package나 Activity 단위로 여러 Task를 병렬 처리합니다.
 
 ```bash
-/ralph-loop:ralph-loop "/wf:build WP-01 실행하고 모든 테스트가 통과할 때까지 반복"
+/ralph-loop "/wf:build WP-01 실행하고 모든 테스트가 통과할 때까지 반복"
 --max-iterations 10
 --completion-promise "모든 Task가 [im] 상태"
 ```
@@ -85,7 +85,7 @@ Work Package나 Activity 단위로 여러 Task를 병렬 처리합니다.
 설계 문서를 생성하고, 리뷰하고, 피드백을 반영하는 과정을 자동화합니다.
 
 ```bash
-/ralph-loop:ralph-loop "/wf:design TSK-02-01 실행 후 /wf:review로 리뷰하고,
+/ralph-loop "/wf:design TSK-02-01 실행 후 /wf:review로 리뷰하고,
 리뷰 결과가 있으면 /wf:apply로 반영. 모든 리뷰 항목이 해결될 때까지 반복"
 --completion-promise "리뷰 항목 0개"
 ```
@@ -97,7 +97,7 @@ Work Package나 Activity 단위로 여러 Task를 병렬 처리합니다.
 테스트를 실행하고 실패 시 수정하는 과정을 반복합니다.
 
 ```bash
-/ralph-loop:ralph-loop "/wf:test TSK-01-01 실행하고 실패한 테스트가 있으면
+/ralph-loop "/wf:test TSK-01-01 실행하고 실패한 테스트가 있으면
 /wf:fix로 수정 후 다시 테스트 실행"
 --max-iterations 5
 --completion-promise "test-result: pass"
@@ -110,7 +110,7 @@ Work Package나 Activity 단위로 여러 Task를 병렬 처리합니다.
 코드 리뷰를 수행하고 피드백을 반영하는 과정을 자동화합니다.
 
 ```bash
-/ralph-loop:ralph-loop "/wf:audit TSK-01-01 실행 후 리뷰 항목이 있으면
+/ralph-loop "/wf:audit TSK-01-01 실행 후 리뷰 항목이 있으면
 /wf:patch로 수정. 모든 항목이 해결될 때까지 반복"
 --completion-promise "리뷰 항목 0개"
 ```
@@ -200,21 +200,21 @@ WP/ACT 단위 병렬 처리 시:
 여러 프로젝트가 있는 경우 프로젝트를 명시합니다:
 
 ```bash
-/ralph-loop:ralph-loop "/wf:build orchay/TSK-01-01"
+/ralph-loop "/wf:build orchay/TSK-01-01"
 --completion-promise "ORCHAY_DONE:orchay/TSK-01-01:build:success"
 ```
 
 ### 특정 테스트 유형만 실행
 
 ```bash
-/ralph-loop:ralph-loop "/wf:test TSK-01-01 --type tdd"  # TDD만
-/ralph-loop:ralph-loop "/wf:test TSK-01-01 --type e2e"  # E2E만
+/ralph-loop "/wf:test TSK-01-01 --type tdd"  # TDD만
+/ralph-loop "/wf:test TSK-01-01 --type e2e"  # E2E만
 ```
 
 ### 연속 명령어 체이닝
 
 ```bash
-/ralph-loop:ralph-loop "
+/ralph-loop "
 1. /wf:design TSK-01-01 실행
 2. 완료되면 /wf:review 실행
 3. 리뷰 항목 있으면 수정 후 /wf:apply
