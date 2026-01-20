@@ -512,7 +512,6 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
-        execution: apply
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
@@ -702,7 +701,6 @@ workPackages:
             - app/(auth)/login/page.tsx 파일 존재
             - signIn 함수 사용 (Auth.js)
             - Form rules로 유효성 검사
-        execution: review
   - id: WP-05
     title: 공통 컴포넌트
     status: planned
@@ -739,7 +737,6 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
-        execution: review
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
@@ -800,7 +797,7 @@ workPackages:
         title: 테이블 공통 기능
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -857,11 +854,12 @@ workPackages:
           integrationCheck:
             - dayjs locale 설정 (ko)
             - "DatePicker 기본 포맷: YYYY-MM-DD"
+        execution: start
       - id: TSK-05-06
         title: 키보드 단축키 시스템
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:

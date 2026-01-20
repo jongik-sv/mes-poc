@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" width="1024" height="768">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .overlay { fill: rgba(0, 0, 0, 0.45); }
+      .modal-bg { fill: white; }
+      .modal-shadow { filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.08)); }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-modal-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; fill: #262626; font-weight: 600; }
+      .text-category { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #262626; font-weight: 600; }
+      .text-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-key { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; fill: #595959; font-weight: 500; }
+      .text-separator { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .key-badge { fill: #f0f0f0; stroke: #d9d9d9; stroke-width: 1; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+      .modal-header-border { stroke: #f0f0f0; stroke-width: 1; }
+      .close-btn { fill: #8c8c8c; }
+      .close-btn-hover { fill: #595959; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1024" height="768"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-01: Hotkey Help Modal (Default State)</text>
+
+  <!-- Modal Overlay -->
+  <rect class="overlay" x="100" y="60" width="824" height="650" rx="0"/>
+
+  <!-- Modal Container -->
+  <g transform="translate(272, 100)" class="modal-shadow">
+    <!-- Modal Background -->
+    <rect class="modal-bg" x="0" y="0" width="480" height="520" rx="8"/>
+
+    <!-- Modal Header -->
+    <g transform="translate(0, 0)">
+      <rect class="modal-bg" x="0" y="0" width="480" height="56" rx="8"/>
+      <text x="24" y="36" class="text-modal-title">Keyboard Shortcuts</text>
+
+      <!-- Close Button -->
+      <g transform="translate(440, 16)">
+        <rect fill="transparent" x="0" y="0" width="24" height="24"/>
+        <line class="close-btn" x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
+        <line class="close-btn" x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
+      </g>
+
+      <!-- Header Border -->
+      <line class="modal-header-border" x1="0" y1="56" x2="480" y2="56"/>
+    </g>
+
+    <!-- Modal Content -->
+    <g transform="translate(24, 72)">
+      <!-- Global Shortcuts Category -->
+      <text x="0" y="16" class="text-category">Global Shortcuts</text>
+
+      <!-- Item 1: Global Search -->
+      <g transform="translate(0, 32)">
+        <text x="0" y="14" class="text-label">Open global search</text>
+        <g transform="translate(330, 0)">
+          <rect class="key-badge" x="0" y="0" width="44" height="24" rx="4"/>
+          <text x="22" y="16" text-anchor="middle" class="text-key">Ctrl</text>
+          <text x="52" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="62" y="0" width="28" height="24" rx="4"/>
+          <text x="76" y="16" text-anchor="middle" class="text-key">K</text>
+        </g>
+        <line class="divider" x1="0" y1="36" x2="432" y2="36"/>
+      </g>
+
+      <!-- Item 2: Save -->
+      <g transform="translate(0, 80)">
+        <text x="0" y="14" class="text-label">Save</text>
+        <g transform="translate(330, 0)">
+          <rect class="key-badge" x="0" y="0" width="44" height="24" rx="4"/>
+          <text x="22" y="16" text-anchor="middle" class="text-key">Ctrl</text>
+          <text x="52" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="62" y="0" width="28" height="24" rx="4"/>
+          <text x="76" y="16" text-anchor="middle" class="text-key">S</text>
+        </g>
+        <line class="divider" x1="0" y1="36" x2="432" y2="36"/>
+      </g>
+
+      <!-- Item 3: Close Tab -->
+      <g transform="translate(0, 128)">
+        <text x="0" y="14" class="text-label">Close current tab</text>
+        <g transform="translate(330, 0)">
+          <rect class="key-badge" x="0" y="0" width="44" height="24" rx="4"/>
+          <text x="22" y="16" text-anchor="middle" class="text-key">Ctrl</text>
+          <text x="52" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="62" y="0" width="32" height="24" rx="4"/>
+          <text x="78" y="16" text-anchor="middle" class="text-key">W</text>
+        </g>
+        <line class="divider" x1="0" y1="36" x2="432" y2="36"/>
+      </g>
+
+      <!-- Item 4: Help -->
+      <g transform="translate(0, 176)">
+        <text x="0" y="14" class="text-label">Show keyboard shortcuts</text>
+        <g transform="translate(394, 0)">
+          <rect class="key-badge" x="0" y="0" width="28" height="24" rx="4"/>
+          <text x="14" y="16" text-anchor="middle" class="text-key">?</text>
+        </g>
+      </g>
+
+      <!-- Navigation Shortcuts Category -->
+      <text x="0" y="236" class="text-category">Navigation Shortcuts</text>
+
+      <!-- Item 5: Previous Tab -->
+      <g transform="translate(0, 252)">
+        <text x="0" y="14" class="text-label">Previous tab</text>
+        <g transform="translate(268, 0)">
+          <rect class="key-badge" x="0" y="0" width="44" height="24" rx="4"/>
+          <text x="22" y="16" text-anchor="middle" class="text-key">Ctrl</text>
+          <text x="52" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="62" y="0" width="48" height="24" rx="4"/>
+          <text x="86" y="16" text-anchor="middle" class="text-key">Shift</text>
+          <text x="118" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="128" y="0" width="36" height="24" rx="4"/>
+          <text x="146" y="16" text-anchor="middle" class="text-key">Tab</text>
+        </g>
+        <line class="divider" x1="0" y1="36" x2="432" y2="36"/>
+      </g>
+
+      <!-- Item 6: Next Tab -->
+      <g transform="translate(0, 300)">
+        <text x="0" y="14" class="text-label">Next tab</text>
+        <g transform="translate(330, 0)">
+          <rect class="key-badge" x="0" y="0" width="44" height="24" rx="4"/>
+          <text x="22" y="16" text-anchor="middle" class="text-key">Ctrl</text>
+          <text x="52" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="62" y="0" width="36" height="24" rx="4"/>
+          <text x="80" y="16" text-anchor="middle" class="text-key">Tab</text>
+        </g>
+        <line class="divider" x1="0" y1="36" x2="432" y2="36"/>
+      </g>
+
+      <!-- Item 7: Go Home -->
+      <g transform="translate(0, 348)">
+        <text x="0" y="14" class="text-label">Go to home</text>
+        <g transform="translate(348, 0)">
+          <rect class="key-badge" x="0" y="0" width="32" height="24" rx="4"/>
+          <text x="16" y="16" text-anchor="middle" class="text-key">Alt</text>
+          <text x="40" y="16" class="text-separator">+</text>
+          <rect class="key-badge" x="50" y="0" width="28" height="24" rx="4"/>
+          <text x="64" y="16" text-anchor="middle" class="text-key">H</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Modal Title Annotation -->
+    <line class="annotation-line" x1="520" y1="136" x2="800" y2="100"/>
+    <text x="805" y="95" class="annotation">Modal Title</text>
+    <text x="805" y="108" class="annotation">aria-labelledby="hotkey-help-title"</text>
+
+    <!-- Close Button Annotation -->
+    <line class="annotation-line" x1="720" y1="120" x2="800" y2="140"/>
+    <text x="805" y="135" class="annotation">Close Button (X)</text>
+    <text x="805" y="148" class="annotation">onClose / ESC key</text>
+
+    <!-- Category Title Annotation -->
+    <line class="annotation-line" x1="420" y1="188" x2="800" y2="180"/>
+    <text x="805" y="175" class="annotation">Category Title</text>
+    <text x="805" y="188" class="annotation">Typography.Title level={5}</text>
+
+    <!-- Key Badge Annotation -->
+    <line class="annotation-line" x1="720" y1="220" x2="800" y2="220"/>
+    <text x="805" y="215" class="annotation">KeyBadge Component</text>
+    <text x="805" y="228" class="annotation">bg: #f0f0f0, border: #d9d9d9</text>
+
+    <!-- Divider Annotation -->
+    <line class="annotation-line" x1="500" y1="244" x2="800" y2="260"/>
+    <text x="805" y="255" class="annotation">Divider</text>
+    <text x="805" y="268" class="annotation">margin: 12px 0</text>
+  </g>
+
+  <!-- Component Info Box -->
+  <g transform="translate(20, 640)">
+    <rect x="0" y="0" width="320" height="110" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">Component Info</text>
+    <text x="10" y="40" class="dimension">Component: HotkeyHelpModal</text>
+    <text x="10" y="55" class="dimension">Props: open, onClose, categories</text>
+    <text x="10" y="70" class="dimension">Modal width: 480px, max-height: 60vh</text>
+    <text x="10" y="85" class="dimension">Trigger: ? key (outside input fields)</text>
+    <text x="10" y="100" class="dimension">data-testid: hotkey-help-modal</text>
+  </g>
+
+  <!-- Key Badge Spec Box -->
+  <g transform="translate(360, 640)">
+    <rect x="0" y="0" width="280" height="110" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">KeyBadge Spec</text>
+    <text x="10" y="40" class="dimension">Background: #f0f0f0</text>
+    <text x="10" y="55" class="dimension">Border: 1px solid #d9d9d9</text>
+    <text x="10" y="70" class="dimension">Border-radius: 4px</text>
+    <text x="10" y="85" class="dimension">Font: monospace, 12px, #595959</text>
+    <text x="10" y="100" class="dimension">Padding: 0 8px, min-width: 24px</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="512" y="758" text-anchor="middle" class="dimension">1024 x 768</text>
+</svg>
