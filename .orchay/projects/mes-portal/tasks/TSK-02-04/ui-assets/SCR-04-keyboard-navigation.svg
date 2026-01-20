@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="450" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .tab-bar { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1; }
+      .tab { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1; }
+      .tab-active { fill: #1890ff; stroke: #1890ff; }
+      .tab-text { font-family: 'Segoe UI', sans-serif; font-size: 12px; fill: #333333; }
+      .tab-text-active { fill: #ffffff; }
+      .menu { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
+      .menu-item { fill: transparent; }
+      .menu-item-focus { fill: #e6f7ff; stroke: #1890ff; stroke-width: 2; }
+      .menu-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; fill: #333333; }
+      .menu-divider { stroke: #f0f0f0; stroke-width: 1; }
+      .key { fill: #fafafa; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .key-text { font-family: 'Consolas', monospace; font-size: 12px; fill: #333; }
+      .annotation { font-family: 'Segoe UI', sans-serif; font-size: 11px; fill: #1890ff; }
+      .annotation-bg { fill: #e6f7ff; stroke: #91d5ff; stroke-width: 1; rx: 4; }
+      .flow-arrow { fill: none; stroke: #1890ff; stroke-width: 2; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1890ff"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="450"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" style="font-family: 'Segoe UI', sans-serif; font-size: 16px; font-weight: bold; fill: #333;">SCR-04: 키보드 네비게이션 및 접근성</text>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="50" y="60" width="400" height="40" rx="0"/>
+
+  <!-- Tabs -->
+  <g>
+    <rect class="tab" x="55" y="65" width="90" height="30" rx="4"/>
+    <text class="tab-text" x="80" y="85">작업지시</text>
+    <text x="135" y="85" style="font-size: 12px; fill: #999;">×</text>
+  </g>
+
+  <g>
+    <rect class="tab-active" x="150" y="65" width="90" height="30" rx="4"/>
+    <text class="tab-text tab-text-active" x="170" y="85">대시보드</text>
+    <text x="230" y="85" style="font-size: 12px; fill: rgba(255,255,255,0.8);">×</text>
+  </g>
+
+  <g>
+    <rect class="tab" x="245" y="65" width="90" height="30" rx="4"/>
+    <text class="tab-text" x="265" y="85">생산실적</text>
+    <text x="325" y="85" style="font-size: 12px; fill: #999;">×</text>
+  </g>
+
+  <!-- Context Menu with Keyboard Focus -->
+  <g transform="translate(150, 105)">
+    <rect class="menu" x="0" y="0" width="180" height="168" rx="4"/>
+
+    <!-- Menu Item 1: 닫기 -->
+    <rect class="menu-item" x="4" y="4" width="172" height="36" rx="2"/>
+    <text x="40" y="28" style="font-size: 14px; fill: #595959;">×</text>
+    <text class="menu-text" x="56" y="28">닫기</text>
+
+    <!-- Divider 1 -->
+    <line class="menu-divider" x1="8" y1="44" x2="172" y2="44"/>
+
+    <!-- Menu Item 2: 다른 탭 모두 닫기 (KEYBOARD FOCUS) -->
+    <rect class="menu-item-focus" x="4" y="48" width="172" height="36" rx="2"/>
+    <text class="menu-text" x="16" y="72" style="font-weight: bold;">다른 탭 모두 닫기</text>
+
+    <!-- Menu Item 3: 오른쪽 탭 모두 닫기 -->
+    <rect class="menu-item" x="4" y="84" width="172" height="36" rx="2"/>
+    <text class="menu-text" x="16" y="108">오른쪽 탭 모두 닫기</text>
+
+    <!-- Divider 2 -->
+    <line class="menu-divider" x1="8" y1="124" x2="172" y2="124"/>
+
+    <!-- Menu Item 4: 새로고침 -->
+    <rect class="menu-item" x="4" y="128" width="172" height="36" rx="2"/>
+    <text x="30" y="152" style="font-size: 14px; fill: #595959;">↻</text>
+    <text class="menu-text" x="56" y="152">새로고침</text>
+  </g>
+
+  <!-- Keyboard Focus Indicator -->
+  <rect class="annotation-bg" x="350" y="150" width="140" height="36"/>
+  <text class="annotation" x="420" y="168" text-anchor="middle">키보드 포커스</text>
+  <text class="annotation" x="420" y="182" text-anchor="middle">outline: 2px solid</text>
+  <path class="flow-arrow" d="M350,170 L332,170"/>
+
+  <!-- Keyboard Controls Section -->
+  <g transform="translate(500, 60)">
+    <rect x="0" y="0" width="250" height="220" rx="8" fill="#ffffff" stroke="#d9d9d9"/>
+    <text x="125" y="25" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #333;">키보드 컨트롤</text>
+
+    <!-- Up Arrow -->
+    <g transform="translate(20, 45)">
+      <rect class="key" x="0" y="0" width="50" height="30"/>
+      <text class="key-text" x="25" y="20" text-anchor="middle">↑</text>
+      <text x="60" y="20" style="font-size: 12px; fill: #595959;">이전 항목으로 이동</text>
+    </g>
+
+    <!-- Down Arrow -->
+    <g transform="translate(20, 85)">
+      <rect class="key" x="0" y="0" width="50" height="30"/>
+      <text class="key-text" x="25" y="20" text-anchor="middle">↓</text>
+      <text x="60" y="20" style="font-size: 12px; fill: #595959;">다음 항목으로 이동</text>
+    </g>
+
+    <!-- Enter -->
+    <g transform="translate(20, 125)">
+      <rect class="key" x="0" y="0" width="50" height="30"/>
+      <text class="key-text" x="25" y="20" text-anchor="middle">Enter</text>
+      <text x="60" y="20" style="font-size: 12px; fill: #595959;">선택 항목 실행</text>
+    </g>
+
+    <!-- Escape -->
+    <g transform="translate(20, 165)">
+      <rect class="key" x="0" y="0" width="50" height="30"/>
+      <text class="key-text" x="25" y="20" text-anchor="middle">Esc</text>
+      <text x="60" y="20" style="font-size: 12px; fill: #595959;">메뉴 닫기</text>
+    </g>
+  </g>
+
+  <!-- Screen Reader Section -->
+  <g transform="translate(50, 300)">
+    <rect x="0" y="0" width="350" height="130" rx="8" fill="#f6ffed" stroke="#b7eb8f"/>
+    <text x="175" y="25" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #389e0d;">스크린 리더 지원</text>
+
+    <text x="20" y="55" style="font-size: 12px; fill: #595959;">• role="menu" - 메뉴 역할 선언</text>
+    <text x="20" y="75" style="font-size: 12px; fill: #595959;">• role="menuitem" - 메뉴 항목 역할</text>
+    <text x="20" y="95" style="font-size: 12px; fill: #595959;">• aria-disabled="true" - 비활성 상태 안내</text>
+    <text x="20" y="115" style="font-size: 12px; fill: #595959;">• aria-label - 항목별 접근성 레이블</text>
+  </g>
+
+  <!-- Focus Flow Diagram -->
+  <g transform="translate(430, 300)">
+    <rect x="0" y="0" width="320" height="130" rx="8" fill="#fff7e6" stroke="#ffd591"/>
+    <text x="160" y="25" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #d46b08;">포커스 순환 흐름</text>
+
+    <!-- Flow boxes -->
+    <rect x="20" y="45" width="60" height="30" rx="4" fill="#fff" stroke="#d9d9d9"/>
+    <text x="50" y="65" text-anchor="middle" style="font-size: 10px; fill: #333;">닫기</text>
+
+    <rect x="100" y="45" width="80" height="30" rx="4" fill="#e6f7ff" stroke="#1890ff"/>
+    <text x="140" y="65" text-anchor="middle" style="font-size: 10px; fill: #1890ff;">다른탭닫기</text>
+
+    <rect x="200" y="45" width="80" height="30" rx="4" fill="#fff" stroke="#d9d9d9"/>
+    <text x="240" y="65" text-anchor="middle" style="font-size: 10px; fill: #333;">오른쪽닫기</text>
+
+    <rect x="110" y="90" width="80" height="30" rx="4" fill="#fff" stroke="#d9d9d9"/>
+    <text x="150" y="110" text-anchor="middle" style="font-size: 10px; fill: #333;">새로고침</text>
+
+    <!-- Arrows -->
+    <path d="M80,60 L95,60" stroke="#1890ff" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M180,60 L195,60" stroke="#1890ff" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <path d="M240,75 L240,85 L190,85 L190,90" stroke="#1890ff" stroke-width="2" fill="none"/>
+    <path d="M110,105 L50,105 L50,75" stroke="#1890ff" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+    <text x="160" y="125" text-anchor="middle" style="font-size: 10px; fill: #8c8c8c;">↓키: 순환 이동 (마지막→첫번째)</text>
+  </g>
+</svg>

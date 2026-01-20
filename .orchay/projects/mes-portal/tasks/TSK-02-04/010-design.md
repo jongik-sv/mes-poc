@@ -509,8 +509,9 @@ const menuItems = [
 
 ### 13.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] UI 설계서 작성 (→ `011-ui-design.md`)
 
 ### 13.3 구현 준비
 

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .tab-bar { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1; }
+      .tab { fill: #ffffff; stroke: #e0e0e0; stroke-width: 1; }
+      .tab-active { fill: #1890ff; stroke: #1890ff; }
+      .tab-pinned { fill: #fff7e6; stroke: #ffd591; stroke-width: 1; }
+      .tab-text { font-family: 'Segoe UI', sans-serif; font-size: 12px; fill: #333333; }
+      .tab-text-active { fill: #ffffff; }
+      .menu { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
+      .menu-item { fill: transparent; }
+      .menu-item-disabled { fill: transparent; }
+      .menu-text { font-family: 'Segoe UI', sans-serif; font-size: 13px; fill: #333333; }
+      .menu-text-disabled { font-family: 'Segoe UI', sans-serif; font-size: 13px; fill: #bfbfbf; }
+      .menu-divider { stroke: #f0f0f0; stroke-width: 1; }
+      .annotation { font-family: 'Segoe UI', sans-serif; font-size: 11px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .annotation-bg { fill: #e6f7ff; stroke: #91d5ff; stroke-width: 1; rx: 4; }
+      .section-title { font-family: 'Segoe UI', sans-serif; font-size: 13px; font-weight: bold; fill: #595959; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="500"/>
+
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" style="font-family: 'Segoe UI', sans-serif; font-size: 16px; font-weight: bold; fill: #333;">SCR-03: 메뉴 비활성 상태 (Disabled States)</text>
+
+  <!-- Section 1: closable=false 탭 -->
+  <text class="section-title" x="50" y="55">Case 1: closable=false 탭 우클릭</text>
+
+  <rect class="tab-bar" x="50" y="65" width="320" height="35" rx="0"/>
+
+  <!-- Tab with pin icon (closable=false) -->
+  <g>
+    <rect class="tab-pinned" x="55" y="70" width="80" height="25" rx="4"/>
+    <text x="63" y="87" style="font-size: 10px; fill: #d46b08;">📌</text>
+    <text class="tab-text" x="80" y="87" style="font-size: 11px;">홈</text>
+  </g>
+
+  <g>
+    <rect class="tab" x="140" y="70" width="90" height="25" rx="4"/>
+    <text class="tab-text" x="155" y="87" style="font-size: 11px;">작업지시</text>
+    <text x="215" y="87" style="font-size: 10px; fill: #999;">×</text>
+  </g>
+
+  <!-- Context Menu for closable=false -->
+  <g transform="translate(55, 100)">
+    <rect class="menu" x="0" y="0" width="160" height="148" rx="4"/>
+
+    <!-- 닫기 (DISABLED) -->
+    <rect class="menu-item-disabled" x="4" y="4" width="152" height="32" rx="2"/>
+    <text x="36" y="26" style="font-size: 12px; fill: #bfbfbf;">×</text>
+    <text class="menu-text-disabled" x="50" y="26">닫기</text>
+
+    <line class="menu-divider" x1="8" y1="40" x2="152" y2="40"/>
+
+    <!-- 다른 탭 모두 닫기 (ENABLED) -->
+    <rect class="menu-item" x="4" y="44" width="152" height="32" rx="2"/>
+    <text class="menu-text" x="14" y="66" style="font-size: 12px;">다른 탭 모두 닫기</text>
+
+    <!-- 오른쪽 탭 모두 닫기 (ENABLED) -->
+    <rect class="menu-item" x="4" y="76" width="152" height="32" rx="2"/>
+    <text class="menu-text" x="14" y="98" style="font-size: 12px;">오른쪽 탭 모두 닫기</text>
+
+    <line class="menu-divider" x1="8" y1="112" x2="152" y2="112"/>
+
+    <!-- 새로고침 (ENABLED) -->
+    <rect class="menu-item" x="4" y="116" width="152" height="28" rx="2"/>
+    <text x="30" y="134" style="font-size: 12px; fill: #595959;">↻</text>
+    <text class="menu-text" x="50" y="134" style="font-size: 12px;">새로고침</text>
+  </g>
+
+  <!-- Annotation for disabled close -->
+  <rect class="annotation-bg" x="230" y="110" width="120" height="36"/>
+  <text class="annotation" x="290" y="126" text-anchor="middle">"닫기" 비활성</text>
+  <text class="annotation" x="290" y="140" text-anchor="middle">(closable=false)</text>
+  <line class="annotation-line" x1="230" y1="128" x2="215" y2="120"/>
+
+  <!-- Section 2: 탭 1개만 있는 경우 -->
+  <text class="section-title" x="430" y="55">Case 2: 탭 1개만 있는 경우</text>
+
+  <rect class="tab-bar" x="430" y="65" width="320" height="35" rx="0"/>
+
+  <g>
+    <rect class="tab-active" x="435" y="70" width="90" height="25" rx="4"/>
+    <text class="tab-text tab-text-active" x="455" y="87" style="font-size: 11px;">대시보드</text>
+    <text x="510" y="87" style="font-size: 10px; fill: rgba(255,255,255,0.8);">×</text>
+  </g>
+
+  <!-- Context Menu for single tab -->
+  <g transform="translate(435, 100)">
+    <rect class="menu" x="0" y="0" width="160" height="148" rx="4"/>
+
+    <!-- 닫기 (ENABLED) -->
+    <rect class="menu-item" x="4" y="4" width="152" height="32" rx="2"/>
+    <text x="36" y="26" style="font-size: 12px; fill: #595959;">×</text>
+    <text class="menu-text" x="50" y="26">닫기</text>
+
+    <line class="menu-divider" x1="8" y1="40" x2="152" y2="40"/>
+
+    <!-- 다른 탭 모두 닫기 (DISABLED) -->
+    <rect class="menu-item-disabled" x="4" y="44" width="152" height="32" rx="2"/>
+    <text class="menu-text-disabled" x="14" y="66" style="font-size: 12px;">다른 탭 모두 닫기</text>
+
+    <!-- 오른쪽 탭 모두 닫기 (DISABLED) -->
+    <rect class="menu-item-disabled" x="4" y="76" width="152" height="32" rx="2"/>
+    <text class="menu-text-disabled" x="14" y="98" style="font-size: 12px;">오른쪽 탭 모두 닫기</text>
+
+    <line class="menu-divider" x1="8" y1="112" x2="152" y2="112"/>
+
+    <!-- 새로고침 (ENABLED) -->
+    <rect class="menu-item" x="4" y="116" width="152" height="28" rx="2"/>
+    <text x="30" y="134" style="font-size: 12px; fill: #595959;">↻</text>
+    <text class="menu-text" x="50" y="134" style="font-size: 12px;">새로고침</text>
+  </g>
+
+  <!-- Annotation for no other tabs -->
+  <rect class="annotation-bg" x="610" y="140" width="140" height="48"/>
+  <text class="annotation" x="680" y="158" text-anchor="middle">다른 탭 없음</text>
+  <text class="annotation" x="680" y="172" text-anchor="middle">→ 관련 메뉴 비활성</text>
+  <line class="annotation-line" x1="610" y1="164" x2="595" y2="164"/>
+
+  <!-- Section 3: 가장 오른쪽 탭 -->
+  <text class="section-title" x="50" y="280">Case 3: 가장 오른쪽 탭 우클릭</text>
+
+  <rect class="tab-bar" x="50" y="290" width="320" height="35" rx="0"/>
+
+  <g>
+    <rect class="tab" x="55" y="295" width="80" height="25" rx="4"/>
+    <text class="tab-text" x="75" y="312" style="font-size: 11px;">작업지시</text>
+    <text x="120" y="312" style="font-size: 10px; fill: #999;">×</text>
+  </g>
+
+  <g>
+    <rect class="tab" x="140" y="295" width="80" height="25" rx="4"/>
+    <text class="tab-text" x="155" y="312" style="font-size: 11px;">대시보드</text>
+    <text x="205" y="312" style="font-size: 10px; fill: #999;">×</text>
+  </g>
+
+  <g>
+    <!-- 가장 오른쪽 탭 (Active, Right-clicked) -->
+    <rect class="tab-active" x="225" y="295" width="80" height="25" rx="4"/>
+    <text class="tab-text tab-text-active" x="240" y="312" style="font-size: 11px;">품질검사</text>
+    <text x="290" y="312" style="font-size: 10px; fill: rgba(255,255,255,0.8);">×</text>
+  </g>
+
+  <!-- Context Menu for rightmost tab -->
+  <g transform="translate(225, 325)">
+    <rect class="menu" x="0" y="0" width="160" height="148" rx="4"/>
+
+    <!-- 닫기 (ENABLED) -->
+    <rect class="menu-item" x="4" y="4" width="152" height="32" rx="2"/>
+    <text x="36" y="26" style="font-size: 12px; fill: #595959;">×</text>
+    <text class="menu-text" x="50" y="26">닫기</text>
+
+    <line class="menu-divider" x1="8" y1="40" x2="152" y2="40"/>
+
+    <!-- 다른 탭 모두 닫기 (ENABLED) -->
+    <rect class="menu-item" x="4" y="44" width="152" height="32" rx="2"/>
+    <text class="menu-text" x="14" y="66" style="font-size: 12px;">다른 탭 모두 닫기</text>
+
+    <!-- 오른쪽 탭 모두 닫기 (DISABLED) -->
+    <rect class="menu-item-disabled" x="4" y="76" width="152" height="32" rx="2"/>
+    <text class="menu-text-disabled" x="14" y="98" style="font-size: 12px;">오른쪽 탭 모두 닫기</text>
+
+    <line class="menu-divider" x1="8" y1="112" x2="152" y2="112"/>
+
+    <!-- 새로고침 (ENABLED) -->
+    <rect class="menu-item" x="4" y="116" width="152" height="28" rx="2"/>
+    <text x="30" y="134" style="font-size: 12px; fill: #595959;">↻</text>
+    <text class="menu-text" x="50" y="134" style="font-size: 12px;">새로고침</text>
+  </g>
+
+  <!-- Annotation for rightmost -->
+  <rect class="annotation-bg" x="50" y="390" width="150" height="36"/>
+  <text class="annotation" x="125" y="406" text-anchor="middle">오른쪽에 탭 없음</text>
+  <text class="annotation" x="125" y="420" text-anchor="middle">→ "오른쪽 탭" 비활성</text>
+  <line class="annotation-line" x1="200" y1="408" x2="225" y2="408"/>
+
+  <!-- Summary Box -->
+  <rect x="430" y="290" width="320" height="180" rx="8" fill="#fff1f0" stroke="#ffa39e"/>
+  <text x="590" y="315" text-anchor="middle" style="font-size: 14px; font-weight: bold; fill: #cf1322;">비활성 상태 규칙 요약</text>
+
+  <text x="450" y="345" style="font-size: 12px; fill: #595959;">• closable=false → "닫기" 비활성</text>
+  <text x="450" y="370" style="font-size: 12px; fill: #595959;">• 탭 1개 → "다른 탭", "오른쪽 탭" 비활성</text>
+  <text x="450" y="395" style="font-size: 12px; fill: #595959;">• 가장 오른쪽 → "오른쪽 탭" 비활성</text>
+  <text x="450" y="420" style="font-size: 12px; fill: #595959;">• "새로고침"은 항상 활성</text>
+
+  <text x="590" y="455" text-anchor="middle" style="font-size: 11px; fill: #8c8c8c;">비활성 스타일: color: #bfbfbf, cursor: not-allowed</text>
+</svg>
