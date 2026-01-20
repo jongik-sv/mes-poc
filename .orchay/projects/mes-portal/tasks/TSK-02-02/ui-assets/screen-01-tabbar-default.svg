@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 80">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-indicator { fill: #1677ff; }
+      .text-active { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; font-weight: 500; }
+      .text-inactive { fill: #6B7280; font-family: Arial, sans-serif; font-size: 14px; }
+      .icon { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 12px; }
+      .icon-active { fill: #1677ff; font-family: Arial, sans-serif; font-size: 12px; }
+      .close-btn { fill: #9CA3AF; }
+      .border-bottom { stroke: #E5E7EB; stroke-width: 1; fill: none; }
+      .annotation { fill: #3B82F6; font-family: Arial, sans-serif; font-size: 10px; }
+      .annotation-box { fill: #EFF6FF; stroke: #3B82F6; rx: 3; }
+      .dimension-line { stroke: #3B82F6; stroke-width: 1; stroke-dasharray: 2,2; }
+      .dimension-text { fill: #3B82F6; font-family: Arial, sans-serif; font-size: 9px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="960" height="80"/>
+
+  <!-- Tab Bar Container -->
+  <rect class="bg" x="0" y="0" width="960" height="40"/>
+  <line class="border-bottom" x1="0" y1="40" x2="960" y2="40"/>
+
+  <!-- Tab 1 (Active) -->
+  <rect class="tab-active" x="8" y="4" width="140" height="32" rx="4"/>
+  <!-- Active Indicator -->
+  <rect class="tab-indicator" x="8" y="34" width="140" height="2" rx="1"/>
+  <!-- Icon placeholder -->
+  <rect fill="#1677ff" x="16" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon-active" x="23" y="25" text-anchor="middle">D</text>
+  <!-- Title -->
+  <text class="text-active" x="38" y="24">Dashboard</text>
+  <!-- Close Button -->
+  <circle class="close-btn" cx="132" cy="20" r="8" opacity="0"/>
+  <text class="icon" x="128" y="24">x</text>
+
+  <!-- Tab 2 (Inactive) -->
+  <rect class="tab-inactive" x="156" y="4" width="150" height="32" rx="4"/>
+  <!-- Icon placeholder -->
+  <rect fill="#9CA3AF" x="164" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon" x="171" y="25" text-anchor="middle">P</text>
+  <!-- Title -->
+  <text class="text-inactive" x="186" y="24">Production List</text>
+  <!-- Close Button -->
+  <text class="icon" x="286" y="24">x</text>
+
+  <!-- Tab 3 (Inactive) -->
+  <rect class="tab-inactive" x="314" y="4" width="120" height="32" rx="4"/>
+  <!-- Icon placeholder -->
+  <rect fill="#9CA3AF" x="322" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon" x="329" y="25" text-anchor="middle">E</text>
+  <!-- Title -->
+  <text class="text-inactive" x="344" y="24">Equipment</text>
+  <!-- Close Button -->
+  <text class="icon" x="414" y="24">x</text>
+
+  <!-- Tab 4 (Inactive) -->
+  <rect class="tab-inactive" x="442" y="4" width="110" height="32" rx="4"/>
+  <!-- Icon placeholder -->
+  <rect fill="#9CA3AF" x="450" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon" x="457" y="25" text-anchor="middle">Q</text>
+  <!-- Title -->
+  <text class="text-inactive" x="472" y="24">Quality</text>
+  <!-- Close Button -->
+  <text class="icon" x="532" y="24">x</text>
+
+  <!-- Annotations Section -->
+  <!-- Height Annotation -->
+  <line class="dimension-line" x1="945" y1="0" x2="945" y2="40"/>
+  <line class="dimension-line" x1="940" y1="0" x2="950" y2="0"/>
+  <line class="dimension-line" x1="940" y1="40" x2="950" y2="40"/>
+  <text class="dimension-text" x="950" y="23">40px</text>
+
+  <!-- Annotation Box: Tab States -->
+  <rect class="annotation-box" x="600" y="50" width="150" height="26"/>
+  <text class="annotation" x="610" y="62">Tab States:</text>
+  <rect fill="#FFFFFF" stroke="#1677ff" stroke-width="2" x="690" y="54" width="12" height="12" rx="2"/>
+  <text class="annotation" x="705" y="64">Active</text>
+  <rect fill="#F5F5F5" stroke="#E5E7EB" x="745" y="54" width="12" height="12" rx="2"/>
+  <text class="annotation" x="760" y="64">Inactive</text>
+
+  <!-- Annotation: Active indicator -->
+  <line class="dimension-line" x1="78" y1="36" x2="78" y2="50"/>
+  <rect class="annotation-box" x="30" y="50" width="96" height="18"/>
+  <text class="annotation" x="40" y="62">Active Indicator</text>
+
+  <!-- Annotation: Close Button -->
+  <line class="dimension-line" x1="132" y1="28" x2="160" y2="50"/>
+  <rect class="annotation-box" x="160" y="50" width="70" height="18"/>
+  <text class="annotation" x="168" y="62">Close (x)</text>
+
+  <!-- Annotation: Tab Item -->
+  <line class="dimension-line" x1="370" y1="36" x2="370" y2="55"/>
+  <rect class="annotation-box" x="280" y="55" width="180" height="18"/>
+  <text class="annotation" x="290" y="67">Icon + Title + Close Button</text>
+</svg>

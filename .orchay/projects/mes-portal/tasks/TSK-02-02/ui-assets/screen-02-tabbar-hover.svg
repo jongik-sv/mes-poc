@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 80">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-hover { fill: #E8E8E8; stroke: #D1D5DB; stroke-width: 1; }
+      .tab-indicator { fill: #1677ff; }
+      .text-active { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; font-weight: 500; }
+      .text-inactive { fill: #6B7280; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-hover { fill: #4B5563; font-family: Arial, sans-serif; font-size: 14px; }
+      .icon { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 12px; }
+      .icon-active { fill: #1677ff; font-family: Arial, sans-serif; font-size: 12px; }
+      .icon-hover { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .close-btn { fill: #9CA3AF; }
+      .close-btn-hover-bg { fill: #FEE2E2; }
+      .close-btn-hover { fill: #DC2626; font-family: Arial, sans-serif; font-size: 12px; }
+      .border-bottom { stroke: #E5E7EB; stroke-width: 1; fill: none; }
+      .annotation { fill: #3B82F6; font-family: Arial, sans-serif; font-size: 10px; }
+      .annotation-box { fill: #EFF6FF; stroke: #3B82F6; rx: 3; }
+      .annotation-red { fill: #EF4444; font-family: Arial, sans-serif; font-size: 10px; }
+      .annotation-box-red { fill: #FEF2F2; stroke: #EF4444; rx: 3; }
+      .dimension-line { stroke: #3B82F6; stroke-width: 1; stroke-dasharray: 2,2; }
+      .cursor { fill: none; stroke: #1F2937; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="960" height="80"/>
+
+  <!-- Tab Bar Container -->
+  <rect class="bg" x="0" y="0" width="960" height="40"/>
+  <line class="border-bottom" x1="0" y1="40" x2="960" y2="40"/>
+
+  <!-- Tab 1 (Active) -->
+  <rect class="tab-active" x="8" y="4" width="140" height="32" rx="4"/>
+  <rect class="tab-indicator" x="8" y="34" width="140" height="2" rx="1"/>
+  <rect fill="#1677ff" x="16" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon-active" x="23" y="25" text-anchor="middle">D</text>
+  <text class="text-active" x="38" y="24">Dashboard</text>
+  <text class="icon" x="128" y="24">x</text>
+
+  <!-- Tab 2 (Hover State - Tab Hover) -->
+  <rect class="tab-hover" x="156" y="4" width="150" height="32" rx="4"/>
+  <rect fill="#6B7280" x="164" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon-hover" x="171" y="25" text-anchor="middle">P</text>
+  <text class="text-hover" x="186" y="24">Production List</text>
+  <text class="icon-hover" x="286" y="24">x</text>
+
+  <!-- Cursor on Tab 2 -->
+  <g transform="translate(220, 15)">
+    <path class="cursor" d="M0,0 L0,14 L4,10 L8,17 L10,16 L6,9 L11,9 Z"/>
+  </g>
+
+  <!-- Tab 3 (Inactive with Close Button Hover) -->
+  <rect class="tab-inactive" x="314" y="4" width="120" height="32" rx="4"/>
+  <rect fill="#9CA3AF" x="322" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon" x="329" y="25" text-anchor="middle">E</text>
+  <text class="text-inactive" x="344" y="24">Equipment</text>
+  <!-- Close Button Hover State -->
+  <circle class="close-btn-hover-bg" cx="414" cy="20" r="10"/>
+  <text class="close-btn-hover" x="410" y="24">x</text>
+
+  <!-- Cursor on Close Button -->
+  <g transform="translate(420, 15)">
+    <path class="cursor" d="M0,0 L0,14 L4,10 L8,17 L10,16 L6,9 L11,9 Z"/>
+  </g>
+
+  <!-- Tab 4 (Inactive) -->
+  <rect class="tab-inactive" x="442" y="4" width="110" height="32" rx="4"/>
+  <rect fill="#9CA3AF" x="450" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+  <text class="icon" x="457" y="25" text-anchor="middle">Q</text>
+  <text class="text-inactive" x="472" y="24">Quality</text>
+  <text class="icon" x="532" y="24">x</text>
+
+  <!-- Annotations Section -->
+
+  <!-- Tab Hover Annotation -->
+  <line class="dimension-line" x1="231" y1="36" x2="231" y2="50"/>
+  <rect class="annotation-box" x="180" y="50" width="100" height="26"/>
+  <text class="annotation" x="190" y="62">Tab Hover:</text>
+  <text class="annotation" x="190" y="72">bg: #E8E8E8</text>
+
+  <!-- Close Button Hover Annotation -->
+  <line stroke="#EF4444" stroke-dasharray="2,2" x1="414" y1="32" x2="414" y2="50"/>
+  <rect class="annotation-box-red" x="350" y="50" width="130" height="26"/>
+  <text class="annotation-red" x="360" y="62">Close Hover:</text>
+  <text class="annotation-red" x="360" y="72">bg: #FEE2E2 text: #DC2626</text>
+
+  <!-- Legend -->
+  <rect class="annotation-box" x="600" y="50" width="200" height="26"/>
+  <text class="annotation" x="610" y="62">Hover States:</text>
+  <rect fill="#E8E8E8" stroke="#D1D5DB" x="690" y="54" width="12" height="12" rx="2"/>
+  <text class="annotation" x="705" y="64">Tab</text>
+  <circle fill="#FEE2E2" cx="760" cy="60" r="6"/>
+  <text class="annotation" x="770" y="64">Close</text>
+
+  <!-- Visual Feedback Note -->
+  <rect class="annotation-box" x="820" y="5" width="130" height="30"/>
+  <text class="annotation" x="830" y="18">Visual Feedback</text>
+  <text class="annotation" x="830" y="30">on mouse interaction</text>
+</svg>

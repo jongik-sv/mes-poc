@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 80">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-indicator { fill: #1677ff; }
+      .text-active { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; font-weight: 500; }
+      .text-inactive { fill: #6B7280; font-family: Arial, sans-serif; font-size: 14px; }
+      .icon { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 12px; }
+      .icon-active { fill: #1677ff; font-family: Arial, sans-serif; font-size: 12px; }
+      .scroll-btn { fill: #FAFAFA; stroke: #E5E7EB; stroke-width: 1; }
+      .scroll-btn-hover { fill: #F0F0F0; stroke: #D1D5DB; stroke-width: 1; }
+      .scroll-btn-disabled { fill: #FAFAFA; stroke: #E5E7EB; stroke-width: 1; opacity: 0.4; }
+      .scroll-icon { fill: #6B7280; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .scroll-icon-disabled { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+      .border-bottom { stroke: #E5E7EB; stroke-width: 1; fill: none; }
+      .annotation { fill: #3B82F6; font-family: Arial, sans-serif; font-size: 10px; }
+      .annotation-box { fill: #EFF6FF; stroke: #3B82F6; rx: 3; }
+      .dimension-line { stroke: #3B82F6; stroke-width: 1; stroke-dasharray: 2,2; }
+      .clip-indicator { fill: none; stroke: #9CA3AF; stroke-dasharray: 3,3; }
+      .more-indicator { fill: #6B7280; font-family: Arial, sans-serif; font-size: 11px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="960" height="80"/>
+
+  <!-- Tab Bar Container -->
+  <rect class="bg" x="0" y="0" width="960" height="40"/>
+  <line class="border-bottom" x1="0" y1="40" x2="960" y2="40"/>
+
+  <!-- Left Scroll Button (Disabled - at start) -->
+  <rect class="scroll-btn-disabled" x="4" y="4" width="24" height="32" rx="4"/>
+  <text class="scroll-icon-disabled" x="12" y="25">&lt;</text>
+
+  <!-- Visible Tab Area -->
+  <clipPath id="tabClip">
+    <rect x="32" y="0" width="866" height="40"/>
+  </clipPath>
+
+  <g clip-path="url(#tabClip)">
+    <!-- Tab 1 (Active) -->
+    <rect class="tab-active" x="36" y="4" width="120" height="32" rx="4"/>
+    <rect class="tab-indicator" x="36" y="34" width="120" height="2" rx="1"/>
+    <rect fill="#1677ff" x="44" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon-active" x="51" y="25" text-anchor="middle">D</text>
+    <text class="text-active" x="66" y="24">Dashboard</text>
+    <text class="icon" x="140" y="24">x</text>
+
+    <!-- Tab 2 -->
+    <rect class="tab-inactive" x="164" y="4" width="130" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="172" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="179" y="25" text-anchor="middle">P</text>
+    <text class="text-inactive" x="194" y="24">Production</text>
+    <text class="icon" x="276" y="24">x</text>
+
+    <!-- Tab 3 -->
+    <rect class="tab-inactive" x="302" y="4" width="120" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="310" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="317" y="25" text-anchor="middle">E</text>
+    <text class="text-inactive" x="332" y="24">Equipment</text>
+    <text class="icon" x="404" y="24">x</text>
+
+    <!-- Tab 4 -->
+    <rect class="tab-inactive" x="430" y="4" width="100" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="438" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="445" y="25" text-anchor="middle">Q</text>
+    <text class="text-inactive" x="460" y="24">Quality</text>
+    <text class="icon" x="512" y="24">x</text>
+
+    <!-- Tab 5 -->
+    <rect class="tab-inactive" x="538" y="4" width="110" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="546" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="553" y="25" text-anchor="middle">I</text>
+    <text class="text-inactive" x="568" y="24">Inventory</text>
+    <text class="icon" x="630" y="24">x</text>
+
+    <!-- Tab 6 -->
+    <rect class="tab-inactive" x="656" y="4" width="100" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="664" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="671" y="25" text-anchor="middle">R</text>
+    <text class="text-inactive" x="686" y="24">Reports</text>
+    <text class="icon" x="738" y="24">x</text>
+
+    <!-- Tab 7 -->
+    <rect class="tab-inactive" x="764" y="4" width="110" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="772" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="779" y="25" text-anchor="middle">S</text>
+    <text class="text-inactive" x="794" y="24">Settings</text>
+    <text class="icon" x="856" y="24">x</text>
+
+    <!-- Tab 8 (Partially visible - clipped) -->
+    <rect class="tab-inactive" x="882" y="4" width="120" height="32" rx="4"/>
+    <rect fill="#9CA3AF" x="890" y="14" width="14" height="14" rx="2" opacity="0.2"/>
+    <text class="icon" x="897" y="25" text-anchor="middle">U</text>
+    <text class="text-inactive" x="912" y="24">Users</text>
+  </g>
+
+  <!-- Fade gradient to indicate more content -->
+  <defs>
+    <linearGradient id="fadeRight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FAFAFA;stop-opacity:0" />
+      <stop offset="100%" style="stop-color:#FAFAFA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect fill="url(#fadeRight)" x="870" y="4" width="28" height="32"/>
+
+  <!-- Right Scroll Button (Active) -->
+  <rect class="scroll-btn-hover" x="902" y="4" width="24" height="32" rx="4"/>
+  <text class="scroll-icon" x="908" y="25">&gt;</text>
+
+  <!-- More tabs indicator -->
+  <text class="more-indicator" x="930" y="24">+2</text>
+
+  <!-- Annotations Section -->
+
+  <!-- Left Scroll Button Annotation -->
+  <line class="dimension-line" x1="16" y1="36" x2="16" y2="52"/>
+  <rect class="annotation-box" x="4" y="52" width="90" height="26"/>
+  <text class="annotation" x="10" y="64">Scroll Left</text>
+  <text class="annotation" x="10" y="74">(disabled: start)</text>
+
+  <!-- Right Scroll Button Annotation -->
+  <line class="dimension-line" x1="914" y1="36" x2="914" y2="52"/>
+  <rect class="annotation-box" x="860" y="52" width="95" height="26"/>
+  <text class="annotation" x="866" y="64">Scroll Right</text>
+  <text class="annotation" x="866" y="74">(active: more tabs)</text>
+
+  <!-- Overflow Indicator -->
+  <rect class="annotation-box" x="400" y="50" width="180" height="26"/>
+  <text class="annotation" x="410" y="62">Overflow: 8 tabs open</text>
+  <text class="annotation" x="410" y="72">Scroll to see hidden tabs</text>
+
+  <!-- Button States Legend -->
+  <rect class="annotation-box" x="600" y="50" width="150" height="26"/>
+  <text class="annotation" x="610" y="62">Scroll Button States:</text>
+  <rect fill="#F0F0F0" stroke="#D1D5DB" x="610" y="64" width="12" height="8" rx="1"/>
+  <text class="annotation" x="625" y="72">Active</text>
+  <rect fill="#FAFAFA" stroke="#E5E7EB" opacity="0.4" x="670" y="64" width="12" height="8" rx="1"/>
+  <text class="annotation" x="685" y="72">Disabled</text>
+</svg>
