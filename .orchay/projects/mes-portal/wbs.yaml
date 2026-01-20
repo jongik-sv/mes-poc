@@ -543,7 +543,7 @@ workPackages:
         title: 즐겨찾기 메뉴
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: low
         assignee: "-"
         tags:
@@ -565,7 +565,6 @@ workPackages:
           integrationCheck:
             - localStorage 또는 UserPreference 테이블 사용
             - components/common/FavoriteMenu.tsx 파일 존재
-        execution: start
   - id: WP-04
     title: 인증 및 권한
     status: planned
