@@ -131,7 +131,7 @@ workPackages:
         title: 헤더 컴포넌트
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -166,7 +166,6 @@ workPackages:
             - react-hotkeys-hook으로 Ctrl+K 단축키 등록
             - next-themes useTheme 훅 사용
             - 브레드크럼이 현재 메뉴 경로 표시
-        execution: start
       - id: TSK-01-03
         title: 사이드바 메뉴 컴포넌트
         category: development
@@ -238,7 +237,7 @@ workPackages:
         title: 전역 검색 모달
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -267,7 +266,6 @@ workPackages:
             - components/common/GlobalSearch.tsx 파일 존재
             - 메뉴 데이터에서 검색 수행
             - 검색 결과 선택 시 MDI 탭 오픈
-        execution: start
       - id: TSK-01-06
         title: 알림 패널
         category: development
