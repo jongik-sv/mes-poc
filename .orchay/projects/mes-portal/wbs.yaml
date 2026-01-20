@@ -100,7 +100,7 @@ workPackages:
         title: 레이아웃 컴포넌트 구조
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: critical
         assignee: "-"
         tags:
