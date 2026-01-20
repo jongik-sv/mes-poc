@@ -369,7 +369,7 @@ workPackages:
         title: 탭 드래그 앤 드롭
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -392,7 +392,6 @@ workPackages:
             - react-dnd 또는 @dnd-kit 의존성 설치
             - TabBar에 DnD 기능 통합
             - MDI Context에 reorderTabs 함수 추가
-        execution: start
       - id: TSK-02-04
         title: 탭 컨텍스트 메뉴
         category: development

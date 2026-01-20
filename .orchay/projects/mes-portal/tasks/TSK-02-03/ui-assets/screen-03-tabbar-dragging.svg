@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 200">
+  <defs>
+    <style>
+      .bg { fill: #1e1e1e; }
+      .tab-bar { fill: #2d2d2d; }
+      .tab { fill: #3c3c3c; }
+      .tab-active { fill: #1e1e1e; }
+      .tab-placeholder { fill: #2d2d2d; stroke: #007acc; stroke-width: 1; stroke-dasharray: 4; }
+      .tab-ghost { fill: #4a4a4a; opacity: 0.9; }
+      .drop-indicator { fill: #007acc; }
+      .tab-text { fill: #cccccc; font-family: Arial, sans-serif; font-size: 12px; }
+      .tab-text-active { fill: #ffffff; }
+      .close-btn { fill: #808080; }
+      .label { fill: #666666; font-family: Arial, sans-serif; font-size: 10px; }
+      .arrow { fill: none; stroke: #007acc; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="200"/>
+
+  <!-- Tab Bar Background -->
+  <rect class="tab-bar" x="0" y="10" width="1280" height="36"/>
+
+  <!-- Tab 1 (Active) -->
+  <rect class="tab-active" x="8" y="10" width="140" height="36" rx="4" ry="4"/>
+  <text class="tab-text tab-text-active" x="16" y="33">📊 생산현황</text>
+  <circle class="close-btn" cx="136" cy="28" r="6"/>
+  <text fill="#3c3c3c" x="133" y="31" font-size="10">×</text>
+
+  <!-- Tab 2 Placeholder (Original Position) -->
+  <rect class="tab-placeholder" x="156" y="14" width="140" height="32" rx="4" ry="4"/>
+
+  <!-- Tab 3 -->
+  <rect class="tab" x="304" y="14" width="140" height="32" rx="4" ry="4"/>
+  <text class="tab-text" x="312" y="33">⚙️ 설비관리</text>
+  <circle class="close-btn" cx="432" cy="30" r="6"/>
+  <text fill="#3c3c3c" x="429" y="33" font-size="10">×</text>
+
+  <!-- Drop Indicator (between Tab 3 and Tab 4) -->
+  <rect class="drop-indicator" x="448" y="14" width="4" height="32" rx="2" ry="2"/>
+
+  <!-- Tab 4 -->
+  <rect class="tab" x="460" y="14" width="140" height="32" rx="4" ry="4"/>
+  <text class="tab-text" x="468" y="33">📦 재고현황</text>
+  <circle class="close-btn" cx="588" cy="30" r="6"/>
+  <text fill="#3c3c3c" x="585" y="33" font-size="10">×</text>
+
+  <!-- Drag Ghost (Floating Tab) -->
+  <g transform="translate(380, 70)">
+    <rect class="tab-ghost" x="0" y="0" width="140" height="32" rx="4" ry="4" filter="url(#shadow)"/>
+    <text class="tab-text" x="8" y="20">📋 작업지시</text>
+    <circle class="close-btn" cx="128" cy="16" r="6"/>
+    <text fill="#3c3c3c" x="125" y="19" font-size="10">×</text>
+  </g>
+
+  <!-- Arrow showing movement -->
+  <path class="arrow" d="M 226 50 Q 300 60 380 86" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#007acc"/>
+    </marker>
+  </defs>
+
+  <!-- Labels -->
+  <text class="label" x="20" y="130">SCR-03: 드래그 중 상태 (Dragging)</text>
+  <text class="label" x="20" y="145">• 원래 위치에 점선 placeholder 표시</text>
+  <text class="label" x="20" y="160">• 드래그 중인 탭은 고스트(반투명)로 커서를 따라감</text>
+  <text class="label" x="20" y="175">• 드롭 가능 위치에 파란색 인디케이터 표시</text>
+  <text class="label" x="20" y="190">• boxShadow: 0 4px 12px rgba(0, 0, 0, 0.3)</text>
+</svg>
