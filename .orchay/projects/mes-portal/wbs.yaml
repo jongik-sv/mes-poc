@@ -485,7 +485,6 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
-        execution: apply
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
@@ -673,7 +672,7 @@ workPackages:
         title: 로그인 페이지
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -703,7 +702,6 @@ workPackages:
             - app/(auth)/login/page.tsx 파일 존재
             - signIn 함수 사용 (Auth.js)
             - Form rules로 유효성 검사
-        execution: start
   - id: WP-05
     title: 공통 컴포넌트
     status: planned
