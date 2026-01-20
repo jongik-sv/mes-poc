@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .bg { fill: #F5F5F5; }
+      .header { fill: #FFFFFF; stroke: #E5E7EB; }
+      .sidebar { fill: #001529; }
+      .content-area { fill: #FFFFFF; stroke: #E5E7EB; }
+      .tab-bar { fill: #FAFAFA; stroke: #E5E7EB; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; }
+      .footer { fill: #FAFAFA; stroke: #E5E7EB; }
+      .text-primary { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-secondary { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .text-white { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-title { fill: #1F2937; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .icon { fill: #9CA3AF; }
+      .blue { fill: #3B82F6; }
+      .border { stroke: #E5E7EB; fill: none; }
+      .screen-content { fill: #FFFFFF; stroke: #D1D5DB; stroke-dasharray: 4,4; }
+      .annotation { fill: #EF4444; font-family: Arial, sans-serif; font-size: 11px; }
+      .annotation-box { fill: #FEE2E2; stroke: #EF4444; rx: 4; }
+      .dimension-line { stroke: #3B82F6; stroke-width: 1; stroke-dasharray: 2,2; }
+      .dimension-text { fill: #3B82F6; font-family: Arial, sans-serif; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="720"/>
+
+  <!-- Header -->
+  <rect class="header" x="0" y="0" width="1280" height="60" stroke-width="1"/>
+  <text class="text-primary" x="20" y="35">MES Portal</text>
+
+  <!-- Sidebar -->
+  <rect class="sidebar" x="0" y="60" width="240" height="630"/>
+  <text class="text-white" x="20" y="100">Dashboard</text>
+  <text class="text-white" x="20" y="130">Production</text>
+  <text class="text-white" x="20" y="160">Quality</text>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="240" y="60" width="1040" height="40" stroke-width="1"/>
+
+  <!-- Tab 1 (Active) -->
+  <rect class="tab-active" x="250" y="65" width="120" height="30" rx="4"/>
+  <text class="text-primary" x="265" y="85">Dashboard</text>
+  <text class="icon" x="355" y="85" font-size="12">x</text>
+
+  <!-- Tab 2 (Inactive) -->
+  <rect class="tab-inactive" x="380" y="65" width="140" height="30" rx="4"/>
+  <text class="text-secondary" x="395" y="85">Production List</text>
+  <text class="icon" x="505" y="85" font-size="12">x</text>
+
+  <!-- Tab 3 (Inactive) -->
+  <rect class="tab-inactive" x="530" y="65" width="120" height="30" rx="4"/>
+  <text class="text-secondary" x="545" y="85">Equipment</text>
+  <text class="icon" x="635" y="85" font-size="12">x</text>
+
+  <!-- MDI Content Area -->
+  <rect class="content-area" x="240" y="100" width="1040" height="590" stroke-width="1"/>
+
+  <!-- Active Tab Content (visible) -->
+  <rect class="screen-content" x="260" y="120" width="1000" height="530" rx="8"/>
+
+  <!-- Content Placeholder -->
+  <text class="text-title" x="680" y="350" text-anchor="middle">Active Tab Content</text>
+  <text class="text-secondary" x="680" y="380" text-anchor="middle">Dashboard (display: block)</text>
+
+  <!-- Dashboard Sample Content -->
+  <rect fill="#F3F4F6" x="280" y="140" width="200" height="100" rx="8"/>
+  <text class="text-secondary" x="380" y="195" text-anchor="middle">KPI Card 1</text>
+
+  <rect fill="#F3F4F6" x="500" y="140" width="200" height="100" rx="8"/>
+  <text class="text-secondary" x="600" y="195" text-anchor="middle">KPI Card 2</text>
+
+  <rect fill="#F3F4F6" x="720" y="140" width="200" height="100" rx="8"/>
+  <text class="text-secondary" x="820" y="195" text-anchor="middle">KPI Card 3</text>
+
+  <rect fill="#F3F4F6" x="940" y="140" width="200" height="100" rx="8"/>
+  <text class="text-secondary" x="1040" y="195" text-anchor="middle">KPI Card 4</text>
+
+  <rect fill="#F3F4F6" x="280" y="260" width="460" height="200" rx="8"/>
+  <text class="text-secondary" x="510" y="365" text-anchor="middle">Line Chart</text>
+
+  <rect fill="#F3F4F6" x="760" y="260" width="380" height="200" rx="8"/>
+  <text class="text-secondary" x="950" y="365" text-anchor="middle">Bar Chart</text>
+
+  <!-- Footer -->
+  <rect class="footer" x="0" y="690" width="1280" height="30" stroke-width="1"/>
+  <text class="text-secondary" x="20" y="710">Copyright 2026</text>
+  <text class="text-secondary" x="1200" y="710">v1.0.0</text>
+
+  <!-- Annotations -->
+  <rect class="annotation-box" x="1070" y="400" width="170" height="80"/>
+  <text class="annotation" x="1080" y="420">MDIContent</text>
+  <text class="annotation" x="1080" y="440">- tabs: Tab[]</text>
+  <text class="annotation" x="1080" y="455">- activeTabId: string</text>
+  <text class="annotation" x="1080" y="470">- display: block</text>
+
+  <!-- Dimension Lines -->
+  <line class="dimension-line" x1="240" y1="55" x2="1280" y2="55"/>
+  <text class="dimension-text" x="760" y="50">Content Width: 1040px</text>
+
+  <line class="dimension-line" x1="1285" y1="100" x2="1285" y2="690"/>
+  <text class="dimension-text" x="1290" y="395" transform="rotate(90 1290 395)">Height: 590px</text>
+</svg>

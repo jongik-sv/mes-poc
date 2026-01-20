@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .bg { fill: #F5F5F5; }
+      .header { fill: #FFFFFF; stroke: #E5E7EB; }
+      .sidebar { fill: #001529; }
+      .content-area { fill: #FFFFFF; stroke: #E5E7EB; }
+      .tab-bar { fill: #FAFAFA; stroke: #E5E7EB; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-error { fill: #FEF2F2; stroke: #DC2626; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; }
+      .footer { fill: #FAFAFA; stroke: #E5E7EB; }
+      .text-primary { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-secondary { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .text-white { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-title { fill: #1F2937; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .text-error { fill: #DC2626; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-hint { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 14px; }
+      .icon { fill: #9CA3AF; }
+      .blue { fill: #3B82F6; }
+      .error-pane { fill: #FEF2F2; stroke: #FCA5A5; stroke-width: 2; }
+      .normal-pane { fill: #FFFFFF; stroke: #E5E7EB; }
+      .error-icon { fill: #FEE2E2; stroke: #DC2626; stroke-width: 2; }
+      .error-x { stroke: #DC2626; stroke-width: 2; stroke-linecap: round; }
+      .button-primary { fill: #3B82F6; }
+      .button-text { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 13px; }
+      .annotation { fill: #EF4444; font-family: Arial, sans-serif; font-size: 11px; }
+      .annotation-box { fill: #FEE2E2; stroke: #EF4444; rx: 4; }
+      .success-box { fill: #D1FAE5; stroke: #10B981; rx: 4; }
+      .success-text { fill: #059669; font-family: Arial, sans-serif; font-size: 11px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="720"/>
+
+  <!-- Header -->
+  <rect class="header" x="0" y="0" width="1280" height="60" stroke-width="1"/>
+  <text class="text-primary" x="20" y="35">MES Portal</text>
+
+  <!-- Sidebar -->
+  <rect class="sidebar" x="0" y="60" width="60" height="630"/>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="60" y="60" width="1220" height="40" stroke-width="1"/>
+
+  <!-- Tab 1 (Active - Normal) -->
+  <rect class="tab-active" x="70" y="65" width="110" height="30" rx="4"/>
+  <text class="text-primary" x="80" y="85">Dashboard</text>
+  <text class="icon" x="165" y="85" font-size="12">x</text>
+
+  <!-- Tab 2 (Error State) -->
+  <rect class="tab-error" x="190" y="65" width="130" height="30" rx="4"/>
+  <text class="text-error" x="200" y="85">Broken Screen</text>
+  <circle fill="#DC2626" cx="310" cy="80" r="6"/>
+  <text fill="#FFFFFF" x="310" y="84" text-anchor="middle" font-size="10">!</text>
+
+  <!-- Tab 3 (Normal) -->
+  <rect class="tab-inactive" x="330" y="65" width="100" height="30" rx="4"/>
+  <text class="text-secondary" x="340" y="85">Equipment</text>
+  <text class="icon" x="415" y="85" font-size="12">x</text>
+
+  <!-- MDI Content Area -->
+  <rect class="content-area" x="60" y="100" width="1220" height="590" stroke-width="1"/>
+
+  <!-- Dashboard Tab Content (Active, Working) -->
+  <rect class="normal-pane" x="80" y="120" width="540" height="400" rx="8"/>
+  <text class="text-title" x="350" y="150" text-anchor="middle">Dashboard</text>
+  <text class="text-secondary" x="350" y="175" text-anchor="middle">Working normally</text>
+
+  <!-- Sample Dashboard Content -->
+  <rect fill="#F3F4F6" x="100" y="200" width="150" height="80" rx="8"/>
+  <text class="text-secondary" x="175" y="245" text-anchor="middle">KPI 1</text>
+
+  <rect fill="#F3F4F6" x="270" y="200" width="150" height="80" rx="8"/>
+  <text class="text-secondary" x="345" y="245" text-anchor="middle">KPI 2</text>
+
+  <rect fill="#F3F4F6" x="440" y="200" width="150" height="80" rx="8"/>
+  <text class="text-secondary" x="515" y="245" text-anchor="middle">KPI 3</text>
+
+  <rect fill="#F3F4F6" x="100" y="300" width="490" height="180" rx="8"/>
+  <text class="text-secondary" x="345" y="395" text-anchor="middle">Chart Area</text>
+
+  <!-- Error Tab Content (ErrorBoundary Caught) -->
+  <rect class="error-pane" x="640" y="120" width="400" height="400" rx="8"/>
+
+  <!-- Error Icon -->
+  <g transform="translate(840, 240)">
+    <circle class="error-icon" cx="0" cy="0" r="35"/>
+    <line class="error-x" x1="-12" y1="-12" x2="12" y2="12"/>
+    <line class="error-x" x1="12" y1="-12" x2="-12" y2="12"/>
+  </g>
+
+  <text class="text-title" x="840" y="310" text-anchor="middle">Something went wrong</text>
+  <text class="text-secondary" x="840" y="335" text-anchor="middle">This screen encountered an error.</text>
+  <text class="text-secondary" x="840" y="355" text-anchor="middle">Other tabs are not affected.</text>
+
+  <!-- Error Details (Collapsed by default) -->
+  <rect fill="#FEF2F2" stroke="#FCA5A5" x="680" y="380" width="320" height="60" rx="4"/>
+  <text class="text-error" x="695" y="400" font-size="11">Error: Cannot read property 'map' of undefined</text>
+  <text class="text-secondary" x="695" y="420" font-size="10">at BrokenScreen.tsx:42</text>
+  <text class="text-secondary" x="695" y="435" font-size="10">Click to expand stack trace...</text>
+
+  <!-- Action Buttons -->
+  <g transform="translate(840, 480)">
+    <rect class="button-primary" x="-130" y="-18" width="110" height="36" rx="6"/>
+    <text class="button-text" x="-75" y="7" text-anchor="middle">Refresh Tab</text>
+
+    <rect fill="#F3F4F6" stroke="#D1D5DB" x="20" y="-18" width="100" height="36" rx="6"/>
+    <text class="text-primary" x="70" y="7" text-anchor="middle">Close Tab</text>
+  </g>
+
+  <!-- Equipment Tab (Hidden, Unaffected) -->
+  <g opacity="0.4">
+    <rect fill="#FFFFFF" stroke="#E5E7EB" stroke-dasharray="4,4" x="1060" y="120" width="180" height="150" rx="8"/>
+    <text class="text-hint" x="1150" y="180" text-anchor="middle">Equipment Tab</text>
+    <text class="text-secondary" x="1150" y="200" text-anchor="middle" font-size="11">(Hidden, working)</text>
+  </g>
+
+  <!-- Footer -->
+  <rect class="footer" x="0" y="690" width="1280" height="30" stroke-width="1"/>
+  <text class="text-secondary" x="20" y="710">Copyright 2026</text>
+  <text class="text-secondary" x="1200" y="710">v1.0.0</text>
+
+  <!-- Annotations: ErrorBoundary Isolation -->
+  <rect class="annotation-box" x="80" y="540" width="260" height="100"/>
+  <text class="annotation" x="90" y="560">ErrorBoundary Isolation:</text>
+  <text class="annotation" x="90" y="580">- Each TabPane has own ErrorBoundary</text>
+  <text class="annotation" x="90" y="595">- Error in Tab A does not affect Tab B</text>
+  <text class="annotation" x="90" y="610">- User can still use other tabs</text>
+  <text class="annotation" x="90" y="625">- Only crashed tab shows error UI</text>
+
+  <!-- Success indicator for other tabs -->
+  <rect class="success-box" x="350" y="540" width="200" height="50"/>
+  <text class="success-text" x="360" y="560">Other tabs unaffected</text>
+  <text class="success-text" x="360" y="580">State preserved, working normally</text>
+
+  <!-- Architecture annotation -->
+  <rect class="annotation-box" x="990" y="540" width="250" height="80"/>
+  <text class="annotation" x="1000" y="560">Architecture:</text>
+  <text class="annotation" x="1000" y="580">TabPane wraps each screen with:</text>
+  <text class="annotation" x="1000" y="595">  &lt;ErrorBoundary&gt;</text>
+  <text class="annotation" x="1000" y="610">    &lt;Suspense&gt;{'{'}Screen{'}'}&lt;/Suspense&gt;</text>
+</svg>

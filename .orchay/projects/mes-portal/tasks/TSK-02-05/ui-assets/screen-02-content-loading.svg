@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .bg { fill: #F5F5F5; }
+      .header { fill: #FFFFFF; stroke: #E5E7EB; }
+      .sidebar { fill: #001529; }
+      .content-area { fill: #FFFFFF; stroke: #E5E7EB; }
+      .tab-bar { fill: #FAFAFA; stroke: #E5E7EB; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; }
+      .footer { fill: #FAFAFA; stroke: #E5E7EB; }
+      .text-primary { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-secondary { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .text-white { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-title { fill: #1F2937; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .icon { fill: #9CA3AF; }
+      .blue { fill: #3B82F6; }
+      .border { stroke: #E5E7EB; fill: none; }
+      .loading-spinner { fill: none; stroke: #3B82F6; stroke-width: 3; }
+      .loading-bg { fill: none; stroke: #E5E7EB; stroke-width: 3; }
+      .annotation { fill: #EF4444; font-family: Arial, sans-serif; font-size: 11px; }
+      .annotation-box { fill: #FEE2E2; stroke: #EF4444; rx: 4; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="720"/>
+
+  <!-- Header -->
+  <rect class="header" x="0" y="0" width="1280" height="60" stroke-width="1"/>
+  <text class="text-primary" x="20" y="35">MES Portal</text>
+
+  <!-- Sidebar -->
+  <rect class="sidebar" x="0" y="60" width="240" height="630"/>
+  <text class="text-white" x="20" y="100">Dashboard</text>
+  <text class="text-white" x="20" y="130">Production</text>
+  <text class="text-white" x="20" y="160">Quality</text>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="240" y="60" width="1040" height="40" stroke-width="1"/>
+
+  <!-- Tab 1 (Inactive) -->
+  <rect class="tab-inactive" x="250" y="65" width="120" height="30" rx="4"/>
+  <text class="text-secondary" x="265" y="85">Dashboard</text>
+  <text class="icon" x="355" y="85" font-size="12">x</text>
+
+  <!-- Tab 2 (Active - Loading) -->
+  <rect class="tab-active" x="380" y="65" width="140" height="30" rx="4"/>
+  <text class="text-primary" x="395" y="85">Equipment</text>
+  <circle class="loading-bg" cx="505" cy="80" r="6"/>
+  <path class="loading-spinner" d="M505 74 A6 6 0 0 1 511 80"/>
+
+  <!-- MDI Content Area -->
+  <rect class="content-area" x="240" y="100" width="1040" height="590" stroke-width="1"/>
+
+  <!-- Loading State -->
+  <g transform="translate(760, 380)">
+    <!-- Spinner Background -->
+    <circle class="loading-bg" cx="0" cy="0" r="30"/>
+    <!-- Spinner Active Arc -->
+    <path class="loading-spinner" d="M0 -30 A30 30 0 0 1 30 0" stroke-linecap="round"/>
+  </g>
+
+  <text class="text-secondary" x="760" y="440" text-anchor="middle">Loading screen...</text>
+  <text class="text-secondary" x="760" y="460" text-anchor="middle" font-size="11">React.lazy + Suspense</text>
+
+  <!-- Footer -->
+  <rect class="footer" x="0" y="690" width="1280" height="30" stroke-width="1"/>
+  <text class="text-secondary" x="20" y="710">Copyright 2026</text>
+  <text class="text-secondary" x="1200" y="710">v1.0.0</text>
+
+  <!-- Annotations -->
+  <rect class="annotation-box" x="1070" y="200" width="180" height="100"/>
+  <text class="annotation" x="1080" y="220">Suspense Fallback</text>
+  <text class="annotation" x="1080" y="240">- Ant Design Spin</text>
+  <text class="annotation" x="1080" y="255">- "Loading..." text</text>
+  <text class="annotation" x="1080" y="275">Dynamic Import:</text>
+  <text class="annotation" x="1080" y="290">import('@/screens/...')</text>
+
+  <!-- Loading Flow Annotation -->
+  <rect class="annotation-box" x="400" y="500" width="300" height="70"/>
+  <text class="annotation" x="410" y="520">Loading Flow:</text>
+  <text class="annotation" x="410" y="540">1. Tab click -> dynamic import</text>
+  <text class="annotation" x="410" y="555">2. Suspense shows fallback (spinner)</text>
+  <text class="annotation" x="410" y="570">3. Component loaded -> render</text>
+</svg>

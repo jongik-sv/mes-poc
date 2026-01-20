@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .bg { fill: #F5F5F5; }
+      .header { fill: #FFFFFF; stroke: #E5E7EB; }
+      .sidebar { fill: #001529; }
+      .content-area { fill: #FFFFFF; stroke: #E5E7EB; }
+      .tab-bar { fill: #FAFAFA; stroke: #E5E7EB; }
+      .tab-active { fill: #FFFFFF; stroke: #3B82F6; stroke-width: 2; }
+      .tab-inactive { fill: #F5F5F5; stroke: #E5E7EB; }
+      .tab-hidden { fill: #FAFAFA; stroke: #E5E7EB; stroke-dasharray: 2,2; }
+      .footer { fill: #FAFAFA; stroke: #E5E7EB; }
+      .text-primary { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-secondary { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .text-white { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-title { fill: #1F2937; font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+      .text-hint { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 13px; }
+      .icon { fill: #9CA3AF; }
+      .blue { fill: #3B82F6; }
+      .border { stroke: #E5E7EB; fill: none; }
+      .hidden-pane { fill: #F9FAFB; stroke: #E5E7EB; stroke-dasharray: 4,4; }
+      .visible-pane { fill: #FFFFFF; stroke: #3B82F6; stroke-width: 2; }
+      .annotation { fill: #EF4444; font-family: Arial, sans-serif; font-size: 11px; }
+      .annotation-box { fill: #FEE2E2; stroke: #EF4444; rx: 4; }
+      .code-bg { fill: #1F2937; }
+      .code-text { fill: #10B981; font-family: monospace; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="720"/>
+
+  <!-- Header -->
+  <rect class="header" x="0" y="0" width="1280" height="60" stroke-width="1"/>
+  <text class="text-primary" x="20" y="35">MES Portal</text>
+
+  <!-- Sidebar (collapsed for more space) -->
+  <rect class="sidebar" x="0" y="60" width="60" height="630"/>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="60" y="60" width="1220" height="40" stroke-width="1"/>
+
+  <!-- Tab 1 (Hidden) -->
+  <rect class="tab-hidden" x="70" y="65" width="110" height="30" rx="4"/>
+  <text class="text-hint" x="80" y="85">Dashboard</text>
+  <text class="icon" x="165" y="85" font-size="12">x</text>
+
+  <!-- Tab 2 (Active) -->
+  <rect class="tab-active" x="190" y="65" width="130" height="30" rx="4"/>
+  <text class="blue" x="200" y="85" font-weight="bold">Production</text>
+  <text class="icon" x="305" y="85" font-size="12">x</text>
+
+  <!-- Tab 3 (Hidden) -->
+  <rect class="tab-hidden" x="330" y="65" width="100" height="30" rx="4"/>
+  <text class="text-hint" x="340" y="85">Equipment</text>
+  <text class="icon" x="415" y="85" font-size="12">x</text>
+
+  <!-- MDI Content Container -->
+  <rect class="content-area" x="60" y="100" width="1220" height="590" stroke-width="1"/>
+
+  <!-- Hidden Pane 1 (Dashboard) - Back Layer -->
+  <g opacity="0.4">
+    <rect class="hidden-pane" x="80" y="120" width="380" height="250" rx="8"/>
+    <text class="text-hint" x="270" y="200" text-anchor="middle">TabPane: Dashboard</text>
+    <text class="text-secondary" x="270" y="225" text-anchor="middle">display: none</text>
+    <text class="text-secondary" x="270" y="245" text-anchor="middle">(State preserved)</text>
+    <!-- Sample preserved content -->
+    <rect fill="#E5E7EB" x="100" y="270" width="80" height="40" rx="4"/>
+    <rect fill="#E5E7EB" x="190" y="270" width="80" height="40" rx="4"/>
+    <rect fill="#E5E7EB" x="280" y="270" width="80" height="40" rx="4"/>
+    <text class="text-secondary" x="270" y="340" text-anchor="middle" font-size="10">KPI cards - hidden but preserved</text>
+  </g>
+
+  <!-- Active Pane (Production) - Front Layer -->
+  <rect class="visible-pane" x="480" y="120" width="500" height="400" rx="8"/>
+  <text class="text-title" x="730" y="150">Production List</text>
+  <text class="blue" x="730" y="170" text-anchor="middle" font-size="12">display: block (visible)</text>
+
+  <!-- Sample Table Content -->
+  <rect fill="#F3F4F6" x="500" y="190" width="460" height="30" rx="4"/>
+  <text class="text-primary" x="520" y="210">ID</text>
+  <text class="text-primary" x="600" y="210">Product</text>
+  <text class="text-primary" x="750" y="210">Quantity</text>
+  <text class="text-primary" x="880" y="210">Status</text>
+
+  <rect fill="#FFFFFF" stroke="#E5E7EB" x="500" y="220" width="460" height="35"/>
+  <text class="text-secondary" x="520" y="242">001</text>
+  <text class="text-secondary" x="600" y="242">Widget A</text>
+  <text class="text-secondary" x="750" y="242">1,000</text>
+  <text class="text-secondary" x="880" y="242">In Progress</text>
+
+  <rect fill="#FFFFFF" stroke="#E5E7EB" x="500" y="255" width="460" height="35"/>
+  <text class="text-secondary" x="520" y="277">002</text>
+  <text class="text-secondary" x="600" y="277">Widget B</text>
+  <text class="text-secondary" x="750" y="277">500</text>
+  <text class="text-secondary" x="880" y="277">Complete</text>
+
+  <rect fill="#FFFFFF" stroke="#E5E7EB" x="500" y="290" width="460" height="35"/>
+  <text class="text-secondary" x="520" y="312">003</text>
+  <text class="text-secondary" x="600" y="312">Widget C</text>
+  <text class="text-secondary" x="750" y="312">750</text>
+  <text class="text-secondary" x="880" y="312">Pending</text>
+
+  <!-- Filter State Indicator -->
+  <rect fill="#DBEAFE" x="500" y="340" width="200" height="25" rx="4"/>
+  <text class="blue" x="510" y="357" font-size="12">Filter: Status = "In Progress"</text>
+
+  <!-- Hidden Pane 3 (Equipment) - Back Layer -->
+  <g opacity="0.4">
+    <rect class="hidden-pane" x="1000" y="120" width="250" height="200" rx="8"/>
+    <text class="text-hint" x="1125" y="180" text-anchor="middle">TabPane: Equipment</text>
+    <text class="text-secondary" x="1125" y="205" text-anchor="middle">display: none</text>
+    <text class="text-secondary" x="1125" y="225" text-anchor="middle">(Form data preserved)</text>
+    <!-- Sample preserved form -->
+    <rect fill="#E5E7EB" x="1020" y="240" width="210" height="25" rx="4"/>
+    <text class="text-secondary" x="1030" y="257" font-size="10">Equipment Name: CNC-001</text>
+    <rect fill="#E5E7EB" x="1020" y="270" width="210" height="25" rx="4"/>
+    <text class="text-secondary" x="1030" y="287" font-size="10">Status: Running</text>
+  </g>
+
+  <!-- Footer -->
+  <rect class="footer" x="0" y="690" width="1280" height="30" stroke-width="1"/>
+  <text class="text-secondary" x="20" y="710">Copyright 2026</text>
+  <text class="text-secondary" x="1200" y="710">v1.0.0</text>
+
+  <!-- Code Example -->
+  <rect class="code-bg" x="80" y="540" width="350" height="130" rx="4"/>
+  <text class="code-text" x="90" y="560">{'{'}tabs.map(tab =&gt; (</text>
+  <text class="code-text" x="100" y="575">  &lt;TabPane</text>
+  <text class="code-text" x="110" y="590">    key={'{'}tab.id{'}'}</text>
+  <text class="code-text" x="110" y="605">    style={'{'}{'{'}</text>
+  <text class="code-text" x="120" y="620">      display: tab.id === activeTabId</text>
+  <text class="code-text" x="130" y="635">               ? 'block' : 'none'</text>
+  <text class="code-text" x="110" y="650">    {'}'}{'}'/&gt;</text>
+  <text class="code-text" x="90" y="665">){')}'}</text>
+
+  <!-- Annotations -->
+  <rect class="annotation-box" x="450" y="540" width="280" height="80"/>
+  <text class="annotation" x="460" y="560">State Preservation Benefits:</text>
+  <text class="annotation" x="460" y="580">- Form input values maintained</text>
+  <text class="annotation" x="460" y="595">- Scroll position preserved</text>
+  <text class="annotation" x="460" y="610">- Filter/sort settings kept</text>
+
+  <!-- Arrow indicating hidden tabs -->
+  <line stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,4" x1="155" y1="95" x2="270" y2="115"/>
+  <line stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,4" x1="380" y1="95" x2="730" y2="115"/>
+  <line stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,4" x1="380" y1="95" x2="1125" y2="115"/>
+</svg>

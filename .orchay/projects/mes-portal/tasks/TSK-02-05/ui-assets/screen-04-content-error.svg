@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <style>
+      .bg { fill: #F5F5F5; }
+      .header { fill: #FFFFFF; stroke: #E5E7EB; }
+      .sidebar { fill: #001529; }
+      .content-area { fill: #FFFFFF; stroke: #E5E7EB; }
+      .tab-bar { fill: #FAFAFA; stroke: #E5E7EB; }
+      .tab-active { fill: #FFFFFF; stroke: #E5E7EB; stroke-width: 1; }
+      .tab-inactive { fill: #F5F5F5; }
+      .footer { fill: #FAFAFA; stroke: #E5E7EB; }
+      .text-primary { fill: #1F2937; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-secondary { fill: #6B7280; font-family: Arial, sans-serif; font-size: 12px; }
+      .text-white { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-title { fill: #1F2937; font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; }
+      .text-error { fill: #DC2626; font-family: Arial, sans-serif; font-size: 14px; }
+      .text-hint { fill: #9CA3AF; font-family: Arial, sans-serif; font-size: 14px; }
+      .icon { fill: #9CA3AF; }
+      .error-icon { fill: #FEE2E2; stroke: #DC2626; stroke-width: 2; }
+      .error-x { stroke: #DC2626; stroke-width: 3; stroke-linecap: round; }
+      .button-primary { fill: #3B82F6; }
+      .button-text { fill: #FFFFFF; font-family: Arial, sans-serif; font-size: 14px; }
+      .annotation { fill: #EF4444; font-family: Arial, sans-serif; font-size: 11px; }
+      .annotation-box { fill: #FEE2E2; stroke: #EF4444; rx: 4; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="720"/>
+
+  <!-- Header -->
+  <rect class="header" x="0" y="0" width="1280" height="60" stroke-width="1"/>
+  <text class="text-primary" x="20" y="35">MES Portal</text>
+
+  <!-- Sidebar -->
+  <rect class="sidebar" x="0" y="60" width="240" height="630"/>
+  <text class="text-white" x="20" y="100">Dashboard</text>
+  <text class="text-white" x="20" y="130">Production</text>
+  <text class="text-white" x="20" y="160">Quality</text>
+
+  <!-- Tab Bar -->
+  <rect class="tab-bar" x="240" y="60" width="1040" height="40" stroke-width="1"/>
+
+  <!-- Tab 1 (Inactive) -->
+  <rect class="tab-inactive" x="250" y="65" width="120" height="30" rx="4"/>
+  <text class="text-secondary" x="265" y="85">Dashboard</text>
+
+  <!-- Tab 2 (Active - Error) -->
+  <rect class="tab-active" x="380" y="65" width="140" height="30" rx="4"/>
+  <text class="text-primary" x="395" y="85">Invalid Screen</text>
+  <text class="text-error" x="515" y="85" font-size="12">!</text>
+
+  <!-- MDI Content Area -->
+  <rect class="content-area" x="240" y="100" width="1040" height="590" stroke-width="1"/>
+
+  <!-- Error State -->
+  <g transform="translate(760, 330)">
+    <!-- Error Icon (Circle with X) -->
+    <circle class="error-icon" cx="0" cy="0" r="40"/>
+    <line class="error-x" x1="-15" y1="-15" x2="15" y2="15"/>
+    <line class="error-x" x1="15" y1="-15" x2="-15" y2="15"/>
+  </g>
+
+  <text class="text-title" x="760" y="410" text-anchor="middle">Screen Not Found</text>
+  <text class="text-hint" x="760" y="440" text-anchor="middle">The requested screen could not be accessed.</text>
+  <text class="text-secondary" x="760" y="465" text-anchor="middle">Path: /invalid/path/screen</text>
+
+  <!-- Action Buttons -->
+  <g transform="translate(760, 520)">
+    <!-- Go Home Button -->
+    <rect class="button-primary" x="-120" y="-18" width="100" height="36" rx="6"/>
+    <text class="button-text" x="-70" y="7" text-anchor="middle">Go Home</text>
+
+    <!-- Close Tab Button -->
+    <rect fill="#F3F4F6" stroke="#D1D5DB" x="20" y="-18" width="100" height="36" rx="6"/>
+    <text class="text-primary" x="70" y="7" text-anchor="middle">Close Tab</text>
+  </g>
+
+  <!-- Footer -->
+  <rect class="footer" x="0" y="690" width="1280" height="30" stroke-width="1"/>
+  <text class="text-secondary" x="20" y="710">Copyright 2026</text>
+  <text class="text-secondary" x="1200" y="710">v1.0.0</text>
+
+  <!-- Annotations -->
+  <rect class="annotation-box" x="1020" y="280" width="200" height="120"/>
+  <text class="annotation" x="1030" y="300">Error States:</text>
+  <text class="annotation" x="1030" y="320">- 404: Screen not found</text>
+  <text class="annotation" x="1030" y="335">- 403: Access denied</text>
+  <text class="annotation" x="1030" y="350">- 500: Render error</text>
+  <text class="annotation" x="1030" y="370">Component:</text>
+  <text class="annotation" x="1030" y="385">- Ant Design Result</text>
+  <text class="annotation" x="1030" y="400">- status="error/warning"</text>
+
+  <!-- Security Note -->
+  <rect class="annotation-box" x="400" y="570" width="280" height="50"/>
+  <text class="annotation" x="410" y="590">Security: Same message for 404 and 403</text>
+  <text class="annotation" x="410" y="605">(Prevents path enumeration attacks)</text>
+</svg>
