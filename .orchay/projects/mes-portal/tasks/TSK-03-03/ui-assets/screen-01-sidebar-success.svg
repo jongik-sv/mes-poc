@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="600" viewBox="0 0 256 600">
+  <!-- Background -->
+  <rect width="256" height="600" fill="#FFFFFF"/>
+  <rect x="255" y="0" width="1" height="600" fill="#E5E7EB"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="256" height="64" fill="#F9FAFB"/>
+  <rect x="16" y="20" width="32" height="24" rx="4" fill="#3B82F6"/>
+  <text x="56" y="36" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1F2937">MES Portal</text>
+
+  <!-- Menu Section -->
+  <!-- Dashboard Group -->
+  <g>
+    <!-- Parent Menu - Dashboard -->
+    <rect x="8" y="80" width="240" height="40" rx="6" fill="#EBF5FF"/>
+    <rect x="8" y="80" width="3" height="40" fill="#3B82F6"/>
+    <circle cx="28" cy="100" r="8" fill="#3B82F6" opacity="0.2"/>
+    <rect x="24" y="96" width="8" height="8" rx="2" fill="#3B82F6"/>
+    <text x="44" y="105" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#1D4ED8">대시보드</text>
+    <polygon points="228,96 232,100 228,104" fill="#1D4ED8"/>
+  </g>
+
+  <!-- Child Menu - Main Dashboard -->
+  <g>
+    <rect x="8" y="124" width="240" height="36" rx="6" fill="transparent"/>
+    <text x="60" y="147" font-family="Arial, sans-serif" font-size="13" fill="#374151">메인 대시보드</text>
+  </g>
+
+  <!-- Production Group -->
+  <g>
+    <!-- Parent Menu - Production -->
+    <rect x="8" y="168" width="240" height="40" rx="6" fill="transparent"/>
+    <circle cx="28" cy="188" r="8" fill="#F3F4F6"/>
+    <rect x="24" y="184" width="8" height="8" rx="2" fill="#6B7280"/>
+    <text x="44" y="193" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151">생산 관리</text>
+    <polygon points="224,188 232,188 228,196" fill="#6B7280"/>
+  </g>
+
+  <!-- Child Menus - Production -->
+  <g>
+    <rect x="8" y="212" width="240" height="36" rx="6" fill="transparent"/>
+    <text x="60" y="235" font-family="Arial, sans-serif" font-size="13" fill="#374151">작업 지시</text>
+  </g>
+  <g>
+    <rect x="8" y="252" width="240" height="36" rx="6" fill="transparent"/>
+    <text x="60" y="275" font-family="Arial, sans-serif" font-size="13" fill="#374151">생산 실적</text>
+  </g>
+  <g>
+    <rect x="8" y="292" width="240" height="36" rx="6" fill="transparent"/>
+    <text x="60" y="315" font-family="Arial, sans-serif" font-size="13" fill="#374151">생산 이력</text>
+  </g>
+
+  <!-- Quality Group -->
+  <g>
+    <rect x="8" y="340" width="240" height="40" rx="6" fill="transparent"/>
+    <circle cx="28" cy="360" r="8" fill="#F3F4F6"/>
+    <rect x="24" y="356" width="8" height="8" rx="2" fill="#6B7280"/>
+    <text x="44" y="365" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151">품질 관리</text>
+    <polygon points="228,356 232,360 228,364" fill="#6B7280"/>
+  </g>
+
+  <!-- Equipment Group -->
+  <g>
+    <rect x="8" y="388" width="240" height="40" rx="6" fill="transparent"/>
+    <circle cx="28" cy="408" r="8" fill="#F3F4F6"/>
+    <rect x="24" y="404" width="8" height="8" rx="2" fill="#6B7280"/>
+    <text x="44" y="413" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151">설비 관리</text>
+    <polygon points="228,404 232,408 228,412" fill="#6B7280"/>
+  </g>
+
+  <!-- System Group -->
+  <g>
+    <rect x="8" y="436" width="240" height="40" rx="6" fill="transparent"/>
+    <circle cx="28" cy="456" r="8" fill="#F3F4F6"/>
+    <rect x="24" y="452" width="8" height="8" rx="2" fill="#6B7280"/>
+    <text x="44" y="461" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151">시스템 관리</text>
+    <polygon points="228,452 232,456 228,460" fill="#6B7280"/>
+  </g>
+
+  <!-- Footer - User Info -->
+  <rect x="0" y="536" width="256" height="64" fill="#F9FAFB"/>
+  <circle cx="36" cy="568" r="16" fill="#E5E7EB"/>
+  <text x="28" y="573" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">A</text>
+  <text x="60" y="564" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#1F2937">관리자</text>
+  <text x="60" y="580" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">admin@test.com</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="600" viewBox="0 0 256 600">
+  <!-- Background -->
+  <rect width="256" height="600" fill="#FFFFFF"/>
+  <rect x="255" y="0" width="1" height="600" fill="#E5E7EB"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="256" height="64" fill="#F9FAFB"/>
+  <rect x="16" y="20" width="32" height="24" rx="4" fill="#3B82F6"/>
+  <text x="56" y="36" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1F2937">MES Portal</text>
+
+  <!-- Empty State Container -->
+  <rect x="16" y="200" width="224" height="180" rx="8" fill="#F9FAFB"/>
+
+  <!-- Empty Icon -->
+  <circle cx="128" cy="250" r="32" fill="#E5E7EB"/>
+  <rect x="112" y="238" width="32" height="24" rx="4" fill="#9CA3AF"/>
+  <rect x="116" y="242" width="24" height="4" fill="#FFFFFF"/>
+  <rect x="116" y="250" width="18" height="4" fill="#FFFFFF"/>
+  <rect x="116" y="258" width="12" height="4" fill="#FFFFFF"/>
+
+  <!-- Empty Text -->
+  <text x="128" y="310" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151" text-anchor="middle">접근 가능한 메뉴가</text>
+  <text x="128" y="330" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#374151" text-anchor="middle">없습니다.</text>
+
+  <!-- Helper Text -->
+  <text x="128" y="360" font-family="Arial, sans-serif" font-size="12" fill="#6B7280" text-anchor="middle">관리자에게 문의하세요.</text>
+
+  <!-- Footer - User Info -->
+  <rect x="0" y="536" width="256" height="64" fill="#F9FAFB"/>
+  <circle cx="36" cy="568" r="16" fill="#E5E7EB"/>
+  <text x="28" y="573" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">O</text>
+  <text x="60" y="564" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#1F2937">운영자</text>
+  <text x="60" y="580" font-family="Arial, sans-serif" font-size="11" fill="#6B7280">operator@test.com</text>
+</svg>
