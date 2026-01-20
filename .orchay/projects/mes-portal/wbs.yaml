@@ -746,7 +746,7 @@ workPackages:
         title: 확인 다이얼로그
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -770,7 +770,6 @@ workPackages:
           integrationCheck:
             - lib/utils/confirm.ts 유틸리티 함수
             - confirmDelete, confirmDiscard 함수 제공
-        execution: start
       - id: TSK-05-03
         title: Toast 알림
         category: development
