@@ -48,8 +48,15 @@
 | TC-03-01 | ScreenLoader | 동적 import 실행 | Suspense fallback 후 화면 렌더링 | UC-03, BR-02 |
 | TC-03-02 | ScreenLoader | 잘못된 경로 | ScreenNotFound 표시 | BR-04 |
 | TC-ERR-01 | ScreenLoader | import 실패 | ErrorBoundary 폴백 표시 | 에러처리 |
+| TC-ERR-02 | ScreenLoader | 잘못된 경로 접근 | 통일된 에러 메시지 표시 | BR-04, SEC |
+| TC-ERR-03 | TabPane | 렌더링 오류 | 해당 탭만 에러 폴백, 다른 탭 정상 | ARCH-01 |
 | TC-BR-01 | TabPane | unmount 검증 | 비활성 시 컴포넌트 unmount 안 됨 | BR-01 |
 | TC-BR-02 | ScreenLoader | 코드 스플리팅 | 청크 파일 분리 확인 | BR-02 |
+| TC-BR-05 | MDIContent | 최대 탭 제한 | 11번째 탭 열기 시 알림 표시 | BR-05 |
+| TC-BR-06 | ScreenLoader | 권한 검사 | 권한 없는 화면 접근 시 에러 표시 | BR-06 |
+| TC-BR-07 | screenRegistry | 불변성 검증 | Object.isFrozen 확인 | BR-07 |
+| TC-SEC-01 | ScreenLoader | 경로 검증 | path traversal 시도 시 거부 | SEC-03 |
+| TC-SCROLL-01 | MDIContent | 스크롤 영역 | overflow 스타일 적용 확인 | PRD 4.1.1 |
 
 ### 2.2 테스트 케이스 상세
 
@@ -276,6 +283,133 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 });
 ```
 
+#### TC-ERR-02: 잘못된 경로 접근 시 통일된 에러 메시지
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/mdi/__tests__/ScreenLoader.test.tsx` |
+| **테스트 블록** | `describe('ScreenLoader') → it('shows unified error message for invalid path')` |
+| **Mock 의존성** | screenRegistry mock (경로 없음) |
+| **입력 데이터** | `path: '/unauthorized-path'` |
+| **검증 포인트** | "요청하신 화면에 접근할 수 없습니다" 메시지 표시 (화면 없음/권한 없음 구분 안 함) |
+| **커버리지 대상** | 보안 에러 메시지 통일화 |
+| **관련 요구사항** | QA-06, SEC |
+
+**테스트 코드 가이드:**
+```typescript
+it('잘못된 경로 접근 시 통일된 에러 메시지를 표시한다', () => {
+  render(<ScreenLoader path="/unauthorized-path" />);
+
+  // 화면 없음/권한 없음 구분하지 않는 통일된 메시지
+  expect(screen.getByText('요청하신 화면에 접근할 수 없습니다')).toBeInTheDocument();
+  expect(screen.queryByText('존재하지 않습니다')).not.toBeInTheDocument();
+  expect(screen.queryByText('권한이 없습니다')).not.toBeInTheDocument();
+});
+```
+
+#### TC-ERR-03: 탭별 에러 격리 (ErrorBoundary)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/mdi/__tests__/MDIContent.test.tsx` |
+| **테스트 블록** | `describe('MDIContent') → it('isolates error to single tab')` |
+| **Mock 의존성** | MDI Context, 에러 발생 컴포넌트 |
+| **입력 데이터** | 탭 2개 중 1개에서 렌더링 에러 발생 |
+| **검증 포인트** | - 에러 발생 탭만 에러 폴백 표시<br>- 다른 탭은 정상 동작 |
+| **커버리지 대상** | 탭별 ErrorBoundary 격리 |
+| **관련 요구사항** | ARCH-01 |
+
+**테스트 코드 가이드:**
+```typescript
+it('하나의 탭 에러가 다른 탭에 영향을 주지 않는다', async () => {
+  const ErrorComponent = () => {
+    throw new Error('렌더링 에러');
+  };
+
+  const NormalComponent = () => <div data-testid="normal-content">정상</div>;
+
+  render(
+    <MDIProvider>
+      <MDIContent>
+        {/* tab1: 에러 발생 */}
+        {/* tab2: 정상 */}
+      </MDIContent>
+    </MDIProvider>
+  );
+
+  // tab1은 에러 폴백 표시
+  expect(screen.getByTestId('tab-pane-tab1')).toContainElement(
+    screen.getByText('화면 표시 중 오류가 발생했습니다')
+  );
+
+  // tab2는 정상 동작
+  act(() => switchTab('tab2'));
+  expect(screen.getByTestId('normal-content')).toBeInTheDocument();
+});
+```
+
+#### TC-SCROLL-01: 스크롤 영역 제한
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/mdi/__tests__/MDIContent.test.tsx` |
+| **테스트 블록** | `describe('MDIContent') → it('applies overflow style for scroll containment')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | 컨텐츠 영역보다 긴 내용 |
+| **검증 포인트** | MDIContent에 overflow: auto 스타일 적용 |
+| **커버리지 대상** | 스크롤 동작 |
+| **관련 요구사항** | PRD 4.1.1 |
+
+**테스트 코드 가이드:**
+```typescript
+it('컨텐츠 영역 내부에서만 스크롤이 발생한다', () => {
+  const { container } = render(
+    <MDIProvider initialTabs={mockTabs} initialActiveTab="tab1">
+      <MDIContent />
+    </MDIProvider>
+  );
+
+  const contentArea = container.querySelector('[data-testid="mdi-content"]');
+  expect(contentArea).toHaveStyle({ overflow: 'auto' });
+});
+```
+
+#### TC-BR-05: 최대 탭 개수 제한
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/mdi/__tests__/MDIContent.test.tsx` |
+| **테스트 블록** | `describe('MDIContent') → it('limits maximum tab count to 10')` |
+| **Mock 의존성** | MDI Context |
+| **입력 데이터** | 이미 10개 탭이 열린 상태에서 11번째 탭 열기 시도 |
+| **검증 포인트** | 알림 메시지 표시, 새 탭 열리지 않음 |
+| **커버리지 대상** | BR-05 |
+| **관련 요구사항** | BR-05 |
+
+**테스트 코드 가이드:**
+```typescript
+it('11번째 탭 열기 시 알림을 표시하고 열지 않는다', () => {
+  const tenTabs = Array.from({ length: 10 }, (_, i) => ({
+    id: `tab-${i}`,
+    title: `Tab ${i}`,
+    path: `/screen-${i}`,
+    closable: true
+  }));
+
+  const { result } = renderHook(() => useMDI(), {
+    wrapper: ({ children }) => (
+      <MDIProvider initialTabs={tenTabs}>{children}</MDIProvider>
+    )
+  });
+
+  const beforeCount = result.current.tabs.length;
+  act(() => result.current.openTab({ id: 'tab-11', path: '/new', title: 'New' }));
+
+  expect(result.current.tabs.length).toBe(beforeCount); // 변경 없음
+  // 알림 메시지 검증 (toast/message mock)
+});
+```
+
 ---
 
 ## 3. E2E 테스트 시나리오
@@ -289,6 +423,9 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 | E2E-03 | 화면 동적 로딩 | 로그인 | 1. 새 화면 열기 | 로딩 후 표시 | UC-03, 시나리오 4.3 |
 | E2E-04 | 탭 없을 때 빈 상태 | 로그인, 탭 없음 | 1. 페이지 접속 | 빈 상태 표시 | BR-03 |
 | E2E-05 | 존재하지 않는 화면 | 로그인 | 1. 잘못된 경로 탭 열기 | 404 화면 | BR-04 |
+| E2E-06 | 최대 탭 제한 | 로그인, 10개 탭 열림 | 1. 11번째 탭 열기 시도 | 알림 표시, 탭 열리지 않음 | BR-05 |
+| E2E-07 | 반응형 레이아웃 | 로그인 | 1. 뷰포트 크기 변경 | 레이아웃 적응 | 5.4 |
+| E2E-08 | 스크롤 영역 제한 | 로그인, 긴 컨텐츠 | 1. 컨텐츠 스크롤 | 헤더/사이드바 고정 | PRD 4.1.1 |
 
 ### 3.2 테스트 케이스 상세
 
@@ -383,6 +520,65 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 | **검증 포인트** | `expect(page.locator('[data-testid="screen-not-found"]')).toBeVisible()` |
 | **스크린샷** | `e2e-05-not-found.png` |
 | **관련 요구사항** | BR-04 |
+
+#### E2E-06: 최대 탭 제한
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/mdi-content.spec.ts` |
+| **테스트명** | `test('11번째 탭 열기 시 알림을 표시하고 열지 않는다')` |
+| **사전조건** | 로그인, 10개 탭이 열린 상태 |
+| **data-testid 셀렉터** | |
+| - 메뉴 아이템 | `[data-testid="menu-item-{id}"]` |
+| - 알림 메시지 | `[data-testid="max-tab-alert"]` 또는 `.ant-message` |
+| **실행 단계** | |
+| 1 | 10개 탭이 열린 상태 확인: `await expect(page.locator('[data-testid^="mdi-tab-item-"]')).toHaveCount(10)` |
+| 2 | 11번째 메뉴 클릭: `await page.click('[data-testid="menu-item-new"]')` |
+| 3 | 알림 확인: `await expect(page.locator('.ant-message')).toContainText('최대 10개')` |
+| **검증 포인트** | 탭 개수가 10개로 유지됨, 알림 메시지 표시 |
+| **스크린샷** | `e2e-06-max-tab-alert.png` |
+| **관련 요구사항** | BR-05 |
+
+#### E2E-07: 반응형 레이아웃
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/mdi-content.spec.ts` |
+| **테스트명** | `test('뷰포트 크기 변경 시 레이아웃이 적응한다')` |
+| **사전조건** | 로그인, 1개 이상 탭 열림 |
+| **data-testid 셀렉터** | |
+| - 컨텐츠 영역 | `[data-testid="mdi-content"]` |
+| - 사이드바 | `[data-testid="sidebar"]` |
+| **실행 단계** | |
+| 1 | 데스크톱 뷰포트 설정: `await page.setViewportSize({ width: 1920, height: 1080 })` |
+| 2 | 컨텐츠 영역 확인: `await expect(page.locator('[data-testid="mdi-content"]')).toBeVisible()` |
+| 3 | 태블릿 뷰포트: `await page.setViewportSize({ width: 768, height: 1024 })` |
+| 4 | 레이아웃 적응 확인 |
+| 5 | 모바일 뷰포트: `await page.setViewportSize({ width: 375, height: 667 })` |
+| 6 | 전체 너비 사용 확인 |
+| **검증 포인트** | 각 뷰포트에서 레이아웃이 적절히 표시됨 |
+| **스크린샷** | `e2e-07-desktop.png`, `e2e-07-tablet.png`, `e2e-07-mobile.png` |
+| **관련 요구사항** | 설계 문서 5.4 반응형 동작 |
+
+#### E2E-08: 스크롤 영역 제한
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/mdi-content.spec.ts` |
+| **테스트명** | `test('스크롤 시 헤더와 사이드바가 고정된다')` |
+| **사전조건** | 로그인, 긴 컨텐츠가 있는 화면 탭 열림 |
+| **data-testid 셀렉터** | |
+| - 컨텐츠 영역 | `[data-testid="mdi-content"]` |
+| - 헤더 | `[data-testid="header"]` |
+| - 사이드바 | `[data-testid="sidebar"]` |
+| **실행 단계** | |
+| 1 | 컨텐츠 영역 스크롤: `await page.locator('[data-testid="mdi-content"]').evaluate(el => el.scrollTop = 500)` |
+| 2 | 헤더 위치 확인: `await expect(page.locator('[data-testid="header"]')).toBeVisible()` |
+| 3 | 헤더 Y 좌표가 0인지 확인 (고정) |
+| 4 | 사이드바 위치 확인 |
+| **검증 포인트** | 스크롤 후에도 헤더와 사이드바는 고정 위치 유지 |
+| **스크린샷** | `e2e-08-scroll-fixed.png` |
+| **관련 요구사항** | PRD 4.1.1 |
 
 ---
 
@@ -497,26 +693,28 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 
 ### 6.1 MDI 컨텐츠 영역
 
+> data-testid 네이밍 규칙: `mdi-{component}-{variant/id}`
+
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
 | `mdi-content` | MDIContent 컨테이너 | 전체 컨텐츠 영역 확인 |
 | `mdi-empty-state` | 빈 상태 컨테이너 | 탭 없을 때 표시 |
-| `empty-state-message` | 빈 상태 안내 텍스트 | 메시지 확인 |
-| `tab-pane-{id}` | 개별 탭 패널 | 특정 탭 컨텐츠 확인 |
-| `screen-loading` | 로딩 스피너 | 로딩 상태 확인 |
-| `screen-content` | 화면 컨텐츠 | 화면 로딩 완료 확인 |
-| `screen-not-found` | 404 화면 | 경로 없음 확인 |
-| `screen-error` | 에러 화면 | 로딩 실패 확인 |
-| `go-home-btn` | 홈으로 이동 버튼 | 에러 복구 액션 |
-| `refresh-btn` | 새로고침 버튼 | 화면 리로드 액션 |
+| `mdi-empty-state-message` | 빈 상태 안내 텍스트 | 메시지 확인 |
+| `mdi-tab-pane-{id}` | 개별 탭 패널 | 특정 탭 컨텐츠 확인 |
+| `mdi-screen-loading` | 로딩 스피너 | 로딩 상태 확인 |
+| `mdi-screen-content` | 화면 컨텐츠 | 화면 로딩 완료 확인 |
+| `mdi-screen-not-found` | 404 화면 | 경로 없음 확인 |
+| `mdi-screen-error` | 에러 화면 | 로딩 실패 확인 |
+| `mdi-go-home-btn` | 홈으로 이동 버튼 | 에러 복구 액션 |
+| `mdi-refresh-btn` | 새로고침 버튼 | 화면 리로드 액션 |
 
 ### 6.2 연관 컴포넌트
 
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
 | `mdi-tab-bar` | 탭 바 | 탭 목록 영역 |
-| `tab-{id}` | 개별 탭 | 탭 클릭 대상 |
-| `tab-close-{id}` | 탭 닫기 버튼 | 탭 닫기 액션 |
+| `mdi-tab-item-{id}` | 개별 탭 아이템 | 탭 클릭 대상 |
+| `mdi-tab-close-{id}` | 탭 닫기 버튼 | 탭 닫기 액션 |
 
 ---
 
@@ -544,11 +742,11 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 
 | 컴포넌트 | 단위 테스트 | E2E 테스트 |
 |---------|-----------|-----------|
-| MDIContent.tsx | TC-01-01, TC-01-02, TC-BR-01 | E2E-01, E2E-02, E2E-04 |
-| TabPane.tsx | TC-02-01, TC-02-02 | E2E-02 |
-| ScreenLoader.tsx | TC-03-01, TC-03-02, TC-ERR-01 | E2E-03, E2E-05 |
-| ScreenNotFound.tsx | TC-03-02 | E2E-05 |
-| screenRegistry.ts | TC-BR-02 | - |
+| MDIContent.tsx | TC-01-01, TC-01-02, TC-BR-01, TC-BR-05, TC-SCROLL-01, TC-ERR-03 | E2E-01, E2E-02, E2E-04, E2E-06, E2E-07, E2E-08 |
+| TabPane.tsx | TC-02-01, TC-02-02, TC-ERR-03 | E2E-02 |
+| ScreenLoader.tsx | TC-03-01, TC-03-02, TC-ERR-01, TC-ERR-02, TC-BR-06, TC-SEC-01 | E2E-03, E2E-05 |
+| ScreenNotFound.tsx | TC-03-02, TC-ERR-02 | E2E-05 |
+| screenRegistry.ts | TC-BR-02, TC-BR-07 | - |
 
 ---
 
@@ -564,3 +762,4 @@ it('로딩 실패 시 에러 폴백을 표시한다', async () => {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰 반영 - TC-ERR-02/03, TC-SCROLL-01, TC-BR-05~07, TC-SEC-01, E2E-06~08 추가, data-testid 네이밍 표준화 |

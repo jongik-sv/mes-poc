@@ -320,22 +320,21 @@ MDI 탭 시스템에서 각 탭의 화면 컴포넌트를 렌더링하고 관리
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-#### 에러 상태 (화면 없음)
+#### 에러 상태 (화면 없음/권한 없음)
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
 │                         ⚠                                      │
 │                                                                 │
-│                 화면을 찾을 수 없습니다                          │
-│                                                                 │
-│           요청하신 화면이 존재하지 않거나                        │
-│           접근 권한이 없습니다.                                  │
+│            요청하신 화면에 접근할 수 없습니다                     │
 │                                                                 │
 │                    [ 홈으로 이동 ]                              │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+> 보안상 화면 존재 여부와 권한 부족을 구분하지 않음 (경로 열거 공격 방지)
 
 #### 빈 상태 (탭 없음)
 
@@ -417,12 +416,19 @@ interface Tab {
 
 **Screen Registry:**
 ```typescript
-// 화면 경로 → 컴포넌트 매핑
-const screenRegistry: Record<string, () => Promise<{ default: ComponentType }>> = {
+// 화면 경로 → 컴포넌트 매핑 (불변)
+const screenRegistry: Record<string, () => Promise<{ default: ComponentType }>> = Object.freeze({
   '/dashboard': () => import('@/screens/dashboard/Dashboard'),
   '/production/list': () => import('@/screens/production/ProductionList'),
   '/production/detail': () => import('@/screens/production/ProductionDetail'),
   // ...
+});
+
+// 경로 검증 유틸리티 (OWASP A03:2021 Injection 대응)
+const validateScreenPath = (path: string): boolean => {
+  if (!path.startsWith('/')) return false;
+  if (path.includes('..') || path.includes(':')) return false;
+  return /^\/[a-zA-Z0-9\-\/]*$/.test(path) && path in screenRegistry;
 };
 ```
 
@@ -452,6 +458,9 @@ stateDiagram-v2
 | BR-02 | 화면 컴포넌트는 동적 import로 로딩한다 | 새 화면 열기 시 | - |
 | BR-03 | 탭이 없으면 빈 상태 화면을 표시한다 | 모든 탭 닫힘 | 홈 탭 고정 설정 시 |
 | BR-04 | 화면 경로가 없으면 404 화면을 표시한다 | 잘못된 경로 | - |
+| BR-05 | 최대 탭 개수는 10개로 제한한다 | 새 탭 열기 시 | - |
+| BR-06 | 화면 로딩 전 권한 검사를 수행한다 | 화면 컴포넌트 로딩 시 | - |
+| BR-07 | screenRegistry는 불변(freeze)으로 유지한다 | 앱 초기화 시 | - |
 
 ### 8.2 규칙 상세 설명
 
@@ -474,6 +483,43 @@ stateDiagram-v2
 - 첫 로딩 시간 단축
 - 사용하지 않는 화면은 로딩하지 않음
 
+**BR-05: 최대 탭 개수 제한**
+
+설명: 동시에 열 수 있는 탭의 최대 개수를 10개로 제한한다. 이를 통해:
+- 메모리 사용량 제어
+- 브라우저 성능 유지
+- 사용자 탐색 복잡도 제한
+
+11번째 탭 열기 시도 시:
+- 알림 메시지: "최대 10개의 탭만 열 수 있습니다"
+- 가장 오래된 탭 닫기 옵션 제공 (선택적)
+
+**BR-06: 화면 레벨 권한 검사**
+
+설명: 화면 컴포넌트 로딩 전에 사용자의 접근 권한을 검사한다. 이를 통해:
+- 메뉴 권한 필터링 우회 방지
+- 탭 데이터 조작을 통한 무단 접근 차단
+- OWASP A01:2021 Broken Access Control 대응
+
+권한 검사 흐름:
+```typescript
+const loadScreen = async (path: string, userRole: string) => {
+  if (!screenRegistry[path]) return ScreenNotFound;
+
+  const hasPermission = await checkScreenPermission(path, userRole);
+  if (!hasPermission) return AccessDenied;
+
+  return screenRegistry[path]();
+};
+```
+
+**BR-07: screenRegistry 불변성 유지**
+
+설명: screenRegistry 객체는 앱 초기화 시 Object.freeze()로 동결한다. 이를 통해:
+- 런타임 조작 방지
+- 동적 경로 주입 공격 차단
+- OWASP A08:2021 Software and Data Integrity 대응
+
 ---
 
 ## 9. 에러 처리
@@ -488,21 +534,38 @@ stateDiagram-v2
 
 ### 9.2 에러 바운더리
 
+> 탭별 ErrorBoundary 격리로 하나의 탭 에러가 다른 탭에 영향을 주지 않음
+
 ```mermaid
 flowchart TB
     subgraph MDIContent
-        EB[ErrorBoundary]
-        subgraph Protected
-            Suspense
-            Screen[Screen Component]
+        subgraph TabPane_A[TabPane A]
+            EB_A[ErrorBoundary A]
+            Suspense_A[Suspense A]
+            Screen_A[Screen A]
+        end
+        subgraph TabPane_B[TabPane B]
+            EB_B[ErrorBoundary B]
+            Suspense_B[Suspense B]
+            Screen_B[Screen B]
         end
     end
 
-    EB --> |정상| Protected
-    EB --> |에러 발생| ErrorFallback[에러 폴백 UI]
-    Suspense --> |로딩 중| LoadingFallback[로딩 스피너]
-    Suspense --> |완료| Screen
+    EB_A --> |정상| Suspense_A
+    EB_A --> |에러 발생| ErrorFallback_A[에러 폴백 A]
+    Suspense_A --> |로딩 중| Loading_A[로딩 스피너]
+    Suspense_A --> |완료| Screen_A
+
+    EB_B --> |정상| Suspense_B
+    EB_B --> |에러 발생| ErrorFallback_B[에러 폴백 B]
+    Suspense_B --> |로딩 중| Loading_B[로딩 스피너]
+    Suspense_B --> |완료| Screen_B
 ```
+
+**격리 원칙:**
+- 각 TabPane은 독립적인 ErrorBoundary를 가짐
+- Tab A에서 에러 발생 시 Tab B, C는 정상 동작
+- 개별 탭 복구: "새로고침" 버튼으로 해당 탭만 리로드
 
 ### 9.3 에러 표시 방식
 
@@ -551,7 +614,24 @@ flowchart TB
 | 메모리 사용량 | 탭이 많으면 메모리 증가 | 최대 탭 개수 제한 (기본 10개) |
 | 초기 로딩 지연 | 동적 import 시 네트워크 요청 | Suspense로 로딩 UI 제공 |
 
-### 11.4 컴포넌트 구조
+### 11.4 민감 화면 보호 정책
+
+> 비활성 탭에 민감 정보가 DOM에 노출되는 보안 위험 대응 (OWASP A01:2021)
+
+**민감 화면 분류:**
+| 화면 유형 | 예시 | 보호 수준 |
+|----------|------|----------|
+| 급여/인사 정보 | 급여 명세서, 인사 기록 | Level 3 (unmount) |
+| 개인정보 | 사용자 프로필, 연락처 | Level 2 (마스킹) |
+| 일반 업무 | 생산 현황, 재고 목록 | Level 1 (기본) |
+
+**보호 메커니즘:**
+- Level 3: 비활성 시 컴포넌트 unmount (상태 저장 후 복원)
+- Level 2: 비활성 시 민감 필드 마스킹 (`***-****-****`)
+- Level 1: 기본 동작 (display: none)
+- 세션 타임아웃 시 민감 탭(Level 2, 3) 자동 닫기
+
+### 11.5 컴포넌트 구조
 
 ```
 components/
@@ -574,6 +654,15 @@ screens/
     ├── ScreenNotFound.tsx      # 404
     └── ScreenError.tsx         # 에러 폴백
 ```
+
+**컴포넌트별 책임:**
+
+| 컴포넌트 | 단일 책임 | 입력 | 출력 |
+|----------|----------|------|------|
+| MDIContent | 전체 탭 패널 컨테이너 관리, 빈 상태 처리 | tabs, activeTabId | TabPane 렌더링 |
+| TabPane | 개별 탭 패널 래핑, 활성/비활성 스타일 적용 | tab, isActive, children | display 스타일 적용된 div |
+| ScreenLoader | 경로 검증, 권한 확인, 동적 import 실행 | path | Suspense + Screen 또는 에러 컴포넌트 |
+| screenRegistry | 경로-컴포넌트 정적 매핑 제공 | - | 불변 레지스트리 객체 |
 
 ---
 
@@ -609,3 +698,4 @@ screens/
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰 반영 (ARCH-01, ARCH-02, SEC-01~04, QA-01~07) |
