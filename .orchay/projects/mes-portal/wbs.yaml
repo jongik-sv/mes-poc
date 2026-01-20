@@ -268,7 +268,7 @@ workPackages:
         title: 알림 패널
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: low
         assignee: "-"
         tags:
@@ -304,7 +304,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -364,6 +364,7 @@ workPackages:
             - components/mdi/TabBar.tsx 파일 존재
             - MDI Context에서 탭 목록 구독
             - 탭 클릭/닫기 이벤트 핸들링
+        execution: start
       - id: TSK-02-03
         title: 탭 드래그 앤 드롭
         category: development
@@ -391,6 +392,7 @@ workPackages:
             - react-dnd 또는 @dnd-kit 의존성 설치
             - TabBar에 DnD 기능 통합
             - MDI Context에 reorderTabs 함수 추가
+        execution: start
       - id: TSK-02-04
         title: 탭 컨텍스트 메뉴
         category: development
@@ -419,6 +421,7 @@ workPackages:
           integrationCheck:
             - components/mdi/TabContextMenu.tsx 파일 존재
             - closeOtherTabs, closeRightTabs, refreshTab 함수 구현
+        execution: start
       - id: TSK-02-05
         title: MDI 컨텐츠 영역
         category: development
@@ -449,6 +452,7 @@ workPackages:
             - components/mdi/MDIContent.tsx 파일 존재
             - screens/ 폴더에 화면 컴포넌트 구조
             - 동적 import로 코드 스플리팅
+        execution: start
   - id: WP-03
     title: 동적 메뉴 시스템
     status: planned
