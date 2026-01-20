@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { stroke: #E5E7EB; stroke-width: 1; fill: none; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; }
+      .device-frame { fill: none; stroke: #D1D5DB; stroke-width: 2; }
+      .label { fill: #6B7280; font-family: system-ui, sans-serif; font-size: 11px; }
+    </style>
+  </defs>
+
+  <!-- Desktop (1024px+) -->
+  <g transform="translate(0, 0)">
+    <text class="label" x="200" y="15" text-anchor="middle">Desktop (1024px+)</text>
+    <rect class="device-frame" x="10" y="25" width="380" height="30" rx="2" />
+    <rect class="bg" x="12" y="27" width="376" height="26" />
+    <line x1="12" y1="27" x2="388" y2="27" stroke="#E5E7EB" stroke-width="1" />
+
+    <text class="text-secondary" x="24" y="44" font-size="10">Copyright © 2026 Company. All rights reserved.</text>
+    <text class="text-secondary" x="370" y="44" font-size="10" text-anchor="end">v1.0.0</text>
+  </g>
+
+  <!-- Tablet (768-1023px) -->
+  <g transform="translate(50, 75)">
+    <text class="label" x="150" y="15" text-anchor="middle">Tablet (768-1023px)</text>
+    <rect class="device-frame" x="0" y="25" width="280" height="30" rx="2" />
+    <rect class="bg" x="2" y="27" width="276" height="26" />
+    <line x1="2" y1="27" x2="278" y2="27" stroke="#E5E7EB" stroke-width="1" />
+
+    <text class="text-secondary" x="14" y="44" font-size="9">Copyright © 2026 Company.</text>
+    <text class="text-secondary" x="265" y="44" font-size="9" text-anchor="end">v1.0.0</text>
+  </g>
+
+  <!-- Mobile (< 768px) -->
+  <g transform="translate(100, 150)">
+    <text class="label" x="100" y="15" text-anchor="middle">Mobile (&lt; 768px)</text>
+    <rect class="device-frame" x="0" y="25" width="180" height="30" rx="2" />
+    <rect class="bg" x="2" y="27" width="176" height="26" />
+    <line x1="2" y1="27" x2="178" y2="27" stroke="#E5E7EB" stroke-width="1" />
+
+    <text class="text-secondary" x="14" y="44" font-size="8">© 2026 Company</text>
+    <text class="text-secondary" x="165" y="44" font-size="8" text-anchor="end">v1.0.0</text>
+  </g>
+
+  <!-- Annotation -->
+  <g transform="translate(450, 75)">
+    <rect x="0" y="0" width="300" height="100" rx="6" fill="#F9FAFB" />
+    <rect x="0" y="0" width="300" height="100" rx="6" fill="none" stroke="#E5E7EB" stroke-width="1" />
+
+    <text x="150" y="25" font-size="11" fill="#374151" text-anchor="middle" font-weight="bold">Responsive Behavior</text>
+
+    <text x="20" y="50" font-size="10" fill="#6B7280">Desktop: Full copyright text</text>
+    <text x="20" y="68" font-size="10" fill="#6B7280">Tablet: Shortened text</text>
+    <text x="20" y="86" font-size="10" fill="#6B7280">Mobile: Minimal "© 2026 Company"</text>
+  </g>
+</svg>

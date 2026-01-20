@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="80" viewBox="0 0 1000 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg { fill: #FFFFFF; }
+      .border { stroke: #E5E7EB; stroke-width: 1; fill: none; }
+      .text-secondary { fill: #6B7280; font-family: system-ui, sans-serif; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Footer Background -->
+  <rect class="bg" x="0" y="0" width="1000" height="30" />
+  <line x1="0" y1="0" x2="1000" y2="0" stroke="#E5E7EB" stroke-width="1" />
+
+  <!-- Left: Copyright -->
+  <text class="text-secondary" x="16" y="20">Copyright © 2026 Company. All rights reserved.</text>
+
+  <!-- Right: Version -->
+  <text class="text-secondary" x="950" y="20" text-anchor="end">v1.0.0</text>
+
+  <!-- Annotation: Height -->
+  <rect x="1010" y="0" width="80" height="30" fill="none" stroke="#3B82F6" stroke-width="1" stroke-dasharray="4" />
+  <text x="1050" y="20" font-size="10" fill="#3B82F6" text-anchor="middle">30px</text>
+
+  <!-- Annotation Labels -->
+  <g transform="translate(0, 45)">
+    <rect x="16" y="0" width="120" height="20" rx="3" fill="#EBF5FF" />
+    <text x="76" y="14" font-size="10" fill="#3B82F6" text-anchor="middle">Copyright (Left)</text>
+
+    <rect x="850" y="0" width="100" height="20" rx="3" fill="#EBF5FF" />
+    <text x="900" y="14" font-size="10" fill="#3B82F6" text-anchor="middle">Version (Right)</text>
+  </g>
+
+  <!-- Layout indicator -->
+  <g transform="translate(400, 45)">
+    <rect x="0" y="0" width="200" height="20" rx="3" fill="#F3F4F6" />
+    <text x="100" y="14" font-size="10" fill="#6B7280" text-anchor="middle">flex justify-between items-center</text>
+  </g>
+</svg>

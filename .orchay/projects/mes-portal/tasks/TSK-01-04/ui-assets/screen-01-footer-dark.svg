@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="80" viewBox="0 0 1000 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg-dark { fill: #1F2937; }
+      .border-dark { stroke: #374151; stroke-width: 1; fill: none; }
+      .text-dark { fill: #9CA3AF; font-family: system-ui, sans-serif; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Footer Background (Dark) -->
+  <rect class="bg-dark" x="0" y="0" width="1000" height="30" />
+  <line x1="0" y1="0" x2="1000" y2="0" stroke="#374151" stroke-width="1" />
+
+  <!-- Left: Copyright -->
+  <text class="text-dark" x="16" y="20">Copyright © 2026 Company. All rights reserved.</text>
+
+  <!-- Right: Version -->
+  <text class="text-dark" x="950" y="20" text-anchor="end">v1.0.0</text>
+
+  <!-- Annotation Labels -->
+  <g transform="translate(0, 45)">
+    <rect x="400" y="0" width="200" height="20" rx="3" fill="#374151" />
+    <text x="500" y="14" font-size="10" fill="#9CA3AF" text-anchor="middle">Dark Mode Theme</text>
+  </g>
+</svg>
