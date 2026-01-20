@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 18px Arial, sans-serif; fill: #1a1a2e; }
+      .state-title { font: bold 14px Arial, sans-serif; fill: #4a4a6a; }
+      .tab-label { font: 13px Arial, sans-serif; fill: #1a1a2e; }
+      .tab-label-active { font: bold 13px Arial, sans-serif; fill: #1677ff; }
+      .note { font: 11px Arial, sans-serif; fill: #888; }
+      .tab-bar { fill: #fafafa; stroke: #e8e8e8; stroke-width: 1; }
+      .tab { fill: #fff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .tab-active { fill: #fff; stroke: #1677ff; stroke-width: 2; rx: 4; }
+      .tab-noclosable { fill: #f5f5f5; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .close-btn { fill: #999; }
+      .close-btn:hover { fill: #ff4d4f; }
+      .icon { fill: #666; }
+      .icon-active { fill: #1677ff; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="400" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" class="title">탭 바 상태별 표현</text>
+
+  <!-- State 1: 빈 상태 -->
+  <rect x="20" y="50" width="270" height="80" class="tab-bar" rx="4"/>
+  <text x="155" y="75" text-anchor="middle" class="state-title">[상태 1] 빈 상태</text>
+  <text x="155" y="105" text-anchor="middle" class="note">(탭 없음)</text>
+
+  <!-- State 2: 탭 1개 -->
+  <rect x="310" y="50" width="270" height="80" class="tab-bar" rx="4"/>
+  <text x="445" y="75" text-anchor="middle" class="state-title">[상태 2] 탭 1개</text>
+  <!-- Tab item -->
+  <rect x="325" y="90" width="130" height="32" class="tab-active"/>
+  <text x="340" y="110" class="tab-label-active">📋 작업 지시</text>
+  <text x="440" y="112" class="close-btn" font-size="14">✕</text>
+  <text x="380" y="138" text-anchor="middle" class="note">← 활성</text>
+
+  <!-- State 3: 탭 다중 -->
+  <rect x="600" y="50" width="580" height="80" class="tab-bar" rx="4"/>
+  <text x="890" y="75" text-anchor="middle" class="state-title">[상태 3] 탭 다중 - 두 번째 활성</text>
+  <!-- Tab 1 (비활성) -->
+  <rect x="615" y="90" width="130" height="32" class="tab"/>
+  <text x="630" y="110" class="tab-label">📋 작업 지시</text>
+  <text x="730" y="112" class="close-btn" font-size="14">✕</text>
+  <!-- Tab 2 (활성) -->
+  <rect x="755" y="90" width="130" height="32" class="tab-active"/>
+  <text x="770" y="110" class="tab-label-active">📊 실적 입력</text>
+  <text x="870" y="112" class="close-btn" font-size="14">✕</text>
+  <!-- Tab 3 (비활성) -->
+  <rect x="895" y="90" width="130" height="32" class="tab"/>
+  <text x="910" y="110" class="tab-label">🔍 품질 검사</text>
+  <text x="1010" y="112" class="close-btn" font-size="14">✕</text>
+
+  <text x="680" y="138" text-anchor="middle" class="note">(비활성)</text>
+  <text x="820" y="138" text-anchor="middle" class="note">(활성)</text>
+  <text x="960" y="138" text-anchor="middle" class="note">(비활성)</text>
+
+  <!-- State 4: 닫기 불가 탭 포함 -->
+  <rect x="20" y="170" width="400" height="80" class="tab-bar" rx="4"/>
+  <text x="220" y="195" text-anchor="middle" class="state-title">[상태 4] 닫기 불가 탭 포함</text>
+  <!-- Tab Home (닫기 불가) -->
+  <rect x="35" y="210" width="100" height="32" class="tab-noclosable"/>
+  <text x="50" y="230" class="tab-label">🏠 홈</text>
+  <!-- Tab 2 (활성, 닫기 가능) -->
+  <rect x="145" y="210" width="130" height="32" class="tab-active"/>
+  <text x="160" y="230" class="tab-label-active">📋 작업 지시</text>
+  <text x="260" y="232" class="close-btn" font-size="14">✕</text>
+
+  <text x="85" y="258" text-anchor="middle" class="note">(닫기버튼 없음)</text>
+  <text x="210" y="258" text-anchor="middle" class="note">(활성, 닫기 가능)</text>
+
+  <!-- State 5: 최대 탭 도달 -->
+  <rect x="440" y="170" width="740" height="80" class="tab-bar" rx="4"/>
+  <text x="810" y="195" text-anchor="middle" class="state-title">[상태 5] 최대 탭 도달 (예: maxTabs=5)</text>
+  <!-- 5 tabs -->
+  <rect x="455" y="210" width="90" height="32" class="tab"/>
+  <text x="465" y="230" class="tab-label" font-size="11">📋 탭1</text>
+  <text x="535" y="232" class="close-btn" font-size="12">✕</text>
+
+  <rect x="555" y="210" width="90" height="32" class="tab"/>
+  <text x="565" y="230" class="tab-label" font-size="11">📊 탭2</text>
+  <text x="635" y="232" class="close-btn" font-size="12">✕</text>
+
+  <rect x="655" y="210" width="90" height="32" class="tab-active"/>
+  <text x="665" y="230" class="tab-label-active" font-size="11">🔍 탭3</text>
+  <text x="735" y="232" class="close-btn" font-size="12">✕</text>
+
+  <rect x="755" y="210" width="90" height="32" class="tab"/>
+  <text x="765" y="230" class="tab-label" font-size="11">⚙️ 탭4</text>
+  <text x="835" y="232" class="close-btn" font-size="12">✕</text>
+
+  <rect x="855" y="210" width="90" height="32" class="tab"/>
+  <text x="865" y="230" class="tab-label" font-size="11">📁 탭5</text>
+  <text x="935" y="232" class="close-btn" font-size="12">✕</text>
+
+  <!-- Warning indicator -->
+  <rect x="970" y="210" width="190" height="32" fill="#fff7e6" stroke="#faad14" rx="4"/>
+  <text x="1065" y="230" text-anchor="middle" class="note" fill="#d46b08">⚠️ 탭 추가 시 경고 표시</text>
+
+  <!-- Legend -->
+  <rect x="20" y="280" width="1160" height="100" fill="#fff" stroke="#e8e8e8" rx="8"/>
+  <text x="40" y="305" class="state-title">범례</text>
+
+  <!-- Legend items -->
+  <rect x="40" y="320" width="80" height="24" class="tab-active"/>
+  <text x="130" y="337" class="note">활성 탭 (현재 선택)</text>
+
+  <rect x="280" y="320" width="80" height="24" class="tab"/>
+  <text x="370" y="337" class="note">비활성 탭</text>
+
+  <rect x="500" y="320" width="80" height="24" class="tab-noclosable"/>
+  <text x="590" y="337" class="note">닫기 불가 탭 (closable=false)</text>
+
+  <text x="780" y="337" class="close-btn" font-size="16">✕</text>
+  <text x="800" y="337" class="note">닫기 버튼</text>
+
+  <rect x="920" y="320" width="80" height="24" fill="#fff7e6" stroke="#faad14" rx="4"/>
+  <text x="1010" y="337" class="note">경고 상태</text>
+
+  <!-- Footer -->
+  <text x="600" y="390" text-anchor="middle" class="note">MES Portal - Tab Bar States Visualization</text>
+</svg>

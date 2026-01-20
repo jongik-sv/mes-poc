@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font: bold 18px Arial, sans-serif; fill: #1a1a2e; }
+      .subtitle { font: 14px Arial, sans-serif; fill: #4a4a6a; }
+      .box-label { font: bold 14px Arial, sans-serif; fill: #1a1a2e; }
+      .box-detail { font: 12px monospace; fill: #666; }
+      .arrow-label { font: 12px Arial, sans-serif; fill: #1677ff; }
+      .note { font: 11px Arial, sans-serif; fill: #888; }
+      .state-box { fill: #f5f5f5; stroke: #d9d9d9; stroke-width: 2; rx: 8; }
+      .state-box-active { fill: #e6f7ff; stroke: #1677ff; stroke-width: 2; rx: 8; }
+      .arrow { stroke: #1677ff; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-back { stroke: #999; stroke-width: 1.5; fill: none; stroke-dasharray: 5,3; marker-end: url(#arrowhead-gray); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1677ff"/>
+    </marker>
+    <marker id="arrowhead-gray" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" class="title">MDI 상태 흐름도</text>
+  <text x="400" y="60" text-anchor="middle" class="subtitle">TSK-02-01: MDI 상태 관리</text>
+
+  <!-- State 1: 빈 상태 -->
+  <rect x="50" y="120" width="180" height="100" class="state-box"/>
+  <text x="140" y="155" text-anchor="middle" class="box-label">빈 상태</text>
+  <text x="140" y="175" text-anchor="middle" class="box-detail">tabs: []</text>
+  <text x="140" y="195" text-anchor="middle" class="box-detail">activeTabId: null</text>
+
+  <!-- State 2: 탭 1개 -->
+  <rect x="310" y="120" width="180" height="100" class="state-box-active"/>
+  <text x="400" y="155" text-anchor="middle" class="box-label">탭 1개</text>
+  <text x="400" y="175" text-anchor="middle" class="box-detail">tabs: [Tab]</text>
+  <text x="400" y="195" text-anchor="middle" class="box-detail">activeTabId: Tab.id</text>
+
+  <!-- State 3: 탭 다중 -->
+  <rect x="310" y="320" width="180" height="100" class="state-box-active"/>
+  <text x="400" y="355" text-anchor="middle" class="box-label">탭 다중</text>
+  <text x="400" y="375" text-anchor="middle" class="box-detail">tabs: [Tab, Tab, ...]</text>
+  <text x="400" y="395" text-anchor="middle" class="box-detail">activeTabId: 선택된 Tab.id</text>
+
+  <!-- State 4: 최대 도달 -->
+  <rect x="570" y="320" width="180" height="100" class="state-box"/>
+  <circle cx="660" cy="340" r="12" fill="#faad14"/>
+  <text x="660" y="345" text-anchor="middle" font-size="14" fill="white">!</text>
+  <text x="660" y="375" text-anchor="middle" class="box-label">최대 도달</text>
+  <text x="660" y="395" text-anchor="middle" class="box-detail">tabs.length ≥ maxTabs</text>
+
+  <!-- Arrow: 빈상태 -> 탭1개 -->
+  <path d="M 230 160 L 300 160" class="arrow"/>
+  <text x="265" y="150" text-anchor="middle" class="arrow-label">openTab()</text>
+
+  <!-- Arrow: 탭1개 -> 빈상태 (back) -->
+  <path d="M 310 190 L 240 190" class="arrow-back"/>
+  <text x="275" y="210" text-anchor="middle" class="note">closeTab()</text>
+
+  <!-- Arrow: 탭1개 -> 탭다중 -->
+  <path d="M 400 220 L 400 310" class="arrow"/>
+  <text x="425" y="270" class="arrow-label">openTab()</text>
+
+  <!-- Arrow: 탭다중 -> 탭1개 (back) -->
+  <path d="M 350 320 L 350 230" class="arrow-back"/>
+  <text x="320" y="275" class="note">closeTab()</text>
+
+  <!-- Arrow: 탭다중 -> 자기자신 (setActiveTab) -->
+  <path d="M 310 380 C 260 380 260 340 310 340" class="arrow"/>
+  <text x="230" y="365" class="arrow-label">setActiveTab()</text>
+
+  <!-- Arrow: 탭다중 -> 최대도달 -->
+  <path d="M 490 370 L 560 370" class="arrow"/>
+  <text x="525" y="360" text-anchor="middle" class="note">tabs ≥ max</text>
+
+  <!-- Arrow: 최대도달 -> 탭다중 (back) -->
+  <path d="M 570 400 L 500 400" class="arrow-back"/>
+  <text x="535" y="420" text-anchor="middle" class="note">closeTab()</text>
+
+  <!-- Legend -->
+  <rect x="50" y="480" width="700" height="100" fill="#fff" stroke="#e8e8e8" rx="8"/>
+  <text x="70" y="505" class="box-label">범례</text>
+
+  <rect x="70" y="520" width="60" height="20" class="state-box-active"/>
+  <text x="140" y="535" class="note">활성 상태 (일반적 상태)</text>
+
+  <rect x="70" y="550" width="60" height="20" class="state-box"/>
+  <text x="140" y="565" class="note">특수 상태</text>
+
+  <line x1="280" y1="530" x2="340" y2="530" class="arrow"/>
+  <text x="350" y="535" class="note">상태 전환 (액션 함수)</text>
+
+  <line x1="280" y1="560" x2="340" y2="560" class="arrow-back"/>
+  <text x="350" y="565" class="note">역방향 전환</text>
+
+  <!-- Footer -->
+  <text x="400" y="590" text-anchor="middle" class="note">MES Portal - MDI State Flow Diagram</text>
+</svg>

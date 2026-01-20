@@ -304,7 +304,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -332,7 +332,6 @@ workPackages:
             - lib/mdi/context.tsx 또는 lib/mdi/store.ts 파일 존재
             - useMDI 훅 내보내기
             - openTab, closeTab, setActiveTab 함수 제공
-        execution: start
       - id: TSK-02-02
         title: 탭 바 컴포넌트
         category: development
@@ -487,6 +486,7 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
+        execution: review
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
@@ -514,6 +514,7 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
+        execution: review
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
