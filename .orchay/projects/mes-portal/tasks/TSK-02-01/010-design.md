@@ -172,6 +172,29 @@ flowchart LR
 3. 이전 탭의 화면이 숨겨지고 새 탭의 화면이 표시된다
 4. 새 탭의 화면 상태(스크롤, 입력값 등)가 복원된다
 
+#### UC-04: 탭 상태 유지
+
+| 항목 | 내용 |
+|------|------|
+| 액터 | 시스템 |
+| 목적 | 비활성 탭의 화면 상태 보존 |
+| 사전 조건 | 탭이 한 개 이상 열려 있음 |
+| 사후 조건 | 탭 전환 시 이전 상태가 유지됨 |
+| 트리거 | 탭 전환 시 자동 |
+
+**기본 흐름:**
+1. 사용자가 탭 A에서 작업 중 (폼 입력, 스크롤 등)
+2. 사용자가 탭 B를 클릭하여 전환
+3. 시스템이 탭 A의 컴포넌트를 unmount하지 않고 display:none으로 숨김
+4. 탭 B의 컴포넌트를 표시 (display:block)
+5. 사용자가 탭 A를 다시 클릭
+6. 탭 A의 이전 상태(폼 입력값, 스크롤 위치)가 그대로 유지됨
+
+**대안 흐름:**
+- 5a. 탭 A가 이미 닫힌 경우:
+  - 복원할 상태가 없음
+  - 새로 열면 초기 상태로 시작
+
 ---
 
 ## 4. 사용자 시나리오
@@ -260,6 +283,8 @@ interface MDIState {
 |--------|---------|------|--------|
 | openTab | tab: Tab | 새 탭 열기 (중복 시 활성화) | void |
 | closeTab | tabId: string | 탭 닫기 | void |
+| closeAllTabs | - | 모든 탭 닫기 (closable=true인 탭만) | void |
+| closeOtherTabs | tabId: string | 해당 탭 제외 모든 탭 닫기 | void |
 | setActiveTab | tabId: string | 활성 탭 변경 | void |
 | getTab | tabId: string | 탭 정보 조회 | Tab \| undefined |
 | getTabs | - | 전체 탭 목록 조회 | Tab[] |
@@ -281,6 +306,13 @@ interface MDIState {
 | 활성 탭 닫기 (왼쪽만 있음) | 탭 제거, 왼쪽 탭 활성화 |
 | 마지막 탭 닫기 | 탭 제거, activeTabId = null |
 
+### 6.4 전체/다른 탭 닫기 동작
+
+| 함수 | 동작 | 활성 탭 처리 |
+|------|------|--------------|
+| closeAllTabs | closable=true인 모든 탭 제거 | closable=false 탭 중 첫 번째 활성화, 없으면 null |
+| closeOtherTabs | 지정 탭 제외 closable=true 탭 제거 | 지정 탭 활성화 |
+
 ---
 
 ## 7. 데이터 요구사항
@@ -300,6 +332,43 @@ interface MDIState {
 | 탭 목록 | React State | 세션 내 |
 | 활성 탭 | React State | 세션 내 |
 | (선택) 탭 상태 복원 | sessionStorage | 새로고침 유지 |
+
+### 7.3 영속성 어댑터 인터페이스 (선택적 확장)
+
+> 향후 sessionStorage 영속성 구현 시 사용할 인터페이스 패턴
+
+```typescript
+interface MDIPersistence {
+  save(state: MDIState): void;
+  restore(): MDIState | null;
+  clear(): void;
+}
+
+// 기본 구현 (인메모리, 영속성 없음)
+const noopPersistence: MDIPersistence = {
+  save: () => {},
+  restore: () => null,
+  clear: () => {},
+};
+
+// sessionStorage 구현 (선택적)
+const sessionPersistence: MDIPersistence = {
+  save: (state) => {
+    // 저장 데이터 최소화: id, path만 저장 (params 제외)
+    const minimalState = {
+      tabs: state.tabs.map(({ id, title, path, icon, closable }) =>
+        ({ id, title, path, icon, closable })),
+      activeTabId: state.activeTabId,
+    };
+    sessionStorage.setItem('mdi-state', JSON.stringify(minimalState));
+  },
+  restore: () => {
+    const data = sessionStorage.getItem('mdi-state');
+    return data ? JSON.parse(data) : null;
+  },
+  clear: () => sessionStorage.removeItem('mdi-state'),
+};
+```
 
 ---
 
@@ -334,26 +403,88 @@ interface MDIState {
 
 ---
 
-## 9. 에러 처리
+## 9. 보안 요구사항
 
-### 9.1 예상 에러 상황
+### 9.1 입력 검증 규칙
+
+#### SEC-01: title 필드 XSS 방지
+
+| 항목 | 정책 |
+|------|------|
+| **허용 문자** | 일반 텍스트만 허용 |
+| **금지 항목** | HTML 태그, 스크립트 |
+| **구현 방법** | React JSX 기본 이스케이프 활용 (dangerouslySetInnerHTML 사용 금지) |
+| **최대 길이** | 50자 |
+
+#### SEC-02: path 필드 경로 검증
+
+| 항목 | 정책 |
+|------|------|
+| **허용 형식** | `/`로 시작하는 상대 경로만 허용 |
+| **금지 항목** | 프로토콜 포함 URL (http://, javascript:, data: 등) |
+| **검증 위치** | openTab 함수 내부 |
+| **검증 실패 시** | console.warn 출력, 탭 열기 거부 |
+
+```typescript
+// path 검증 유틸리티
+function isValidPath(path: string): boolean {
+  // 상대 경로만 허용
+  if (!path.startsWith('/')) return false;
+  // 프로토콜 패턴 차단
+  if (/^[a-z]+:/i.test(path)) return false;
+  return true;
+}
+```
+
+#### SEC-03: openTab 권한 검증 인터페이스
+
+| 항목 | 정책 |
+|------|------|
+| **검증 시점** | openTab 호출 시 |
+| **검증 인터페이스** | `canAccessPath?: (path: string) => boolean` |
+| **기본값** | () => true (권한 시스템 미연동 시) |
+| **연동 대상** | TSK-03 역할-메뉴 매핑 (향후) |
+
+```typescript
+interface MDIConfig {
+  maxTabs?: number;
+  canAccessPath?: (path: string) => boolean; // 권한 검증 콜백
+}
+```
+
+#### SEC-04: params 필드 민감정보 정책
+
+| 항목 | 정책 |
+|------|------|
+| **저장 금지 데이터** | 비밀번호, 토큰, 개인정보 (주민번호, 전화번호 등) |
+| **권장 사항** | params에는 화면 식별에 필요한 최소 정보만 저장 (예: recordId) |
+| **영속성 저장 시** | params 필드는 저장하지 않음 (7.3 영속성 어댑터 참조) |
+
+---
+
+## 10. 에러 처리
+
+### 10.1 예상 에러 상황
 
 | 상황 | 원인 | 사용자 메시지 | 복구 방법 |
 |------|------|--------------|----------|
 | 최대 탭 초과 | 10개 이상 열기 | "탭을 더 이상 열 수 없습니다. 기존 탭을 닫고 다시 시도하세요." | 기존 탭 닫기 |
 | 닫기 불가 탭 | closable=false | (무시, 닫기 버튼 미표시) | - |
 | 존재하지 않는 탭 활성화 | 잘못된 ID | 콘솔 경고 | - |
+| 잘못된 경로 형식 | path 검증 실패 | 콘솔 경고 | 올바른 경로로 재시도 |
+| 권한 없는 화면 | canAccessPath 실패 | "해당 화면에 접근 권한이 없습니다." | 권한 확인 |
 
-### 9.2 에러 표시 방식
+### 10.2 에러 표시 방식
 
 | 에러 유형 | 표시 위치 | 표시 방법 |
 |----------|----------|----------|
 | 최대 탭 초과 | 화면 상단 | Toast 경고 |
+| 권한 없음 | 화면 상단 | Toast 경고 |
 | 개발 오류 | 콘솔 | console.warn |
 
 ---
 
-## 10. 연관 문서
+## 11. 연관 문서
 
 > 상세 테스트 명세 및 요구사항 추적은 별도 문서에서 관리합니다.
 
@@ -364,9 +495,9 @@ interface MDIState {
 
 ---
 
-## 11. 구현 범위
+## 12. 구현 범위
 
-### 11.1 구현 파일 구조
+### 12.1 구현 파일 구조
 
 ```
 mes-portal/
@@ -377,20 +508,20 @@ mes-portal/
         └── index.ts         # 내보내기
 ```
 
-### 11.2 영향받는 영역
+### 12.2 영향받는 영역
 
 | 영역 | 변경 내용 | 영향도 |
 |------|----------|--------|
 | lib/mdi/ | 새로 생성 | 높음 |
 | app/(portal)/layout.tsx | MDIProvider 래핑 | 중간 |
 
-### 11.3 의존성
+### 12.3 의존성
 
 | 의존 항목 | 이유 | 상태 |
 |----------|------|------|
 | TSK-00-02 (UI 라이브러리 설정) | React Context 사용 | 완료 |
 
-### 11.4 제약 사항
+### 12.4 제약 사항
 
 | 제약 | 설명 | 대응 방안 |
 |------|------|----------|
@@ -399,9 +530,9 @@ mes-portal/
 
 ---
 
-## 12. 체크리스트
+## 13. 체크리스트
 
-### 12.1 설계 완료 확인
+### 13.1 설계 완료 확인
 
 - [x] 문제 정의 및 목적 명확화
 - [x] 사용자 분석 완료
@@ -411,13 +542,14 @@ mes-portal/
 - [x] 인터랙션 설계 완료
 - [x] 비즈니스 규칙 정의 완료
 - [x] 에러 처리 정의 완료
+- [x] 보안 요구사항 정의 완료
 
-### 12.2 연관 문서 작성
+### 13.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
-### 12.3 구현 준비
+### 13.3 구현 준비
 
 - [x] 구현 우선순위 결정
 - [x] 의존성 확인 완료
@@ -430,3 +562,4 @@ mes-portal/
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰 반영 (021-design-review-claude-1.md 기반)<br>- 보안 요구사항 섹션 추가 (SEC-01~04)<br>- closeAllTabs, closeOtherTabs API 추가<br>- 영속성 어댑터 인터페이스 추가<br>- UC-04 상세 정의 추가<br>- 체크리스트 업데이트 |

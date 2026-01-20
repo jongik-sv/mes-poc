@@ -60,6 +60,9 @@
 | UT-008 | setActiveTab | 탭 전환 | activeTabId 변경 | FR-MDI-04 |
 | UT-009 | openTab | 최대 탭 초과 | 탭 추가 안됨, 경고 반환 | FR-MDI-05, BR-MDI-02 |
 | UT-010 | closeTab | closable=false 탭 닫기 | 탭 닫히지 않음 | BR-MDI-03 |
+| UT-011 | closeTab | 마지막 탭 닫기 | activeTabId = null | FR-MDI-03 |
+| UT-012 | closeAllTabs | 모든 탭 닫기 (closable=true만) | closable=false 탭 유지, 나머지 제거 | FR-MDI-03-A |
+| UT-013 | closeOtherTabs | 다른 탭 닫기 | 지정 탭만 유지, 나머지 제거 | FR-MDI-03-B |
 
 ### 2.2 테스트 케이스 상세
 
@@ -231,6 +234,108 @@ it('이미 열린 탭은 새로 추가하지 않고 활성화만', () => {
 | **커버리지 대상** | closeTab closable 검사 분기 |
 | **관련 요구사항** | BR-MDI-03 |
 
+#### UT-011: 마지막 탭 닫기 시 activeTabId가 null이 됨
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `lib/mdi/__tests__/context.spec.tsx` |
+| **테스트 블록** | `describe('closeTab') → it('마지막 탭 닫기 시 activeTabId가 null이 됨')` |
+| **Mock 의존성** | 없음 |
+| **입력 데이터** | 탭 1개 열기 후 닫기 |
+| **검증 포인트** | `tabs.length === 0`, `activeTabId === null` |
+| **커버리지 대상** | closeTab 마지막 탭 분기 |
+| **관련 요구사항** | FR-MDI-03 |
+
+```typescript
+// 테스트 의사 코드
+it('마지막 탭 닫기 시 activeTabId가 null이 됨', () => {
+  const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+  act(() => {
+    result.current.openTab({ id: 'tab-1', title: '탭1', path: '/page1', closable: true });
+  });
+
+  expect(result.current.tabs).toHaveLength(1);
+  expect(result.current.activeTabId).toBe('tab-1');
+
+  act(() => {
+    result.current.closeTab('tab-1');
+  });
+
+  expect(result.current.tabs).toHaveLength(0);
+  expect(result.current.activeTabId).toBeNull();
+});
+```
+
+#### UT-012: closeAllTabs - 모든 탭 닫기
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `lib/mdi/__tests__/context.spec.tsx` |
+| **테스트 블록** | `describe('closeAllTabs') → it('closable=true인 모든 탭이 닫힘')` |
+| **Mock 의존성** | 없음 |
+| **입력 데이터** | closable=false 탭 1개, closable=true 탭 3개 열기 후 closeAllTabs 호출 |
+| **검증 포인트** | closable=false 탭만 남음 |
+| **커버리지 대상** | closeAllTabs 함수 |
+| **관련 요구사항** | FR-MDI-03-A |
+
+```typescript
+// 테스트 의사 코드
+it('closable=true인 모든 탭이 닫힘', () => {
+  const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+  act(() => {
+    result.current.openTab({ id: 'home', title: '홈', path: '/', closable: false });
+    result.current.openTab({ id: 'tab-1', title: '탭1', path: '/page1', closable: true });
+    result.current.openTab({ id: 'tab-2', title: '탭2', path: '/page2', closable: true });
+  });
+
+  expect(result.current.tabs).toHaveLength(3);
+
+  act(() => {
+    result.current.closeAllTabs();
+  });
+
+  expect(result.current.tabs).toHaveLength(1);
+  expect(result.current.tabs[0].id).toBe('home');
+  expect(result.current.activeTabId).toBe('home');
+});
+```
+
+#### UT-013: closeOtherTabs - 다른 탭 닫기
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `lib/mdi/__tests__/context.spec.tsx` |
+| **테스트 블록** | `describe('closeOtherTabs') → it('지정 탭 제외 다른 탭이 닫힘')` |
+| **Mock 의존성** | 없음 |
+| **입력 데이터** | 탭 3개 열기 후 closeOtherTabs('tab-2') 호출 |
+| **검증 포인트** | tab-2만 남음 (closable=false 탭도 유지) |
+| **커버리지 대상** | closeOtherTabs 함수 |
+| **관련 요구사항** | FR-MDI-03-B |
+
+```typescript
+// 테스트 의사 코드
+it('지정 탭 제외 다른 탭이 닫힘', () => {
+  const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+  act(() => {
+    result.current.openTab({ id: 'home', title: '홈', path: '/', closable: false });
+    result.current.openTab({ id: 'tab-1', title: '탭1', path: '/page1', closable: true });
+    result.current.openTab({ id: 'tab-2', title: '탭2', path: '/page2', closable: true });
+  });
+
+  act(() => {
+    result.current.closeOtherTabs('tab-2');
+  });
+
+  expect(result.current.tabs).toHaveLength(2); // home (closable=false) + tab-2
+  expect(result.current.tabs.map(t => t.id)).toContain('home');
+  expect(result.current.tabs.map(t => t.id)).toContain('tab-2');
+  expect(result.current.activeTabId).toBe('tab-2');
+});
+```
+
 ---
 
 ## 3. E2E 테스트 시나리오
@@ -244,6 +349,8 @@ it('이미 열린 탭은 새로 추가하지 않고 활성화만', () => {
 | E2E-003 | 탭 닫기 | 탭 2개 이상 열림 | 탭 닫기 버튼 클릭 | 탭 제거, 인접 탭 활성화 | FR-MDI-03 |
 | E2E-004 | 탭 전환 시 상태 유지 | 폼이 있는 화면 탭 열림 | 폼 입력 → 다른 탭 → 복귀 | 입력값 유지됨 | FR-MDI-04 |
 | E2E-005 | 최대 탭 제한 | maxTabs-1개 탭 열림 | 추가 탭 열기 시도 | 경고 메시지, 탭 안 열림 | FR-MDI-05 |
+| E2E-006 | 모든 탭 닫기 | 탭 3개 열림 | 컨텍스트 메뉴에서 "모두 닫기" 클릭 | closable=true 탭만 닫힘 | FR-MDI-03-A |
+| E2E-007 | 다른 탭 닫기 | 탭 3개 열림 | 컨텍스트 메뉴에서 "다른 탭 닫기" 클릭 | 선택 탭만 남음 | FR-MDI-03-B |
 
 ### 3.2 테스트 케이스 상세
 

@@ -29,7 +29,9 @@
 |-------------|----------|-----------|-------------|------------|-----------|------|
 | FR-MDI-01 | 4.1.1 MDI (탭 기반 다중 화면) | 5.2 탭 데이터 구조 | UT-001, UT-002 | E2E-001 | TC-001 | 설계완료 |
 | FR-MDI-02 | 4.1.1 MDI (여러 화면 동시 열기) | 6.2 탭 열기 동작 | UT-003, UT-004 | E2E-002 | TC-002 | 설계완료 |
-| FR-MDI-03 | 4.1.1 MDI (탭 닫기) | 6.3 탭 닫기 동작 | UT-005, UT-006, UT-007 | E2E-003 | TC-003 | 설계완료 |
+| FR-MDI-03 | 4.1.1 MDI (탭 닫기 - 개별) | 6.3 탭 닫기 동작 | UT-005, UT-006, UT-007, UT-011 | E2E-003 | TC-003 | 설계완료 |
+| FR-MDI-03-A | 4.1.1 MDI (탭 닫기 - 전체) | 6.4 전체/다른 탭 닫기 | UT-012 | E2E-006 | - | 설계완료 |
+| FR-MDI-03-B | 4.1.1 MDI (탭 닫기 - 다른 탭) | 6.4 전체/다른 탭 닫기 | UT-013 | E2E-007 | - | 설계완료 |
 | FR-MDI-04 | 4.1.1 MDI (화면 상태 유지) | 3.2 UC-04 | UT-008 | E2E-004 | TC-004 | 설계완료 |
 | FR-MDI-05 | 4.1.1 MDI (최대 탭 개수 제한) | 8.1 BR-02 | UT-009 | E2E-005 | - | 설계완료 |
 
@@ -59,8 +61,26 @@
 |----------|------|------|----------|
 | PRD | prd.md | 4.1.1 MDI | 탭 닫기 (개별/전체/다른 탭 닫기) |
 | 설계 | 010-design.md | 6.3 | closeTab 함수 동작 정의 |
-| 단위 테스트 | 026-test-specification.md | 2.1 | UT-005, UT-006, UT-007 |
+| 단위 테스트 | 026-test-specification.md | 2.1 | UT-005, UT-006, UT-007, UT-011 |
 | E2E 테스트 | 026-test-specification.md | 3.1 | E2E-003 |
+
+#### FR-MDI-03-A: 탭 닫기 (전체)
+
+| 설계 단계 | 문서 | 섹션 | 구현 항목 |
+|----------|------|------|----------|
+| PRD | prd.md | 4.1.1 MDI | 탭 닫기 (개별/전체/다른 탭 닫기) |
+| 설계 | 010-design.md | 6.4 | closeAllTabs 함수 동작 정의 |
+| 단위 테스트 | 026-test-specification.md | 2.1 | UT-012 |
+| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-006 |
+
+#### FR-MDI-03-B: 탭 닫기 (다른 탭)
+
+| 설계 단계 | 문서 | 섹션 | 구현 항목 |
+|----------|------|------|----------|
+| PRD | prd.md | 4.1.1 MDI | 탭 닫기 (개별/전체/다른 탭 닫기) |
+| 설계 | 010-design.md | 6.4 | closeOtherTabs 함수 동작 정의 |
+| 단위 테스트 | 026-test-specification.md | 2.1 | UT-013 |
+| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-007 |
 
 #### FR-MDI-04: 화면 상태 유지
 
@@ -151,11 +171,16 @@
 | UT-008 | 단위 | FR-MDI-04 | BR-MDI-04 | 미실행 |
 | UT-009 | 단위 | FR-MDI-05 | BR-MDI-02 | 미실행 |
 | UT-010 | 단위 | - | BR-MDI-03 | 미실행 |
+| UT-011 | 단위 | FR-MDI-03 | - | 미실행 |
+| UT-012 | 단위 | FR-MDI-03-A | - | 미실행 |
+| UT-013 | 단위 | FR-MDI-03-B | - | 미실행 |
 | E2E-001 | E2E | FR-MDI-01 | - | 미실행 |
 | E2E-002 | E2E | FR-MDI-02 | BR-MDI-01 | 미실행 |
 | E2E-003 | E2E | FR-MDI-03 | - | 미실행 |
 | E2E-004 | E2E | FR-MDI-04 | BR-MDI-04 | 미실행 |
 | E2E-005 | E2E | FR-MDI-05 | BR-MDI-02 | 미실행 |
+| E2E-006 | E2E | FR-MDI-03-A | - | 미실행 |
+| E2E-007 | E2E | FR-MDI-03-B | - | 미실행 |
 | TC-001 | 매뉴얼 | FR-MDI-01 | - | 미실행 |
 | TC-002 | 매뉴얼 | FR-MDI-02 | - | 미실행 |
 | TC-003 | 매뉴얼 | FR-MDI-03 | - | 미실행 |
@@ -183,6 +208,8 @@
 |----------|----------|---------|--------|----------|
 | openTab | lib/mdi/context.tsx | tab: Tab | void | FR-MDI-01, FR-MDI-02, FR-MDI-05 |
 | closeTab | lib/mdi/context.tsx | tabId: string | void | FR-MDI-03 |
+| closeAllTabs | lib/mdi/context.tsx | - | void | FR-MDI-03-A |
+| closeOtherTabs | lib/mdi/context.tsx | tabId: string | void | FR-MDI-03-B |
 | setActiveTab | lib/mdi/context.tsx | tabId: string | void | FR-MDI-02, FR-MDI-04 |
 | getTab | lib/mdi/context.tsx | tabId: string | Tab \| undefined | - |
 | getTabs | lib/mdi/context.tsx | - | Tab[] | FR-MDI-01 |
@@ -202,10 +229,10 @@
 
 | 구분 | 총 항목 | 매핑 완료 | 미매핑 | 커버리지 |
 |------|---------|----------|--------|---------|
-| 기능 요구사항 (FR) | 5 | 5 | 0 | 100% |
+| 기능 요구사항 (FR) | 7 | 7 | 0 | 100% |
 | 비즈니스 규칙 (BR) | 4 | 4 | 0 | 100% |
-| 단위 테스트 (UT) | 10 | 10 | 0 | 100% |
-| E2E 테스트 | 5 | 5 | 0 | 100% |
+| 단위 테스트 (UT) | 13 | 13 | 0 | 100% |
+| E2E 테스트 | 7 | 7 | 0 | 100% |
 | 매뉴얼 테스트 (TC) | 4 | 4 | 0 | 100% |
 
 ### 7.2 미매핑 항목 (있는 경우)
