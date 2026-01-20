@@ -101,21 +101,25 @@ flowchart LR
 
 | 항목 | 내용 |
 |------|------|
-| 액터 | 프론트엔드 애플리케이션 |
+| 액터 | 인증된 프론트엔드 애플리케이션 |
 | 목적 | 전체 메뉴 목록을 계층형 구조로 조회 |
-| 사전 조건 | 데이터베이스에 메뉴 데이터가 존재 |
+| 사전 조건 | 1. 사용자가 인증됨 (세션/토큰 유효)<br>2. 데이터베이스에 메뉴 데이터가 존재 |
 | 사후 조건 | 계층형 메뉴 트리 JSON 응답 |
 | 트리거 | 사이드바 컴포넌트 마운트 시 |
 
 **기본 흐름:**
-1. 프론트엔드가 GET /api/menus 요청
-2. 서버가 DB에서 활성화된 메뉴 조회 (isActive = true)
-3. 서버가 flat 데이터를 계층형 트리로 변환
-4. 서버가 sortOrder 기준으로 정렬된 트리 응답
-5. 프론트엔드가 사이드바 메뉴 렌더링
+1. 프론트엔드가 GET /api/menus 요청 (인증 토큰 포함)
+2. **서버가 Auth.js 세션/토큰 유효성 검증**
+3. 서버가 DB에서 활성화된 메뉴 조회 (isActive = true)
+4. 서버가 flat 데이터를 계층형 트리로 변환
+5. 서버가 sortOrder 기준으로 정렬된 트리 응답
+6. 프론트엔드가 사이드바 메뉴 렌더링
 
 **예외 흐름:**
-- 2a. 메뉴 데이터가 없는 경우:
+- 2a. 인증 실패 (세션 없음/만료):
+  - 401 Unauthorized 응답
+  - 프론트엔드에서 로그인 페이지로 리다이렉트
+- 3a. 메뉴 데이터가 없는 경우:
   - 빈 배열 [] 응답
   - 프론트엔드에서 빈 상태 처리
 
@@ -262,12 +266,29 @@ model Menu {
   parentId  Int?
   sortOrder Int      @default(0)
   isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   parent    Menu?    @relation("MenuHierarchy", fields: [parentId], references: [id])
   children  Menu[]   @relation("MenuHierarchy")
   roleMenus RoleMenu[]
 
+  @@index([parentId])
+  @@index([isActive])
+  @@index([parentId, sortOrder])
   @@map("menus")
+}
+
+model RoleMenu {
+  id        Int      @id @default(autoincrement())
+  roleId    Int
+  menuId    Int
+  createdAt DateTime @default(now())
+
+  menu      Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, menuId])
+  @@map("role_menus")
 }
 ```
 
@@ -355,6 +376,8 @@ const menus = [
 | BR-02 | 계층 구조는 최대 3단계 | 메뉴 생성 시 | 없음 |
 | BR-03 | isActive=false인 메뉴는 조회 제외 | API 조회 시 | 관리자 API |
 | BR-04 | sortOrder 오름차순 정렬 | 메뉴 조회 시 | 없음 |
+| BR-05 | 순환 참조 금지 | 메뉴 수정 시 | 없음 |
+| BR-06 | 자식 메뉴가 있으면 삭제 불가 | 메뉴 삭제 시 | 없음 |
 
 ### 8.2 규칙 상세 설명
 
@@ -376,16 +399,116 @@ const menus = [
 - 3단계: 상세 화면 (parentId: 2)
 - 4단계 이상은 UI에서 지원하지 않음
 
+**검증 로직:**
+```typescript
+async function validateMenuDepth(parentId: number | null): Promise<void> {
+  if (!parentId) return; // 최상위 메뉴는 검증 불필요
+
+  let depth = 1;
+  let currentId: number | null = parentId;
+
+  while (currentId) {
+    depth++;
+    if (depth > 3) {
+      throw new BadRequestException('메뉴 계층은 최대 3단계까지 허용됩니다');
+    }
+    const menu = await prisma.menu.findUnique({
+      where: { id: currentId },
+      select: { parentId: true }
+    });
+    currentId = menu?.parentId ?? null;
+  }
+}
+```
+
+**BR-05: 순환 참조 금지**
+
+설명: parentId 변경 시 자기 자신이나 자식 메뉴를 부모로 지정할 수 없습니다.
+
+**검증 로직:**
+```typescript
+async function validateNoCircularReference(menuId: number, newParentId: number | null): Promise<void> {
+  if (!newParentId) return;
+  if (menuId === newParentId) {
+    throw new BadRequestException('자기 자신을 부모로 지정할 수 없습니다');
+  }
+
+  let currentId: number | null = newParentId;
+  while (currentId) {
+    if (currentId === menuId) {
+      throw new BadRequestException('순환 참조: 자식 메뉴를 부모로 지정할 수 없습니다');
+    }
+    const menu = await prisma.menu.findUnique({
+      where: { id: currentId },
+      select: { parentId: true }
+    });
+    currentId = menu?.parentId ?? null;
+  }
+}
+```
+
+**BR-06: 자식 메뉴 삭제 보호**
+
+설명: 하위 메뉴가 있는 메뉴는 삭제할 수 없습니다. 먼저 하위 메뉴를 삭제해야 합니다.
+
+**검증 로직:**
+```typescript
+async function validateNoChildren(menuId: number): Promise<void> {
+  const childCount = await prisma.menu.count({ where: { parentId: menuId } });
+  if (childCount > 0) {
+    throw new BadRequestException('하위 메뉴가 있어 삭제할 수 없습니다');
+  }
+}
+```
+
+---
+
+## 8.3 입력 검증 규칙
+
+### 필드별 검증
+
+| 필드 | 규칙 | 정규식/조건 | 에러 메시지 |
+|------|------|-------------|------------|
+| code | 대문자 영문, 숫자, 언더스코어 | `^[A-Z][A-Z0-9_]*$` | 유효하지 않은 메뉴 코드 형식입니다 |
+| code | 최대 50자 | length <= 50 | 메뉴 코드는 50자 이하입니다 |
+| name | 최대 50자 | length <= 50 | 메뉴 이름은 50자 이하입니다 |
+| name | HTML 특수문자 금지 | `<`, `>`, `&` 제외 | 유효하지 않은 문자가 포함되어 있습니다 |
+| path | /portal/로 시작 | `^\/portal\/[a-z0-9\-\/]+$` | 경로는 /portal/로 시작해야 합니다 |
+| path | 외부 URL 금지 | javascript:, // 제외 | 유효하지 않은 경로입니다 |
+| path | Path traversal 금지 | `..` 제외 | 유효하지 않은 경로입니다 |
+| icon | 허용 목록 기반 | @ant-design/icons 유효 아이콘명 | 유효하지 않은 아이콘입니다 |
+| sortOrder | 음수 불가 | >= 0 | 정렬 순서는 0 이상이어야 합니다 |
+
+### 아이콘 허용 목록 (발췌)
+
+```typescript
+const ALLOWED_ICONS = [
+  'DashboardOutlined', 'BarChartOutlined', 'ToolOutlined',
+  'FileTextOutlined', 'FolderOutlined', 'EditOutlined',
+  'HistoryOutlined', 'AppstoreOutlined', 'UnorderedListOutlined',
+  'SplitCellsOutlined', 'FundProjectionScreenOutlined',
+  'SettingOutlined', 'UserOutlined', 'TeamOutlined', 'MenuOutlined',
+  // ... 추가 아이콘은 구현 시 확장
+];
+```
+
 ---
 
 ## 9. 에러 처리
 
 ### 9.1 예상 에러 상황
 
-| 상황 | 원인 | HTTP 상태 | 응답 메시지 |
-|------|------|----------|------------|
-| DB 연결 실패 | 네트워크/DB 오류 | 500 | "데이터베이스 연결에 실패했습니다" |
-| 메뉴 데이터 없음 | 시드 미실행 | 200 | { success: true, data: [] } |
+| 상황 | 원인 | HTTP 상태 | 에러 코드 | 응답 메시지 |
+|------|------|----------|----------|------------|
+| 인증 실패 | 세션/토큰 없음 또는 만료 | 401 | UNAUTHORIZED | 인증이 필요합니다 |
+| 메뉴 미존재 | 잘못된 ID 또는 삭제됨 | 404 | MENU_NOT_FOUND | 메뉴를 찾을 수 없습니다 |
+| 중복 메뉴 코드 | 이미 존재하는 code | 409 | DUPLICATE_MENU_CODE | 이미 존재하는 메뉴 코드입니다 |
+| 계층 깊이 초과 | 4단계 이상 메뉴 생성 | 400 | MAX_DEPTH_EXCEEDED | 메뉴 계층은 최대 3단계까지 허용됩니다 |
+| 순환 참조 | 자기 참조 또는 자식→부모 | 400 | CIRCULAR_REFERENCE | 순환 참조가 발생합니다 |
+| 자식 메뉴 존재 | 하위 메뉴 있는 상태로 삭제 | 400 | HAS_CHILDREN | 하위 메뉴가 있어 삭제할 수 없습니다 |
+| 입력 검증 실패 | 필드 검증 규칙 위반 | 400 | VALIDATION_ERROR | (필드별 메시지) |
+| DB 연결 실패 | 네트워크/DB 오류 | 500 | DB_CONNECTION_ERROR | 데이터베이스 연결에 실패했습니다 |
+| 메뉴 데이터 없음 | 시드 미실행 | 200 | - | { success: true, data: [] } |
 
 ### 9.2 에러 응답 형식
 
@@ -393,11 +516,44 @@ const menus = [
 {
   "success": false,
   "error": {
-    "code": "DB_CONNECTION_ERROR",
-    "message": "데이터베이스 연결에 실패했습니다"
+    "code": "DUPLICATE_MENU_CODE",
+    "message": "이미 존재하는 메뉴 코드입니다"
   }
 }
 ```
+
+---
+
+## 9.3 비기능 요구사항 (NFR)
+
+### 성능 요구사항
+
+| 항목 | 목표 | 비고 |
+|------|------|------|
+| GET /api/menus 응답 시간 | 200ms 이내 (p95) | 메뉴 100개 기준 |
+| 동시 요청 처리 | 50 req/s | MVP 기준 |
+| 메모리 사용량 | 50MB 이하 | 메뉴 트리 변환 시 |
+
+### 보안 요구사항
+
+| 항목 | 요구사항 | 구현 방법 |
+|------|----------|----------|
+| 인증 필수 | 모든 메뉴 API는 인증 필요 | Auth.js 세션/JWT 검증 |
+| 입력 검증 | 모든 입력 필드 서버 검증 | 섹션 8.3 규칙 적용 |
+| XSS 방지 | icon, path 필드 허용 목록 검증 | 정규식 + 화이트리스트 |
+
+### 가용성
+
+| 항목 | 목표 |
+|------|------|
+| 서비스 가용성 | 99% (MVP) |
+| 에러 복구 | DB 연결 실패 시 3회 재시도 |
+
+### 의존성 참고
+
+| 항목 | 내용 |
+|------|------|
+| 역할 기반 메뉴 필터링 | TSK-03-02에서 구현 (본 Task는 인증된 전체 메뉴 반환) |
 
 ---
 
@@ -451,8 +607,8 @@ const menus = [
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
 ### 12.3 구현 준비
 

@@ -332,7 +332,6 @@ workPackages:
             - lib/mdi/context.tsx 또는 lib/mdi/store.ts 파일 존재
             - useMDI 훅 내보내기
             - openTab, closeTab, setActiveTab 함수 제공
-        execution: apply
       - id: TSK-02-02
         title: 탭 바 컴포넌트
         category: development
@@ -548,7 +547,7 @@ workPackages:
         title: 즐겨찾기 메뉴
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: low
         assignee: "-"
         tags:
@@ -570,7 +569,6 @@ workPackages:
           integrationCheck:
             - localStorage 또는 UserPreference 테이블 사용
             - components/common/FavoriteMenu.tsx 파일 존재
-        execution: start
   - id: WP-04
     title: 인증 및 권한
     status: planned
@@ -670,6 +668,7 @@ workPackages:
             - lib/auth.ts 또는 auth.ts 설정 파일
             - app/api/auth/[...nextauth]/route.ts
             - middleware.ts에 인증 미들웨어
+        execution: review
       - id: TSK-04-04
         title: 로그인 페이지
         category: development
@@ -798,6 +797,7 @@ workPackages:
           integrationCheck:
             - lib/utils/toast.ts 유틸리티 함수
             - showSuccess, showError, showWarning 함수
+        execution: start
       - id: TSK-05-04
         title: 테이블 공통 기능
         category: development
