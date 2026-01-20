@@ -332,7 +332,7 @@ workPackages:
             - lib/mdi/context.tsx 또는 lib/mdi/store.ts 파일 존재
             - useMDI 훅 내보내기
             - openTab, closeTab, setActiveTab 함수 제공
-        execution: review
+        execution: apply
       - id: TSK-02-02
         title: 탭 바 컴포넌트
         category: development
@@ -365,6 +365,7 @@ workPackages:
             - components/mdi/TabBar.tsx 파일 존재
             - MDI Context에서 탭 목록 구독
             - 탭 클릭/닫기 이벤트 핸들링
+        execution: review
       - id: TSK-02-03
         title: 탭 드래그 앤 드롭
         category: development
@@ -485,7 +486,7 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
-        execution: review
+        execution: apply
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
@@ -513,7 +514,7 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
-        execution: review
+        execution: apply
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
@@ -542,6 +543,7 @@ workPackages:
             - app/api/menus/route.ts 파일 존재
             - Auth.js 세션 확인 로직
             - Prisma로 메뉴 조회 및 트리 구조 변환
+        execution: review
       - id: TSK-03-04
         title: 즐겨찾기 메뉴
         category: development
@@ -568,6 +570,7 @@ workPackages:
           integrationCheck:
             - localStorage 또는 UserPreference 테이블 사용
             - components/common/FavoriteMenu.tsx 파일 존재
+        execution: start
   - id: WP-04
     title: 인증 및 권한
     status: planned
@@ -609,7 +612,7 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -639,7 +642,7 @@ workPackages:
         title: Auth.js 인증 설정
         category: development
         domain: backend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -701,6 +704,7 @@ workPackages:
             - app/(auth)/login/page.tsx 파일 존재
             - signIn 함수 사용 (Auth.js)
             - Form rules로 유효성 검사
+        execution: start
   - id: WP-05
     title: 공통 컴포넌트
     status: planned
@@ -737,6 +741,7 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
+        execution: start
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
@@ -765,6 +770,7 @@ workPackages:
           integrationCheck:
             - lib/utils/confirm.ts 유틸리티 함수
             - confirmDelete, confirmDiscard 함수 제공
+        execution: start
       - id: TSK-05-03
         title: Toast 알림
         category: development
