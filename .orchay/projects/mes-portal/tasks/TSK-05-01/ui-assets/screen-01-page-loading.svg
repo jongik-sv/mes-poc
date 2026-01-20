@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .overlay { fill: rgba(255,255,255,0.9); }
+      .text-primary { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #666; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .spinner { fill: none; stroke: #1890ff; stroke-width: 4; stroke-linecap: round; }
+      .spinner-bg { fill: none; stroke: #e8e8e8; stroke-width: 4; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Semi-transparent overlay -->
+  <rect class="overlay" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="30" class="text-title">SCR-01: 전체 페이지 로딩 (Page Loading)</text>
+
+  <!-- Center container -->
+  <g transform="translate(400, 280)">
+    <!-- Spinner background circle -->
+    <circle class="spinner-bg" cx="0" cy="0" r="32"/>
+
+    <!-- Spinner arc (animated representation) -->
+    <path class="spinner" d="M 0 -32 A 32 32 0 0 1 32 0" transform="rotate(45)"/>
+    <path class="spinner" d="M 0 -32 A 32 32 0 0 1 32 0" transform="rotate(135)" opacity="0.7"/>
+    <path class="spinner" d="M 0 -32 A 32 32 0 0 1 32 0" transform="rotate(225)" opacity="0.4"/>
+
+    <!-- Loading text -->
+    <text x="0" y="60" text-anchor="middle" class="text-primary">로딩 중입니다...</text>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Spinner annotation -->
+    <line class="annotation-line" x1="440" y1="260" x2="520" y2="200"/>
+    <text x="525" y="195" class="annotation">Ant Design Spin</text>
+    <text x="525" y="208" class="annotation">size="large"</text>
+
+    <!-- Text annotation -->
+    <line class="annotation-line" x1="460" y1="340" x2="540" y2="380"/>
+    <text x="545" y="375" class="annotation">tip prop 또는</text>
+    <text x="545" y="388" class="annotation">커스텀 메시지</text>
+
+    <!-- Overlay annotation -->
+    <line class="annotation-line" x1="100" y1="100" x2="180" y2="140"/>
+    <text x="60" y="95" class="annotation">반투명 오버레이</text>
+    <text x="60" y="108" class="annotation">rgba(255,255,255,0.9)</text>
+
+    <!-- z-index annotation -->
+    <line class="annotation-line" x1="700" y1="550" x2="650" y2="520"/>
+    <text x="655" y="515" class="annotation">z-index: 1000</text>
+  </g>
+
+  <!-- Dimension markers -->
+  <text x="400" y="580" text-anchor="middle" class="dimension">800 x 600 (전체 화면 기준)</text>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 450)">
+    <rect x="0" y="0" width="200" height="100" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• PageLoading</text>
+    <text x="10" y="55" class="dimension">• Props: isLoading, message</text>
+    <text x="10" y="70" class="dimension">• 상태: 자동 전환</text>
+    <text x="10" y="85" class="dimension">• data-testid: page-loading</text>
+  </g>
+</svg>

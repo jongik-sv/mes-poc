@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .skeleton-light { fill: #f0f0f0; }
+      .skeleton-dark { fill: #e0e0e0; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-section { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; font-weight: 600; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .border { fill: none; stroke: #e8e8e8; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+    <!-- Skeleton animation gradient -->
+    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f0f0f0"/>
+      <stop offset="50%" style="stop-color:#e0e0e0"/>
+      <stop offset="100%" style="stop-color:#f0f0f0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-02: 컴포넌트 스켈레톤 (Skeleton UI)</text>
+
+  <!-- Section 1: Table Skeleton -->
+  <g transform="translate(20, 45)">
+    <text x="0" y="0" class="text-section">테이블 스켈레톤</text>
+    <rect class="border" x="0" y="10" width="360" height="140" rx="4"/>
+
+    <!-- Table header -->
+    <rect class="skeleton-dark" x="10" y="20" width="80" height="16" rx="2"/>
+    <rect class="skeleton-dark" x="100" y="20" width="60" height="16" rx="2"/>
+    <rect class="skeleton-dark" x="170" y="20" width="90" height="16" rx="2"/>
+    <rect class="skeleton-dark" x="270" y="20" width="70" height="16" rx="2"/>
+
+    <!-- Table rows -->
+    <g transform="translate(0, 45)">
+      <rect class="skeleton-light" x="10" y="0" width="70" height="12" rx="2"/>
+      <rect class="skeleton-light" x="100" y="0" width="50" height="12" rx="2"/>
+      <rect class="skeleton-light" x="170" y="0" width="80" height="12" rx="2"/>
+      <rect class="skeleton-light" x="270" y="0" width="60" height="12" rx="2"/>
+    </g>
+    <g transform="translate(0, 65)">
+      <rect class="skeleton-light" x="10" y="0" width="60" height="12" rx="2"/>
+      <rect class="skeleton-light" x="100" y="0" width="55" height="12" rx="2"/>
+      <rect class="skeleton-light" x="170" y="0" width="70" height="12" rx="2"/>
+      <rect class="skeleton-light" x="270" y="0" width="65" height="12" rx="2"/>
+    </g>
+    <g transform="translate(0, 85)">
+      <rect class="skeleton-light" x="10" y="0" width="75" height="12" rx="2"/>
+      <rect class="skeleton-light" x="100" y="0" width="45" height="12" rx="2"/>
+      <rect class="skeleton-light" x="170" y="0" width="85" height="12" rx="2"/>
+      <rect class="skeleton-light" x="270" y="0" width="55" height="12" rx="2"/>
+    </g>
+    <g transform="translate(0, 105)">
+      <rect class="skeleton-light" x="10" y="0" width="65" height="12" rx="2"/>
+      <rect class="skeleton-light" x="100" y="0" width="52" height="12" rx="2"/>
+      <rect class="skeleton-light" x="170" y="0" width="75" height="12" rx="2"/>
+      <rect class="skeleton-light" x="270" y="0" width="62" height="12" rx="2"/>
+    </g>
+    <g transform="translate(0, 125)">
+      <rect class="skeleton-light" x="10" y="0" width="72" height="12" rx="2"/>
+      <rect class="skeleton-light" x="100" y="0" width="48" height="12" rx="2"/>
+      <rect class="skeleton-light" x="170" y="0" width="82" height="12" rx="2"/>
+      <rect class="skeleton-light" x="270" y="0" width="58" height="12" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Section 2: Card Skeleton -->
+  <g transform="translate(400, 45)">
+    <text x="0" y="0" class="text-section">카드 스켈레톤</text>
+    <rect class="border" x="0" y="10" width="380" height="140" rx="4"/>
+
+    <!-- Card 1 -->
+    <g transform="translate(15, 25)">
+      <rect class="border" x="0" y="0" width="110" height="110" rx="4"/>
+      <circle class="skeleton-dark" cx="25" cy="25" r="16"/>
+      <rect class="skeleton-light" x="50" y="15" width="50" height="10" rx="2"/>
+      <rect class="skeleton-light" x="50" y="30" width="40" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="55" width="90" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="70" width="80" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="85" width="60" height="8" rx="2"/>
+    </g>
+
+    <!-- Card 2 -->
+    <g transform="translate(135, 25)">
+      <rect class="border" x="0" y="0" width="110" height="110" rx="4"/>
+      <circle class="skeleton-dark" cx="25" cy="25" r="16"/>
+      <rect class="skeleton-light" x="50" y="15" width="50" height="10" rx="2"/>
+      <rect class="skeleton-light" x="50" y="30" width="40" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="55" width="90" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="70" width="80" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="85" width="60" height="8" rx="2"/>
+    </g>
+
+    <!-- Card 3 -->
+    <g transform="translate(255, 25)">
+      <rect class="border" x="0" y="0" width="110" height="110" rx="4"/>
+      <circle class="skeleton-dark" cx="25" cy="25" r="16"/>
+      <rect class="skeleton-light" x="50" y="15" width="50" height="10" rx="2"/>
+      <rect class="skeleton-light" x="50" y="30" width="40" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="55" width="90" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="70" width="80" height="8" rx="2"/>
+      <rect class="skeleton-light" x="10" y="85" width="60" height="8" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Section 3: Form Skeleton -->
+  <g transform="translate(20, 210)">
+    <text x="0" y="0" class="text-section">폼 스켈레톤</text>
+    <rect class="border" x="0" y="10" width="360" height="160" rx="4"/>
+
+    <!-- Form field 1 -->
+    <rect class="skeleton-light" x="15" y="25" width="60" height="10" rx="2"/>
+    <rect class="skeleton-dark" x="15" y="40" width="330" height="32" rx="4"/>
+
+    <!-- Form field 2 -->
+    <rect class="skeleton-light" x="15" y="85" width="80" height="10" rx="2"/>
+    <rect class="skeleton-dark" x="15" y="100" width="330" height="32" rx="4"/>
+
+    <!-- Form field 3 (textarea) -->
+    <rect class="skeleton-light" x="15" y="145" width="50" height="10" rx="2"/>
+  </g>
+
+  <!-- Section 4: List Skeleton -->
+  <g transform="translate(400, 210)">
+    <text x="0" y="0" class="text-section">리스트 스켈레톤</text>
+    <rect class="border" x="0" y="10" width="380" height="160" rx="4"/>
+
+    <!-- List items -->
+    <g transform="translate(15, 25)">
+      <circle class="skeleton-dark" cx="16" cy="16" r="16"/>
+      <rect class="skeleton-light" x="45" y="6" width="120" height="10" rx="2"/>
+      <rect class="skeleton-light" x="45" y="22" width="200" height="8" rx="2"/>
+    </g>
+    <g transform="translate(15, 70)">
+      <circle class="skeleton-dark" cx="16" cy="16" r="16"/>
+      <rect class="skeleton-light" x="45" y="6" width="100" height="10" rx="2"/>
+      <rect class="skeleton-light" x="45" y="22" width="180" height="8" rx="2"/>
+    </g>
+    <g transform="translate(15, 115)">
+      <circle class="skeleton-dark" cx="16" cy="16" r="16"/>
+      <rect class="skeleton-light" x="45" y="6" width="140" height="10" rx="2"/>
+      <rect class="skeleton-light" x="45" y="22" width="220" height="8" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g transform="translate(20, 400)">
+    <text x="0" y="0" class="text-section">스켈레톤 Props 정보</text>
+    <rect class="border" x="0" y="10" width="760" height="80" rx="4"/>
+
+    <text x="15" y="35" class="dimension">TableSkeleton: columns, rows, showHeader</text>
+    <text x="15" y="50" class="dimension">CardSkeleton: count, hasAvatar</text>
+    <text x="15" y="65" class="dimension">FormSkeleton: fields (label, type, size)</text>
+    <text x="15" y="80" class="dimension">ListSkeleton: count, hasAvatar</text>
+
+    <text x="300" y="35" class="dimension">공통: active (애니메이션 활성화)</text>
+    <text x="300" y="50" class="dimension">data-testid: skeleton-{type}</text>
+
+    <text x="550" y="35" class="annotation">Ant Design Skeleton 기반</text>
+    <text x="550" y="50" class="annotation">shimmer 애니메이션 적용</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .icon-bg { fill: #fff7e6; }
+      .icon { fill: #fa8c16; }
+      .icon-stroke { fill: none; stroke: #fa8c16; stroke-width: 3; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .text-keyword { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #1890ff; font-weight: 600; }
+      .btn-default { fill: white; stroke: #d9d9d9; }
+      .btn-default-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .search-box { fill: white; stroke: #d9d9d9; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-04: 빈 상태 - 검색 결과 없음 (Empty State - No Search Results)</text>
+
+  <!-- Search box context -->
+  <g transform="translate(200, 60)">
+    <rect class="search-box" x="0" y="0" width="400" height="40" rx="4"/>
+    <text x="15" y="26" class="text-keyword">"검색어 예시"</text>
+    <circle cx="370" cy="20" r="12" fill="#f5f5f5"/>
+    <text x="370" y="24" text-anchor="middle" font-size="14" fill="#8c8c8c">×</text>
+  </g>
+
+  <!-- Empty state container -->
+  <g transform="translate(200, 130)">
+    <rect class="card" x="0" y="0" width="400" height="340" rx="8"/>
+
+    <!-- Icon area -->
+    <g transform="translate(200, 70)">
+      <circle class="icon-bg" cx="0" cy="0" r="55"/>
+      <!-- Search icon with X -->
+      <g transform="translate(-25, -25)">
+        <circle class="icon-stroke" cx="22" cy="22" r="18"/>
+        <line class="icon-stroke" x1="35" y1="35" x2="48" y2="48"/>
+        <!-- X mark -->
+        <line x1="15" y1="15" x2="29" y2="29" stroke="#fa8c16" stroke-width="2"/>
+        <line x1="29" y1="15" x2="15" y2="29" stroke="#fa8c16" stroke-width="2"/>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="200" y="160" text-anchor="middle" class="text-heading">검색 결과가 없습니다</text>
+    <g transform="translate(200, 190)">
+      <text x="0" y="0" text-anchor="middle" class="text-desc">
+        <tspan>"</tspan>
+        <tspan class="text-keyword">검색어 예시</tspan>
+        <tspan>"에 대한 검색 결과가 없습니다.</tspan>
+      </text>
+    </g>
+    <text x="200" y="220" text-anchor="middle" class="text-desc">다른 검색어로 다시 시도해 주세요.</text>
+
+    <!-- Action button -->
+    <g transform="translate(125, 260)">
+      <rect class="btn-default" x="0" y="0" width="150" height="40" rx="4"/>
+      <text x="75" y="26" text-anchor="middle" class="btn-default-text">검색어 지우기</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Search context annotation -->
+    <line class="annotation-line" x1="610" y1="80" x2="680" y2="60"/>
+    <text x="685" y="55" class="annotation">검색 컨텍스트</text>
+    <text x="685" y="68" class="annotation">searchKeyword prop</text>
+
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="460" y1="180" x2="620" y2="140"/>
+    <text x="625" y="135" class="annotation">EmptyState 아이콘</text>
+    <text x="625" y="148" class="annotation">type="noSearch"</text>
+
+    <!-- Keyword highlight annotation -->
+    <line class="annotation-line" x1="460" y1="310" x2="620" y2="280"/>
+    <text x="625" y="275" class="annotation">검색어 하이라이트</text>
+    <text x="625" y="288" class="annotation">keyword prop</text>
+
+    <!-- Action annotation -->
+    <line class="annotation-line" x1="500" y1="400" x2="620" y2="400"/>
+    <text x="625" y="395" class="annotation">onClearSearch callback</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 450)">
+    <rect x="0" y="0" width="280" height="120" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• EmptyState</text>
+    <text x="10" y="55" class="dimension">• Props: type="noSearch", keyword, onClear</text>
+    <text x="10" y="70" class="dimension">• keyword: 검색어 표시 (하이라이트)</text>
+    <text x="10" y="85" class="dimension">• onClear: 검색어 초기화 콜백</text>
+    <text x="10" y="100" class="dimension">• data-testid: empty-state-search</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>

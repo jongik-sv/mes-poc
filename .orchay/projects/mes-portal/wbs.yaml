@@ -713,7 +713,7 @@ workPackages:
         title: 로딩 및 에러 상태 컴포넌트
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -739,7 +739,6 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
-        execution: start
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development

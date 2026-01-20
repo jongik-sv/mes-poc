@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .icon-bg { fill: #f5f5f5; }
+      .icon { fill: #bfbfbf; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 18px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .btn-primary { fill: #1890ff; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: white; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-03: 빈 상태 - 데이터 없음 (Empty State - No Data)</text>
+
+  <!-- Empty state container -->
+  <g transform="translate(200, 120)">
+    <rect class="card" x="0" y="0" width="400" height="360" rx="8"/>
+
+    <!-- Icon area -->
+    <g transform="translate(200, 80)">
+      <circle class="icon-bg" cx="0" cy="0" r="60"/>
+      <!-- Empty box icon -->
+      <g transform="translate(-35, -35)">
+        <rect class="icon" x="10" y="20" width="50" height="40" rx="2"/>
+        <path class="icon" d="M5 20 L35 5 L65 20 L35 35 Z" fill="none" stroke="#bfbfbf" stroke-width="3"/>
+        <line x1="35" y1="35" x2="35" y2="60" stroke="#bfbfbf" stroke-width="3"/>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="200" y="180" text-anchor="middle" class="text-heading">데이터가 없습니다</text>
+    <text x="200" y="210" text-anchor="middle" class="text-desc">조회된 데이터가 없습니다.</text>
+    <text x="200" y="230" text-anchor="middle" class="text-desc">새 항목을 추가하거나 조건을 변경해 주세요.</text>
+
+    <!-- Action button -->
+    <g transform="translate(125, 270)">
+      <rect class="btn-primary" x="0" y="0" width="150" height="40" rx="4"/>
+      <text x="75" y="26" text-anchor="middle" class="btn-text">+ 새 항목 추가</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="460" y1="180" x2="620" y2="140"/>
+    <text x="625" y="135" class="annotation">EmptyState 아이콘</text>
+    <text x="625" y="148" class="annotation">type="noData"</text>
+
+    <!-- Title annotation -->
+    <line class="annotation-line" x1="500" y1="280" x2="620" y2="260"/>
+    <text x="625" y="255" class="annotation">title prop</text>
+    <text x="625" y="268" class="annotation">"데이터가 없습니다"</text>
+
+    <!-- Description annotation -->
+    <line class="annotation-line" x1="500" y1="330" x2="620" y2="320"/>
+    <text x="625" y="315" class="annotation">description prop</text>
+    <text x="625" y="328" class="annotation">안내 메시지 (선택)</text>
+
+    <!-- Button annotation -->
+    <line class="annotation-line" x1="500" y1="400" x2="620" y2="400"/>
+    <text x="625" y="395" class="annotation">action prop (선택)</text>
+    <text x="625" y="408" class="annotation">{ label, onClick }</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 450)">
+    <rect x="0" y="0" width="250" height="120" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• EmptyState</text>
+    <text x="10" y="55" class="dimension">• Props: type, title, description, action</text>
+    <text x="10" y="70" class="dimension">• type: "noData" | "noSearch" | "noFilter"</text>
+    <text x="10" y="85" class="dimension">• action: { label: string, onClick: () => void }</text>
+    <text x="10" y="100" class="dimension">• data-testid: empty-state-nodata</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>

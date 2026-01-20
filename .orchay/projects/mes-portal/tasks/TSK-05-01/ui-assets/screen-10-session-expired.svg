@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .text-timer { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; fill: #fa8c16; font-weight: 600; }
+      .btn-primary { fill: #1890ff; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: white; }
+      .icon-bg { fill: #fff7e6; }
+      .icon { fill: #fa8c16; }
+      .icon-stroke { fill: none; stroke: #fa8c16; stroke-width: 2; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .modal-overlay { fill: rgba(0,0,0,0.45); }
+    </style>
+  </defs>
+
+  <!-- Background (with overlay to show modal context) -->
+  <rect class="bg" width="800" height="600"/>
+  <rect class="modal-overlay" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title" fill="white">SCR-10: 세션 만료 (Session Expired)</text>
+
+  <!-- Modal container -->
+  <g transform="translate(175, 130)">
+    <rect class="card" x="0" y="0" width="450" height="340" rx="8"/>
+
+    <!-- Icon -->
+    <g transform="translate(225, 70)">
+      <circle class="icon-bg" cx="0" cy="0" r="45"/>
+      <!-- Clock with warning icon -->
+      <g transform="translate(-20, -20)">
+        <!-- Clock face -->
+        <circle cx="20" cy="20" r="18" fill="none" stroke="#fa8c16" stroke-width="3"/>
+        <!-- Clock hands -->
+        <line x1="20" y1="20" x2="20" y2="10" stroke="#fa8c16" stroke-width="2" stroke-linecap="round"/>
+        <line x1="20" y1="20" x2="28" y2="20" stroke="#fa8c16" stroke-width="2" stroke-linecap="round"/>
+        <!-- Warning indicator -->
+        <circle cx="35" cy="5" r="8" fill="#ff4d4f"/>
+        <text x="35" y="9" text-anchor="middle" font-size="12" fill="white" font-weight="bold">!</text>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="225" y="160" text-anchor="middle" class="text-heading">세션이 만료되었습니다</text>
+    <text x="225" y="195" text-anchor="middle" class="text-desc">보안을 위해 일정 시간 동안 활동이 없어</text>
+    <text x="225" y="215" text-anchor="middle" class="text-desc">자동으로 로그아웃 되었습니다.</text>
+
+    <!-- Auto redirect timer (optional) -->
+    <g transform="translate(225, 250)">
+      <text x="0" y="0" text-anchor="middle" class="text-timer">5초 후 로그인 페이지로 이동합니다...</text>
+    </g>
+
+    <!-- Action button -->
+    <g transform="translate(150, 280)">
+      <rect class="btn-primary" x="0" y="0" width="150" height="40" rx="4"/>
+      <text x="75" y="26" text-anchor="middle" class="btn-text">지금 로그인</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="470" y1="180" x2="670" y2="140"/>
+    <text x="675" y="135" class="annotation">SessionExpired 아이콘</text>
+    <text x="675" y="148" class="annotation">Clock + Warning 조합</text>
+
+    <!-- Timer annotation -->
+    <line class="annotation-line" x1="500" y1="380" x2="670" y2="340"/>
+    <text x="675" y="335" class="annotation">자동 리다이렉트</text>
+    <text x="675" y="348" class="annotation">countdown: 5 (초)</text>
+    <text x="675" y="361" class="annotation">선택적 기능</text>
+
+    <!-- Action annotation -->
+    <line class="annotation-line" x1="500" y1="430" x2="670" y2="410"/>
+    <text x="675" y="405" class="annotation">onLogin callback</text>
+    <text x="675" y="418" class="annotation">router.push('/login')</text>
+
+    <!-- Modal annotation -->
+    <line class="annotation-line" x1="175" y1="300" x2="80" y2="280"/>
+    <text x="20" y="275" class="annotation" fill="white">모달 오버레이</text>
+    <text x="20" y="288" class="annotation" fill="white">backdrop 클릭 비활성화</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 480)">
+    <rect x="0" y="0" width="320" height="100" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• SessionExpiredModal</text>
+    <text x="10" y="55" class="dimension">• Props: countdown, onLogin, message</text>
+    <text x="10" y="70" class="dimension">• countdown: 자동 리다이렉트 시간 (초)</text>
+    <text x="10" y="85" class="dimension">• data-testid: session-expired-modal</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension" fill="white">800 x 600</text>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .error-code { font-family: 'Segoe UI', Arial, sans-serif; font-size: 96px; fill: #e8e8e8; font-weight: 700; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .btn-primary { fill: #1890ff; }
+      .btn-default { fill: white; stroke: #d9d9d9; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: white; }
+      .btn-default-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .icon-bg { fill: #fff1f0; }
+      .icon { fill: #ff4d4f; }
+      .icon-stroke { fill: none; stroke: #ff4d4f; stroke-width: 2; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-09: 에러 페이지 - 403 Forbidden (접근 권한 없음)</text>
+
+  <!-- Error page container -->
+  <g transform="translate(150, 80)">
+    <rect class="card" x="0" y="0" width="500" height="420" rx="8"/>
+
+    <!-- Large 403 text -->
+    <text x="250" y="120" text-anchor="middle" class="error-code">403</text>
+
+    <!-- Icon -->
+    <g transform="translate(250, 170)">
+      <circle class="icon-bg" cx="0" cy="0" r="40"/>
+      <!-- Lock/Shield icon -->
+      <g transform="translate(-18, -22)">
+        <!-- Shield outline -->
+        <path class="icon-stroke" d="M18 4 L4 10 L4 20 C4 30 18 38 18 38 C18 38 32 30 32 20 L32 10 Z" stroke-width="3"/>
+        <!-- Lock inside -->
+        <rect x="12" y="18" width="12" height="10" rx="1" fill="#ff4d4f"/>
+        <path d="M14 18 L14 14 A4 4 0 0 1 22 14 L22 18" fill="none" stroke="#ff4d4f" stroke-width="2"/>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="250" y="250" text-anchor="middle" class="text-heading">접근 권한이 없습니다</text>
+    <text x="250" y="280" text-anchor="middle" class="text-desc">이 페이지에 접근할 수 있는 권한이 없습니다.</text>
+    <text x="250" y="300" text-anchor="middle" class="text-desc">권한이 필요한 경우 관리자에게 문의하세요.</text>
+
+    <!-- Action buttons -->
+    <g transform="translate(100, 340)">
+      <rect class="btn-primary" x="0" y="0" width="130" height="40" rx="4"/>
+      <text x="65" y="26" text-anchor="middle" class="btn-text">홈으로 이동</text>
+    </g>
+    <g transform="translate(250, 340)">
+      <rect class="btn-default" x="0" y="0" width="130" height="40" rx="4"/>
+      <text x="65" y="26" text-anchor="middle" class="btn-default-text">로그인 페이지</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Error code annotation -->
+    <line class="annotation-line" x1="500" y1="150" x2="670" y2="120"/>
+    <text x="675" y="115" class="annotation">HTTP Status Code</text>
+    <text x="675" y="128" class="annotation">권한 오류 표시</text>
+
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="470" y1="250" x2="670" y2="220"/>
+    <text x="675" y="215" class="annotation">ErrorPage 아이콘</text>
+    <text x="675" y="228" class="annotation">code="403"</text>
+    <text x="675" y="241" class="annotation">Shield + Lock 조합</text>
+
+    <!-- Primary action annotation -->
+    <line class="annotation-line" x1="400" y1="440" x2="670" y2="380"/>
+    <text x="675" y="375" class="annotation">primaryAction</text>
+    <text x="675" y="388" class="annotation">홈으로 이동</text>
+
+    <!-- Secondary action annotation -->
+    <line class="annotation-line" x1="530" y1="440" x2="670" y2="430"/>
+    <text x="675" y="425" class="annotation">secondaryAction</text>
+    <text x="675" y="438" class="annotation">다른 계정으로 로그인</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 480)">
+    <rect x="0" y="0" width="300" height="100" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• ErrorPage</text>
+    <text x="10" y="55" class="dimension">• Props: code="403", title, description</text>
+    <text x="10" y="70" class="dimension">• actions: [home, login]</text>
+    <text x="10" y="85" class="dimension">• data-testid: error-page-403</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .btn-primary { fill: #1890ff; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: white; }
+      .icon-bg { fill: #fff7e6; }
+      .icon { fill: #fa8c16; }
+      .icon-stroke { fill: none; stroke: #fa8c16; stroke-width: 2; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .wifi-arc { fill: none; stroke: #fa8c16; stroke-width: 3; stroke-linecap: round; }
+      .wifi-cross { stroke: #ff4d4f; stroke-width: 3; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-08: 에러 페이지 - 네트워크 오류 (Network Error)</text>
+
+  <!-- Error page container -->
+  <g transform="translate(150, 80)">
+    <rect class="card" x="0" y="0" width="500" height="420" rx="8"/>
+
+    <!-- Icon -->
+    <g transform="translate(250, 120)">
+      <circle class="icon-bg" cx="0" cy="0" r="55"/>
+      <!-- WiFi icon with cross -->
+      <g transform="translate(0, 5)">
+        <!-- WiFi arcs -->
+        <path class="wifi-arc" d="M -30 -5 A 42 42 0 0 1 30 -5" opacity="0.4"/>
+        <path class="wifi-arc" d="M -20 5 A 28 28 0 0 1 20 5" opacity="0.6"/>
+        <path class="wifi-arc" d="M -10 15 A 14 14 0 0 1 10 15" opacity="0.8"/>
+        <circle cx="0" cy="25" r="4" fill="#fa8c16"/>
+        <!-- Cross mark -->
+        <line class="wifi-cross" x1="-20" y1="-20" x2="20" y2="20"/>
+        <line class="wifi-cross" x1="20" y1="-20" x2="-20" y2="20"/>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="250" y="220" text-anchor="middle" class="text-heading">네트워크 연결을 확인해 주세요</text>
+    <text x="250" y="255" text-anchor="middle" class="text-desc">인터넷 연결이 불안정하거나</text>
+    <text x="250" y="275" text-anchor="middle" class="text-desc">서버에 연결할 수 없습니다.</text>
+
+    <!-- Tips -->
+    <g transform="translate(130, 300)">
+      <text x="0" y="0" class="text-desc" font-weight="600">해결 방법:</text>
+      <text x="0" y="20" class="text-desc">• Wi-Fi 또는 데이터 연결 상태 확인</text>
+      <text x="0" y="40" class="text-desc">• 라우터 재시작</text>
+      <text x="0" y="60" class="text-desc">• VPN 연결 확인</text>
+    </g>
+
+    <!-- Action button -->
+    <g transform="translate(175, 380)">
+      <rect class="btn-primary" x="0" y="0" width="150" height="40" rx="4"/>
+      <text x="75" y="26" text-anchor="middle" class="btn-text">다시 시도</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="470" y1="180" x2="670" y2="140"/>
+    <text x="675" y="135" class="annotation">NetworkError 아이콘</text>
+    <text x="675" y="148" class="annotation">WiFi + Cross 조합</text>
+
+    <!-- Tips annotation -->
+    <line class="annotation-line" x1="500" y1="400" x2="670" y2="350"/>
+    <text x="675" y="345" class="annotation">사용자 가이드</text>
+    <text x="675" y="358" class="annotation">문제 해결 팁 제공</text>
+
+    <!-- Retry annotation -->
+    <line class="annotation-line" x1="500" y1="480" x2="670" y2="450"/>
+    <text x="675" y="445" class="annotation">onRetry callback</text>
+    <text x="675" y="458" class="annotation">페이지 새로고침</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 480)">
+    <rect x="0" y="0" width="300" height="100" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• ErrorPage</text>
+    <text x="10" y="55" class="dimension">• Props: code="network", onRetry, tips</text>
+    <text x="10" y="70" class="dimension">• tips: 문제 해결 가이드 (선택)</text>
+    <text x="10" y="85" class="dimension">• data-testid: error-page-network</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>

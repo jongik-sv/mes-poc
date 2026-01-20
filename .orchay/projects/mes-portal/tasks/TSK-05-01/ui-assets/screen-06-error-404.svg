@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #fafafa; }
+      .card { fill: white; stroke: #e8e8e8; }
+      .error-code { font-family: 'Segoe UI', Arial, sans-serif; font-size: 96px; fill: #e8e8e8; font-weight: 700; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #999; }
+      .text-heading { font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; fill: #262626; font-weight: 600; }
+      .text-desc { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #8c8c8c; }
+      .btn-primary { fill: #1890ff; }
+      .btn-default { fill: white; stroke: #d9d9d9; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: white; }
+      .btn-default-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .icon-bg { fill: #fff1f0; }
+      .icon { fill: #ff4d4f; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1890ff; }
+      .annotation-line { stroke: #1890ff; stroke-width: 1; stroke-dasharray: 4,2; }
+      .dimension { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="25" class="text-title">SCR-06: 에러 페이지 - 404 Not Found</text>
+
+  <!-- Error page container -->
+  <g transform="translate(150, 80)">
+    <rect class="card" x="0" y="0" width="500" height="420" rx="8"/>
+
+    <!-- Large 404 text -->
+    <text x="250" y="120" text-anchor="middle" class="error-code">404</text>
+
+    <!-- Icon -->
+    <g transform="translate(250, 170)">
+      <circle class="icon-bg" cx="0" cy="0" r="40"/>
+      <!-- Question mark / broken link icon -->
+      <g transform="translate(-15, -20)">
+        <text x="15" y="30" text-anchor="middle" font-size="40" fill="#ff4d4f">?</text>
+      </g>
+    </g>
+
+    <!-- Text content -->
+    <text x="250" y="250" text-anchor="middle" class="text-heading">페이지를 찾을 수 없습니다</text>
+    <text x="250" y="280" text-anchor="middle" class="text-desc">요청하신 페이지가 존재하지 않거나</text>
+    <text x="250" y="300" text-anchor="middle" class="text-desc">이동되었을 수 있습니다.</text>
+
+    <!-- Action buttons -->
+    <g transform="translate(100, 340)">
+      <rect class="btn-primary" x="0" y="0" width="130" height="40" rx="4"/>
+      <text x="65" y="26" text-anchor="middle" class="btn-text">홈으로 이동</text>
+    </g>
+    <g transform="translate(250, 340)">
+      <rect class="btn-default" x="0" y="0" width="130" height="40" rx="4"/>
+      <text x="65" y="26" text-anchor="middle" class="btn-default-text">이전 페이지</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Error code annotation -->
+    <line class="annotation-line" x1="500" y1="150" x2="670" y2="120"/>
+    <text x="675" y="115" class="annotation">HTTP Status Code</text>
+    <text x="675" y="128" class="annotation">시각적 강조</text>
+
+    <!-- Icon annotation -->
+    <line class="annotation-line" x1="470" y1="250" x2="670" y2="220"/>
+    <text x="675" y="215" class="annotation">ErrorPage 아이콘</text>
+    <text x="675" y="228" class="annotation">code="404"</text>
+
+    <!-- Primary action annotation -->
+    <line class="annotation-line" x1="400" y1="440" x2="670" y2="380"/>
+    <text x="675" y="375" class="annotation">primaryAction</text>
+    <text x="675" y="388" class="annotation">홈으로 이동 (router.push)</text>
+
+    <!-- Secondary action annotation -->
+    <line class="annotation-line" x1="530" y1="440" x2="670" y2="430"/>
+    <text x="675" y="425" class="annotation">secondaryAction</text>
+    <text x="675" y="438" class="annotation">이전 페이지 (router.back)</text>
+  </g>
+
+  <!-- Component info box -->
+  <g transform="translate(20, 480)">
+    <rect x="0" y="0" width="300" height="100" fill="white" stroke="#e8e8e8" rx="4"/>
+    <text x="10" y="20" class="text-title">컴포넌트 정보</text>
+    <text x="10" y="40" class="dimension">• ErrorPage</text>
+    <text x="10" y="55" class="dimension">• Props: code="404", title, description</text>
+    <text x="10" y="70" class="dimension">• actions: [primary, secondary]</text>
+    <text x="10" y="85" class="dimension">• data-testid: error-page-404</text>
+  </g>
+
+  <!-- Dimension -->
+  <text x="400" y="590" text-anchor="middle" class="dimension">800 x 600</text>
+</svg>
