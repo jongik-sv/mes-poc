@@ -27,7 +27,7 @@ workPackages:
         title: Next.js 프로젝트 생성
         category: infrastructure
         domain: fullstack
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -336,7 +336,7 @@ workPackages:
         title: 탭 바 컴포넌트
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: critical
         assignee: "-"
         tags:
@@ -364,12 +364,11 @@ workPackages:
             - components/mdi/TabBar.tsx 파일 존재
             - MDI Context에서 탭 목록 구독
             - 탭 클릭/닫기 이벤트 핸들링
-        execution: start
       - id: TSK-02-03
         title: 탭 드래그 앤 드롭
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -392,7 +391,6 @@ workPackages:
             - react-dnd 또는 @dnd-kit 의존성 설치
             - TabBar에 DnD 기능 통합
             - MDI Context에 reorderTabs 함수 추가
-        execution: start
       - id: TSK-02-04
         title: 탭 컨텍스트 메뉴
         category: development
