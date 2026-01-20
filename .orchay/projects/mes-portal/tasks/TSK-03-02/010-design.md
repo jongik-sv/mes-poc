@@ -5,9 +5,9 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-03-02 |
-| 문서 버전 | 1.0 |
+| 문서 버전 | 1.1 |
 | 작성일 | 2026-01-20 |
-| 상태 | 작성중 |
+| 상태 | 리뷰 반영 완료 |
 | 카테고리 | development |
 
 ---
@@ -138,13 +138,113 @@ flowchart LR
 
 **기본 흐름:**
 1. 사용자가 URL을 직접 입력하여 특정 화면에 접근한다
-2. 시스템이 해당 경로에 대한 메뉴 권한을 확인한다
-3. 권한이 있으면 화면을 표시한다
+2. **서버 사이드 미들웨어가 요청을 인터셉트한다**
+3. 시스템이 세션에서 사용자 역할을 조회한다
+4. **시스템이 RoleMenu에서 해당 역할의 허용 경로 목록을 조회한다**
+5. **요청 경로가 허용 목록에 포함되어 있는지 검증한다**
+6. 권한이 있으면 화면을 표시한다
 
 **예외 흐름:**
-- 3a. 권한이 없으면:
+- 5a. 권한이 없으면:
   - 시스템이 403 에러 페이지 또는 권한 없음 메시지를 표시한다
   - 사용자가 이전 화면으로 돌아갈 수 있다
+
+**서버 사이드 접근 제어 설계:**
+
+```typescript
+// middleware.ts - 경로별 권한 검증
+
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
+
+// 공개 경로 (인증 불필요)
+const PUBLIC_PATHS = ['/login', '/api/auth']
+
+// 보호된 경로 패턴
+const PROTECTED_PATH_PATTERNS = [
+  { pattern: /^\/system\//, requiredPaths: ['/system'] },
+  { pattern: /^\/production\//, requiredPaths: ['/production'] },
+]
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // 1. 공개 경로는 통과
+  if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) {
+    return NextResponse.next()
+  }
+
+  // 2. 세션 토큰 확인
+  const token = await getToken({ req: request })
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // 3. ADMIN 역할은 모든 경로 허용 (isSystemAdmin 플래그 사용)
+  if (token.isSystemAdmin) {
+    return NextResponse.next()
+  }
+
+  // 4. 사용자의 허용 경로 목록 확인 (토큰에 캐시된 allowedPaths)
+  const allowedPaths = token.allowedPaths as string[] || []
+
+  // 5. 경로 권한 검증
+  const hasPermission = allowedPaths.some(allowedPath =>
+    pathname === allowedPath || pathname.startsWith(allowedPath + '/')
+  )
+
+  if (!hasPermission) {
+    return NextResponse.redirect(new URL('/403', request.url))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)']
+}
+```
+
+**API 레벨 권한 검증 (추가 방어층):**
+
+```typescript
+// lib/auth/checkRoutePermission.ts
+
+export async function checkRoutePermission(
+  userId: number,
+  requestPath: string
+): Promise<boolean> {
+  // 사용자 역할 및 허용 메뉴 조회
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      role: {
+        include: {
+          roleMenus: {
+            include: { menu: { select: { path: true } } }
+          }
+        }
+      }
+    }
+  })
+
+  if (!user || !user.isActive) return false
+
+  // ADMIN 역할 특별 처리 (ID 기반)
+  if (user.role.id === SYSTEM_ADMIN_ROLE_ID) return true
+
+  // 허용 경로 목록 추출
+  const allowedPaths = user.role.roleMenus
+    .map(rm => rm.menu.path)
+    .filter(Boolean) as string[]
+
+  // 경로 매칭
+  return allowedPaths.some(path =>
+    requestPath === path || requestPath.startsWith(path + '/')
+  )
+}
+```
 
 ---
 
@@ -167,6 +267,8 @@ model RoleMenu {
   @@map("role_menus")
 }
 ```
+
+> **TRD 동기화 필요:** TRD 2.3절의 RoleMenu 스키마에 `onDelete: Cascade` 옵션이 누락되어 있습니다. 구현 전 TRD 업데이트가 필요합니다.
 
 ### 4.2 데이터 관계
 
@@ -219,30 +321,35 @@ erDiagram
 
 ### 4.3 역할별 메뉴 접근 권한 매트릭스
 
-| 메뉴 | ADMIN | MANAGER | OPERATOR |
-|------|-------|---------|----------|
-| 대시보드 | ✅ | ✅ | ✅ |
-| 생산 관리 | ✅ | ✅ | - |
-| ㄴ 작업 지시 | ✅ | ✅ | ✅ |
-| ㄴ 생산 실적 | ✅ | ✅ | ✅ |
-| ㄴ 생산 이력 | ✅ | ✅ | - |
-| 품질 관리 | ✅ | ✅ | - |
-| 설비 관리 | ✅ | ✅ | - |
-| 시스템 관리 | ✅ | - | - |
-| ㄴ 사용자 관리 | ✅ | - | - |
-| ㄴ 메뉴 관리 | ✅ | - | - |
-| ㄴ 권한 관리 | ✅ | - | - |
+| 메뉴 | ADMIN | MANAGER | OPERATOR | 비고 |
+|------|-------|---------|----------|------|
+| 대시보드 | ✅ | ✅ | ✅ | |
+| 생산 관리 | ✅ | ✅ | (자동) | BR-02에 의해 자식 권한으로 자동 표시 |
+| ㄴ 작업 지시 | ✅ | ✅ | ✅ | |
+| ㄴ 생산 실적 | ✅ | ✅ | ✅ | |
+| ㄴ 생산 이력 | ✅ | ✅ | - | |
+| 품질 관리 | ✅ | ✅ | - | |
+| 설비 관리 | ✅ | ✅ | - | |
+| 시스템 관리 | ✅ | - | - | |
+| ㄴ 사용자 관리 | ✅ | - | - | |
+| ㄴ 메뉴 관리 | ✅ | - | - | |
+| ㄴ 권한 관리 | ✅ | - | - | |
+
+> **참고:** "(자동)"으로 표시된 부모 메뉴는 RoleMenu에 직접 매핑하지 않아도 BR-02 규칙에 의해 자동으로 표시됩니다.
 
 ### 4.4 시드 데이터 구조
 
 ```typescript
 // prisma/seed.ts (역할-메뉴 매핑 부분)
 
-const roleMenuMappings = [
-  // ADMIN - 모든 메뉴 접근
-  { roleCode: 'ADMIN', menuCodes: ['*'] }, // 모든 메뉴
+// 역할-메뉴 매핑 설계 (구현 시 참고)
+// 참고: '*' 와일드카드는 설계상의 표현이며, 구현 시에는 모든 메뉴를 순회하여 매핑
 
-  // MANAGER - 생산/품질/설비 관리
+const roleMenuMappings = [
+  // ADMIN - 모든 메뉴 접근 (실제 구현 시 모든 메뉴 순회)
+  { roleCode: 'ADMIN', menuCodes: ['*'] },
+
+  // MANAGER - 생산/품질/설비 관리 (부모 메뉴 포함)
   { roleCode: 'MANAGER', menuCodes: [
     'DASHBOARD',
     'PRODUCTION', 'WORK_ORDER', 'PRODUCTION_RESULT', 'PRODUCTION_HISTORY',
@@ -250,10 +357,11 @@ const roleMenuMappings = [
     'EQUIPMENT'
   ]},
 
-  // OPERATOR - 작업 관련만
+  // OPERATOR - 작업 관련만 (부모 메뉴 제외, BR-02에 의해 자동 표시)
   { roleCode: 'OPERATOR', menuCodes: [
     'DASHBOARD',
     'WORK_ORDER', 'PRODUCTION_RESULT'
+    // 'PRODUCTION' 부모 메뉴는 BR-02 규칙에 의해 자동 표시됨
   ]},
 ]
 ```
@@ -267,8 +375,8 @@ const roleMenuMappings = [
 | 규칙 ID | 규칙 설명 | 적용 상황 | 예외 |
 |---------|----------|----------|------|
 | BR-01 | 메뉴 조회 시 사용자 역할에 매핑된 메뉴만 반환 | 메뉴 API 호출 시 | 없음 |
-| BR-02 | 부모 메뉴 접근 권한이 없으면 자식 메뉴도 표시 안 함 | 계층형 메뉴 필터링 시 | 없음 |
-| BR-03 | ADMIN 역할은 모든 메뉴에 접근 가능 | 권한 체크 시 | 없음 |
+| BR-02 | 자식 메뉴 권한이 있으면 부모 메뉴도 자동으로 표시 | 계층형 메뉴 필터링 시 | 없음 |
+| BR-03 | ADMIN 역할은 Role.id 또는 isSystemAdmin 플래그로 식별하여 모든 메뉴에 접근 가능 | 권한 체크 시 | 없음 |
 | BR-04 | RoleMenu에 중복 매핑은 허용하지 않음 | 역할-메뉴 생성 시 | 없음 |
 | BR-05 | 역할 삭제 시 관련 RoleMenu 매핑도 함께 삭제 | CASCADE 삭제 | 없음 |
 
@@ -292,17 +400,62 @@ const menus = await prisma.menu.findMany({
 })
 ```
 
-**BR-02: 계층형 메뉴 필터링**
+**BR-02: 계층형 메뉴 필터링 (자식 → 부모 자동 표시)**
 
-설명: 부모 메뉴(폴더)에 대한 접근 권한이 없으면, 해당 부모 아래의 자식 메뉴도 표시하지 않습니다. 이는 메뉴 구조의 일관성을 유지합니다.
+설명: 자식 메뉴에 대한 접근 권한이 있으면, 해당 자식의 부모 메뉴(폴더)도 자동으로 표시됩니다. 이를 통해 RoleMenu 매핑 시 자식 메뉴만 매핑해도 부모 메뉴가 네비게이션에 표시됩니다.
 
 예시:
-- "시스템 관리" 메뉴에 권한이 없는 경우:
-  - "사용자 관리", "메뉴 관리", "권한 관리" 자식 메뉴도 표시 안 함
+- OPERATOR에게 "작업 지시", "생산 실적" 권한만 부여한 경우:
+  - 부모 메뉴 "생산 관리"도 자동으로 사이드바에 표시됨
+  - 단, "생산 이력" 등 다른 자식은 표시 안 함
 
-**BR-03: 관리자 전체 접근**
+구현 로직:
+```typescript
+function buildMenuTreeWithInheritance(menus: Menu[], allowedMenuIds: number[]): MenuItem[] {
+  // 1. 허용된 메뉴 ID 집합
+  const allowedSet = new Set(allowedMenuIds)
 
-설명: ADMIN 역할은 시스템 관리자로서 모든 메뉴에 접근할 수 있습니다. RoleMenu에 모든 메뉴를 일일이 매핑하거나, 코드 레벨에서 ADMIN 역할을 특별 처리합니다.
+  // 2. 자식 메뉴가 허용된 경우 부모 메뉴 ID도 추가
+  const expandedSet = new Set(allowedSet)
+  for (const menu of menus) {
+    if (allowedSet.has(menu.id) && menu.parentId) {
+      // 부모 체인을 따라 올라가며 추가
+      let parentId = menu.parentId
+      while (parentId) {
+        expandedSet.add(parentId)
+        const parent = menus.find(m => m.id === parentId)
+        parentId = parent?.parentId ?? null
+      }
+    }
+  }
+
+  // 3. 확장된 허용 목록으로 메뉴 트리 구축
+  return buildMenuTree(menus.filter(m => expandedSet.has(m.id)))
+}
+```
+
+**BR-03: 관리자 전체 접근 (보안 강화)**
+
+설명: ADMIN 역할은 시스템 관리자로서 모든 메뉴에 접근할 수 있습니다. 보안을 위해 문자열 비교 대신 다음 방식으로 식별합니다:
+
+```typescript
+// 상수 정의 (환경 변수 또는 설정 파일에서 관리)
+const SYSTEM_ADMIN_ROLE_ID = 1  // Role 테이블의 ADMIN ID (시드 데이터로 고정)
+
+// 권한 체크 시
+function isSystemAdmin(user: User & { role: Role }): boolean {
+  // 방법 1: Role ID 기반 (권장)
+  return user.role.id === SYSTEM_ADMIN_ROLE_ID
+
+  // 방법 2: isSystemAdmin 플래그 사용 (Role 테이블에 필드 추가 시)
+  // return user.role.isSystemAdmin === true
+}
+```
+
+보안 고려사항:
+- 문자열 비교(`role.code === 'ADMIN'`)는 대소문자 변형 공격 가능성이 있어 사용 금지
+- Role 생성 시 예약된 코드('ADMIN', 'SYSTEM', 'ROOT' 등) 사용 불가 검증 추가
+- ADMIN Role ID는 시드 데이터에서 고정값으로 생성하여 변경 불가
 
 ---
 
@@ -319,14 +472,20 @@ if (!session?.user) {
   return Response.json({ error: 'Unauthorized' }, { status: 401 })
 }
 
-// 2. 사용자 역할 조회
+// 2. 사용자 역할 조회 (isActive 상태도 함께 검증)
 const user = await prisma.user.findUnique({
   where: { id: session.user.id },
   include: { role: true }
 })
 
-// 3. ADMIN인 경우 모든 메뉴 반환
-if (user.role.code === 'ADMIN') {
+// 2a. 사용자 상태 검증
+if (!user || !user.isActive) {
+  return Response.json({ error: 'User not found or inactive' }, { status: 403 })
+}
+
+// 3. ADMIN인 경우 모든 메뉴 반환 (ID 기반 검증)
+const SYSTEM_ADMIN_ROLE_ID = 1
+if (user.role.id === SYSTEM_ADMIN_ROLE_ID) {
   const menus = await prisma.menu.findMany({
     where: { isActive: true },
     orderBy: [{ sortOrder: 'asc' }]
@@ -440,8 +599,8 @@ async function seedRoleMenus() {
     }
   }
 
-  // OPERATOR - 작업 관련만
-  const operatorMenuCodes = ['DASHBOARD', 'PRODUCTION', 'WORK_ORDER', 'PRODUCTION_RESULT']
+  // OPERATOR - 작업 관련만 (부모 메뉴 제외, BR-02에 의해 자동 표시)
+  const operatorMenuCodes = ['DASHBOARD', 'WORK_ORDER', 'PRODUCTION_RESULT']
   for (const code of operatorMenuCodes) {
     const menuId = menuByCode(code)
     if (menuId) {
@@ -547,3 +706,4 @@ async function seedRoleMenus() {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-20 | Claude | 설계 리뷰(claude-1) 반영 - 서버 사이드 접근 제어 설계 추가, BR-02 규칙 재정의, ADMIN 검증 강화, 권한 매트릭스 일관성 확보 |
