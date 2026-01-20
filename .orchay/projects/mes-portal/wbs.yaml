@@ -830,7 +830,7 @@ workPackages:
         title: 날짜 선택기
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -854,7 +854,6 @@ workPackages:
           integrationCheck:
             - dayjs locale 설정 (ko)
             - "DatePicker 기본 포맷: YYYY-MM-DD"
-        execution: start
       - id: TSK-05-06
         title: 키보드 단축키 시스템
         category: development
