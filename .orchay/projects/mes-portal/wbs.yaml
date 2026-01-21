@@ -165,6 +165,7 @@ workPackages:
             - react-hotkeys-hook으로 Ctrl+K 단축키 등록
             - next-themes useTheme 훅 사용
             - 브레드크럼이 현재 메뉴 경로 표시
+        execution: review
       - id: TSK-01-03
         title: 사이드바 메뉴 컴포넌트
         category: development
@@ -1084,6 +1085,7 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
+        execution: review
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
@@ -1108,7 +1110,6 @@ workPackages:
           integrationCheck:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
-        execution: review
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development
