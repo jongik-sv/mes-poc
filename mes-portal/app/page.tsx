@@ -48,7 +48,7 @@ export default function Home() {
 
         {/* Ant Design 컴포넌트 테스트 */}
         <Card title="Ant Design 컴포넌트" className="mb-6">
-          <Space direction="vertical" className="w-full">
+          <Space orientation="vertical" className="w-full">
             <Space>
               <Button type="primary">Primary Button</Button>
               <Button>Default Button</Button>

@@ -19,6 +19,38 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   // 대시보드
   '/dashboard': () => import('@/screens/dashboard/Dashboard'),
 
+  // 생산
+  '/production/work-order': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.WorkOrderScreen })),
+  '/production/status': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.ProductionStatusScreen })),
+  '/production/result': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.ProductionResultScreen })),
+
+  // 품질
+  '/quality/inspection': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.InspectionScreen })),
+  '/quality/defect': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.DefectScreen })),
+
+  // 설비
+  '/equipment/status': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.EquipmentStatusScreen })),
+  '/equipment/maintenance': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.MaintenanceScreen })),
+
+  // 설정 > 사용자
+  '/settings/user/list': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.UserListScreen })),
+  '/settings/user/role': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.RoleScreen })),
+
+  // 설정 > 시스템
+  '/settings/system/menu': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.MenuManageScreen })),
+  '/settings/system/code': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.CodeManageScreen })),
+
   // 샘플 화면들 (개발용)
   '/sample/table': () => import('@/screens/sample/SampleTable'),
   '/sample/form': () => import('@/screens/sample/SampleForm'),

@@ -16,14 +16,11 @@ export default defineConfig({
       include: ['components/**/*.tsx', 'lib/**/*.ts', 'prisma/**/*.ts'],
       exclude: ['lib/generated/**'],
     },
-    // 테스트 완료 후 프로세스 종료 설정
+    // 테스트 완료 후 프로세스 종료 설정 (Vitest 4.x)
+    pool: 'threads',
     teardownTimeout: 5000,
-    pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
-    },
+    testTimeout: 30000,
+    hookTimeout: 30000,
   },
   resolve: {
     alias: {

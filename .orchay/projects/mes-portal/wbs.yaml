@@ -745,7 +745,6 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
-        execution: build
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
