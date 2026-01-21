@@ -9,3 +9,27 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+// ============================================
+// Menu Model - 동적 메뉴 시스템 (TSK-03-01)
+// ============================================
+model Menu {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  path      String?
+  icon      String?
+  parentId  Int?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   Menu?  @relation("MenuHierarchy", fields: [parentId], references: [id])
+  children Menu[] @relation("MenuHierarchy")
+
+  @@index([parentId])
+  @@index([isActive])
+  @@index([parentId, sortOrder])
+  @@map("menus")
+}

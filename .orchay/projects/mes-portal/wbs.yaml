@@ -427,7 +427,7 @@ workPackages:
         title: MDI 컨텐츠 영역
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: critical
         assignee: "-"
         tags:
@@ -453,7 +453,6 @@ workPackages:
             - components/mdi/MDIContent.tsx 파일 존재
             - screens/ 폴더에 화면 컴포넌트 구조
             - 동적 import로 코드 스플리팅
-        execution: verify
   - id: WP-03
     title: 동적 메뉴 시스템
     status: planned
@@ -464,7 +463,7 @@ workPackages:
         title: 메뉴 데이터 모델
         category: development
         domain: backend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
@@ -489,7 +488,6 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
-        execution: build
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
