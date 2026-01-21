@@ -189,26 +189,29 @@ flowchart LR
 ### 7.1 Props 인터페이스
 
 ```typescript
-interface MasterDetailTemplateProps<M, D> {
+interface MasterDetailTemplateProps<M = unknown> {
   // 마스터 영역
   masterTitle?: string
   masterContent: ReactNode
-  onMasterSelect?: (item: M) => void
-  selectedMaster?: M
-
-  // 디테일 영역
-  detailTitle?: string
-  detailContent: ReactNode
-  detailLoading?: boolean
-
-  // 레이아웃
-  defaultSplit?: number // 기본 분할 비율 (0-100)
-  minMasterWidth?: number
-  minDetailWidth?: number
-
-  // 검색
   masterSearchable?: boolean
   onMasterSearch?: (keyword: string) => void
+  selectedMaster?: M | null
+  onMasterSelect?: (item: M) => void
+
+  // 디테일 영역
+  detailTitle?: ReactNode
+  detailContent: ReactNode
+  detailLoading?: boolean
+  detailEmpty?: ReactNode
+
+  // 레이아웃
+  defaultSplit?: [number, number]  // [마스터%, 디테일%], 기본값 [30, 70]
+  minMasterWidth?: number
+  minDetailWidth?: number
+  maxMasterWidth?: number | string  // 마스터 패널 최대 너비
+
+  // 이벤트
+  onSplitChange?: (sizes: [number, number]) => void
 }
 ```
 
@@ -258,7 +261,7 @@ interface MasterDetailTemplateProps<M, D> {
 
 | 의존 항목 | 이유 | 상태 |
 |----------|------|------|
-| react-split-pane 또는 Ant Design Splitter | 분할 패널 | 라이브러리 |
+| react-split-pane | 분할 패널 (TRD 명시) | 라이브러리 |
 | TSK-06-01 목록 템플릿 | 디테일 영역 | [dd] |
 
 ---
