@@ -1,18 +1,87 @@
 /**
- * Prisma 시드 데이터 (TSK-03-01)
+ * Prisma 시드 데이터
  *
- * 초기 메뉴 데이터 생성
+ * - TSK-03-01: 초기 메뉴 데이터 생성
+ * - TSK-04-02: 역할 및 사용자 데이터 생성
  */
 
 import 'dotenv/config'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { PrismaClient } from '../lib/generated/prisma/client'
+import { hashPassword } from '../lib/auth/password'
 
 const adapter = new PrismaBetterSqlite3({
   url: process.env.DATABASE_URL || 'file:./dev.db',
 })
 
 const prisma = new PrismaClient({ adapter })
+
+// ============================================
+// 역할 데이터 (TSK-04-02)
+// ============================================
+const roles = [
+  { code: 'ADMIN', name: '시스템 관리자' },
+  { code: 'MANAGER', name: '생산 관리자' },
+  { code: 'OPERATOR', name: '현장 작업자' },
+] as const
+
+// ============================================
+// 테스트 사용자 데이터 (TSK-04-02)
+// ============================================
+const testUsers = [
+  { email: 'admin@example.com', name: '관리자', roleCode: 'ADMIN' },
+  { email: 'manager@example.com', name: '생산관리자', roleCode: 'MANAGER' },
+  { email: 'operator@example.com', name: '작업자', roleCode: 'OPERATOR' },
+] as const
+
+// ============================================
+// 역할 및 사용자 시드 함수 (TSK-04-02)
+// ============================================
+async function seedRolesAndUsers() {
+  console.log('🔐 Seeding roles and users...')
+
+  // 1. 역할 생성 (upsert로 멱등성 보장)
+  const createdRoles = await Promise.all(
+    roles.map((role) =>
+      prisma.role.upsert({
+        where: { code: role.code },
+        update: {},
+        create: {
+          code: role.code,
+          name: role.name,
+        },
+      })
+    )
+  )
+
+  console.log(`✅ Created ${createdRoles.length} roles:`, createdRoles.map((r) => r.code).join(', '))
+
+  // 역할 코드 → ID 매핑
+  const roleMap = new Map(createdRoles.map((r) => [r.code, r.id]))
+
+  // 2. 테스트 사용자 생성
+  const defaultPassword = await hashPassword('password123')
+
+  const createdUsers = await Promise.all(
+    testUsers.map((user) =>
+      prisma.user.upsert({
+        where: { email: user.email },
+        update: {},
+        create: {
+          email: user.email,
+          password: defaultPassword,
+          name: user.name,
+          roleId: roleMap.get(user.roleCode)!,
+        },
+      })
+    )
+  )
+
+  console.log(`✅ Created ${createdUsers.length} users:`, createdUsers.map((u) => u.email).join(', '))
+}
+
+// 테스트에서 사용할 수 있도록 export
+export { seedRolesAndUsers }
 
 const menus = [
   // 1단계: 대시보드
@@ -186,8 +255,8 @@ const menus = [
   },
 ]
 
-async function main() {
-  console.log('🌱 Seeding database...')
+async function seedMenus() {
+  console.log('📋 Seeding menus...')
 
   // 기존 메뉴 데이터 삭제 (순서 중요: 자식 먼저)
   await prisma.menu.deleteMany({})
@@ -200,6 +269,17 @@ async function main() {
   }
 
   console.log(`✅ Created ${menus.length} menus`)
+}
+
+async function main() {
+  console.log('🌱 Seeding database...')
+
+  // 역할 및 사용자 시드 (TSK-04-02)
+  await seedRolesAndUsers()
+
+  // 메뉴 시드 (TSK-03-01)
+  await seedMenus()
+
   console.log('🎉 Seeding completed!')
 }
 

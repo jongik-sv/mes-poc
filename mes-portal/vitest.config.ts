@@ -13,7 +13,16 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['components/**/*.tsx', 'lib/**/*.ts'],
+      include: ['components/**/*.tsx', 'lib/**/*.ts', 'prisma/**/*.ts'],
+      exclude: ['lib/generated/**'],
+    },
+    // 테스트 완료 후 프로세스 종료 설정
+    teardownTimeout: 5000,
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
     },
   },
   resolve: {

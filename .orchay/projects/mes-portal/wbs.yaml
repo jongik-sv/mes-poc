@@ -491,7 +491,7 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
-        execution: verify
+        execution: done
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
@@ -616,7 +616,7 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
@@ -642,7 +642,6 @@ workPackages:
             - prisma/schema.prisma에 User, Role 모델
             - prisma/seed.ts 시드 스크립트
             - bcrypt 또는 argon2로 비밀번호 해시
-        execution: build
       - id: TSK-04-03
         title: Auth.js 인증 설정
         category: development

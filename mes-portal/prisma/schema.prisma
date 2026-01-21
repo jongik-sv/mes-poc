@@ -33,3 +33,37 @@ model Menu {
   @@index([parentId, sortOrder])
   @@map("menus")
 }
+
+// ============================================
+// Role Model - 역할 정의 (TSK-04-02)
+// ============================================
+model Role {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique // ADMIN, MANAGER, OPERATOR
+  name      String
+  createdAt DateTime @default(now())
+
+  users User[]
+
+  @@map("roles")
+}
+
+// ============================================
+// User Model - 사용자 계정 (TSK-04-02)
+// ============================================
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   // bcrypt 해시
+  name      String
+  roleId    Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@index([roleId])
+  @@index([isActive])
+  @@map("users")
+}
