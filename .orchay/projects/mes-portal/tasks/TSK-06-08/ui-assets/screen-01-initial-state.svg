@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .bg { fill: #fff; }
+      .panel-bg { fill: #fafafa; }
+      .border { stroke: #d9d9d9; stroke-width: 1; fill: none; }
+      .splitter { fill: #f0f0f0; }
+      .splitter-hover { fill: #1677ff; opacity: 0.3; }
+      .text-primary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .text-secondary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #262626; font-weight: 500; }
+      .input-bg { fill: #fff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .icon { fill: #8c8c8c; }
+      .tree-expand { fill: #8c8c8c; font-size: 10px; }
+      .empty-icon { fill: #d9d9d9; }
+      .empty-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #8c8c8c; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="500"/>
+
+  <!-- Title Bar -->
+  <rect x="20" y="15" width="760" height="35" rx="6" fill="#f5f5f5"/>
+  <text x="40" y="38" class="text-title">Category - Product Master-Detail</text>
+
+  <!-- Main Container -->
+  <rect x="20" y="60" width="760" height="420" rx="8" class="border"/>
+
+  <!-- Category Panel (Left) -->
+  <rect x="21" y="61" width="228" height="418" fill="#fafafa" rx="7"/>
+
+  <!-- Category Search -->
+  <rect x="35" y="75" width="200" height="32" class="input-bg"/>
+  <text x="55" y="96" class="text-secondary">Category Search...</text>
+  <!-- Search Icon -->
+  <circle cx="220" cy="91" r="8" fill="none" stroke="#8c8c8c" stroke-width="1.5"/>
+  <line x1="226" y1="97" x2="230" y2="101" stroke="#8c8c8c" stroke-width="1.5"/>
+
+  <!-- Category Tree -->
+  <g transform="translate(35, 125)">
+    <!-- Electronics -->
+    <text x="0" y="0" class="tree-expand">&#9660;</text>
+    <text x="18" y="0" class="text-primary">Electronics (15)</text>
+
+    <text x="20" y="26" class="tree-expand">&#9660;</text>
+    <text x="38" y="26" class="text-primary">Smartphones (4)</text>
+
+    <text x="20" y="52" class="tree-expand">&#9660;</text>
+    <text x="38" y="52" class="text-primary">Laptops (6)</text>
+
+    <text x="20" y="78" class="tree-expand">&#9660;</text>
+    <text x="38" y="78" class="text-primary">Tablets (5)</text>
+
+    <!-- Appliances -->
+    <text x="0" y="116" class="tree-expand">&#9660;</text>
+    <text x="18" y="116" class="text-primary">Appliances (12)</text>
+
+    <text x="20" y="142" class="tree-expand">&#9654;</text>
+    <text x="38" y="142" class="text-primary">TV (4)</text>
+
+    <text x="20" y="168" class="tree-expand">&#9654;</text>
+    <text x="38" y="168" class="text-primary">Refrigerator (8)</text>
+
+    <!-- Furniture -->
+    <text x="0" y="206" class="tree-expand">&#9660;</text>
+    <text x="18" y="206" class="text-primary">Furniture (8)</text>
+
+    <text x="20" y="232" class="tree-expand">&#9654;</text>
+    <text x="38" y="232" class="text-primary">Beds (0)</text>
+
+    <text x="20" y="258" class="tree-expand">&#9654;</text>
+    <text x="38" y="258" class="text-primary">Sofas (8)</text>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="249" y="61" width="4" height="418" class="splitter"/>
+  <!-- Splitter Grip -->
+  <line x1="251" y1="260" x2="251" y2="270" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="275" x2="251" y2="285" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="290" x2="251" y2="300" stroke="#bfbfbf" stroke-width="1"/>
+
+  <!-- Product Panel (Right) -->
+  <rect x="253" y="61" width="526" height="418" fill="#fff" rx="7"/>
+
+  <!-- Empty State -->
+  <g transform="translate(516, 220)">
+    <!-- Empty Box Icon -->
+    <rect x="-40" y="-50" width="80" height="60" rx="4" fill="none" stroke="#d9d9d9" stroke-width="2"/>
+    <line x1="-40" y1="-30" x2="40" y2="-30" stroke="#d9d9d9" stroke-width="2"/>
+    <rect x="-15" y="-45" width="30" height="10" rx="2" fill="#d9d9d9"/>
+
+    <!-- Text -->
+    <text x="0" y="35" class="empty-text">Select a Category</text>
+    <text x="0" y="58" class="empty-text" font-size="12">Select a category from the left panel</text>
+    <text x="0" y="75" class="empty-text" font-size="12">to view the product list.</text>
+  </g>
+
+  <!-- Splitter Label -->
+  <text x="251" y="490" class="text-secondary" text-anchor="middle" font-size="10">Drag to resize</text>
+</svg>

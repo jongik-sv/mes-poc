@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .bg { fill: #fff; }
+      .panel-bg { fill: #fafafa; }
+      .border { stroke: #d9d9d9; stroke-width: 1; fill: none; }
+      .splitter { fill: #f0f0f0; }
+      .text-primary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .text-secondary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #262626; font-weight: 500; }
+      .input-bg { fill: #fff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .tree-expand { fill: #8c8c8c; font-size: 10px; }
+      .selected-bg { fill: #e6f4ff; }
+      .selected-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #1677ff; font-weight: 500; }
+      .skeleton { fill: #f5f5f5; }
+      .breadcrumb { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .breadcrumb-current { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+    </style>
+    <linearGradient id="shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f5f5f5">
+        <animate attributeName="offset" values="-2; 1" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#e8e8e8">
+        <animate attributeName="offset" values="-1; 2" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#f5f5f5">
+        <animate attributeName="offset" values="0; 3" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="500"/>
+
+  <!-- Title Bar -->
+  <rect x="20" y="15" width="760" height="35" rx="6" fill="#f5f5f5"/>
+  <text x="40" y="38" class="text-title">Category - Product Master-Detail</text>
+
+  <!-- Main Container -->
+  <rect x="20" y="60" width="760" height="420" rx="8" class="border"/>
+
+  <!-- Category Panel (Left) -->
+  <rect x="21" y="61" width="228" height="418" fill="#fafafa" rx="7"/>
+
+  <!-- Category Search -->
+  <rect x="35" y="75" width="200" height="32" class="input-bg"/>
+  <text x="55" y="96" class="text-secondary">Category Search...</text>
+  <circle cx="220" cy="91" r="8" fill="none" stroke="#8c8c8c" stroke-width="1.5"/>
+  <line x1="226" y1="97" x2="230" y2="101" stroke="#8c8c8c" stroke-width="1.5"/>
+
+  <!-- Category Tree -->
+  <g transform="translate(35, 125)">
+    <!-- Electronics -->
+    <text x="0" y="0" class="tree-expand">&#9660;</text>
+    <text x="18" y="0" class="text-primary">Electronics (15)</text>
+
+    <!-- Selected: Smartphones -->
+    <rect x="15" y="12" width="175" height="24" rx="4" class="selected-bg"/>
+    <text x="20" y="30" class="tree-expand" fill="#1677ff">&#9660;</text>
+    <text x="38" y="30" class="selected-text">Smartphones (4)</text>
+
+    <text x="20" y="56" class="tree-expand">&#9660;</text>
+    <text x="38" y="56" class="text-primary">Laptops (6)</text>
+
+    <text x="20" y="82" class="tree-expand">&#9660;</text>
+    <text x="38" y="82" class="text-primary">Tablets (5)</text>
+
+    <!-- Appliances -->
+    <text x="0" y="120" class="tree-expand">&#9660;</text>
+    <text x="18" y="120" class="text-primary">Appliances (12)</text>
+
+    <text x="20" y="146" class="tree-expand">&#9654;</text>
+    <text x="38" y="146" class="text-primary">TV (4)</text>
+
+    <text x="20" y="172" class="tree-expand">&#9654;</text>
+    <text x="38" y="172" class="text-primary">Refrigerator (8)</text>
+
+    <!-- Furniture -->
+    <text x="0" y="210" class="tree-expand">&#9660;</text>
+    <text x="18" y="210" class="text-primary">Furniture (8)</text>
+
+    <text x="20" y="236" class="tree-expand">&#9654;</text>
+    <text x="38" y="236" class="text-primary">Beds (0)</text>
+
+    <text x="20" y="262" class="tree-expand">&#9654;</text>
+    <text x="38" y="262" class="text-primary">Sofas (8)</text>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="249" y="61" width="4" height="418" class="splitter"/>
+  <line x1="251" y1="260" x2="251" y2="270" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="275" x2="251" y2="285" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="290" x2="251" y2="300" stroke="#bfbfbf" stroke-width="1"/>
+
+  <!-- Product Panel (Right) -->
+  <rect x="253" y="61" width="526" height="418" fill="#fff" rx="7"/>
+
+  <!-- Breadcrumb -->
+  <text x="275" y="90" class="breadcrumb">Electronics</text>
+  <text x="345" y="90" class="breadcrumb">/</text>
+  <text x="360" y="90" class="breadcrumb-current">Smartphones</text>
+
+  <!-- Loading Skeleton -->
+  <g transform="translate(275, 115)">
+    <!-- Table Header Skeleton -->
+    <rect x="0" y="0" width="480" height="36" rx="4" fill="#fafafa"/>
+    <rect x="10" y="10" width="60" height="16" rx="4" fill="url(#shimmer)"/>
+    <rect x="90" y="10" width="120" height="16" rx="4" fill="url(#shimmer)"/>
+    <rect x="230" y="10" width="80" height="16" rx="4" fill="url(#shimmer)"/>
+    <rect x="330" y="10" width="60" height="16" rx="4" fill="url(#shimmer)"/>
+    <rect x="410" y="10" width="60" height="16" rx="4" fill="url(#shimmer)"/>
+
+    <!-- Row 1 Skeleton -->
+    <rect x="0" y="46" width="480" height="44" rx="4" fill="#fff" stroke="#f0f0f0"/>
+    <rect x="10" y="60" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="90" y="60" width="100" height="14" rx="4" class="skeleton"/>
+    <rect x="230" y="60" width="70" height="14" rx="4" class="skeleton"/>
+    <rect x="330" y="60" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="410" y="58" width="60" height="18" rx="4" class="skeleton"/>
+
+    <!-- Row 2 Skeleton -->
+    <rect x="0" y="100" width="480" height="44" rx="4" fill="#fff" stroke="#f0f0f0"/>
+    <rect x="10" y="114" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="90" y="114" width="90" height="14" rx="4" class="skeleton"/>
+    <rect x="230" y="114" width="60" height="14" rx="4" class="skeleton"/>
+    <rect x="330" y="114" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="410" y="112" width="60" height="18" rx="4" class="skeleton"/>
+
+    <!-- Row 3 Skeleton -->
+    <rect x="0" y="154" width="480" height="44" rx="4" fill="#fff" stroke="#f0f0f0"/>
+    <rect x="10" y="168" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="90" y="168" width="80" height="14" rx="4" class="skeleton"/>
+    <rect x="230" y="168" width="65" height="14" rx="4" class="skeleton"/>
+    <rect x="330" y="168" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="410" y="166" width="60" height="18" rx="4" class="skeleton"/>
+
+    <!-- Row 4 Skeleton -->
+    <rect x="0" y="208" width="480" height="44" rx="4" fill="#fff" stroke="#f0f0f0"/>
+    <rect x="10" y="222" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="90" y="222" width="110" height="14" rx="4" class="skeleton"/>
+    <rect x="230" y="222" width="55" height="14" rx="4" class="skeleton"/>
+    <rect x="330" y="222" width="50" height="14" rx="4" class="skeleton"/>
+    <rect x="410" y="220" width="60" height="18" rx="4" class="skeleton"/>
+  </g>
+
+  <!-- Loading Indicator -->
+  <g transform="translate(515, 340)">
+    <circle cx="0" cy="0" r="16" fill="none" stroke="#1677ff" stroke-width="3" stroke-dasharray="75 25" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="35" class="text-secondary" text-anchor="middle">Loading products...</text>
+  </g>
+</svg>

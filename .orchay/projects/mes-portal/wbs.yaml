@@ -918,7 +918,6 @@ workPackages:
           integrationCheck:
             - components/templates/ListTemplate.tsx
             - 검색 조건 → API 파라미터 변환 로직
-        execution: apply
       - id: TSK-06-02
         title: 상세 화면 템플릿
         category: development
@@ -1029,11 +1028,12 @@ workPackages:
             - Ant Design Modal
           integrationCheck:
             - components/templates/SelectPopupTemplate.tsx
+        execution: apply
       - id: TSK-06-06
         title: 마법사(Wizard) 화면 템플릿
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: low
         assignee: "-"
         tags:
@@ -1058,7 +1058,6 @@ workPackages:
             - Ant Design Steps
           integrationCheck:
             - components/templates/WizardTemplate.tsx
-        execution: start
       - id: TSK-06-07
         title: "[샘플] 사용자 목록 화면"
         category: development
@@ -1090,7 +1089,7 @@ workPackages:
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1110,7 +1109,6 @@ workPackages:
           integrationCheck:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
-        execution: start
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development

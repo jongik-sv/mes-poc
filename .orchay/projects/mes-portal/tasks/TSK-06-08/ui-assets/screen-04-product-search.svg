@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .bg { fill: #fff; }
+      .panel-bg { fill: #fafafa; }
+      .border { stroke: #d9d9d9; stroke-width: 1; fill: none; }
+      .splitter { fill: #f0f0f0; }
+      .text-primary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .text-secondary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #262626; font-weight: 500; }
+      .input-bg { fill: #fff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .input-filled { fill: #fff; stroke: #1677ff; stroke-width: 1; rx: 6; }
+      .tree-expand { fill: #8c8c8c; font-size: 10px; }
+      .selected-bg { fill: #e6f4ff; }
+      .selected-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #1677ff; font-weight: 500; }
+      .breadcrumb { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .breadcrumb-current { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .btn-primary { fill: #1677ff; }
+      .btn-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #fff; }
+      .table-header { fill: #fafafa; }
+      .table-header-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #262626; font-weight: 500; }
+      .table-cell { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #262626; }
+      .table-row { fill: #fff; }
+      .tag-success { fill: #f6ffed; stroke: #b7eb8f; }
+      .tag-success-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #52c41a; }
+      .filter-tag { fill: #f0f5ff; stroke: #adc6ff; }
+      .filter-tag-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #1677ff; }
+      .link-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #1677ff; }
+      .highlight { fill: #fff1b8; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="500"/>
+
+  <!-- Title Bar -->
+  <rect x="20" y="15" width="760" height="35" rx="6" fill="#f5f5f5"/>
+  <text x="40" y="38" class="text-title">Category - Product Master-Detail</text>
+
+  <!-- Main Container -->
+  <rect x="20" y="60" width="760" height="420" rx="8" class="border"/>
+
+  <!-- Category Panel (Left) -->
+  <rect x="21" y="61" width="228" height="418" fill="#fafafa" rx="7"/>
+
+  <!-- Category Search -->
+  <rect x="35" y="75" width="200" height="32" class="input-bg"/>
+  <text x="55" y="96" class="text-secondary">Category Search...</text>
+  <circle cx="220" cy="91" r="8" fill="none" stroke="#8c8c8c" stroke-width="1.5"/>
+  <line x1="226" y1="97" x2="230" y2="101" stroke="#8c8c8c" stroke-width="1.5"/>
+
+  <!-- Category Tree -->
+  <g transform="translate(35, 125)">
+    <!-- Electronics -->
+    <text x="0" y="0" class="tree-expand">&#9660;</text>
+    <text x="18" y="0" class="text-primary">Electronics (15)</text>
+
+    <!-- Selected: Smartphones -->
+    <rect x="15" y="12" width="175" height="24" rx="4" class="selected-bg"/>
+    <text x="20" y="30" class="tree-expand" fill="#1677ff">&#9660;</text>
+    <text x="38" y="30" class="selected-text">Smartphones (4)</text>
+
+    <text x="20" y="56" class="tree-expand">&#9660;</text>
+    <text x="38" y="56" class="text-primary">Laptops (6)</text>
+
+    <text x="20" y="82" class="tree-expand">&#9660;</text>
+    <text x="38" y="82" class="text-primary">Tablets (5)</text>
+
+    <!-- Appliances -->
+    <text x="0" y="120" class="tree-expand">&#9660;</text>
+    <text x="18" y="120" class="text-primary">Appliances (12)</text>
+
+    <text x="20" y="146" class="tree-expand">&#9654;</text>
+    <text x="38" y="146" class="text-primary">TV (4)</text>
+
+    <text x="20" y="172" class="tree-expand">&#9654;</text>
+    <text x="38" y="172" class="text-primary">Refrigerator (8)</text>
+
+    <!-- Furniture -->
+    <text x="0" y="210" class="tree-expand">&#9660;</text>
+    <text x="18" y="210" class="text-primary">Furniture (8)</text>
+
+    <text x="20" y="236" class="tree-expand">&#9654;</text>
+    <text x="38" y="236" class="text-primary">Beds (0)</text>
+
+    <text x="20" y="262" class="tree-expand">&#9654;</text>
+    <text x="38" y="262" class="text-primary">Sofas (8)</text>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="249" y="61" width="4" height="418" class="splitter"/>
+  <line x1="251" y1="260" x2="251" y2="270" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="275" x2="251" y2="285" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="290" x2="251" y2="300" stroke="#bfbfbf" stroke-width="1"/>
+
+  <!-- Product Panel (Right) -->
+  <rect x="253" y="61" width="526" height="418" fill="#fff" rx="7"/>
+
+  <!-- Header Row -->
+  <g transform="translate(275, 75)">
+    <!-- Breadcrumb -->
+    <text x="0" y="15" class="breadcrumb">Electronics</text>
+    <text x="70" y="15" class="breadcrumb">/</text>
+    <text x="85" y="15" class="breadcrumb-current">Smartphones</text>
+
+    <!-- Add Button -->
+    <rect x="400" y="0" width="80" height="28" rx="6" class="btn-primary"/>
+    <text x="420" y="18" class="btn-text">+ Add</text>
+  </g>
+
+  <!-- Active Filters Row -->
+  <g transform="translate(275, 110)">
+    <!-- Search Tag -->
+    <rect x="0" y="0" width="75" height="24" rx="4" class="filter-tag"/>
+    <text x="10" y="16" class="filter-tag-text">Galaxy</text>
+    <text x="55" y="16" class="filter-tag-text" style="cursor: pointer;">x</text>
+
+    <!-- Status Tag -->
+    <rect x="85" y="0" width="95" height="24" rx="4" class="filter-tag"/>
+    <text x="95" y="16" class="filter-tag-text">Status: Active</text>
+    <text x="163" y="16" class="filter-tag-text" style="cursor: pointer;">x</text>
+
+    <!-- Clear All -->
+    <text x="195" y="16" class="link-text">Clear All</text>
+  </g>
+
+  <!-- Product Table -->
+  <g transform="translate(275, 150)">
+    <!-- Table Header -->
+    <rect x="0" y="0" width="480" height="32" rx="4" class="table-header"/>
+    <text x="15" y="21" class="table-header-text">Code</text>
+    <text x="85" y="21" class="table-header-text">Product Name</text>
+    <text x="225" y="21" class="table-header-text">Price</text>
+    <text x="310" y="21" class="table-header-text">Status</text>
+    <text x="400" y="21" class="table-header-text">Actions</text>
+
+    <!-- Row 1 - Filtered Result with Highlight -->
+    <rect x="0" y="36" width="480" height="40" class="table-row" stroke="#f0f0f0"/>
+    <text x="15" y="62" class="table-cell">PRD-001</text>
+    <!-- Highlighted search term -->
+    <rect x="83" y="49" width="50" height="18" rx="2" class="highlight"/>
+    <text x="85" y="62" class="link-text">Galaxy S25</text>
+    <text x="225" y="62" class="table-cell">$1,200</text>
+    <rect x="305" y="48" width="55" height="20" rx="4" class="tag-success"/>
+    <text x="315" y="62" class="tag-success-text">Active</text>
+    <text x="405" y="62" class="link-text">Edit</text>
+    <text x="445" y="62" class="link-text">Delete</text>
+  </g>
+
+  <!-- Search Results Info -->
+  <g transform="translate(275, 250)">
+    <rect x="0" y="0" width="480" height="40" rx="4" fill="#f6ffed" stroke="#b7eb8f"/>
+    <text x="20" y="25" class="text-primary">Search Results: 1 of 4 products</text>
+  </g>
+
+  <!-- No More Results Message -->
+  <g transform="translate(515, 350)">
+    <text x="0" y="0" class="text-secondary" text-anchor="middle">End of filtered results</text>
+    <text x="0" y="20" class="link-text" text-anchor="middle">Clear filters to see all products</text>
+  </g>
+</svg>

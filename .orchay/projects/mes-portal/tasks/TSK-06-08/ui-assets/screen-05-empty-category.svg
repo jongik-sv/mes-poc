@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .bg { fill: #fff; }
+      .panel-bg { fill: #fafafa; }
+      .border { stroke: #d9d9d9; stroke-width: 1; fill: none; }
+      .splitter { fill: #f0f0f0; }
+      .text-primary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .text-secondary { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #262626; font-weight: 500; }
+      .input-bg { fill: #fff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .tree-expand { fill: #8c8c8c; font-size: 10px; }
+      .selected-bg { fill: #e6f4ff; }
+      .selected-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #1677ff; font-weight: 500; }
+      .breadcrumb { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .breadcrumb-current { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; fill: #262626; }
+      .btn-primary { fill: #1677ff; }
+      .btn-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #fff; }
+      .empty-icon { fill: none; stroke: #d9d9d9; stroke-width: 2; }
+      .empty-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #8c8c8c; text-anchor: middle; }
+      .empty-desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #bfbfbf; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="500"/>
+
+  <!-- Title Bar -->
+  <rect x="20" y="15" width="760" height="35" rx="6" fill="#f5f5f5"/>
+  <text x="40" y="38" class="text-title">Category - Product Master-Detail</text>
+
+  <!-- Main Container -->
+  <rect x="20" y="60" width="760" height="420" rx="8" class="border"/>
+
+  <!-- Category Panel (Left) -->
+  <rect x="21" y="61" width="228" height="418" fill="#fafafa" rx="7"/>
+
+  <!-- Category Search -->
+  <rect x="35" y="75" width="200" height="32" class="input-bg"/>
+  <text x="55" y="96" class="text-secondary">Category Search...</text>
+  <circle cx="220" cy="91" r="8" fill="none" stroke="#8c8c8c" stroke-width="1.5"/>
+  <line x1="226" y1="97" x2="230" y2="101" stroke="#8c8c8c" stroke-width="1.5"/>
+
+  <!-- Category Tree -->
+  <g transform="translate(35, 125)">
+    <!-- Electronics -->
+    <text x="0" y="0" class="tree-expand">&#9660;</text>
+    <text x="18" y="0" class="text-primary">Electronics (15)</text>
+
+    <text x="20" y="26" class="tree-expand">&#9660;</text>
+    <text x="38" y="26" class="text-primary">Smartphones (4)</text>
+
+    <text x="20" y="52" class="tree-expand">&#9660;</text>
+    <text x="38" y="52" class="text-primary">Laptops (6)</text>
+
+    <text x="20" y="78" class="tree-expand">&#9660;</text>
+    <text x="38" y="78" class="text-primary">Tablets (5)</text>
+
+    <!-- Appliances -->
+    <text x="0" y="116" class="tree-expand">&#9660;</text>
+    <text x="18" y="116" class="text-primary">Appliances (12)</text>
+
+    <text x="20" y="142" class="tree-expand">&#9654;</text>
+    <text x="38" y="142" class="text-primary">TV (4)</text>
+
+    <text x="20" y="168" class="tree-expand">&#9654;</text>
+    <text x="38" y="168" class="text-primary">Refrigerator (8)</text>
+
+    <!-- Furniture -->
+    <text x="0" y="206" class="tree-expand">&#9660;</text>
+    <text x="18" y="206" class="text-primary">Furniture (8)</text>
+
+    <!-- Selected: Beds (Empty) -->
+    <rect x="15" y="218" width="175" height="24" rx="4" class="selected-bg"/>
+    <text x="20" y="236" class="tree-expand" fill="#1677ff">&#9654;</text>
+    <text x="38" y="236" class="selected-text">Beds (0)</text>
+
+    <text x="20" y="262" class="tree-expand">&#9654;</text>
+    <text x="38" y="262" class="text-primary">Sofas (8)</text>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="249" y="61" width="4" height="418" class="splitter"/>
+  <line x1="251" y1="260" x2="251" y2="270" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="275" x2="251" y2="285" stroke="#bfbfbf" stroke-width="1"/>
+  <line x1="251" y1="290" x2="251" y2="300" stroke="#bfbfbf" stroke-width="1"/>
+
+  <!-- Product Panel (Right) -->
+  <rect x="253" y="61" width="526" height="418" fill="#fff" rx="7"/>
+
+  <!-- Header Row -->
+  <g transform="translate(275, 75)">
+    <!-- Breadcrumb -->
+    <text x="0" y="15" class="breadcrumb">Furniture</text>
+    <text x="60" y="15" class="breadcrumb">/</text>
+    <text x="75" y="15" class="breadcrumb-current">Beds</text>
+
+    <!-- Add Button -->
+    <rect x="400" y="0" width="80" height="28" rx="6" class="btn-primary"/>
+    <text x="420" y="18" class="btn-text">+ Add</text>
+  </g>
+
+  <!-- Empty State -->
+  <g transform="translate(516, 240)">
+    <!-- Empty Box Icon -->
+    <rect x="-45" y="-60" width="90" height="70" rx="6" class="empty-icon"/>
+    <line x1="-45" y1="-35" x2="45" y2="-35" class="empty-icon"/>
+    <rect x="-20" y="-55" width="40" height="12" rx="3" fill="#d9d9d9"/>
+
+    <!-- Dashed lines inside box (empty indication) -->
+    <line x1="-30" y1="-15" x2="30" y2="-15" stroke="#e8e8e8" stroke-width="1" stroke-dasharray="4 2"/>
+    <line x1="-25" y1="-5" x2="25" y2="-5" stroke="#e8e8e8" stroke-width="1" stroke-dasharray="4 2"/>
+    <line x1="-20" y1="5" x2="20" y2="5" stroke="#e8e8e8" stroke-width="1" stroke-dasharray="4 2"/>
+
+    <!-- Text -->
+    <text x="0" y="45" class="empty-text">No products in this category</text>
+    <text x="0" y="70" class="empty-desc">This category does not have any registered products.</text>
+
+    <!-- CTA Button -->
+    <rect x="-65" y="90" width="130" height="36" rx="6" class="btn-primary"/>
+    <text x="0" y="113" class="btn-text" text-anchor="middle">+ Add First Product</text>
+  </g>
+
+  <!-- Helper text -->
+  <text x="516" y="420" class="text-secondary" text-anchor="middle">Click the button above to add a new product to this category.</text>
+</svg>
