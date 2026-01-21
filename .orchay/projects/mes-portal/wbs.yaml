@@ -918,6 +918,7 @@ workPackages:
           integrationCheck:
             - components/templates/ListTemplate.tsx
             - 검색 조건 → API 파라미터 변환 로직
+        execution: apply
       - id: TSK-06-02
         title: 상세 화면 템플릿
         category: development
@@ -945,7 +946,6 @@ workPackages:
             - Ant Design Tabs
           integrationCheck:
             - components/templates/DetailTemplate.tsx
-        execution: review
       - id: TSK-06-03
         title: 입력/수정 폼 템플릿
         category: development
@@ -976,7 +976,6 @@ workPackages:
           integrationCheck:
             - components/templates/FormTemplate.tsx
             - useForm 훅 활용
-        execution: review
       - id: TSK-06-04
         title: 마스터-디테일 화면 템플릿
         category: development
@@ -1003,12 +1002,11 @@ workPackages:
             - react-split-pane 또는 Ant Design Splitter
           integrationCheck:
             - components/templates/MasterDetailTemplate.tsx
-        execution: review
       - id: TSK-06-05
         title: 팝업(모달) 화면 템플릿
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1031,7 +1029,6 @@ workPackages:
             - Ant Design Modal
           integrationCheck:
             - components/templates/SelectPopupTemplate.tsx
-        execution: start
       - id: TSK-06-06
         title: 마법사(Wizard) 화면 템플릿
         category: development
