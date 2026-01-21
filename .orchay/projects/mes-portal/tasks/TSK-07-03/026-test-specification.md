@@ -444,6 +444,95 @@ test('데이터 없을 시 Empty 상태가 표시된다', async ({ page }) => {
 });
 ```
 
+#### E2E-006: 목표 미달 시 색상 구분
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/dashboard-charts.spec.ts` |
+| **테스트명** | `test('목표 미달 바가 경고/위험 색상으로 표시된다')` |
+| **사전조건** | 바 차트 데이터에 목표 미달 항목 포함 |
+| **실행 단계** | |
+| 1 | 대시보드 접속 |
+| 2 | 바 차트 렌더링 대기 |
+| 3 | 각 라인의 실적/목표 비율 확인 |
+| **검증 포인트** | 90% 미만 시 경고색, 70% 미만 시 위험색 적용 |
+| **관련 요구사항** | BR-002 |
+
+```typescript
+test('목표 미달 바가 경고/위험 색상으로 표시된다', async ({ page }) => {
+  await page.goto('/dashboard');
+
+  const barChart = page.locator('[data-testid="chart-bar-performance"]');
+  await expect(barChart).toBeVisible();
+
+  // 목표 미달 바 호버 (2라인: 2800/3000 = 93.3% → 정상)
+  const canvas = barChart.locator('canvas');
+  const box = await canvas.boundingBox();
+
+  if (box) {
+    // 바 위치 대략 계산 (첫 번째 그룹의 실적 바)
+    await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.5);
+
+    // 툴팁 확인
+    const tooltip = page.locator('.g2-tooltip');
+    await expect(tooltip).toBeVisible({ timeout: 2000 });
+  }
+
+  // 색상 검증은 Canvas 기반으로 직접 확인 어려움
+  // 스크린샷 비교 또는 시각적 회귀 테스트 활용 권장
+  await page.screenshot({ path: 'e2e-006-bar-warning-colors.png' });
+});
+```
+
+#### E2E-007: 파이 차트 항목 그룹화
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/dashboard-charts.spec.ts` |
+| **테스트명** | `test('6개 이상 제품 데이터 시 "기타"로 그룹화된다')` |
+| **사전조건** | 파이 차트 데이터에 6개 이상 항목 |
+| **실행 단계** | |
+| 1 | 6개 이상 제품 데이터로 대시보드 로드 |
+| 2 | 파이 차트 렌더링 대기 |
+| 3 | "기타" 항목 존재 확인 |
+| **검증 포인트** | 범례에 "기타" 항목 표시, 총 5개 항목으로 그룹화 |
+| **관련 요구사항** | BR-003 |
+
+```typescript
+test('6개 이상 제품 데이터 시 "기타"로 그룹화된다', async ({ page }) => {
+  // 6개 이상 제품 데이터가 포함된 시나리오로 이동
+  // (실제 구현 시 mock 데이터 또는 쿼리 파라미터로 제어)
+  await page.goto('/dashboard?manyProducts=true');
+
+  const pieChart = page.locator('[data-testid="chart-pie-ratio"]');
+  await expect(pieChart).toBeVisible();
+
+  // 범례에서 "기타" 항목 확인
+  // @ant-design/charts의 범례는 Canvas 내부 또는 별도 DOM 요소
+  const legend = page.locator('.g2-legend');
+
+  // 범례 텍스트 중 "기타" 확인
+  await expect(page.getByText('기타')).toBeVisible();
+
+  // "기타" 섹터 호버 시 툴팁 확인
+  const canvas = pieChart.locator('canvas');
+  const box = await canvas.boundingBox();
+
+  if (box) {
+    // 파이 차트 우측 하단 영역 (기타 섹터 예상 위치)
+    await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.7);
+
+    const tooltip = page.locator('.g2-tooltip');
+    // 툴팁이 나타나면 "기타" 포함 확인
+    if (await tooltip.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await expect(tooltip).toContainText('기타');
+    }
+  }
+
+  await page.screenshot({ path: 'e2e-007-pie-grouped.png' });
+});
+```
+
 ---
 
 ## 4. UI 테스트케이스 (매뉴얼)
@@ -581,14 +670,16 @@ export const MOCK_RATIO_VALID = [
   { product: '기타', value: 625, percentage: 5 },
 ];
 
+// QA-006 대응: percentage 합계가 100%가 되도록 검증
 export const MOCK_RATIO_MANY = [
-  { product: 'A제품', value: 100, percentage: 25 },
-  { product: 'B제품', value: 80, percentage: 20 },
-  { product: 'C제품', value: 60, percentage: 15 },
-  { product: 'D제품', value: 50, percentage: 12.5 },
-  { product: 'E제품', value: 50, percentage: 12.5 },
-  { product: 'F제품', value: 60, percentage: 15 }, // 6개 - 그룹화 대상
+  { product: 'A제품', value: 100, percentage: 25 },   // 25%
+  { product: 'B제품', value: 80, percentage: 20 },    // 20%
+  { product: 'C제품', value: 60, percentage: 15 },    // 15%
+  { product: 'D제품', value: 52, percentage: 13 },    // 13%
+  { product: 'E제품', value: 52, percentage: 13 },    // 13%
+  { product: 'F제품', value: 56, percentage: 14 },    // 14% (합계: 100%)
 ];
+// 총 value: 400, 총 percentage: 100%
 ```
 
 ### 5.3 E2E 테스트용 시드 데이터

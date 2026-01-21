@@ -617,6 +617,139 @@ function transformLinePerformance(
 | percentage | 0-100 범위 | 범위 초과 시 클램핑 |
 | line | 비어있지 않음 | 빈 값 필터링 |
 
+### 7.6 데이터 검증 유틸리티
+
+> SEC-002 대응: 차트 데이터 검증 및 정제 함수 설계
+
+```typescript
+// lib/utils/chart-validation.ts
+
+/**
+ * 생산량 추이 데이터 검증
+ * @param data 원본 데이터
+ * @returns 검증된 데이터 (유효하지 않은 항목 제외)
+ */
+function validateProductionTrend(data: unknown[]): ProductionTrendItem[] {
+  if (!Array.isArray(data)) return [];
+
+  return data.filter((item): item is ProductionTrendItem => {
+    if (!item || typeof item !== 'object') return false;
+    const { time, value } = item as Record<string, unknown>;
+    return (
+      typeof time === 'string' &&
+      /^\d{2}:\d{2}$/.test(time) &&
+      typeof value === 'number' &&
+      value >= 0 &&
+      Number.isFinite(value)
+    );
+  });
+}
+
+/**
+ * 라인별 실적 데이터 검증
+ */
+function validateLinePerformance(data: unknown[]): LinePerformanceItem[] {
+  if (!Array.isArray(data)) return [];
+
+  return data.filter((item): item is LinePerformanceItem => {
+    if (!item || typeof item !== 'object') return false;
+    const { line, actual, target } = item as Record<string, unknown>;
+    return (
+      typeof line === 'string' &&
+      line.trim().length > 0 &&
+      typeof actual === 'number' &&
+      actual >= 0 &&
+      typeof target === 'number' &&
+      target >= 0
+    );
+  });
+}
+
+/**
+ * 제품별 비율 데이터 검증
+ */
+function validateProductRatio(data: unknown[]): ProductRatioItem[] {
+  if (!Array.isArray(data)) return [];
+
+  return data.filter((item): item is ProductRatioItem => {
+    if (!item || typeof item !== 'object') return false;
+    const { product, value, percentage } = item as Record<string, unknown>;
+    return (
+      typeof product === 'string' &&
+      product.trim().length > 0 &&
+      typeof value === 'number' &&
+      value >= 0 &&
+      typeof percentage === 'number' &&
+      percentage >= 0 &&
+      percentage <= 100
+    );
+  });
+}
+
+/**
+ * 차트 데이터 정제 (XSS 방지)
+ * @description @ant-design/charts는 내부적으로 텍스트를 Canvas에 렌더링하므로
+ *              DOM XSS 위험은 낮으나, 툴팁의 customContent 사용 시 주의 필요
+ */
+function sanitizeChartData<T extends Record<string, unknown>>(data: T[]): T[] {
+  return data.map(item => {
+    const sanitized = { ...item };
+    Object.keys(sanitized).forEach(key => {
+      if (typeof sanitized[key] === 'string') {
+        // HTML 특수문자 이스케이핑
+        sanitized[key] = (sanitized[key] as string)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#x27;');
+      }
+    });
+    return sanitized as T;
+  });
+}
+```
+
+### 7.7 XSS 방지 대책
+
+> SEC-001 대응: @ant-design/charts의 XSS 방지 동작 확인
+
+| 렌더링 영역 | XSS 위험 | 대응 |
+|------------|---------|------|
+| 차트 본체 (Canvas) | 낮음 | Canvas API는 HTML 파싱하지 않음 |
+| 축 라벨 | 낮음 | Canvas 텍스트 렌더링 |
+| 범례 | 낮음 | Canvas 텍스트 렌더링 |
+| **툴팁 (기본)** | 낮음 | G2 라이브러리 내부 이스케이핑 |
+| **툴팁 (customContent)** | 중간 | innerHTML 사용 시 이스케이핑 필요 |
+
+**적용 방안:**
+- 기본 `tooltip.formatter` 사용 시 별도 이스케이핑 불필요
+- `customContent` 사용 시 `sanitizeChartData()` 적용 또는 DOM 조작 대신 문자열 조합
+- 모든 차트 데이터는 `validateXxx()` 함수로 사전 검증
+
+### 7.8 데이터 크기 제한
+
+> SEC-005 대응: 대량 데이터 렌더링 성능 보호
+
+```typescript
+// 차트 데이터 최대 포인트 수 (권장값)
+const MAX_DATA_POINTS = {
+  LINE_CHART: 100,   // 라인 차트 (시간별 추이)
+  BAR_CHART: 20,     // 바 차트 (라인별 비교)
+  PIE_CHART: 10,     // 파이 차트 (제품별 비율) - 그룹화로 자동 제한
+};
+
+/**
+ * 데이터 크기 제한 적용
+ */
+function limitDataPoints<T>(data: T[], maxPoints: number): T[] {
+  if (data.length <= maxPoints) return data;
+
+  // 최신 데이터 우선 (또는 샘플링 전략 적용)
+  return data.slice(-maxPoints);
+}
+```
+
 ---
 
 ## 8. 비즈니스 규칙
@@ -653,12 +786,31 @@ export const chartTheme = {
 
 **BR-02: 목표 미달 표시**
 
-설명: 바 차트에서 실적이 목표의 90% 미만인 경우 시각적 강조
+설명: 바 차트에서 실적이 목표 대비 미달인 경우 시각적 강조
 
-예시:
-- 실적 >= 목표 * 0.9: 기본 색상 (파란색)
-- 실적 < 목표 * 0.9: 경고 색상 (노란색)
-- 실적 < 목표 * 0.7: 위험 색상 (빨간색)
+> QA-007 대응: 경계값 조건 명확화
+
+| 달성률 조건 | 색상 | 의미 |
+|------------|------|------|
+| `actual >= target * 0.9` (90% 이상) | 기본 색상 (colorPrimary) | 정상 |
+| `0.7 <= actual/target < 0.9` (70% 이상 90% 미만) | 경고 색상 (colorWarning) | 주의 |
+| `actual/target < 0.7` (70% 미만) | 위험 색상 (colorError) | 위험 |
+
+**경계값 처리:**
+- 정확히 90%일 때 (0.9): **정상** (>=0.9 조건에 포함)
+- 정확히 70%일 때 (0.7): **주의** (>=0.7 조건에 포함)
+- target이 0인 경우: **위험** (division by zero 방지, 무조건 위험 처리)
+
+```typescript
+function getPerformanceColor(actual: number, target: number): string {
+  if (target === 0) return themeTokens.colorError;
+
+  const rate = actual / target;
+  if (rate >= 0.9) return themeTokens.colorPrimary;
+  if (rate >= 0.7) return themeTokens.colorWarning;
+  return themeTokens.colorError;
+}
+```
 
 **BR-03: 파이 차트 그룹화**
 
@@ -708,7 +860,33 @@ function groupSmallItems(data: ProductRatioItem[], limit = 5) {
 
 ### 9.3 에러 처리 구현
 
+> SEC-003 대응: 사용자 친화적 에러 메시지 (내부 정보 노출 방지)
+
 ```typescript
+// 에러 메시지 매핑 (내부 에러 → 사용자 친화적 메시지)
+const ERROR_MESSAGES: Record<string, string> = {
+  NETWORK_ERROR: '네트워크 연결을 확인해주세요.',
+  DATA_LOAD_ERROR: '차트 데이터를 불러올 수 없습니다.',
+  RENDER_ERROR: '차트를 표시할 수 없습니다.',
+  INVALID_DATA: '데이터 형식이 올바르지 않습니다.',
+  DEFAULT: '일시적인 오류가 발생했습니다.',
+};
+
+function getErrorMessage(error: Error): string {
+  // 에러 유형 판별 (실제 구현 시 에러 코드 또는 name 활용)
+  if (error.message.includes('network') || error.message.includes('fetch')) {
+    return ERROR_MESSAGES.NETWORK_ERROR;
+  }
+  if (error.message.includes('JSON') || error.message.includes('parse')) {
+    return ERROR_MESSAGES.INVALID_DATA;
+  }
+  // 개발 환경에서만 상세 에러 로깅
+  if (process.env.NODE_ENV === 'development') {
+    console.error('[Chart Error]', error);
+  }
+  return ERROR_MESSAGES.DEFAULT;
+}
+
 // 차트 컴포넌트 에러 바운더리
 function ChartErrorBoundary({ children, onRetry }) {
   return (
@@ -717,7 +895,7 @@ function ChartErrorBoundary({ children, onRetry }) {
         <Result
           status="error"
           title="차트를 표시할 수 없습니다"
-          subTitle={error.message}
+          subTitle={getErrorMessage(error)}
           extra={
             <Button onClick={onRetry}>재시도</Button>
           }
@@ -801,11 +979,21 @@ graph TD
 
 ### 11.5 사용할 @ant-design/charts 컴포넌트
 
+> ARCH-004 대응: 번들 최적화를 위한 named import 사용
+
 | 컴포넌트 | import | 용도 |
 |----------|--------|------|
-| Line | @ant-design/charts | 시간별 생산량 추이 |
-| Column | @ant-design/charts | 라인별 실적 (수직 바) |
-| Pie | @ant-design/charts | 제품별 비율 |
+| Line | `import { Line } from '@ant-design/charts'` | 시간별 생산량 추이 |
+| Column | `import { Column } from '@ant-design/charts'` | 라인별 실적 (수직 바) |
+| Pie | `import { Pie } from '@ant-design/charts'` | 제품별 비율 |
+
+```typescript
+// 권장: 필요한 차트만 named import
+import { Line, Column, Pie } from '@ant-design/charts';
+
+// 비권장: 전체 import (번들 크기 증가)
+// import * as Charts from '@ant-design/charts';
+```
 
 ### 11.6 제약 사항
 
@@ -827,6 +1015,8 @@ graph TD
 
 ### 11.8 주요 data-testid 정의
 
+> QA-004 대응: 구체적인 name 값 명시
+
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
 | `chart-line-production` | 라인 차트 컨테이너 | 라인 차트 로드 확인 |
@@ -836,6 +1026,9 @@ graph TD
 | `chart-error` | 차트 에러 상태 | 에러 확인 |
 | `chart-empty` | 차트 빈 상태 | Empty 확인 |
 | `chart-retry-btn` | 재시도 버튼 | 에러 복구 |
+| `chart-wrapper-line` | 라인 차트 래퍼 | ChartWrapper 확인 |
+| `chart-wrapper-bar` | 바 차트 래퍼 | ChartWrapper 확인 |
+| `chart-wrapper-pie` | 파이 차트 래퍼 | ChartWrapper 확인 |
 
 ---
 
@@ -855,8 +1048,8 @@ graph TD
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
