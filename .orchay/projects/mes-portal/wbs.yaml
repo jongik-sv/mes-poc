@@ -524,7 +524,8 @@ workPackages:
         title: 메뉴 API 엔드포인트
         category: development
         domain: backend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: high
         assignee: "-"
         tags:
@@ -647,7 +648,7 @@ workPackages:
         title: Auth.js 인증 설정
         category: development
         domain: backend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
