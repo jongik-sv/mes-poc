@@ -235,7 +235,8 @@ workPackages:
         title: 전역 검색 모달
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -264,7 +265,6 @@ workPackages:
             - components/common/GlobalSearch.tsx 파일 존재
             - 메뉴 데이터에서 검색 수행
             - 검색 결과 선택 시 MDI 탭 오픈
-        execution: build
       - id: TSK-01-06
         title: 알림 패널
         category: development
@@ -519,6 +519,7 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
+        execution: build
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
