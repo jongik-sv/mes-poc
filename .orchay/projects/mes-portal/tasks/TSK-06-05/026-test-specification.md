@@ -468,14 +468,17 @@ test('다중 선택 모드에서 여러 항목을 선택할 수 있다', async (
   await page.click('[data-testid="open-popup-btn"]')
   await page.waitForSelector('[data-testid="select-popup-modal"]')
 
-  // 체크박스 존재 확인
-  const checkboxes = page.locator('.ant-checkbox-input')
+  // 체크박스 존재 확인 (data-testid 활용)
+  const selectAllCheckbox = page.locator('[data-testid="select-all-checkbox"]')
+  await expect(selectAllCheckbox).toBeVisible()
+
+  const checkboxes = page.locator('.ant-table-row .ant-checkbox-input')
   const count = await checkboxes.count()
-  expect(count).toBeGreaterThan(2)
+  expect(count).toBeGreaterThan(1)
 
   // 첫 번째, 두 번째 항목 체크
-  await checkboxes.nth(1).click() // 0번은 전체 선택
-  await checkboxes.nth(2).click()
+  await checkboxes.nth(0).click()
+  await checkboxes.nth(1).click()
 
   // 선택 개수 표시 확인
   await expect(page.locator('[data-testid="selected-count"]')).toContainText('2')

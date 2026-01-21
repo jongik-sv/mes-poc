@@ -5,9 +5,9 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-06-05 |
-| 문서 버전 | 1.0 |
+| 문서 버전 | 1.1 |
 | 작성일 | 2026-01-20 |
-| 상태 | 작성중 |
+| 상태 | 리뷰반영 |
 | 카테고리 | development |
 
 ---
@@ -206,14 +206,56 @@ flowchart LR
 | 데이터 없음 | Empty 표시 | "검색 결과가 없습니다" |
 | 선택 없음 | 선택완료 버튼 비활성화 | - |
 
+### 6.3 검색 디바운스
+
+| 항목 | 설정 |
+|------|------|
+| 기본 지연 시간 | 300ms (`searchDebounceMs` prop으로 조정 가능) |
+| 구현 방식 | `useDebouncedCallback` 또는 `lodash.debounce` 사용 |
+| 동작 | 마지막 입력 후 지연 시간 경과 시 `onSearch` 콜백 호출 |
+
 ---
 
-## 7. 데이터 요구사항
+## 7. 보안 요구사항
 
-### 7.1 Props 인터페이스
+### 7.1 XSS 방어 가이드라인 (SEC-002)
+
+**컬럼 render 함수 사용 시 주의사항:**
+
+| 패턴 | 안전성 | 예시 |
+|------|--------|------|
+| React 기본 텍스트 | ✅ 안전 | `render: (text) => <span>{text}</span>` |
+| dangerouslySetInnerHTML | ❌ 위험 (금지) | `render: (text) => <div dangerouslySetInnerHTML={{...}} />` |
+| HTML 문자열 직접 삽입 | ❌ 위험 (금지) | 사용자 입력값을 HTML로 변환 금지 |
+
+### 7.2 검색 입력값 Sanitization (SEC-001)
+
+| 항목 | 규칙 |
+|------|------|
+| 검색어 최대 길이 | 100자 제한 |
+| 제어 문자 처리 | 자동 제거 |
+| 서버 검색 시 | SQL Injection 방지는 서버 측 책임 |
+| 특수문자 이스케이프 | 클라이언트 필터링 시 정규표현식 이스케이프 처리 |
+
+### 7.3 데이터 노출 제한
+
+| 항목 | 가이드라인 |
+|------|-----------|
+| 표시 컬럼 | 팝업에 표시할 컬럼은 필요 최소한의 정보만 포함 |
+| 민감 정보 | 주민번호, 비밀번호 등 민감 정보 컬럼 포함 금지 |
+| 권한 검증 | 팝업 표시 전 데이터 접근 권한 검증은 부모 컴포넌트 책임 |
+
+---
+
+## 8. 데이터 요구사항
+
+### 8.1 Props 인터페이스
 
 ```typescript
-interface SelectPopupTemplateProps<T> {
+import type { ColumnType, TablePaginationConfig } from 'antd/es/table'
+import type { ReactNode } from 'react'
+
+interface SelectPopupTemplateProps<T extends Record<string, unknown>> {
   // 모달 설정
   open: boolean
   onClose: () => void
@@ -230,13 +272,35 @@ interface SelectPopupTemplateProps<T> {
   multiple?: boolean
   selectedKeys?: (string | number)[]
   onSelect: (selectedRows: T[]) => void
+  selectOnRowClick?: boolean  // 단일 선택 시 즉시 완료 여부 (기본값: false)
 
   // 검색
   searchPlaceholder?: string
   onSearch?: (keyword: string) => void
+  searchMode?: 'client' | 'server'  // 검색 모드 (기본값: 'client')
+  searchDebounceMs?: number  // 서버 검색 시 디바운스 설정 (기본값: 300)
+  searchFields?: (keyof T)[]  // 클라이언트 검색 시 필터링 대상 필드
 
-  // 페이지네이션
-  pagination?: TablePaginationConfig
+  // 페이지네이션 (서버 모드 시 controlled)
+  pagination?: TablePaginationConfig | false
+  onPaginationChange?: (page: number, pageSize: number) => void
+  total?: number  // 서버 페이지네이션 시 전체 건수
+
+  // 권한 관리
+  permissions?: {
+    canSelect?: boolean  // 선택 권한 (기본: true)
+  }
+
+  // 에러 상태
+  error?: {
+    message?: string
+    onRetry?: () => void
+  }
+
+  // 슬롯 기반 커스터마이징
+  searchExtra?: ReactNode  // 검색 영역 추가 요소
+  tableHeader?: ReactNode  // 테이블 상단 추가 요소
+  footer?: ReactNode | ((selectedRows: T[]) => ReactNode)  // 커스텀 푸터
 }
 ```
 
@@ -260,7 +324,7 @@ interface SelectPopupTemplateProps<T> {
 
 | 상황 | 원인 | 사용자 메시지 | 복구 방법 |
 |------|------|--------------|----------|
-| 조회 실패 | 네트워크 오류 | "데이터를 불러오지 못했습니다" | 재시도 버튼 |
+| 조회 실패 | 네트워크 오류 | "데이터를 불러오지 못했습니다" | 재시도 버튼 (테이블 영역 중앙, error.onRetry 콜백 호출) |
 | 선택 없음 | 사용자 실수 | "항목을 선택해주세요" | 토스트 안내 |
 
 ---
@@ -276,13 +340,33 @@ interface SelectPopupTemplateProps<T> {
 
 ## 11. 구현 범위
 
-### 11.1 영향받는 영역
+### 11.1 파일 구조
+
+```
+components/templates/SelectPopupTemplate/
+├── index.tsx                 # 메인 컴포넌트 (re-export)
+├── SelectPopupTemplate.tsx   # 템플릿 구현체
+├── types.ts                  # Props 인터페이스 정의
+└── __tests__/
+    └── SelectPopupTemplate.spec.tsx  # 단위 테스트
+```
+
+### 11.2 Server/Client Component 구분
+
+| 컴포넌트 | 타입 | 사유 |
+|----------|------|------|
+| SelectPopupTemplate | Client Component | Ant Design Modal/Table 사용, 상태 관리 필요 |
+| 부모 페이지 | Server Component (권장) | 초기 데이터 페칭 수행 |
+
+> 'use client' 지시어를 SelectPopupTemplate.tsx 최상단에 선언
+
+### 11.3 영향받는 영역
 
 | 영역 | 변경 내용 | 영향도 |
 |------|----------|--------|
-| components/templates/ | SelectPopupTemplate.tsx 신규 | 높음 |
+| components/templates/ | SelectPopupTemplate 디렉토리 신규 | 높음 |
 
-### 11.2 의존성
+### 11.4 의존성
 
 | 의존 항목 | 이유 | 상태 |
 |----------|------|------|
@@ -312,3 +396,4 @@ interface SelectPopupTemplateProps<T> {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영 (ARCH-001~008, QA-001~010, SEC-001~005) |
