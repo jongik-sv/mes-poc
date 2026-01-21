@@ -264,6 +264,7 @@ workPackages:
             - components/common/GlobalSearch.tsx 파일 존재
             - 메뉴 데이터에서 검색 수행
             - 검색 결과 선택 시 MDI 탭 오픈
+        execution: build
       - id: TSK-01-06
         title: 알림 패널
         category: development
@@ -464,7 +465,8 @@ workPackages:
         title: 메뉴 데이터 모델
         category: development
         domain: backend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: critical
         assignee: "-"
         tags:
@@ -489,6 +491,7 @@ workPackages:
             - prisma/schema.prisma에 Menu 모델 정의
             - prisma/seed.ts에 초기 메뉴 데이터
             - app/api/menus/route.ts API 엔드포인트
+        execution: verify
       - id: TSK-03-02
         title: 역할-메뉴 매핑
         category: development
@@ -639,6 +642,7 @@ workPackages:
             - prisma/schema.prisma에 User, Role 모델
             - prisma/seed.ts 시드 스크립트
             - bcrypt 또는 argon2로 비밀번호 해시
+        execution: build
       - id: TSK-04-03
         title: Auth.js 인증 설정
         category: development
@@ -742,6 +746,7 @@ workPackages:
             - components/common/PageLoading.tsx
             - components/common/ErrorBoundary.tsx
             - components/common/EmptyState.tsx
+        execution: build
       - id: TSK-05-02
         title: 확인 다이얼로그
         category: development
