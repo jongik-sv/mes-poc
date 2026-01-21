@@ -208,7 +208,7 @@ workPackages:
         title: 푸터 컴포넌트
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
         assignee: "-"
         tags:
@@ -232,7 +232,6 @@ workPackages:
           integrationCheck:
             - components/layout/Footer.tsx 파일 존재
             - 버전 정보는 package.json 또는 환경변수에서 가져오기
-        execution: verify
       - id: TSK-01-05
         title: 전역 검색 모달
         category: development
