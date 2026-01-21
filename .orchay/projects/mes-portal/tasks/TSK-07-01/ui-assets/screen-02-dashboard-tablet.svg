@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="768" height="600" viewBox="0 0 768 600" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-02: Dashboard Tablet</title>
+  <desc>MES Portal - Dashboard Layout Wireframe (Tablet 768-991px)</desc>
+
+  <!-- Background -->
+  <rect width="768" height="600" fill="#f5f5f5"/>
+
+  <!-- ==================== KPI CARDS SECTION ==================== -->
+  <g id="kpi-cards">
+    <!-- Section Title -->
+    <text x="16" y="28" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#000000d9">Key Performance Indicators</text>
+
+    <!-- KPI Cards Row 1 (2 cards per row) -->
+    <!-- KPI Card 1: Operation Rate -->
+    <g id="kpi-card-1" transform="translate(16, 40)">
+      <rect width="360" height="90" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <circle cx="32" cy="32" r="16" fill="#e6f7ff"/>
+      <text x="32" y="38" font-family="Arial, sans-serif" font-size="14" fill="#1677ff" text-anchor="middle">%</text>
+      <text x="60" y="28" font-family="Arial, sans-serif" font-size="12" fill="#00000073">Operation Rate</text>
+      <text x="60" y="50" font-family="Arial, sans-serif" font-size="22" font-weight="600" fill="#000000d9">92.5%</text>
+      <g transform="translate(60, 62)">
+        <path d="M0 6 L4 2 L8 6" stroke="#52c41a" stroke-width="1.5" fill="none"/>
+        <text x="12" y="8" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">+2.3%</text>
+      </g>
+    </g>
+
+    <!-- KPI Card 2: Defect Rate -->
+    <g id="kpi-card-2" transform="translate(392, 40)">
+      <rect width="360" height="90" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <circle cx="32" cy="32" r="16" fill="#fff1f0"/>
+      <text x="32" y="38" font-family="Arial, sans-serif" font-size="12" fill="#ff4d4f" text-anchor="middle">!</text>
+      <text x="60" y="28" font-family="Arial, sans-serif" font-size="12" fill="#00000073">Defect Rate</text>
+      <text x="60" y="50" font-family="Arial, sans-serif" font-size="22" font-weight="600" fill="#000000d9">1.2%</text>
+      <g transform="translate(60, 62)">
+        <path d="M0 2 L4 6 L8 2" stroke="#ff4d4f" stroke-width="1.5" fill="none"/>
+        <text x="12" y="8" font-family="Arial, sans-serif" font-size="11" fill="#ff4d4f">+0.1%</text>
+      </g>
+    </g>
+
+    <!-- KPI Cards Row 2 -->
+    <!-- KPI Card 3: Production Volume -->
+    <g id="kpi-card-3" transform="translate(16, 140)">
+      <rect width="360" height="90" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <circle cx="32" cy="32" r="16" fill="#f6ffed"/>
+      <text x="32" y="38" font-family="Arial, sans-serif" font-size="12" fill="#52c41a" text-anchor="middle">#</text>
+      <text x="60" y="28" font-family="Arial, sans-serif" font-size="12" fill="#00000073">Production Volume</text>
+      <text x="60" y="50" font-family="Arial, sans-serif" font-size="22" font-weight="600" fill="#000000d9">12,458</text>
+      <g transform="translate(60, 62)">
+        <path d="M0 6 L4 2 L8 6" stroke="#52c41a" stroke-width="1.5" fill="none"/>
+        <text x="12" y="8" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">+856</text>
+      </g>
+    </g>
+
+    <!-- KPI Card 4: Equipment Status -->
+    <g id="kpi-card-4" transform="translate(392, 140)">
+      <rect width="360" height="90" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <circle cx="32" cy="32" r="16" fill="#fffbe6"/>
+      <text x="32" y="38" font-family="Arial, sans-serif" font-size="12" fill="#faad14" text-anchor="middle">M</text>
+      <text x="60" y="28" font-family="Arial, sans-serif" font-size="12" fill="#00000073">Equipment Status</text>
+      <text x="60" y="50" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#000000d9">24</text>
+      <text x="90" y="50" font-family="Arial, sans-serif" font-size="12" fill="#00000073">/ 28 Active</text>
+      <g transform="translate(60, 62)">
+        <circle cx="4" cy="6" r="3" fill="#52c41a"/>
+        <text x="12" y="9" font-family="Arial, sans-serif" font-size="10" fill="#00000073">24</text>
+        <circle cx="40" cy="6" r="3" fill="#faad14"/>
+        <text x="48" y="9" font-family="Arial, sans-serif" font-size="10" fill="#00000073">2</text>
+        <circle cx="70" cy="6" r="3" fill="#ff4d4f"/>
+        <text x="78" y="9" font-family="Arial, sans-serif" font-size="10" fill="#00000073">2</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== CHARTS SECTION ==================== -->
+  <g id="charts-section">
+    <!-- Line Chart Card: Full Width -->
+    <g id="line-chart-card" transform="translate(16, 248)">
+      <rect width="736" height="160" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="16" y="26" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#000000d9">Production Trend (7 Days)</text>
+      <!-- Simplified Chart Area -->
+      <g transform="translate(50, 45)">
+        <!-- Grid Lines -->
+        <line x1="0" y1="0" x2="650" y2="0" stroke="#f0f0f0" stroke-width="1"/>
+        <line x1="0" y1="35" x2="650" y2="35" stroke="#f0f0f0" stroke-width="1"/>
+        <line x1="0" y1="70" x2="650" y2="70" stroke="#f0f0f0" stroke-width="1"/>
+        <!-- X-Axis Labels -->
+        <text x="45" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Mon</text>
+        <text x="135" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Tue</text>
+        <text x="230" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Wed</text>
+        <text x="325" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Thu</text>
+        <text x="420" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Fri</text>
+        <text x="515" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Sat</text>
+        <text x="605" y="90" font-family="Arial, sans-serif" font-size="10" fill="#00000073" text-anchor="middle">Sun</text>
+        <!-- Line Chart -->
+        <path d="M45 45 L135 35 L230 50 L325 25 L420 30 L515 40 L605 20"
+              stroke="#1677ff" stroke-width="2" fill="none"/>
+        <circle cx="45" cy="45" r="3" fill="#1677ff"/>
+        <circle cx="135" cy="35" r="3" fill="#1677ff"/>
+        <circle cx="230" cy="50" r="3" fill="#1677ff"/>
+        <circle cx="325" cy="25" r="3" fill="#1677ff"/>
+        <circle cx="420" cy="30" r="3" fill="#1677ff"/>
+        <circle cx="515" cy="40" r="3" fill="#1677ff"/>
+        <circle cx="605" cy="20" r="3" fill="#1677ff"/>
+      </g>
+    </g>
+
+    <!-- Bar Chart Card: Full Width -->
+    <g id="bar-chart-card" transform="translate(16, 418)">
+      <rect width="736" height="100" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="16" y="26" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#000000d9">Production by Line</text>
+      <!-- Simplified Horizontal Bars -->
+      <g transform="translate(80, 40)">
+        <text x="0" y="12" font-family="Arial, sans-serif" font-size="11" fill="#00000073" text-anchor="end">Line A</text>
+        <rect x="10" y="2" width="500" height="12" rx="2" fill="#d9d9d9"/>
+        <rect x="10" y="2" width="450" height="12" rx="2" fill="#1677ff"/>
+
+        <text x="0" y="32" font-family="Arial, sans-serif" font-size="11" fill="#00000073" text-anchor="end">Line B</text>
+        <rect x="10" y="22" width="500" height="12" rx="2" fill="#d9d9d9"/>
+        <rect x="10" y="22" width="380" height="12" rx="2" fill="#1677ff"/>
+
+        <text x="0" y="52" font-family="Arial, sans-serif" font-size="11" fill="#00000073" text-anchor="end">Line C</text>
+        <rect x="10" y="42" width="500" height="12" rx="2" fill="#d9d9d9"/>
+        <rect x="10" y="42" width="420" height="12" rx="2" fill="#1677ff"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== RECENT ACTIVITY (Collapsed) ==================== -->
+  <g id="activity-section">
+    <g id="activity-card" transform="translate(16, 528)">
+      <rect width="736" height="56" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="16" y="24" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#000000d9">Recent Activity</text>
+      <text x="16" y="42" font-family="Arial, sans-serif" font-size="12" fill="#00000073">4 new activities</text>
+      <!-- Notification Badge -->
+      <circle cx="680" cy="28" r="10" fill="#ff4d4f"/>
+      <text x="680" y="32" font-family="Arial, sans-serif" font-size="10" fill="#ffffff" text-anchor="middle">4</text>
+      <!-- Expand Arrow -->
+      <path d="M710 24 L720 28 L710 32" stroke="#00000073" stroke-width="1.5" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(16, 592)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="10" fill="#8c8c8c">SCR-02: Dashboard Tablet (768-991px) | MES Portal Dashboard Layout Wireframe</text>
+  </g>
+</svg>
