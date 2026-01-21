@@ -129,7 +129,7 @@ parallel-processing: true
 명령어 실행 전 상태 검증:
 
 ```bash
-npx tsx .orchay/script/transition.ts {Task-ID} build -p {project} --start
+$(git rev-parse --show-toplevel)/.orchay/bin/transition {Task-ID} build -p {project} --start
 ```
 
 | 결과 | 처리 |
@@ -285,7 +285,7 @@ ls -la test-results/${TIMESTAMP}/e2e/
 ```bash
 # {project}: 입력에서 파싱 (예: deployment/TSK-01-01 → deployment)
 # 프로젝트 미명시 시 wf-common-lite.md 규칙에 따라 자동 결정
-npx tsx .orchay/script/transition.ts {Task-ID} build -p {project}
+$(git rev-parse --show-toplevel)/.orchay/bin/transition {Task-ID} build -p {project}
 ```
 - 성공: `{ "success": true, "newStatus": "im" }`
 

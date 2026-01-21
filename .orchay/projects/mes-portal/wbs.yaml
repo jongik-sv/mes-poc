@@ -235,7 +235,7 @@ workPackages:
         title: 전역 검색 모달
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:

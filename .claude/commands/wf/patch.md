@@ -45,7 +45,7 @@ parallel-processing: true
 명령어 실행 전 상태 검증:
 
 ```bash
-npx tsx .orchay/script/transition.ts {Task-ID} patch -p {project} --start
+$(git rev-parse --show-toplevel)/.orchay/bin/transition {Task-ID} patch -p {project} --start
 ```
 
 | 결과 | 처리 |
@@ -209,7 +209,7 @@ ORCHAY_DONE:{project}/TSK-01-01-01:patch:success
 
 **1. execution 필드 제거:**
 ```bash
-npx tsx .orchay/script/transition.ts {task-id} -p {project} --end
+$(git rev-parse --show-toplevel)/.orchay/bin/transition {task-id} -p {project} --end
 ```
 
 **2. 완료 신호 출력:**

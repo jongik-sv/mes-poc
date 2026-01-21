@@ -47,7 +47,7 @@ parallel-processing: true
 명령어 실행 전 상태 검증:
 
 ```bash
-npx tsx .orchay/script/transition.ts {Task-ID} fix -p {project} --start
+$(git rev-parse --show-toplevel)/.orchay/bin/transition {Task-ID} fix -p {project} --start
 ```
 
 | 결과 | 처리 |

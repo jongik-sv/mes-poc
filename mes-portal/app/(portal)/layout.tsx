@@ -8,9 +8,10 @@ import { message } from 'antd'
 import { PortalLayout, Header, Footer, Sidebar } from '@/components/layout'
 import type { MenuItem } from '@/components/layout'
 import { findMenuByPath, findParentKeys } from '@/components/layout/Sidebar'
-import type { Notification } from '@/components/common'
+import type { Notification, SearchableMenuItem } from '@/components/common'
+import { GlobalSearch } from '@/components/common'
 import { MDIProvider, useMDI, type Tab } from '@/lib/mdi'
-import { TabBar } from '@/components/mdi'
+import { TabBar, MDIContent } from '@/components/mdi'
 import menuData from '@/mock-data/menus.json'
 import notificationData from '@/mock-data/notifications.json'
 
@@ -82,7 +83,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       if (menu.path) {
         setSelectedKeys([menu.id])
 
-        // 탭으로 열기
+        // 탭으로 열기 (URL 변경 없이 MDI 탭 내에서 화면 로드)
         const tab: Tab = {
           id: menu.id,
           title: menu.name,
@@ -91,12 +92,9 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           closable: menu.id !== 'dashboard', // 대시보드는 닫기 불가
         }
         openTab(tab)
-
-        // 라우터로 이동
-        router.push(menu.path)
       }
     },
-    [router, openTab]
+    [openTab]
   )
 
   // 서브메뉴 열기/닫기 핸들러
@@ -116,6 +114,39 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     },
     [router]
   )
+
+  // 검색 결과 선택 핸들러 (TSK-01-05)
+  const handleSearchSelect = useCallback(
+    (menu: SearchableMenuItem) => {
+      if (menu.path) {
+        setSelectedKeys([menu.id])
+
+        // 탭으로 열기
+        const tab: Tab = {
+          id: menu.id,
+          title: menu.name,
+          path: menu.path,
+          icon: menu.icon,
+          closable: menu.id !== '1', // 대시보드(ID: 1)는 닫기 불가
+        }
+        openTab(tab)
+        setIsSearchOpen(false)
+      }
+    },
+    [openTab]
+  )
+
+  // menus를 SearchableMenuItem 타입으로 변환
+  const searchableMenus: SearchableMenuItem[] = menus.map((menu) => ({
+    ...menu,
+    children: menu.children?.map((child) => ({
+      ...child,
+      children: child.children?.map((grandChild) => ({
+        ...grandChild,
+        children: [],
+      })) || [],
+    })) || [],
+  }))
 
   return (
     <PortalLayout
@@ -142,28 +173,16 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       tabBar={tabs.length > 0 ? <TabBar /> : undefined}
       footer={<Footer />}
     >
-      {children}
-      {/* 검색 모달 (TSK-01-05에서 구현 예정) */}
-      {isSearchOpen && (
-        <div
-          data-testid="search-modal"
-          className="fixed inset-0 bg-black/50 flex items-start justify-center pt-20 z-50"
-          onClick={() => setIsSearchOpen(false)}
-        >
-          <div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg p-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요..."
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              autoFocus
-            />
-            <p className="text-sm text-gray-500 mt-2">ESC 키로 닫기</p>
-          </div>
-        </div>
-      )}
+      {/* MDI 컨텐츠 영역: 탭이 있으면 MDIContent, 없으면 children */}
+      {tabs.length > 0 ? <MDIContent /> : children}
+
+      {/* 전역 검색 모달 (TSK-01-05) */}
+      <GlobalSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        menus={searchableMenus}
+        onSelect={handleSearchSelect}
+      />
     </PortalLayout>
   )
 }
