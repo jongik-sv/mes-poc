@@ -337,7 +337,7 @@ workPackages:
         title: 탭 바 컴포넌트
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
@@ -365,7 +365,6 @@ workPackages:
             - components/mdi/TabBar.tsx 파일 존재
             - MDI Context에서 탭 목록 구독
             - 탭 클릭/닫기 이벤트 핸들링
-        execution: build
       - id: TSK-02-03
         title: 탭 드래그 앤 드롭
         category: development
@@ -578,7 +577,7 @@ workPackages:
         title: Prisma 및 SQLite 설정
         category: infrastructure
         domain: backend
-        status: "[im]"
+        status: "[vf]"
         priority: critical
         assignee: "-"
         tags:
@@ -605,6 +604,7 @@ workPackages:
             - prisma/schema.prisma 파일 존재
             - lib/prisma.ts 싱글톤 클라이언트
             - .env에 DATABASE_URL 설정
+        test-result: pass
       - id: TSK-04-02
         title: 사용자 및 역할 모델
         category: development
