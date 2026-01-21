@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666666">
+    SCR-02: Master-Detail Template - Detail Loading State
+  </text>
+
+  <!-- Main Container -->
+  <rect x="20" y="45" width="760" height="420" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel -->
+  <rect x="20" y="45" width="240" height="420" rx="4" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel Header -->
+  <rect x="20" y="45" width="240" height="40" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="35" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#262626">
+    Master List
+  </text>
+
+  <!-- Search Box -->
+  <rect x="30" y="95" width="220" height="32" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <g transform="translate(40, 105)">
+    <circle cx="6" cy="6" r="5" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <line x1="10" y1="10" x2="14" y2="14" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+  <text x="62" y="116" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    Search...
+  </text>
+
+  <!-- Tree Items -->
+  <g font-family="Arial, sans-serif" font-size="13">
+    <!-- Category A (Expanded) -->
+    <g transform="translate(30, 145)">
+      <polygon points="4,8 14,8 9,14" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category A</text>
+    </g>
+    <!-- Selected Item A-1 -->
+    <rect x="30" y="162" width="220" height="28" rx="4" fill="#E6F4FF"/>
+    <g transform="translate(45, 170)">
+      <text x="20" y="12" fill="#1677FF" font-weight="500">Item A-1</text>
+    </g>
+    <g transform="translate(45, 195)">
+      <text x="20" y="12" fill="#595959">Item A-2</text>
+    </g>
+    <g transform="translate(45, 220)">
+      <text x="20" y="12" fill="#595959">Item A-3</text>
+    </g>
+
+    <!-- Category B -->
+    <g transform="translate(30, 255)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category B</text>
+    </g>
+
+    <!-- Category C -->
+    <g transform="translate(30, 290)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category C</text>
+    </g>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="260" y="45" width="4" height="420" fill="#D9D9D9"/>
+  <line x1="262" y1="230" x2="262" y2="260" stroke="#BFBFBF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Detail Panel -->
+  <rect x="264" y="45" width="516" height="420" fill="#FFFFFF"/>
+
+  <!-- Detail Panel Header with Breadcrumb -->
+  <rect x="264" y="45" width="516" height="40" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="280" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    Category A
+  </text>
+  <text x="352" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    /
+  </text>
+  <text x="365" y="70" font-family="Arial, sans-serif" font-size="12" fill="#262626" font-weight="500">
+    Item A-1
+  </text>
+
+  <!-- Loading Skeleton -->
+  <g transform="translate(280, 100)">
+    <!-- Skeleton Row 1 -->
+    <rect x="0" y="0" width="480" height="20" rx="4" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <!-- Skeleton Row 2 -->
+    <rect x="0" y="30" width="400" height="20" rx="4" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <!-- Skeleton Row 3 -->
+    <rect x="0" y="60" width="450" height="20" rx="4" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+
+    <!-- Skeleton Table Header -->
+    <rect x="0" y="110" width="480" height="30" rx="4" fill="#FAFAFA"/>
+    <rect x="10" y="118" width="60" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="100" y="118" width="80" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <rect x="210" y="118" width="70" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+    <rect x="310" y="118" width="90" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+
+    <!-- Skeleton Table Rows -->
+    <rect x="0" y="150" width="480" height="35" rx="0" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <rect x="10" y="160" width="50" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="100" y="160" width="70" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <rect x="210" y="160" width="55" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+    <rect x="310" y="160" width="75" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+
+    <rect x="0" y="185" width="480" height="35" rx="0" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <rect x="10" y="195" width="45" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="100" y="195" width="65" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <rect x="210" y="195" width="50" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+    <rect x="310" y="195" width="80" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+
+    <rect x="0" y="220" width="480" height="35" rx="0" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <rect x="10" y="230" width="55" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="100" y="230" width="75" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <rect x="210" y="230" width="60" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+    <rect x="310" y="230" width="70" height="14" rx="2" fill="#F0F0F0">
+      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+  </g>
+
+  <!-- Selection Arrow Indicator -->
+  <g transform="translate(250, 175)">
+    <line x1="0" y1="0" x2="15" y2="0" stroke="#1677FF" stroke-width="2"/>
+    <polygon points="15,-4 23,0 15,4" fill="#1677FF"/>
+  </g>
+
+  <!-- Annotations -->
+  <g font-family="Arial, sans-serif" font-size="10" fill="#1677FF">
+    <!-- Selection annotation -->
+    <line x1="180" y1="176" x2="200" y2="176" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="90" y="170">Selected: Primary BG</text>
+    <text x="90" y="182">#E6F4FF</text>
+
+    <!-- Skeleton annotation -->
+    <line x1="760" y1="200" x2="770" y2="200" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="680" y="195">Skeleton Loading</text>
+    <text x="680" y="207">Animated pulse</text>
+  </g>
+
+  <!-- State indicator -->
+  <rect x="680" y="10" width="100" height="24" rx="4" fill="#1677FF"/>
+  <text x="730" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    Loading
+  </text>
+</svg>

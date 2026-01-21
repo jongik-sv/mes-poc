@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666666">
+    SCR-03: Master-Detail Template - Detail Loaded State
+  </text>
+
+  <!-- Main Container -->
+  <rect x="20" y="45" width="760" height="420" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel -->
+  <rect x="20" y="45" width="240" height="420" rx="4" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel Header -->
+  <rect x="20" y="45" width="240" height="40" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="35" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#262626">
+    Master List
+  </text>
+
+  <!-- Search Box -->
+  <rect x="30" y="95" width="220" height="32" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <g transform="translate(40, 105)">
+    <circle cx="6" cy="6" r="5" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <line x1="10" y1="10" x2="14" y2="14" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+  <text x="62" y="116" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    Search...
+  </text>
+
+  <!-- Tree Items -->
+  <g font-family="Arial, sans-serif" font-size="13">
+    <!-- Category A (Expanded) -->
+    <g transform="translate(30, 145)">
+      <polygon points="4,8 14,8 9,14" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category A</text>
+    </g>
+    <!-- Selected Item A-1 -->
+    <rect x="30" y="162" width="220" height="28" rx="4" fill="#E6F4FF"/>
+    <g transform="translate(45, 170)">
+      <text x="20" y="12" fill="#1677FF" font-weight="500">Item A-1</text>
+    </g>
+    <g transform="translate(45, 195)">
+      <text x="20" y="12" fill="#595959">Item A-2</text>
+    </g>
+    <g transform="translate(45, 220)">
+      <text x="20" y="12" fill="#595959">Item A-3</text>
+    </g>
+
+    <!-- Category B -->
+    <g transform="translate(30, 255)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category B</text>
+    </g>
+
+    <!-- Category C -->
+    <g transform="translate(30, 290)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category C</text>
+    </g>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="260" y="45" width="4" height="420" fill="#D9D9D9"/>
+  <line x1="262" y1="230" x2="262" y2="260" stroke="#BFBFBF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Detail Panel -->
+  <rect x="264" y="45" width="516" height="420" fill="#FFFFFF"/>
+
+  <!-- Detail Panel Header with Breadcrumb -->
+  <rect x="264" y="45" width="516" height="40" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="280" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    Category A
+  </text>
+  <text x="352" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    /
+  </text>
+  <text x="365" y="70" font-family="Arial, sans-serif" font-size="12" fill="#262626" font-weight="500">
+    Item A-1
+  </text>
+
+  <!-- Toolbar -->
+  <g transform="translate(280, 95)">
+    <!-- Add Button -->
+    <rect x="0" y="0" width="60" height="28" rx="4" fill="#1677FF"/>
+    <text x="10" y="18" font-family="Arial, sans-serif" font-size="12" fill="#FFFFFF">+ Add</text>
+
+    <!-- Edit Button -->
+    <rect x="70" y="0" width="55" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="82" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">Edit</text>
+
+    <!-- Delete Button -->
+    <rect x="135" y="0" width="65" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="147" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">Delete</text>
+
+    <!-- Refresh Button -->
+    <rect x="210" y="0" width="32" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <g transform="translate(218, 6)">
+      <path d="M8,0 A8,8 0 1,1 0,8" fill="none" stroke="#595959" stroke-width="1.5"/>
+      <polygon points="0,5 0,11 4,8" fill="#595959"/>
+    </g>
+  </g>
+
+  <!-- Data Table -->
+  <g transform="translate(280, 135)">
+    <!-- Table Header -->
+    <rect x="0" y="0" width="480" height="36" fill="#FAFAFA" stroke="#D9D9D9"/>
+    <text x="15" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#262626">ID</text>
+    <text x="80" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#262626">Name</text>
+    <text x="200" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#262626">Status</text>
+    <text x="320" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#262626">Modified</text>
+    <text x="420" y="23" font-family="Arial, sans-serif" font-size="12" font-weight="600" fill="#262626">Actions</text>
+
+    <!-- Table Row 1 -->
+    <rect x="0" y="36" width="480" height="40" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <text x="15" y="62" font-family="Arial, sans-serif" font-size="12" fill="#595959">001</text>
+    <text x="80" y="62" font-family="Arial, sans-serif" font-size="12" fill="#262626">Data Item 1</text>
+    <rect x="200" y="48" width="50" height="20" rx="10" fill="#E6F7E6"/>
+    <text x="210" y="62" font-family="Arial, sans-serif" font-size="11" fill="#52C41A">Active</text>
+    <text x="320" y="62" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">2026-01-20</text>
+    <text x="420" y="62" font-family="Arial, sans-serif" font-size="12" fill="#1677FF">View</text>
+
+    <!-- Table Row 2 -->
+    <rect x="0" y="76" width="480" height="40" fill="#FAFAFA" stroke="#F0F0F0"/>
+    <text x="15" y="102" font-family="Arial, sans-serif" font-size="12" fill="#595959">002</text>
+    <text x="80" y="102" font-family="Arial, sans-serif" font-size="12" fill="#262626">Data Item 2</text>
+    <rect x="200" y="88" width="55" height="20" rx="10" fill="#FFF2E8"/>
+    <text x="208" y="102" font-family="Arial, sans-serif" font-size="11" fill="#FA8C16">Inactive</text>
+    <text x="320" y="102" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">2026-01-19</text>
+    <text x="420" y="102" font-family="Arial, sans-serif" font-size="12" fill="#1677FF">View</text>
+
+    <!-- Table Row 3 -->
+    <rect x="0" y="116" width="480" height="40" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <text x="15" y="142" font-family="Arial, sans-serif" font-size="12" fill="#595959">003</text>
+    <text x="80" y="142" font-family="Arial, sans-serif" font-size="12" fill="#262626">Data Item 3</text>
+    <rect x="200" y="128" width="50" height="20" rx="10" fill="#E6F7E6"/>
+    <text x="210" y="142" font-family="Arial, sans-serif" font-size="11" fill="#52C41A">Active</text>
+    <text x="320" y="142" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">2026-01-18</text>
+    <text x="420" y="142" font-family="Arial, sans-serif" font-size="12" fill="#1677FF">View</text>
+
+    <!-- Table Row 4 -->
+    <rect x="0" y="156" width="480" height="40" fill="#FAFAFA" stroke="#F0F0F0"/>
+    <text x="15" y="182" font-family="Arial, sans-serif" font-size="12" fill="#595959">004</text>
+    <text x="80" y="182" font-family="Arial, sans-serif" font-size="12" fill="#262626">Data Item 4</text>
+    <rect x="200" y="168" width="50" height="20" rx="10" fill="#E6F7E6"/>
+    <text x="210" y="182" font-family="Arial, sans-serif" font-size="11" fill="#52C41A">Active</text>
+    <text x="320" y="182" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">2026-01-17</text>
+    <text x="420" y="182" font-family="Arial, sans-serif" font-size="12" fill="#1677FF">View</text>
+
+    <!-- Table Row 5 -->
+    <rect x="0" y="196" width="480" height="40" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <text x="15" y="222" font-family="Arial, sans-serif" font-size="12" fill="#595959">005</text>
+    <text x="80" y="222" font-family="Arial, sans-serif" font-size="12" fill="#262626">Data Item 5</text>
+    <rect x="200" y="208" width="55" height="20" rx="10" fill="#FFF2E8"/>
+    <text x="208" y="222" font-family="Arial, sans-serif" font-size="11" fill="#FA8C16">Inactive</text>
+    <text x="320" y="222" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">2026-01-16</text>
+    <text x="420" y="222" font-family="Arial, sans-serif" font-size="12" fill="#1677FF">View</text>
+  </g>
+
+  <!-- Pagination -->
+  <g transform="translate(280, 395)">
+    <text x="0" y="14" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">Total 15 items</text>
+
+    <!-- Page Controls -->
+    <rect x="330" y="0" width="28" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="340" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">&lt;</text>
+
+    <rect x="365" y="0" width="28" height="28" rx="4" fill="#1677FF"/>
+    <text x="375" y="18" font-family="Arial, sans-serif" font-size="12" fill="#FFFFFF">1</text>
+
+    <rect x="400" y="0" width="28" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="410" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">2</text>
+
+    <rect x="435" y="0" width="28" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="445" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">3</text>
+
+    <rect x="470" y="0" width="28" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="480" y="18" font-family="Arial, sans-serif" font-size="12" fill="#595959">&gt;</text>
+  </g>
+
+  <!-- Annotations -->
+  <g font-family="Arial, sans-serif" font-size="10" fill="#1677FF">
+    <!-- Toolbar annotation -->
+    <line x1="520" y1="110" x2="540" y2="110" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="545" y="105">Toolbar</text>
+    <text x="545" y="117">CRUD Actions</text>
+
+    <!-- Table annotation -->
+    <line x1="765" y1="270" x2="775" y2="270" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="680" y="265">Data Table</text>
+    <text x="680" y="277">Zebra striping</text>
+  </g>
+
+  <!-- State indicator -->
+  <rect x="680" y="10" width="100" height="24" rx="4" fill="#52C41A"/>
+  <text x="730" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    Loaded
+  </text>
+</svg>

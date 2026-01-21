@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666666">
+    SCR-04: Master-Detail Template - Panel Resize State
+  </text>
+
+  <!-- Main Container -->
+  <rect x="20" y="45" width="760" height="420" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel (Resized - Wider) -->
+  <rect x="20" y="45" width="350" height="420" rx="4" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel Header -->
+  <rect x="20" y="45" width="350" height="40" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="35" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#262626">
+    Master List
+  </text>
+
+  <!-- Search Box -->
+  <rect x="30" y="95" width="330" height="32" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <g transform="translate(40, 105)">
+    <circle cx="6" cy="6" r="5" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <line x1="10" y1="10" x2="14" y2="14" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+  <text x="62" y="116" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    Search...
+  </text>
+
+  <!-- Tree Items -->
+  <g font-family="Arial, sans-serif" font-size="13">
+    <!-- Category A (Expanded) -->
+    <g transform="translate(30, 145)">
+      <polygon points="4,8 14,8 9,14" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category A</text>
+    </g>
+    <!-- Selected Item A-1 -->
+    <rect x="30" y="162" width="330" height="28" rx="4" fill="#E6F4FF"/>
+    <g transform="translate(45, 170)">
+      <text x="20" y="12" fill="#1677FF" font-weight="500">Item A-1</text>
+    </g>
+    <g transform="translate(45, 195)">
+      <text x="20" y="12" fill="#595959">Item A-2</text>
+    </g>
+    <g transform="translate(45, 220)">
+      <text x="20" y="12" fill="#595959">Item A-3</text>
+    </g>
+
+    <!-- Category B -->
+    <g transform="translate(30, 255)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category B</text>
+    </g>
+
+    <!-- Category C -->
+    <g transform="translate(30, 290)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category C</text>
+    </g>
+  </g>
+
+  <!-- Active Splitter Bar (Being Dragged) -->
+  <rect x="370" y="45" width="6" height="420" fill="#1677FF"/>
+  <!-- Grip Lines -->
+  <g stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round">
+    <line x1="373" y1="245" x2="373" y2="255"/>
+    <line x1="373" y1="260" x2="373" y2="270"/>
+  </g>
+
+  <!-- Detail Panel (Resized - Narrower) -->
+  <rect x="376" y="45" width="404" height="420" fill="#FFFFFF"/>
+
+  <!-- Detail Panel Header with Breadcrumb -->
+  <rect x="376" y="45" width="404" height="40" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="390" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    Category A
+  </text>
+  <text x="462" y="70" font-family="Arial, sans-serif" font-size="12" fill="#8C8C8C">
+    /
+  </text>
+  <text x="475" y="70" font-family="Arial, sans-serif" font-size="12" fill="#262626" font-weight="500">
+    Item A-1
+  </text>
+
+  <!-- Detail Content (Compressed) -->
+  <g transform="translate(390, 95)">
+    <!-- Toolbar (Compressed) -->
+    <rect x="0" y="0" width="55" height="28" rx="4" fill="#1677FF"/>
+    <text x="10" y="18" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">+ Add</text>
+    <rect x="60" y="0" width="50" height="28" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="72" y="18" font-family="Arial, sans-serif" font-size="11" fill="#595959">Edit</text>
+
+    <!-- Compact Table -->
+    <rect x="0" y="40" width="370" height="30" fill="#FAFAFA" stroke="#D9D9D9"/>
+    <text x="10" y="60" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#262626">ID</text>
+    <text x="60" y="60" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#262626">Name</text>
+    <text x="180" y="60" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#262626">Status</text>
+    <text x="280" y="60" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#262626">Modified</text>
+
+    <!-- Table Rows -->
+    <rect x="0" y="70" width="370" height="35" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <text x="10" y="93" font-family="Arial, sans-serif" font-size="11" fill="#595959">001</text>
+    <text x="60" y="93" font-family="Arial, sans-serif" font-size="11" fill="#262626">Data Item 1</text>
+    <rect x="180" y="80" width="45" height="18" rx="9" fill="#E6F7E6"/>
+    <text x="188" y="93" font-family="Arial, sans-serif" font-size="10" fill="#52C41A">Active</text>
+    <text x="280" y="93" font-family="Arial, sans-serif" font-size="11" fill="#8C8C8C">01-20</text>
+
+    <rect x="0" y="105" width="370" height="35" fill="#FAFAFA" stroke="#F0F0F0"/>
+    <text x="10" y="128" font-family="Arial, sans-serif" font-size="11" fill="#595959">002</text>
+    <text x="60" y="128" font-family="Arial, sans-serif" font-size="11" fill="#262626">Data Item 2</text>
+    <rect x="180" y="115" width="50" height="18" rx="9" fill="#FFF2E8"/>
+    <text x="186" y="128" font-family="Arial, sans-serif" font-size="10" fill="#FA8C16">Inactive</text>
+    <text x="280" y="128" font-family="Arial, sans-serif" font-size="11" fill="#8C8C8C">01-19</text>
+
+    <rect x="0" y="140" width="370" height="35" fill="#FFFFFF" stroke="#F0F0F0"/>
+    <text x="10" y="163" font-family="Arial, sans-serif" font-size="11" fill="#595959">003</text>
+    <text x="60" y="163" font-family="Arial, sans-serif" font-size="11" fill="#262626">Data Item 3</text>
+    <rect x="180" y="150" width="45" height="18" rx="9" fill="#E6F7E6"/>
+    <text x="188" y="163" font-family="Arial, sans-serif" font-size="10" fill="#52C41A">Active</text>
+    <text x="280" y="163" font-family="Arial, sans-serif" font-size="11" fill="#8C8C8C">01-18</text>
+  </g>
+
+  <!-- Resize Cursor Indicator -->
+  <g transform="translate(373, 320)">
+    <line x1="-20" y1="0" x2="20" y2="0" stroke="#1677FF" stroke-width="2" stroke-dasharray="5,3"/>
+    <polygon points="-25,0 -15,-6 -15,6" fill="#1677FF"/>
+    <polygon points="25,0 15,-6 15,6" fill="#1677FF"/>
+  </g>
+
+  <!-- Dimension Indicators -->
+  <!-- Master Width -->
+  <g transform="translate(20, 475)">
+    <line x1="0" y1="0" x2="350" y2="0" stroke="#1677FF" stroke-width="1"/>
+    <line x1="0" y1="-5" x2="0" y2="5" stroke="#1677FF" stroke-width="1"/>
+    <line x1="350" y1="-5" x2="350" y2="5" stroke="#1677FF" stroke-width="1"/>
+    <text x="175" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1677FF">
+      350px (46%)
+    </text>
+  </g>
+
+  <!-- Detail Width -->
+  <g transform="translate(376, 475)">
+    <line x1="0" y1="0" x2="404" y2="0" stroke="#1677FF" stroke-width="1"/>
+    <line x1="0" y1="-5" x2="0" y2="5" stroke="#1677FF" stroke-width="1"/>
+    <line x1="404" y1="-5" x2="404" y2="5" stroke="#1677FF" stroke-width="1"/>
+    <text x="202" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1677FF">
+      404px (54%)
+    </text>
+  </g>
+
+  <!-- Annotations -->
+  <g font-family="Arial, sans-serif" font-size="10" fill="#1677FF">
+    <!-- Splitter annotation -->
+    <line x1="373" y1="380" x2="373" y2="400" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <rect x="328" y="402" width="90" height="40" rx="4" fill="#E6F4FF" stroke="#1677FF"/>
+    <text x="373" y="418" text-anchor="middle" fill="#1677FF" font-weight="500">Dragging</text>
+    <text x="373" y="432" text-anchor="middle" fill="#1677FF">cursor: col-resize</text>
+
+    <!-- Min Width annotations -->
+    <text x="30" y="440" fill="#FA8C16">Min: 200px</text>
+    <text x="685" y="440" fill="#FA8C16">Min: 300px</text>
+  </g>
+
+  <!-- Tooltip showing current size -->
+  <rect x="340" y="215" width="66" height="24" rx="4" fill="#262626"/>
+  <text x="373" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    46% | 54%
+  </text>
+
+  <!-- State indicator -->
+  <rect x="680" y="10" width="100" height="24" rx="4" fill="#722ED1"/>
+  <text x="730" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    Resizing
+  </text>
+</svg>

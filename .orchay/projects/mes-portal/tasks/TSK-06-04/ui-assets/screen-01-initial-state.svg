@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666666">
+    SCR-01: Master-Detail Template - Initial State (No Selection)
+  </text>
+
+  <!-- Main Container -->
+  <rect x="20" y="45" width="760" height="420" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel -->
+  <rect x="20" y="45" width="240" height="420" rx="4" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+
+  <!-- Master Panel Header -->
+  <rect x="20" y="45" width="240" height="40" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="35" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#262626">
+    Master List
+  </text>
+
+  <!-- Search Box -->
+  <rect x="30" y="95" width="220" height="32" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <g transform="translate(40, 105)">
+    <circle cx="6" cy="6" r="5" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+    <line x1="10" y1="10" x2="14" y2="14" stroke="#BFBFBF" stroke-width="1.5"/>
+  </g>
+  <text x="62" y="116" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    Search...
+  </text>
+
+  <!-- Tree Items -->
+  <g font-family="Arial, sans-serif" font-size="13">
+    <!-- Category A -->
+    <g transform="translate(30, 145)">
+      <polygon points="8,4 14,8 8,12" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category A</text>
+    </g>
+    <g transform="translate(45, 170)">
+      <text x="20" y="12" fill="#595959">Item A-1</text>
+    </g>
+    <g transform="translate(45, 195)">
+      <text x="20" y="12" fill="#595959">Item A-2</text>
+    </g>
+    <g transform="translate(45, 220)">
+      <text x="20" y="12" fill="#595959">Item A-3</text>
+    </g>
+
+    <!-- Category B -->
+    <g transform="translate(30, 255)">
+      <polygon points="4,8 14,8 9,14" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category B</text>
+    </g>
+
+    <!-- Category C -->
+    <g transform="translate(30, 290)">
+      <polygon points="4,8 14,8 9,14" fill="#8C8C8C"/>
+      <text x="20" y="12" fill="#262626">Category C</text>
+    </g>
+  </g>
+
+  <!-- Splitter Bar -->
+  <rect x="260" y="45" width="4" height="420" fill="#D9D9D9"/>
+  <line x1="262" y1="230" x2="262" y2="260" stroke="#BFBFBF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Detail Panel -->
+  <rect x="264" y="45" width="516" height="420" fill="#FFFFFF"/>
+
+  <!-- Detail Panel Header -->
+  <rect x="264" y="45" width="516" height="40" fill="#FAFAFA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="280" y="70" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#262626">
+    Detail View
+  </text>
+
+  <!-- Empty State -->
+  <g transform="translate(522, 220)">
+    <!-- Empty Icon -->
+    <rect x="-30" y="-60" width="60" height="50" rx="4" fill="none" stroke="#D9D9D9" stroke-width="2"/>
+    <line x1="-20" y1="-35" x2="20" y2="-35" stroke="#D9D9D9" stroke-width="2"/>
+    <line x1="-20" y1="-25" x2="10" y2="-25" stroke="#D9D9D9" stroke-width="2"/>
+    <line x1="-20" y1="-15" x2="15" y2="-15" stroke="#D9D9D9" stroke-width="2"/>
+  </g>
+  <text x="522" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#8C8C8C">
+    Select an item
+  </text>
+  <text x="522" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    Choose an item from the master list
+  </text>
+  <text x="522" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#BFBFBF">
+    to view details here
+  </text>
+
+  <!-- Annotations -->
+  <g font-family="Arial, sans-serif" font-size="10" fill="#1677FF">
+    <!-- Master Panel annotation -->
+    <line x1="140" y1="475" x2="140" y2="465" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="140" y="490" text-anchor="middle">Master: 240px (30%)</text>
+
+    <!-- Splitter annotation -->
+    <line x1="262" y1="475" x2="262" y2="465" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="262" y="490" text-anchor="middle">Splitter: 4px</text>
+
+    <!-- Detail Panel annotation -->
+    <line x1="522" y1="475" x2="522" y2="465" stroke="#1677FF" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="522" y="490" text-anchor="middle">Detail: 516px (70%)</text>
+  </g>
+
+  <!-- State indicator -->
+  <rect x="680" y="10" width="100" height="24" rx="4" fill="#FAAD14"/>
+  <text x="730" y="26" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">
+    No Selection
+  </text>
+</svg>
