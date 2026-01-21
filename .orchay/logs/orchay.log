@@ -174,3 +174,47 @@
 2026-01-21 17:07:36,297 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=idle, info=None
 2026-01-21 17:07:36,298 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=busy, task=None, has_active_task=False)
 2026-01-21 17:07:36,306 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=busy, info=None
+2026-01-21 17:07:46,206 [DEBUG] orchay.ui.app: _on_auto_refresh: _tick 시작 (paused=True)
+2026-01-21 17:07:46,206 [DEBUG] orchay.main: _tick 시작
+2026-01-21 17:07:46,344 [DEBUG] orchay.application.task_service: Task 병합 완료: 39개
+2026-01-21 17:07:46,344 [DEBUG] orchay.application.worker_service: Worker 1: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:46,353 [DEBUG] orchay.application.worker_service: Worker 1: 감지 결과 state=idle, info=None
+2026-01-21 17:07:46,353 [DEBUG] orchay.application.worker_service: Worker 2: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:46,361 [DEBUG] orchay.application.worker_service: Worker 2: 감지 결과 state=idle, info=None
+2026-01-21 17:07:46,361 [DEBUG] orchay.application.worker_service: Worker 3: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:46,369 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=idle, info=None
+2026-01-21 17:07:46,369 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=busy, task=None, has_active_task=False)
+2026-01-21 17:07:46,378 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=busy, info=None
+2026-01-21 17:07:56,201 [DEBUG] orchay.ui.app: _on_auto_refresh: _tick 시작 (paused=True)
+2026-01-21 17:07:56,202 [DEBUG] orchay.main: _tick 시작
+2026-01-21 17:07:56,279 [DEBUG] orchay.application.task_service: Task 병합 완료: 39개
+2026-01-21 17:07:56,279 [DEBUG] orchay.application.worker_service: Worker 1: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:56,289 [DEBUG] orchay.application.worker_service: Worker 1: 감지 결과 state=idle, info=None
+2026-01-21 17:07:56,289 [DEBUG] orchay.application.worker_service: Worker 2: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:56,300 [DEBUG] orchay.application.worker_service: Worker 2: 감지 결과 state=idle, info=None
+2026-01-21 17:07:56,300 [DEBUG] orchay.application.worker_service: Worker 3: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:07:56,311 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=idle, info=None
+2026-01-21 17:07:56,311 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=busy, task=None, has_active_task=False)
+2026-01-21 17:07:56,333 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=busy, info=None
+2026-01-21 17:08:06,205 [DEBUG] orchay.ui.app: _on_auto_refresh: _tick 시작 (paused=True)
+2026-01-21 17:08:06,205 [DEBUG] orchay.main: _tick 시작
+2026-01-21 17:08:06,278 [DEBUG] orchay.application.task_service: Task 병합 완료: 39개
+2026-01-21 17:08:06,278 [DEBUG] orchay.application.worker_service: Worker 1: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:06,288 [DEBUG] orchay.application.worker_service: Worker 1: 감지 결과 state=idle, info=None
+2026-01-21 17:08:06,288 [DEBUG] orchay.application.worker_service: Worker 2: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:06,298 [DEBUG] orchay.application.worker_service: Worker 2: 감지 결과 state=idle, info=None
+2026-01-21 17:08:06,298 [DEBUG] orchay.application.worker_service: Worker 3: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:06,310 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=idle, info=None
+2026-01-21 17:08:06,311 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=busy, task=None, has_active_task=False)
+2026-01-21 17:08:06,331 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=busy, info=None
+2026-01-21 17:08:16,205 [DEBUG] orchay.ui.app: _on_auto_refresh: _tick 시작 (paused=True)
+2026-01-21 17:08:16,205 [DEBUG] orchay.main: _tick 시작
+2026-01-21 17:08:16,358 [DEBUG] orchay.application.task_service: Task 병합 완료: 39개
+2026-01-21 17:08:16,358 [DEBUG] orchay.application.worker_service: Worker 1: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:16,372 [DEBUG] orchay.application.worker_service: Worker 1: 감지 결과 state=idle, info=None
+2026-01-21 17:08:16,372 [DEBUG] orchay.application.worker_service: Worker 2: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:16,390 [DEBUG] orchay.application.worker_service: Worker 2: 감지 결과 state=idle, info=None
+2026-01-21 17:08:16,390 [DEBUG] orchay.application.worker_service: Worker 3: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-21 17:08:16,402 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=idle, info=None
+2026-01-21 17:08:16,402 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=busy, task=None, has_active_task=False)
+2026-01-21 17:08:16,419 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=idle, info=None
