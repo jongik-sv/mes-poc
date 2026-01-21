@@ -2,7 +2,7 @@
 // MES Portal 헤더 컴포넌트
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Button, Dropdown, Avatar, Badge, Breadcrumb } from 'antd'
 import type { MenuProps } from 'antd'
 import {
@@ -18,6 +18,7 @@ import {
 import { useTheme } from 'next-themes'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Link from 'next/link'
+import { NotificationPanel, Notification } from '@/components/common'
 
 interface BreadcrumbItem {
   title: string
@@ -33,23 +34,34 @@ interface HeaderUser {
 interface HeaderProps {
   user?: HeaderUser
   breadcrumbItems?: BreadcrumbItem[]
-  unreadNotifications?: number
+  notifications?: Notification[]
   onSearchOpen?: () => void
-  onNotificationOpen?: () => void
+  onNotificationNavigate?: (link: string, title: string) => void
   onLogout?: () => void
 }
 
 export function Header({
   user,
   breadcrumbItems = [],
-  unreadNotifications = 0,
+  notifications = [],
   onSearchOpen,
-  onNotificationOpen,
+  onNotificationNavigate,
   onLogout,
 }: HeaderProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [currentTime, setCurrentTime] = useState('')
   const [mounted, setMounted] = useState(false)
+  const [notificationPanelOpen, setNotificationPanelOpen] = useState(false)
+  const [localNotifications, setLocalNotifications] = useState<Notification[]>(notifications)
+  const notificationRef = useRef<HTMLDivElement>(null)
+
+  // notifications prop이 변경되면 로컬 상태 업데이트
+  useEffect(() => {
+    setLocalNotifications(notifications)
+  }, [notifications])
+
+  // 읽지 않은 알림 개수 계산
+  const unreadNotifications = localNotifications.filter((n) => !n.isRead).length
 
   // 마운트 상태 확인 (SSR 호환)
   useEffect(() => {
@@ -74,6 +86,37 @@ export function Header({
     return () => clearInterval(timer)
   }, [])
 
+  // 알림 패널 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setNotificationPanelOpen(false)
+      }
+    }
+
+    if (notificationPanelOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [notificationPanelOpen])
+
+  // ESC 키로 알림 패널 닫기
+  useHotkeys(
+    'escape',
+    () => {
+      if (notificationPanelOpen) {
+        setNotificationPanelOpen(false)
+      }
+    },
+    { enableOnFormTags: true }
+  )
+
   // Ctrl+K 단축키
   useHotkeys(
     'ctrl+k, meta+k',
@@ -92,6 +135,32 @@ export function Header({
 
   // 현재 테마 (SSR 호환)
   const isDark = mounted && (resolvedTheme || theme) === 'dark'
+
+  // 알림 패널 토글
+  const handleNotificationToggle = useCallback(() => {
+    setNotificationPanelOpen((prev) => !prev)
+  }, [])
+
+  // 알림 읽음 처리
+  const handleMarkAsRead = useCallback((id: string) => {
+    setLocalNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    )
+  }, [])
+
+  // 모든 알림 읽음 처리
+  const handleMarkAllAsRead = useCallback(() => {
+    setLocalNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
+  }, [])
+
+  // 알림 클릭 시 화면 이동
+  const handleNotificationNavigate = useCallback(
+    (link: string, title: string) => {
+      onNotificationNavigate?.(link, title)
+      setNotificationPanelOpen(false)
+    },
+    [onNotificationNavigate]
+  )
 
   // 빠른 메뉴 (즐겨찾기) - 빈 상태
   const quickMenuItems: MenuProps['items'] = []
@@ -180,15 +249,25 @@ export function Header({
         />
 
         {/* 알림 */}
-        <Badge count={unreadNotifications} size="small">
-          <Button
-            type="text"
-            icon={<BellOutlined />}
-            onClick={onNotificationOpen}
-            aria-label={`알림 ${unreadNotifications}개`}
-            data-testid="notification-button"
+        <div ref={notificationRef} className="relative">
+          <Badge count={unreadNotifications} size="small" overflowCount={99}>
+            <Button
+              type="text"
+              icon={<BellOutlined />}
+              onClick={handleNotificationToggle}
+              aria-label={`알림 ${unreadNotifications}개`}
+              data-testid="notification-button"
+            />
+          </Badge>
+          <NotificationPanel
+            open={notificationPanelOpen}
+            notifications={localNotifications}
+            onClose={() => setNotificationPanelOpen(false)}
+            onMarkAsRead={handleMarkAsRead}
+            onMarkAllAsRead={handleMarkAllAsRead}
+            onNavigate={handleNotificationNavigate}
           />
-        </Badge>
+        </div>
 
         {/* 테마 전환 */}
         <Button

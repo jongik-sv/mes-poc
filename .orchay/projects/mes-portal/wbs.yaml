@@ -269,7 +269,7 @@ workPackages:
         title: 알림 패널
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: low
         assignee: "-"
         tags:
@@ -295,7 +295,6 @@ workPackages:
           integrationCheck:
             - components/common/NotificationPanel.tsx 파일 존재
             - 알림 데이터는 mock JSON 사용 (MVP)
-        execution: build
   - id: WP-02
     title: MDI 시스템
     status: planned
@@ -334,7 +333,7 @@ workPackages:
             - lib/mdi/context.tsx 또는 lib/mdi/store.ts 파일 존재
             - useMDI 훅 내보내기
             - openTab, closeTab, setActiveTab 함수 제공
-        execution: review
+        execution: build
       - id: TSK-02-02
         title: 탭 바 컴포넌트
         category: development

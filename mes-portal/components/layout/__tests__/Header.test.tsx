@@ -23,6 +23,18 @@ vi.mock('next/link', () => ({
   ),
 }))
 
+// NotificationPanel 모킹
+vi.mock('@/components/common', () => ({
+  NotificationPanel: ({ open, notifications, onClose, onMarkAsRead, onMarkAllAsRead, onNavigate }: any) => (
+    open ? (
+      <div data-testid="mock-notification-panel">
+        <button onClick={onClose} data-testid="close-panel">닫기</button>
+        <span data-testid="notification-count">{notifications?.length || 0}</span>
+      </div>
+    ) : null
+  ),
+}))
+
 // react-hotkeys-hook 모킹
 const hotkeyCallbacks: Record<string, Function> = {}
 vi.mock('react-hotkeys-hook', () => ({
@@ -199,24 +211,30 @@ describe('Header', () => {
 
   // UT-006: 알림 뱃지
   describe('UT-006: 알림 뱃지', () => {
-    it('알림 개수가 뱃지에 표시되어야 함', () => {
-      render(<Header unreadNotifications={5} />)
-      expect(screen.getByTestId('badge-count')).toHaveTextContent('5')
+    const mockNotifications = [
+      { id: 'n1', type: 'error', title: '알림1', message: '내용1', isRead: false, createdAt: '2026-01-20T09:00:00Z' },
+      { id: 'n2', type: 'info', title: '알림2', message: '내용2', isRead: false, createdAt: '2026-01-20T08:00:00Z' },
+      { id: 'n3', type: 'success', title: '알림3', message: '내용3', isRead: true, createdAt: '2026-01-20T07:00:00Z' },
+    ]
+
+    it('읽지 않은 알림 개수가 뱃지에 표시되어야 함', () => {
+      render(<Header notifications={mockNotifications} />)
+      // 읽지 않은 알림 2개 (n1, n2)
+      expect(screen.getByTestId('badge-count')).toHaveTextContent('2')
     })
 
     it('알림이 0개일 때 뱃지가 표시되지 않아야 함', () => {
-      render(<Header unreadNotifications={0} />)
+      render(<Header notifications={[]} />)
       expect(screen.queryByTestId('badge-count')).not.toBeInTheDocument()
     })
 
-    it('알림 버튼 클릭 시 onNotificationOpen 콜백이 호출되어야 함', () => {
-      const onNotificationOpen = vi.fn()
-      render(<Header onNotificationOpen={onNotificationOpen} />)
+    it('알림 버튼 클릭 시 알림 패널이 열려야 함', () => {
+      render(<Header notifications={mockNotifications} />)
 
       const notificationButton = screen.getByTestId('notification-button')
       fireEvent.click(notificationButton)
 
-      expect(onNotificationOpen).toHaveBeenCalledTimes(1)
+      expect(screen.getByTestId('mock-notification-panel')).toBeInTheDocument()
     })
   })
 
@@ -351,7 +369,14 @@ describe('Header', () => {
     })
 
     it('알림 버튼에 aria-label이 있어야 함', () => {
-      render(<Header unreadNotifications={5} />)
+      const mockNotifications = [
+        { id: 'n1', type: 'error', title: '알림1', message: '내용1', isRead: false, createdAt: '2026-01-20T09:00:00Z' },
+        { id: 'n2', type: 'info', title: '알림2', message: '내용2', isRead: false, createdAt: '2026-01-20T08:00:00Z' },
+        { id: 'n3', type: 'success', title: '알림3', message: '내용3', isRead: false, createdAt: '2026-01-20T07:00:00Z' },
+        { id: 'n4', type: 'warning', title: '알림4', message: '내용4', isRead: false, createdAt: '2026-01-20T06:00:00Z' },
+        { id: 'n5', type: 'info', title: '알림5', message: '내용5', isRead: false, createdAt: '2026-01-20T05:00:00Z' },
+      ]
+      render(<Header notifications={mockNotifications} />)
       const notificationButton = screen.getByTestId('notification-button')
       expect(notificationButton).toHaveAttribute('aria-label', '알림 5개')
     })
