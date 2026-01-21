@@ -34,6 +34,7 @@
 | FR-005 | 4.1.1 4단계 진행 | 3.2 UC-02~05 | UT-007 | E2E-005 | TC-005 | 설계완료 |
 | FR-006 | 4.1.1 단계별 유효성 검사 | 6.1, 8.1 | UT-008, UT-009 | E2E-006 | TC-006 | 설계완료 |
 | FR-007 | 4.1.1 이전/다음 네비게이션 | 3.2 UC-04~05 | UT-010 | E2E-007 | TC-007 | 설계완료 |
+| FR-008 | 4.1.1 마법사 취소 | 3.2 UC-06 | UT-012 | E2E-009 | TC-011 | 설계완료 |
 
 ### 1.1 요구사항별 상세 매핑
 
@@ -99,6 +100,16 @@
 | 설계 | 010-design.md | 3.2 | UC-04, UC-05 |
 | 단위 테스트 | 026-test-specification.md | 2.1 | UT-010 |
 | E2E 테스트 | 026-test-specification.md | 3.1 | E2E-007 |
+
+#### FR-008: 마법사 취소
+
+| 설계 단계 | 문서 | 섹션 | 구현 항목 |
+|----------|------|------|----------|
+| PRD | prd.md | 4.1.1 | 마법사 취소 기능 |
+| 설계 | 010-design.md | 3.2 | UC-06 마법사 취소 |
+| 단위 테스트 | 026-test-specification.md | 2.1 | UT-012 |
+| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-009 |
+| 매뉴얼 테스트 | 026-test-specification.md | 4.1 | TC-011 |
 
 ---
 
@@ -200,6 +211,7 @@
 | TC-005 | 매뉴얼 | FR-005 | BR-001 | 미실행 |
 | TC-006 | 매뉴얼 | FR-006 | BR-002 | 미실행 |
 | TC-007 | 매뉴얼 | FR-007 | BR-003 | 미실행 |
+| TC-011 | 매뉴얼 | FR-008 | BR-005 | 미실행 |
 
 ---
 
@@ -235,9 +247,9 @@
 |----------|----------|------|----------|
 | Step 1: 기본정보 | BasicInfoStep | components/screens/sample/SettingWizard/BasicInfoStep.tsx | FR-001 |
 | Step 2: 상세설정 | DetailSettingsStep | components/screens/sample/SettingWizard/DetailSettingsStep.tsx | FR-002 |
-| Step 3: 확인 | SettingWizard (inline) | WizardTemplate renderConfirmation | FR-003 |
-| Step 4: 완료 | SettingWizard (inline) | WizardTemplate autoFinishStep | FR-004 |
-| 전체 화면 | SettingWizard | components/screens/sample/SettingWizard/index.tsx | FR-005~007 |
+| Step 3: 확인 | ConfirmationStep | components/screens/sample/SettingWizard/ConfirmationStep.tsx | FR-003 |
+| Step 4: 완료 | CompleteStep | components/screens/sample/SettingWizard/CompleteStep.tsx | FR-004 |
+| 전체 화면 | SettingWizard | components/screens/sample/SettingWizard/index.tsx | FR-005~008 |
 
 ---
 
@@ -247,11 +259,11 @@
 
 | 구분 | 총 항목 | 매핑 완료 | 미매핑 | 커버리지 |
 |------|---------|----------|--------|---------|
-| 기능 요구사항 (FR) | 7 | 7 | 0 | 100% |
+| 기능 요구사항 (FR) | 8 | 8 | 0 | 100% |
 | 비즈니스 규칙 (BR) | 5 | 5 | 0 | 100% |
 | 단위 테스트 (UT) | 12 | 12 | 0 | 100% |
 | E2E 테스트 | 9 | 9 | 0 | 100% |
-| 매뉴얼 테스트 (TC) | 7 | 7 | 0 | 100% |
+| 매뉴얼 테스트 (TC) | 8 | 8 | 0 | 100% |
 
 ### 7.2 미매핑 항목 (있는 경우)
 

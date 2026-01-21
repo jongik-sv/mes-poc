@@ -7,7 +7,7 @@
 | Task ID | TSK-06-09 |
 | 문서 버전 | 1.0 |
 | 작성일 | 2026-01-21 |
-| 상태 | 작성중 |
+| 상태 | 설계완료 |
 | 카테고리 | development |
 
 ---
@@ -692,10 +692,29 @@ flowchart TD
 |------------|------|---------------|
 | companyName | 필수, 2-50자 | "회사명을 입력해주세요" / "회사명은 2-50자 사이로 입력해주세요" |
 | factoryName | 필수, 2-50자 | "공장명을 입력해주세요" / "공장명은 2-50자 사이로 입력해주세요" |
-| adminEmail | 필수, 이메일 형식 | "관리자 이메일을 입력해주세요" / "올바른 이메일 형식이 아닙니다" |
-| serverAddress | 필수, IP 또는 도메인 | "서버 주소를 입력해주세요" |
+| adminEmail | 필수, 이메일 형식, 최대 254자 | "관리자 이메일을 입력해주세요" / "올바른 이메일 형식이 아닙니다" |
+| serverAddress | 필수, IP 또는 도메인, 최대 253자 | "서버 주소를 입력해주세요" / "올바른 서버 주소 형식이 아닙니다" |
 | port | 필수, 1-65535 | "포트 번호를 입력해주세요" / "1-65535 사이의 숫자를 입력해주세요" |
 | timeout | 선택, 1-300 | "1-300 사이의 숫자를 입력해주세요" |
+
+#### 7.3.1 serverAddress 검증 패턴
+
+```typescript
+// IPv4 패턴
+const IPv4_PATTERN = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+// 도메인 패턴
+const DOMAIN_PATTERN = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+// 유효성 검사 함수
+const isValidServerAddress = (value: string) =>
+  IPv4_PATTERN.test(value) || DOMAIN_PATTERN.test(value);
+```
+
+#### 7.3.2 이메일 검증
+
+- Ant Design Form의 `type: 'email'` 규칙 사용
+- 최대 길이 254자 제한
 
 ---
 
@@ -705,15 +724,15 @@ flowchart TD
 
 | 규칙 ID | 규칙 설명 | 적용 상황 | 예외 |
 |---------|----------|----------|------|
-| BR-01 | 단계별 순차 진행 필수 | 다음 단계 이동 | 없음 |
-| BR-02 | 다음 이동 전 유효성 검사 필수 | 다음 버튼 클릭 | 없음 |
-| BR-03 | 이전 단계 데이터 유지 | 단계 이동 | 마법사 취소 시 삭제 |
-| BR-04 | 완료된 단계만 Steps 클릭 가능 | Steps 상호작용 | 없음 |
-| BR-05 | 입력 데이터 있을 때 이탈 확인 | 취소, 탭 닫기 | 없음 |
+| BR-001 | 단계별 순차 진행 필수 | 다음 단계 이동 | 없음 |
+| BR-002 | 다음 이동 전 유효성 검사 필수 | 다음 버튼 클릭 | 없음 |
+| BR-003 | 이전 단계 데이터 유지 | 단계 이동 | 마법사 취소 시 삭제 |
+| BR-004 | 완료된 단계만 Steps 클릭 가능 | Steps 상호작용 | 없음 |
+| BR-005 | 입력 데이터 있을 때 이탈 확인 | 취소, 탭 닫기 | 없음 |
 
 ### 8.2 규칙 상세 설명
 
-**BR-01: 단계별 순차 진행 필수**
+**BR-001: 단계별 순차 진행 필수**
 
 설명: 사용자는 반드시 이전 단계를 완료해야 다음 단계로 진행할 수 있다.
 
@@ -721,7 +740,7 @@ flowchart TD
 - 1단계 미완료 시 2단계 접근 불가
 - Steps에서 미완료 단계 클릭 시 무시
 
-**BR-02: 다음 이동 전 유효성 검사 필수**
+**BR-002: 다음 이동 전 유효성 검사 필수**
 
 설명: 다음 단계로 이동하기 전 현재 단계의 모든 필수 필드와 유효성 규칙을 검사한다.
 
@@ -770,10 +789,16 @@ mes-portal/
 │   └── screens/
 │       └── sample/
 │           ├── SettingWizard/
-│           │   ├── index.tsx         # 메인 컴포넌트
-│           │   ├── BasicInfoStep.tsx # 1단계: 기본정보
+│           │   ├── index.tsx              # 메인 컴포넌트 (상태 관리)
+│           │   ├── BasicInfoStep.tsx      # 1단계: 기본정보
 │           │   ├── DetailSettingsStep.tsx # 2단계: 상세설정
-│           │   └── types.ts          # 타입 정의
+│           │   ├── ConfirmationStep.tsx   # 3단계: 확인 (신규)
+│           │   ├── CompleteStep.tsx       # 4단계: 완료 (신규)
+│           │   ├── types.ts               # 타입 정의
+│           │   └── __tests__/             # 테스트 디렉토리
+│           │       ├── BasicInfoStep.test.tsx
+│           │       ├── DetailSettingsStep.test.tsx
+│           │       └── SettingWizard.test.tsx
 ├── mock-data/
 │   └── wizard-config.json            # Mock 설정 데이터
 ```
@@ -796,6 +821,90 @@ mes-portal/
 | Ant Design Steps | 단계 표시 | TRD 확인됨 |
 | Ant Design Descriptions | 확인 단계 요약 | TRD 확인됨 |
 | Ant Design Result | 완료 화면 | TRD 확인됨 |
+
+#### 11.3.1 WizardContext 활용 방식
+
+TSK-06-06에서 제공하는 `WizardContext`와 `useWizardStep` 훅을 활용합니다:
+
+```typescript
+// 데이터 흐름 인터페이스
+interface SettingWizardData {
+  basicInfo: {
+    companyName: string;
+    factoryName: string;
+    adminEmail: string;
+  };
+  detailSettings: {
+    serverAddress: string;
+    port: number;
+    timeout: number;
+    autoReconnect: boolean;
+    debugMode: boolean;
+    useSSL: boolean;
+  };
+}
+
+// 각 단계 컴포넌트에서 useWizardStep 훅 사용 예시
+function BasicInfoStep() {
+  const [form] = Form.useForm();
+  const { handleValuesChange } = useWizardStep<BasicInfo>('basicInfo', form);
+
+  return (
+    <Form
+      form={form}
+      onValuesChange={handleValuesChange}
+      initialValues={/* WizardContext에서 제공 */}
+    >
+      {/* 폼 필드 */}
+    </Form>
+  );
+}
+```
+
+#### 11.3.2 Form-Context 연동 전략
+
+```typescript
+// SettingWizard/index.tsx에서
+const steps: WizardStep[] = [
+  {
+    key: 'basicInfo',
+    title: '기본 정보',
+    content: <BasicInfoStep />,
+    // validate는 WizardTemplate 내부에서 registerStepForm으로 등록된
+    // Form 인스턴스를 사용하여 자동 검증 (TSK-06-06 적용)
+  },
+  {
+    key: 'detailSettings',
+    title: '상세 설정',
+    content: <DetailSettingsStep />,
+  },
+  {
+    key: 'confirmation',
+    title: '확인',
+    content: <ConfirmationStep />,
+  },
+  {
+    key: 'complete',
+    title: '완료',
+    content: <CompleteStep />,
+  },
+];
+```
+
+#### 11.3.3 WizardTemplate Props 활용
+
+```typescript
+<WizardTemplate
+  title="설정 마법사"
+  steps={steps}
+  onFinish={handleFinish}
+  onCancel={handleCancel}
+  autoConfirmStep={false}     // 커스텀 확인 단계 사용 (ConfirmationStep)
+  autoFinishStep={false}      // 커스텀 완료 단계 사용 (CompleteStep)
+  enableLeaveConfirm={true}   // 이탈 경고 활성화
+  direction="horizontal"       // 수평 Steps
+/>
+```
 
 ### 11.4 제약 사항
 
@@ -823,6 +932,7 @@ mes-portal/
 | `wizard-step-detail-settings` | 2단계 | 상세설정 단계 |
 | `wizard-step-confirmation` | 3단계 | 확인 단계 |
 | `wizard-step-complete` | 4단계 | 완료 단계 |
+| `wizard-content` | 콘텐츠 영역 | 콘텐츠 표시 확인 |
 | `company-name-input` | 회사명 입력 | 회사명 입력 |
 | `factory-name-input` | 공장명 입력 | 공장명 입력 |
 | `admin-email-input` | 관리자 이메일 입력 | 이메일 입력 |
@@ -836,11 +946,26 @@ mes-portal/
 | `wizard-next-btn` | 다음 버튼 | 다음 단계 이동 |
 | `wizard-finish-btn` | 완료 버튼 | 마법사 완료 |
 | `wizard-cancel-btn` | 취소 버튼 | 마법사 취소 |
+| `wizard-confirmation` | 확인 영역 | 요약 데이터 확인 |
+| `confirmation-basic-info-section` | 기본정보 요약 | 값 검증 |
+| `confirmation-detail-settings-section` | 상세설정 요약 | 값 검증 |
 | `edit-basic-info-link` | 기본정보 수정 링크 | 1단계 이동 |
 | `edit-detail-settings-link` | 상세설정 수정 링크 | 2단계 이동 |
 | `wizard-result` | 완료 결과 영역 | 완료 메시지 |
 | `go-dashboard-btn` | 대시보드 이동 버튼 | 대시보드 이동 |
 | `restart-wizard-btn` | 다시 시작 버튼 | 마법사 재시작 |
+
+### 11.7 보안 고려사항
+
+> 본 Task는 Mock 데이터 전용 샘플이므로 실제 보안 구현은 제외됩니다.
+> 보안 원칙의 상세 내용은 TSK-06-06 (WizardTemplate) 설계 문서 "10.1 보안 원칙" 섹션을 참조하세요.
+
+| 항목 | 현재 (Mock) | 실제 구현 시 |
+|------|------------|--------------|
+| 유효성 검사 | 클라이언트 측만 | 서버 측 검증 필수 |
+| 접근 권한 | 없음 (샘플) | ADMIN 역할 필수 |
+| 민감 정보 | 로깅 없음 | 이메일/IP 마스킹 |
+| API 연동 | Mock 시뮬레이션 | HTTPS 필수, CSRF 토큰 |
 
 ---
 
@@ -860,8 +985,8 @@ mes-portal/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
