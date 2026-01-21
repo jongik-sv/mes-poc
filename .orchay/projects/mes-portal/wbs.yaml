@@ -268,7 +268,8 @@ workPackages:
         title: 알림 패널
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: low
         assignee: "-"
         tags:
@@ -294,7 +295,6 @@ workPackages:
           integrationCheck:
             - components/common/NotificationPanel.tsx 파일 존재
             - 알림 데이터는 mock JSON 사용 (MVP)
-        execution: verify
   - id: WP-02
     title: MDI 시스템
     status: planned
