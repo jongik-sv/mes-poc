@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" width="280" height="160">
+  <defs>
+    <style>
+      .card-bg { fill: #ffffff; }
+      .card-border { fill: none; stroke: #e8e8e8; stroke-width: 1; }
+      .card-shadow { fill: rgba(0,0,0,0.04); }
+      .text-title { font-family: Arial, sans-serif; font-size: 14px; fill: #000000de; }
+      .text-value-disabled { font-family: Arial, sans-serif; font-size: 32px; font-weight: bold; fill: #00000040; }
+      .text-unit-disabled { font-family: Arial, sans-serif; font-size: 14px; fill: #00000040; }
+      .text-message { font-family: Arial, sans-serif; font-size: 14px; fill: #00000073; }
+      .icon-disabled { fill: #00000040; }
+      .annotation { font-family: Arial, sans-serif; font-size: 10px; fill: #1677ff; }
+      .annotation-line { stroke: #1677ff; stroke-width: 1; stroke-dasharray: 3,2; }
+    </style>
+  </defs>
+
+  <!-- Card Shadow -->
+  <rect class="card-shadow" x="2" y="2" width="276" height="156" rx="8"/>
+
+  <!-- Card Background -->
+  <rect class="card-bg" x="0" y="0" width="276" height="154" rx="8"/>
+  <rect class="card-border" x="0" y="0" width="276" height="154" rx="8"/>
+
+  <!-- Header Section -->
+  <g transform="translate(16, 16)">
+    <!-- Dashboard Icon (Disabled state) -->
+    <rect class="icon-disabled" x="0" y="0" width="16" height="16" rx="2" opacity="0.15"/>
+    <rect class="icon-disabled" x="2" y="6" width="4" height="8"/>
+    <rect class="icon-disabled" x="8" y="2" width="4" height="12"/>
+
+    <!-- Title (Disabled state) -->
+    <text class="text-title" x="24" y="13" fill="#00000073">Operation Rate</text>
+
+    <!-- Info Icon -->
+    <circle cx="228" cy="8" r="8" fill="none" stroke="#00000040" stroke-width="1"/>
+    <text x="225" y="12" font-family="Arial" font-size="12" fill="#00000040">?</text>
+  </g>
+
+  <!-- Value Section - Empty State -->
+  <g transform="translate(16, 50)">
+    <text class="text-value-disabled" x="0" y="32">---</text>
+    <text class="text-unit-disabled" x="58" y="32">%</text>
+  </g>
+
+  <!-- Message Section -->
+  <g transform="translate(16, 110)">
+    <!-- Empty Data Icon -->
+    <rect class="icon-disabled" x="0" y="0" width="12" height="12" rx="1" fill="none" stroke="#00000040"/>
+    <line x1="3" y1="6" x2="9" y2="6" stroke="#00000040" stroke-width="1"/>
+
+    <!-- Message Text -->
+    <text class="text-message" x="18" y="10">No data available</text>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <line class="annotation-line" x1="50" y1="78" x2="100" y2="60"/>
+    <text class="annotation" x="105" y="55">value="---"</text>
+    <text class="annotation" x="105" y="67">color: disabled (#00000040)</text>
+
+    <line class="annotation-line" x1="100" y1="120" x2="150" y2="145"/>
+    <text class="annotation" x="155" y="143">Empty state message</text>
+    <text class="annotation" x="155" y="155">Typography.Text type="secondary"</text>
+  </g>
+</svg>

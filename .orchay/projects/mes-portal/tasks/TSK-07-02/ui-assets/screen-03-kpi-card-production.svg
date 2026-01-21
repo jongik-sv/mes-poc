@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" width="280" height="160">
+  <defs>
+    <style>
+      .card-bg { fill: #ffffff; }
+      .card-border { fill: none; stroke: #e8e8e8; stroke-width: 1; }
+      .card-shadow { fill: rgba(0,0,0,0.04); }
+      .text-title { font-family: Arial, sans-serif; font-size: 14px; fill: #000000de; }
+      .text-value { font-family: Arial, sans-serif; font-size: 32px; font-weight: bold; fill: #000000de; }
+      .text-unit { font-family: Arial, sans-serif; font-size: 14px; fill: #00000073; }
+      .text-trend { font-family: Arial, sans-serif; font-size: 14px; fill: #52c41a; }
+      .icon-primary { fill: #1677ff; }
+      .icon-success { fill: #52c41a; }
+      .annotation { font-family: Arial, sans-serif; font-size: 10px; fill: #1677ff; }
+      .annotation-line { stroke: #1677ff; stroke-width: 1; stroke-dasharray: 3,2; }
+    </style>
+  </defs>
+
+  <!-- Card Shadow -->
+  <rect class="card-shadow" x="2" y="2" width="276" height="156" rx="8"/>
+
+  <!-- Card Background -->
+  <rect class="card-bg" x="0" y="0" width="276" height="154" rx="8"/>
+  <rect class="card-border" x="0" y="0" width="276" height="154" rx="8"/>
+
+  <!-- Header Section -->
+  <g transform="translate(16, 16)">
+    <!-- Appstore/Production Icon (Grid) -->
+    <rect class="icon-primary" x="0" y="0" width="6" height="6" rx="1"/>
+    <rect class="icon-primary" x="8" y="0" width="6" height="6" rx="1"/>
+    <rect class="icon-primary" x="0" y="8" width="6" height="6" rx="1"/>
+    <rect class="icon-primary" x="8" y="8" width="6" height="6" rx="1"/>
+
+    <!-- Title -->
+    <text class="text-title" x="24" y="13">Daily Production</text>
+
+    <!-- Info Icon -->
+    <circle cx="228" cy="8" r="8" fill="none" stroke="#00000040" stroke-width="1"/>
+    <text x="225" y="12" font-family="Arial" font-size="12" fill="#00000040">?</text>
+  </g>
+
+  <!-- Value Section -->
+  <g transform="translate(16, 50)">
+    <text class="text-value" x="0" y="32">12,450</text>
+    <text class="text-unit" x="130" y="32">EA</text>
+  </g>
+
+  <!-- Trend Section -->
+  <g transform="translate(16, 110)">
+    <!-- Up Arrow -->
+    <polygon class="icon-success" points="0,8 6,0 12,8 8,8 8,14 4,14 4,8"/>
+
+    <!-- Trend Text (absolute number, not percentage) -->
+    <text class="text-trend" x="18" y="12">+523</text>
+    <text class="text-unit" x="58" y="12">vs yesterday</text>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <line class="annotation-line" x1="100" y1="78" x2="160" y2="58"/>
+    <text class="annotation" x="165" y="53">toLocaleString('ko-KR')</text>
+    <text class="annotation" x="165" y="65">Thousands separator</text>
+
+    <line class="annotation-line" x1="130" y1="82" x2="180" y2="95"/>
+    <text class="annotation" x="185" y="95">suffix="EA"</text>
+  </g>
+</svg>

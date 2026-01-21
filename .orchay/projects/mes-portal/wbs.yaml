@@ -1057,7 +1057,6 @@ workPackages:
             - Ant Design Steps
           integrationCheck:
             - components/templates/WizardTemplate.tsx
-        execution: apply
       - id: TSK-06-07
         title: "[샘플] 사용자 목록 화면"
         category: development
@@ -1084,7 +1083,6 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
-        execution: apply
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
@@ -1109,7 +1107,6 @@ workPackages:
           integrationCheck:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
-        execution: apply
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development
@@ -1135,6 +1132,7 @@ workPackages:
           integrationCheck:
             - screens/sample/SettingWizard.tsx
             - WizardTemplate 사용
+        execution: apply
   - id: WP-07
     title: 대시보드
     status: planned
@@ -1145,7 +1143,7 @@ workPackages:
         title: 대시보드 레이아웃
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -1173,7 +1171,7 @@ workPackages:
         title: KPI 카드 위젯
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -1229,3 +1227,4 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
+        execution: start
