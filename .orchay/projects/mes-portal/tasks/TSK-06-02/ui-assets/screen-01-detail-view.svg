@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .card-header { fill: #fafafa; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #333; }
+      .text-subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #666; }
+      .text-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; }
+      .text-value { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #333; }
+      .text-screen { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .btn-primary { fill: #1677ff; }
+      .btn-danger { fill: #ff4d4f; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #ffffff; }
+      .btn-text-dark { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #333; }
+      .tab-active { fill: #1677ff; }
+      .tab-inactive { fill: #666; }
+      .tab-border { stroke: #1677ff; stroke-width: 2; }
+      .border { stroke: #e8e8e8; stroke-width: 1; fill: none; }
+      .border-bottom { stroke: #e8e8e8; stroke-width: 1; }
+      .timeline-dot { fill: #1677ff; }
+      .timeline-dot-outline { fill: #ffffff; stroke: #1677ff; stroke-width: 2; }
+      .timeline-line { stroke: #e8e8e8; stroke-width: 2; }
+      .tag-active { fill: #f6ffed; stroke: #b7eb8f; stroke-width: 1; }
+      .tag-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #52c41a; }
+      .icon { fill: #1677ff; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1677ff; }
+      .annotation-line { stroke: #1677ff; stroke-width: 1; stroke-dasharray: 3,2; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="24" class="text-screen">SCR-01: Detail View (Read-only)</text>
+
+  <!-- Header Area -->
+  <g transform="translate(20, 40)">
+    <!-- Header Background -->
+    <rect class="card" x="0" y="0" width="760" height="50" rx="4"/>
+
+    <!-- Icon -->
+    <circle cx="25" cy="25" r="12" fill="#e6f4ff"/>
+    <text x="25" y="29" text-anchor="middle" class="icon" style="font-size: 14px;">U</text>
+
+    <!-- Title -->
+    <text x="50" y="29" class="text-title">User Detail Information</text>
+
+    <!-- Action Buttons -->
+    <rect class="btn-primary" x="620" y="12" width="60" height="28" rx="4"/>
+    <text x="650" y="30" text-anchor="middle" class="btn-text">Edit</text>
+
+    <rect class="btn-danger" x="690" y="12" width="60" height="28" rx="4"/>
+    <text x="720" y="30" text-anchor="middle" class="btn-text">Delete</text>
+  </g>
+
+  <!-- Basic Info Card -->
+  <g transform="translate(20, 100)">
+    <!-- Card -->
+    <rect class="card" x="0" y="0" width="760" height="200" rx="4"/>
+
+    <!-- Card Title -->
+    <rect class="card-header" x="1" y="1" width="758" height="32" rx="4"/>
+    <text x="16" y="22" class="text-subtitle" style="font-weight: 600;">Basic Information</text>
+
+    <!-- Descriptions Grid -->
+    <g transform="translate(0, 40)">
+      <!-- Row 1 -->
+      <rect fill="#fafafa" x="1" y="0" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="32" x2="760" y2="32"/>
+      <line class="border-bottom" x1="121" y1="0" x2="121" y2="32"/>
+      <line class="border-bottom" x1="380" y1="0" x2="380" y2="32"/>
+      <line class="border-bottom" x1="500" y1="0" x2="500" y2="32"/>
+      <text x="16" y="20" class="text-label">Username</text>
+      <text x="136" y="20" class="text-value">Hong Gildong</text>
+      <rect fill="#fafafa" x="381" y="0" width="119" height="32"/>
+      <text x="396" y="20" class="text-label">Email</text>
+      <text x="516" y="20" class="text-value">hong@example.com</text>
+
+      <!-- Row 2 -->
+      <rect fill="#fafafa" x="1" y="32" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="64" x2="760" y2="64"/>
+      <line class="border-bottom" x1="121" y1="32" x2="121" y2="64"/>
+      <line class="border-bottom" x1="380" y1="32" x2="380" y2="64"/>
+      <line class="border-bottom" x1="500" y1="32" x2="500" y2="64"/>
+      <text x="16" y="52" class="text-label">Department</text>
+      <text x="136" y="52" class="text-value">Development Team</text>
+      <rect fill="#fafafa" x="381" y="32" width="119" height="32"/>
+      <text x="396" y="52" class="text-label">Position</text>
+      <text x="516" y="52" class="text-value">Senior Engineer</text>
+
+      <!-- Row 3 -->
+      <rect fill="#fafafa" x="1" y="64" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="96" x2="760" y2="96"/>
+      <line class="border-bottom" x1="121" y1="64" x2="121" y2="96"/>
+      <line class="border-bottom" x1="380" y1="64" x2="380" y2="96"/>
+      <line class="border-bottom" x1="500" y1="64" x2="500" y2="96"/>
+      <text x="16" y="84" class="text-label">Status</text>
+      <g transform="translate(136, 72)">
+        <rect class="tag-active" x="0" y="0" width="50" height="20" rx="2"/>
+        <text x="25" y="14" text-anchor="middle" class="tag-text">Active</text>
+      </g>
+      <rect fill="#fafafa" x="381" y="64" width="119" height="32"/>
+      <text x="396" y="84" class="text-label">Phone</text>
+      <text x="516" y="84" class="text-value">010-1234-5678</text>
+
+      <!-- Row 4 -->
+      <rect fill="#fafafa" x="1" y="96" width="120" height="32"/>
+      <line class="border-bottom" x1="121" y1="96" x2="121" y2="128"/>
+      <line class="border-bottom" x1="380" y1="96" x2="380" y2="128"/>
+      <line class="border-bottom" x1="500" y1="96" x2="500" y2="128"/>
+      <text x="16" y="116" class="text-label">Created At</text>
+      <text x="136" y="116" class="text-value">2026-01-15 09:00:00</text>
+      <rect fill="#fafafa" x="381" y="96" width="119" height="32"/>
+      <text x="396" y="116" class="text-label">Updated At</text>
+      <text x="516" y="116" class="text-value">2026-01-20 14:30:00</text>
+    </g>
+  </g>
+
+  <!-- Tabs Area -->
+  <g transform="translate(20, 310)">
+    <!-- Card -->
+    <rect class="card" x="0" y="0" width="760" height="220" rx="4"/>
+
+    <!-- Tab Bar -->
+    <g transform="translate(16, 16)">
+      <!-- Active Tab -->
+      <text x="0" y="14" class="text-label" style="fill: #1677ff; font-weight: 600;">Activity History</text>
+      <line class="tab-border" x1="0" y1="22" x2="85" y2="22"/>
+
+      <!-- Inactive Tabs -->
+      <text x="110" y="14" class="text-label">Permissions</text>
+      <text x="190" y="14" class="text-label">Settings</text>
+    </g>
+    <line class="border-bottom" x1="0" y1="45" x2="760" y2="45"/>
+
+    <!-- Tab Content - Timeline -->
+    <g transform="translate(30, 60)">
+      <!-- Timeline -->
+      <line class="timeline-line" x1="8" y1="8" x2="8" y2="140"/>
+
+      <!-- Item 1 -->
+      <circle class="timeline-dot" cx="8" cy="8" r="6"/>
+      <text x="30" y="6" class="text-value" style="font-weight: 500;">2026-01-20 14:30</text>
+      <text x="30" y="20" class="text-label">Changed system settings</text>
+
+      <!-- Item 2 -->
+      <circle class="timeline-dot-outline" cx="8" cy="55" r="6"/>
+      <text x="30" y="53" class="text-value" style="font-weight: 500;">2026-01-18 10:15</text>
+      <text x="30" y="67" class="text-label">Password changed</text>
+
+      <!-- Item 3 -->
+      <circle class="timeline-dot-outline" cx="8" cy="102" r="6"/>
+      <text x="30" y="100" class="text-value" style="font-weight: 500;">2026-01-15 09:00</text>
+      <text x="30" y="114" class="text-label">Account created</text>
+
+      <!-- Item 4 -->
+      <circle class="timeline-dot-outline" cx="8" cy="140" r="6"/>
+      <text x="30" y="138" class="text-value" style="font-weight: 500;">...</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(20, 540)">
+    <rect class="card" x="0" y="0" width="760" height="40" rx="4"/>
+
+    <!-- Back Button -->
+    <rect class="btn-default" x="640" y="6" width="110" height="28" rx="4"/>
+    <text x="660" y="24" class="btn-text-dark">Back to List</text>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Header annotation -->
+    <line class="annotation-line" x1="750" y1="65" x2="785" y2="45"/>
+    <text x="720" y="38" class="annotation">Action Buttons</text>
+
+    <!-- Descriptions annotation -->
+    <line class="annotation-line" x1="120" y1="155" x2="90" y2="130"/>
+    <text x="20" y="125" class="annotation">Ant Design</text>
+    <text x="20" y="135" class="annotation">Descriptions</text>
+
+    <!-- Tabs annotation -->
+    <line class="annotation-line" x1="100" y1="328" x2="70" y2="308"/>
+    <text x="10" y="300" class="annotation">Ant Design Tabs</text>
+
+    <!-- Timeline annotation -->
+    <line class="annotation-line" x1="48" y1="380" x2="18" y2="360"/>
+    <text x="2" y="352" class="annotation">Timeline</text>
+  </g>
+
+  <!-- Component Info -->
+  <g transform="translate(600, 545)">
+    <text class="text-screen">800 x 600</text>
+  </g>
+</svg>

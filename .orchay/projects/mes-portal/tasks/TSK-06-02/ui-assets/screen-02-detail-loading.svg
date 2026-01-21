@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .card-header { fill: #fafafa; }
+      .skeleton { fill: #f0f0f0; }
+      .skeleton-dark { fill: #e0e0e0; }
+      .text-screen { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .border-bottom { stroke: #e8e8e8; stroke-width: 1; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1677ff; }
+      .annotation-line { stroke: #1677ff; stroke-width: 1; stroke-dasharray: 3,2; }
+    </style>
+    <!-- Skeleton Animation -->
+    <linearGradient id="skeleton-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f0f0f0">
+        <animate attributeName="offset" values="-1;2" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#e8e8e8">
+        <animate attributeName="offset" values="-0.5;2.5" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#f0f0f0">
+        <animate attributeName="offset" values="0;3" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="24" class="text-screen">SCR-02: Detail Loading (Skeleton)</text>
+
+  <!-- Header Area -->
+  <g transform="translate(20, 40)">
+    <!-- Header Background -->
+    <rect class="card" x="0" y="0" width="760" height="50" rx="4"/>
+
+    <!-- Icon Skeleton -->
+    <circle cx="25" cy="25" r="12" class="skeleton"/>
+
+    <!-- Title Skeleton -->
+    <rect class="skeleton" x="50" y="15" width="200" height="20" rx="2"/>
+
+    <!-- Button Skeletons -->
+    <rect class="skeleton" x="620" y="12" width="60" height="28" rx="4"/>
+    <rect class="skeleton" x="690" y="12" width="60" height="28" rx="4"/>
+  </g>
+
+  <!-- Basic Info Card -->
+  <g transform="translate(20, 100)">
+    <!-- Card -->
+    <rect class="card" x="0" y="0" width="760" height="200" rx="4"/>
+
+    <!-- Card Title Skeleton -->
+    <rect class="card-header" x="1" y="1" width="758" height="32" rx="4"/>
+    <rect class="skeleton" x="16" y="10" width="100" height="14" rx="2"/>
+
+    <!-- Descriptions Grid Skeleton -->
+    <g transform="translate(0, 40)">
+      <!-- Row 1 -->
+      <rect fill="#fafafa" x="1" y="0" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="32" x2="760" y2="32"/>
+      <line class="border-bottom" x1="121" y1="0" x2="121" y2="32"/>
+      <line class="border-bottom" x1="380" y1="0" x2="380" y2="32"/>
+      <line class="border-bottom" x1="500" y1="0" x2="500" y2="32"/>
+      <rect class="skeleton" x="16" y="10" width="80" height="12" rx="2"/>
+      <rect class="skeleton" x="136" y="10" width="150" height="12" rx="2"/>
+      <rect fill="#fafafa" x="381" y="0" width="119" height="32"/>
+      <rect class="skeleton" x="396" y="10" width="60" height="12" rx="2"/>
+      <rect class="skeleton" x="516" y="10" width="180" height="12" rx="2"/>
+
+      <!-- Row 2 -->
+      <rect fill="#fafafa" x="1" y="32" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="64" x2="760" y2="64"/>
+      <line class="border-bottom" x1="121" y1="32" x2="121" y2="64"/>
+      <line class="border-bottom" x1="380" y1="32" x2="380" y2="64"/>
+      <line class="border-bottom" x1="500" y1="32" x2="500" y2="64"/>
+      <rect class="skeleton" x="16" y="42" width="70" height="12" rx="2"/>
+      <rect class="skeleton" x="136" y="42" width="120" height="12" rx="2"/>
+      <rect fill="#fafafa" x="381" y="32" width="119" height="32"/>
+      <rect class="skeleton" x="396" y="42" width="50" height="12" rx="2"/>
+      <rect class="skeleton" x="516" y="42" width="100" height="12" rx="2"/>
+
+      <!-- Row 3 -->
+      <rect fill="#fafafa" x="1" y="64" width="120" height="32"/>
+      <line class="border-bottom" x1="0" y1="96" x2="760" y2="96"/>
+      <line class="border-bottom" x1="121" y1="64" x2="121" y2="96"/>
+      <line class="border-bottom" x1="380" y1="64" x2="380" y2="96"/>
+      <line class="border-bottom" x1="500" y1="64" x2="500" y2="96"/>
+      <rect class="skeleton" x="16" y="74" width="50" height="12" rx="2"/>
+      <rect class="skeleton" x="136" y="72" width="50" height="16" rx="2"/>
+      <rect fill="#fafafa" x="381" y="64" width="119" height="32"/>
+      <rect class="skeleton" x="396" y="74" width="40" height="12" rx="2"/>
+      <rect class="skeleton" x="516" y="74" width="90" height="12" rx="2"/>
+
+      <!-- Row 4 -->
+      <rect fill="#fafafa" x="1" y="96" width="120" height="32"/>
+      <line class="border-bottom" x1="121" y1="96" x2="121" y2="128"/>
+      <line class="border-bottom" x1="380" y1="96" x2="380" y2="128"/>
+      <line class="border-bottom" x1="500" y1="96" x2="500" y2="128"/>
+      <rect class="skeleton" x="16" y="106" width="75" height="12" rx="2"/>
+      <rect class="skeleton" x="136" y="106" width="130" height="12" rx="2"/>
+      <rect fill="#fafafa" x="381" y="96" width="119" height="32"/>
+      <rect class="skeleton" x="396" y="106" width="75" height="12" rx="2"/>
+      <rect class="skeleton" x="516" y="106" width="130" height="12" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Tabs Area -->
+  <g transform="translate(20, 310)">
+    <!-- Card -->
+    <rect class="card" x="0" y="0" width="760" height="220" rx="4"/>
+
+    <!-- Tab Bar Skeleton -->
+    <g transform="translate(16, 16)">
+      <rect class="skeleton" x="0" y="0" width="80" height="16" rx="2"/>
+      <rect class="skeleton" x="100" y="0" width="60" height="16" rx="2"/>
+      <rect class="skeleton" x="180" y="0" width="50" height="16" rx="2"/>
+    </g>
+    <line class="border-bottom" x1="0" y1="45" x2="760" y2="45"/>
+
+    <!-- Tab Content Skeleton - Timeline style -->
+    <g transform="translate(30, 60)">
+      <!-- Timeline Line Skeleton -->
+      <rect class="skeleton" x="5" y="0" width="6" height="150" rx="3"/>
+
+      <!-- Item 1 -->
+      <circle cx="8" cy="8" r="8" class="skeleton-dark"/>
+      <rect class="skeleton" x="30" y="0" width="120" height="14" rx="2"/>
+      <rect class="skeleton" x="30" y="18" width="200" height="12" rx="2"/>
+
+      <!-- Item 2 -->
+      <circle cx="8" cy="55" r="8" class="skeleton-dark"/>
+      <rect class="skeleton" x="30" y="47" width="100" height="14" rx="2"/>
+      <rect class="skeleton" x="30" y="65" width="160" height="12" rx="2"/>
+
+      <!-- Item 3 -->
+      <circle cx="8" cy="102" r="8" class="skeleton-dark"/>
+      <rect class="skeleton" x="30" y="94" width="110" height="14" rx="2"/>
+      <rect class="skeleton" x="30" y="112" width="180" height="12" rx="2"/>
+
+      <!-- Item 4 -->
+      <circle cx="8" cy="145" r="8" class="skeleton-dark"/>
+      <rect class="skeleton" x="30" y="137" width="80" height="14" rx="2"/>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(20, 540)">
+    <rect class="card" x="0" y="0" width="760" height="40" rx="4"/>
+
+    <!-- Back Button Skeleton -->
+    <rect class="skeleton" x="640" y="6" width="110" height="28" rx="4"/>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Skeleton Animation annotation -->
+    <line class="annotation-line" x1="280" y1="55" x2="320" y2="35"/>
+    <text x="325" y="30" class="annotation">Skeleton.Input</text>
+    <text x="325" y="42" class="annotation">active pulse animation</text>
+
+    <!-- Descriptions Skeleton annotation -->
+    <line class="annotation-line" x1="300" y1="180" x2="340" y2="160"/>
+    <text x="345" y="155" class="annotation">Skeleton rows</text>
+    <text x="345" y="167" class="annotation">match Descriptions layout</text>
+
+    <!-- Tab Skeleton annotation -->
+    <line class="annotation-line" x1="200" y1="328" x2="240" y2="308"/>
+    <text x="245" y="303" class="annotation">Skeleton.Button</text>
+    <text x="245" y="315" class="annotation">for tab buttons</text>
+
+    <!-- Timeline Skeleton annotation -->
+    <line class="annotation-line" x1="48" y1="400" x2="18" y2="380"/>
+    <text x="2" y="372" class="annotation">Timeline</text>
+    <text x="2" y="384" class="annotation">skeleton</text>
+
+    <!-- Loading State note -->
+    <rect fill="#fff7e6" stroke="#ffd591" x="580" y="100" width="180" height="50" rx="4"/>
+    <text x="590" y="118" class="annotation" style="fill: #d48806;">Loading State</text>
+    <text x="590" y="132" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; fill: #666;">- aria-busy="true"</text>
+    <text x="590" y="144" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; fill: #666;">- delay: 200ms (flicker prevention)</text>
+  </g>
+
+  <!-- Component Info -->
+  <g transform="translate(600, 560)">
+    <text class="text-screen">800 x 600</text>
+  </g>
+</svg>

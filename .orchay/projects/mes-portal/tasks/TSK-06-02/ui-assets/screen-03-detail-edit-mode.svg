@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .card-header { fill: #fafafa; }
+      .text-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #1677ff; }
+      .text-subtitle { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #666; }
+      .text-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #666; }
+      .text-value { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #333; }
+      .text-required { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #ff4d4f; }
+      .text-screen { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #999; }
+      .text-placeholder { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #bfbfbf; }
+      .btn-primary { fill: #1677ff; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #ffffff; }
+      .btn-text-dark { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #333; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .input-focus { fill: #ffffff; stroke: #1677ff; stroke-width: 1; }
+      .select { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .radio-outer { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .radio-selected { fill: #1677ff; }
+      .border-bottom { stroke: #e8e8e8; stroke-width: 1; }
+      .icon { fill: #1677ff; }
+      .annotation { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #1677ff; }
+      .annotation-line { stroke: #1677ff; stroke-width: 1; stroke-dasharray: 3,2; }
+      .form-row { fill: none; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Title -->
+  <text x="20" y="24" class="text-screen">SCR-03: Detail Edit Mode (Form)</text>
+
+  <!-- Header Area -->
+  <g transform="translate(20, 40)">
+    <!-- Header Background -->
+    <rect class="card" x="0" y="0" width="760" height="50" rx="4"/>
+
+    <!-- Icon -->
+    <circle cx="25" cy="25" r="12" fill="#e6f4ff"/>
+    <text x="25" y="29" text-anchor="middle" class="icon" style="font-size: 14px;">E</text>
+
+    <!-- Title (Edit Mode) -->
+    <text x="50" y="29" class="text-title">Edit User Information</text>
+
+    <!-- Action Buttons -->
+    <rect class="btn-primary" x="620" y="12" width="60" height="28" rx="4"/>
+    <text x="650" y="30" text-anchor="middle" class="btn-text">Save</text>
+
+    <rect class="btn-default" x="690" y="12" width="60" height="28" rx="4"/>
+    <text x="720" y="30" text-anchor="middle" class="btn-text-dark">Cancel</text>
+  </g>
+
+  <!-- Form Card -->
+  <g transform="translate(20, 100)">
+    <!-- Card -->
+    <rect class="card" x="0" y="0" width="760" height="380" rx="4"/>
+
+    <!-- Card Title -->
+    <rect class="card-header" x="1" y="1" width="758" height="32" rx="4"/>
+    <text x="16" y="22" class="text-subtitle" style="font-weight: 600;">Basic Information</text>
+
+    <!-- Form Fields -->
+    <g transform="translate(20, 50)">
+
+      <!-- Row 1: Username -->
+      <g transform="translate(0, 0)">
+        <text x="0" y="14" class="text-label">Username</text>
+        <text x="60" y="14" class="text-required">*</text>
+        <rect class="input" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-value">Hong Gildong</text>
+      </g>
+
+      <!-- Row 1: Email (Right Column) -->
+      <g transform="translate(380, 0)">
+        <text x="0" y="14" class="text-label">Email</text>
+        <text x="35" y="14" class="text-required">*</text>
+        <rect class="input-focus" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-value">hong@example.com</text>
+        <!-- Focus indicator -->
+        <rect fill="none" stroke="#1677ff" stroke-width="2" x="119" y="-1" width="242" height="34" rx="5" opacity="0.3"/>
+      </g>
+
+      <!-- Row 2: Department -->
+      <g transform="translate(0, 50)">
+        <text x="0" y="14" class="text-label">Department</text>
+        <rect class="select" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-value">Development Team</text>
+        <!-- Dropdown Arrow -->
+        <polygon points="340,14 346,14 343,20" fill="#999"/>
+      </g>
+
+      <!-- Row 2: Position (Right Column) -->
+      <g transform="translate(380, 50)">
+        <text x="0" y="14" class="text-label">Position</text>
+        <rect class="select" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-value">Senior Engineer</text>
+        <!-- Dropdown Arrow -->
+        <polygon points="340,14 346,14 343,20" fill="#999"/>
+      </g>
+
+      <!-- Row 3: Status (Radio Group) -->
+      <g transform="translate(0, 100)">
+        <text x="0" y="14" class="text-label">Status</text>
+        <text x="35" y="14" class="text-required">*</text>
+        <!-- Radio Button 1 - Selected -->
+        <g transform="translate(120, 0)">
+          <circle class="radio-outer" cx="10" cy="10" r="8"/>
+          <circle class="radio-selected" cx="10" cy="10" r="5"/>
+          <text x="26" y="14" class="text-value">Active</text>
+        </g>
+        <!-- Radio Button 2 -->
+        <g transform="translate(200, 0)">
+          <circle class="radio-outer" cx="10" cy="10" r="8"/>
+          <text x="26" y="14" class="text-value">Inactive</text>
+        </g>
+      </g>
+
+      <!-- Row 4: Phone -->
+      <g transform="translate(0, 150)">
+        <text x="0" y="14" class="text-label">Phone</text>
+        <rect class="input" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-value">010-1234-5678</text>
+      </g>
+
+      <!-- Row 4: Extension (Right Column) -->
+      <g transform="translate(380, 150)">
+        <text x="0" y="14" class="text-label">Extension</text>
+        <rect class="input" x="120" y="0" width="240" height="32" rx="4"/>
+        <text x="132" y="20" class="text-placeholder">Enter extension number</text>
+      </g>
+
+      <!-- Row 5: Notes (Full Width) -->
+      <g transform="translate(0, 200)">
+        <text x="0" y="14" class="text-label">Notes</text>
+        <rect class="input" x="120" y="0" width="600" height="80" rx="4"/>
+        <text x="132" y="24" class="text-placeholder">Enter additional notes...</text>
+      </g>
+
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <g transform="translate(20, 495)">
+    <rect class="card" x="0" y="0" width="760" height="50" rx="4"/>
+
+    <!-- Form Actions -->
+    <g transform="translate(530, 10)">
+      <rect class="btn-primary" x="0" y="0" width="100" height="32" rx="4"/>
+      <text x="50" y="20" text-anchor="middle" class="btn-text">Save</text>
+
+      <rect class="btn-default" x="115" y="0" width="100" height="32" rx="4"/>
+      <text x="165" y="20" text-anchor="middle" class="btn-text-dark">Cancel</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g>
+    <!-- Edit mode header annotation -->
+    <line class="annotation-line" x1="190" y1="60" x2="230" y2="40"/>
+    <text x="235" y="35" class="annotation">Title color changed</text>
+    <text x="235" y="47" class="annotation">to indicate edit mode</text>
+
+    <!-- Required field annotation -->
+    <line class="annotation-line" x1="80" y1="158" x2="50" y2="138"/>
+    <text x="2" y="130" class="annotation">Required (*)</text>
+    <text x="2" y="142" class="annotation">field indicator</text>
+
+    <!-- Focus state annotation -->
+    <line class="annotation-line" x1="620" y1="158" x2="660" y2="138"/>
+    <text x="665" y="130" class="annotation">Focus state</text>
+    <text x="665" y="142" class="annotation">border highlight</text>
+
+    <!-- Select annotation -->
+    <line class="annotation-line" x1="380" y1="210" x2="420" y2="190"/>
+    <text x="425" y="185" class="annotation">Ant Design Select</text>
+    <text x="425" y="197" class="annotation">with dropdown</text>
+
+    <!-- Radio annotation -->
+    <line class="annotation-line" x1="260" y1="260" x2="300" y2="240"/>
+    <text x="305" y="235" class="annotation">Radio.Group</text>
+    <text x="305" y="247" class="annotation">for status selection</text>
+
+    <!-- TextArea annotation -->
+    <line class="annotation-line" x1="480" y1="380" x2="520" y2="360"/>
+    <text x="525" y="355" class="annotation">Input.TextArea</text>
+    <text x="525" y="367" class="annotation">rows={3}</text>
+
+    <!-- Form validation note -->
+    <rect fill="#f6ffed" stroke="#b7eb8f" x="580" y="420" width="180" height="60" rx="4"/>
+    <text x="590" y="438" class="annotation" style="fill: #52c41a;">Form Validation</text>
+    <text x="590" y="452" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; fill: #666;">- Real-time validation</text>
+    <text x="590" y="464" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; fill: #666;">- Error message below field</text>
+    <text x="590" y="476" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; fill: #666;">- Submit validation</text>
+  </g>
+
+  <!-- Unsaved Changes Warning -->
+  <g transform="translate(20, 555)">
+    <rect fill="#fffbe6" stroke="#ffe58f" x="0" y="0" width="250" height="24" rx="4"/>
+    <text x="10" y="16" style="font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #d48806;">isDirty: Shows unsaved changes warning</text>
+  </g>
+
+  <!-- Component Info -->
+  <g transform="translate(600, 560)">
+    <text class="text-screen">800 x 600</text>
+  </g>
+</svg>
