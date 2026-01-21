@@ -92,6 +92,7 @@ export type AllowedIcon = (typeof ALLOWED_ICONS)[number]
  */
 export const MenuErrorCode = {
   UNAUTHORIZED: 'UNAUTHORIZED',
+  USER_INACTIVE: 'USER_INACTIVE',
   MENU_NOT_FOUND: 'MENU_NOT_FOUND',
   DUPLICATE_MENU_CODE: 'DUPLICATE_MENU_CODE',
   MAX_DEPTH_EXCEEDED: 'MAX_DEPTH_EXCEEDED',
@@ -99,6 +100,7 @@ export const MenuErrorCode = {
   HAS_CHILDREN: 'HAS_CHILDREN',
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   DB_CONNECTION_ERROR: 'DB_CONNECTION_ERROR',
+  DB_ERROR: 'DB_ERROR',
 } as const
 
 export type MenuErrorCodeType = (typeof MenuErrorCode)[keyof typeof MenuErrorCode]
