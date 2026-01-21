@@ -602,6 +602,53 @@ interface DashboardData {
 | time | ISO 8601 형식 | 시:분 또는 월-일 시:분 표시 |
 | productionTrend | 최소 1개 이상 | 없으면 Empty 표시 |
 
+### 7.5 데이터 서비스 추상화 (TRD 2.3 준수)
+
+> **목적**: Mock 데이터에서 실제 API로 전환 시 변경 최소화
+
+**데이터 페칭 레이어 설계:**
+
+```typescript
+// lib/services/dashboard-data-service.ts
+interface DashboardDataService {
+  getKPIData(): Promise<DashboardKPI>;
+  getProductionTrend(): Promise<ProductionTrendItem[]>;
+  getLinePerformance(): Promise<LinePerformanceItem[]>;
+  getRecentActivities(): Promise<ActivityItem[]>;
+}
+
+// Mock 구현 (Phase 1)
+class MockDashboardDataService implements DashboardDataService {
+  async getKPIData() {
+    const data = await import('@/mock-data/dashboard.json');
+    return data.kpi;
+  }
+  // ... 기타 메서드
+}
+
+// API 구현 (Phase 2 - 향후)
+class ApiDashboardDataService implements DashboardDataService {
+  constructor(private apiClient: ApiClient) {}
+  async getKPIData() {
+    return this.apiClient.get('/api/dashboard/kpi');
+  }
+  // ... 기타 메서드
+}
+```
+
+**데이터 로딩 책임 위치:**
+
+| 컴포넌트 | 책임 | 변경 영향 |
+|----------|------|----------|
+| `page.tsx` | 데이터 서비스 주입 | API 전환 시 서비스 인스턴스만 변경 |
+| `Dashboard.tsx` | 서비스 사용, 데이터 분배 | 변경 없음 |
+| `*Section.tsx` | 받은 데이터 렌더링 | 변경 없음 |
+
+**Mock/API 전환 전략 (TRD 2.3):**
+- 환경변수 `NEXT_PUBLIC_USE_MOCK_DATA`로 분기
+- 서비스 팩토리 패턴으로 구현체 선택
+- 실제 API 개발 전까지 MockDashboardDataService 사용
+
 ---
 
 ## 8. 비즈니스 규칙
@@ -655,6 +702,50 @@ interface DashboardData {
 | 위젯 데이터 로드 실패 | 해당 위젯 내 | 에러 메시지 + 재시도 버튼 | Result (status="error") |
 | 전체 로드 실패 | 페이지 전체 | 에러 페이지 | Result (status="error") |
 | 데이터 없음 | 해당 영역 | Empty 컴포넌트 | Empty |
+
+### 9.3 에러 경계(Error Boundary) 전략
+
+> **목적**: BR-05(위젯별 독립 에러 처리) 구현
+
+**Error Boundary 적용 범위:**
+
+```typescript
+// WidgetCard에 Error Boundary 내장
+<WidgetCard title="가동률" errorFallback={<WidgetError onRetry={...} />}>
+  <KPIContent data={operationRate} />
+</WidgetCard>
+```
+
+**구현 방안:**
+- WidgetCard 내부에 React Error Boundary 래핑
+- 각 Section 컴포넌트 렌더링 시 개별 에러 격리
+- 에러 발생 시 해당 위젯만 에러 상태로 전환, 다른 위젯은 정상 동작
+
+**에러 경계 컴포넌트:**
+
+```typescript
+// components/dashboard/WidgetErrorBoundary.tsx
+interface WidgetErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: ReactNode;
+  onError?: (error: Error) => void;
+}
+
+class WidgetErrorBoundary extends React.Component<WidgetErrorBoundaryProps, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback ?? <WidgetError />;
+    }
+    return this.props.children;
+  }
+}
+```
 
 ---
 

@@ -27,11 +27,11 @@
 
 | 요구사항 ID | PRD 섹션 | 설계 섹션 | 컴포넌트 | 단위 테스트 | E2E 테스트 | 매뉴얼 TC | 상태 |
 |-------------|----------|-----------|----------|-------------|------------|-----------|------|
-| FR-001 | 4.1.1 (확장 템플릿) | 3.1 | DashboardLayout | UT-001 | E2E-001 | TC-001 | 설계완료 |
-| FR-002 | 4.1.1 (샘플 대시보드) | 3.2 | KPICardArea | UT-002 | E2E-001 | TC-001 | 설계완료 |
-| FR-003 | 4.1.1 (샘플 대시보드) | 3.3 | ChartArea | UT-003 | E2E-001 | TC-001 | 설계완료 |
-| FR-004 | 4.1.1 (샘플 대시보드) | 3.4 | RecentActivityArea | UT-004 | E2E-001 | TC-001 | 설계완료 |
-| FR-005 | 5.4 (호환성) | 3.5 | ResponsiveGrid | UT-005,UT-006 | E2E-002 | TC-002 | 설계완료 |
+| FR-001 | 4.1.1 (확장 템플릿) | 5.2, 11.2 | Dashboard.tsx | UT-001 | E2E-001 | TC-001 | 설계완료 |
+| FR-002 | 4.1.1 (샘플 대시보드) | 5.2, 11.1 | KPICardSection.tsx | UT-002 | E2E-002 | TC-002 | 설계완료 |
+| FR-003 | 4.1.1 (샘플 대시보드) | 5.2, 11.1 | ChartSection.tsx | UT-003 | E2E-003 | TC-003 | 설계완료 |
+| FR-004 | 4.1.1 (샘플 대시보드) | 5.2, 11.1 | RecentActivitySection.tsx | UT-004 | E2E-004 | TC-004 | 설계완료 |
+| FR-005 | 5.4 (호환성) | 5.3, 11.2 | Row/Col (Ant Design) | UT-005,UT-006,UT-007 | E2E-005,E2E-006,E2E-007 | TC-005,TC-006,TC-007 | 설계완료 |
 
 ### 1.1 요구사항별 상세 매핑
 
@@ -40,7 +40,7 @@
 | 설계 단계 | 문서 | 섹션 | 구현 항목 |
 |----------|------|------|----------|
 | PRD | prd.md | 4.1.1 | 대시보드 화면 - 위젯 기반 레이아웃 |
-| 설계 | 010-design.md | 3.1 | DashboardLayout 컴포넌트 구조 |
+| 설계 | 010-design.md | 5.2, 11.2 | Dashboard.tsx 컴포넌트 구조 |
 | 단위 테스트 | 026-test-specification.md | 2.1 | UT-001: 위젯 기반 레이아웃 렌더링 테스트 |
 | E2E 테스트 | 026-test-specification.md | 3.1 | E2E-001: 대시보드 화면 통합 테스트 |
 
@@ -49,36 +49,36 @@
 | 설계 단계 | 문서 | 섹션 | 구현 항목 |
 |----------|------|------|----------|
 | PRD | prd.md | 4.1.1 | KPI 카드 위젯 (숫자, 증감률) |
-| 설계 | 010-design.md | 3.2 | KPICardArea 컴포넌트 - 상단 카드 그리드 |
+| 설계 | 010-design.md | 5.2, 11.1 | KPICardSection.tsx - 상단 카드 그리드 |
 | 단위 테스트 | 026-test-specification.md | 2.2 | UT-002: KPI 카드 영역 렌더링 테스트 |
-| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-001: 대시보드 화면 통합 테스트 |
+| E2E 테스트 | 026-test-specification.md | 3.2 | E2E-002: KPI 카드 영역 표시 테스트 |
 
 #### FR-003: 차트 영역 배치
 
 | 설계 단계 | 문서 | 섹션 | 구현 항목 |
 |----------|------|------|----------|
 | PRD | prd.md | 4.1.1 | 차트 위젯 (라인, 바, 파이) |
-| 설계 | 010-design.md | 3.3 | ChartArea 컴포넌트 - 차트 위젯 영역 |
+| 설계 | 010-design.md | 5.2, 11.1 | ChartSection.tsx - 차트 위젯 영역 |
 | 단위 테스트 | 026-test-specification.md | 2.3 | UT-003: 차트 영역 렌더링 테스트 |
-| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-001: 대시보드 화면 통합 테스트 |
+| E2E 테스트 | 026-test-specification.md | 3.3 | E2E-003: 차트 영역 표시 테스트 |
 
 #### FR-004: 최근 활동 영역 배치
 
 | 설계 단계 | 문서 | 섹션 | 구현 항목 |
 |----------|------|------|----------|
 | PRD | prd.md | 4.1.1 | 최근 활동 위젯 |
-| 설계 | 010-design.md | 3.4 | RecentActivityArea 컴포넌트 - 활동 목록 영역 |
+| 설계 | 010-design.md | 5.2, 11.1 | RecentActivitySection.tsx - 활동 목록 영역 |
 | 단위 테스트 | 026-test-specification.md | 2.4 | UT-004: 최근 활동 영역 렌더링 테스트 |
-| E2E 테스트 | 026-test-specification.md | 3.1 | E2E-001: 대시보드 화면 통합 테스트 |
+| E2E 테스트 | 026-test-specification.md | 3.4 | E2E-004: 최근 활동 영역 표시 테스트 |
 
 #### FR-005: 반응형 그리드 레이아웃
 
 | 설계 단계 | 문서 | 섹션 | 구현 항목 |
 |----------|------|------|----------|
 | PRD | prd.md | 5.4 | 반응형: 데스크톱, 태블릿, 모바일 지원 |
-| 설계 | 010-design.md | 3.5 | ResponsiveGrid - Ant Design Row/Col 기반 반응형 구현 |
-| 단위 테스트 | 026-test-specification.md | 2.5 | UT-005: 반응형 breakpoint 테스트, UT-006: 컬럼 수 조정 테스트 |
-| E2E 테스트 | 026-test-specification.md | 3.2 | E2E-002: 반응형 레이아웃 E2E 테스트 |
+| 설계 | 010-design.md | 5.3 | Ant Design Row/Col 기반 반응형 구현 |
+| 단위 테스트 | 026-test-specification.md | 2.5~2.7 | UT-005~UT-007: 반응형 breakpoint 테스트 |
+| E2E 테스트 | 026-test-specification.md | 3.5~3.7 | E2E-005~E2E-007: 반응형 레이아웃 E2E 테스트 |
 
 ---
 
@@ -97,10 +97,10 @@
 |------|------|
 | **PRD 원문** | 반응형: 데스크톱, 태블릿, 모바일 지원 (PRD 5.4) |
 | **설계 표현** | Ant Design Grid 시스템 사용, breakpoint별 span 값 조정 |
-| **구현 위치** | ResponsiveGrid 컴포넌트 (Row/Col) |
-| **Breakpoint 규칙** | xl(>=1200px): 4컬럼, lg(>=992px): 3컬럼, md(>=768px): 2컬럼, sm(<768px): 1컬럼 |
+| **구현 위치** | Row/Col 컴포넌트 (Ant Design) |
+| **Breakpoint 규칙** | xl(1600px+): 4컬럼, lg(1200-1599px): 4컬럼, md(992-1199px): 2컬럼, sm(768-991px): 2컬럼, xs(~767px): 1컬럼 |
 | **검증 방법** | 각 breakpoint에서 컬럼 수 확인 |
-| **관련 테스트** | UT-005, UT-006, E2E-002 |
+| **관련 테스트** | UT-005, UT-006, UT-007, E2E-005, E2E-006, E2E-007 |
 
 #### BR-002: 위젯 영역 최소 높이 유지
 
@@ -108,10 +108,10 @@
 |------|------|
 | **PRD 원문** | 대시보드 화면 - 위젯 기반 레이아웃, 영역 구분 명확 (PRD 4.1.1) |
 | **설계 표현** | 각 위젯 영역에 minHeight CSS 속성 적용 |
-| **구현 위치** | Widget Container 스타일 정의 |
+| **구현 위치** | WidgetCard 컴포넌트 스타일 정의 |
 | **최소 높이 규칙** | KPI 카드: 120px, 차트: 300px, 최근 활동: 200px |
 | **검증 방법** | 데이터 없는 상태에서도 최소 높이 유지 확인 |
-| **관련 테스트** | UT-007, E2E-003 |
+| **관련 테스트** | UT-008, E2E-008 |
 
 ---
 
