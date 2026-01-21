@@ -1166,12 +1166,11 @@ workPackages:
           integrationCheck:
             - screens/dashboard/Dashboard.tsx
             - 반응형 breakpoint 설정 (xs, sm, md, lg, xl)
-        execution: review
       - id: TSK-07-02
         title: KPI 카드 위젯
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -1197,7 +1196,7 @@ workPackages:
           integrationCheck:
             - components/dashboard/KPICard.tsx
             - Statistic prefix/suffix로 아이콘/단위 표시
-        execution: review
+        execution: apply
       - id: TSK-07-03
         title: 차트 위젯
         category: development
@@ -1228,3 +1227,4 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
+        execution: review

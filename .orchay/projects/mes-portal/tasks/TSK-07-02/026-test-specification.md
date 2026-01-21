@@ -47,17 +47,30 @@
 
 ### 1.3 테스트 대상 컴포넌트
 
+> 설계 문서 010-design.md 섹션 7.3 기준
+
 ```typescript
-// components/dashboard/KPICard.tsx
+// types/dashboard.ts
+type KPIChangeType = 'increase' | 'decrease' | 'neutral';
+type KPIValueType = 'positive' | 'negative';
+
+interface KPICardData {
+  id: string;              // 고유 ID (production, efficiency, defect, orders)
+  title: string;           // 제목 (금일 생산량, 가동률 등)
+  value: number;           // 현재 값
+  unit: string;            // 단위 (개, %, 건)
+  change: number;          // 변화율 (양수: 증가, 음수: 감소)
+  changeType: KPIChangeType; // 변화 유형
+  icon: string;            // 아이콘 이름
+}
+
+// components/dashboard/KPICard/index.tsx
 interface KPICardProps {
-  type: 'operationRate' | 'defectRate' | 'productionVolume'
-  title: string
-  value: number | null
-  unit?: string
-  changeRate: number | null
-  precision?: number
-  loading?: boolean
-  className?: string
+  data: KPICardData;
+  loading?: boolean;
+  valueType?: KPIValueType; // 기본값: 'positive'
+  onClick?: () => void;
+  className?: string;
 }
 ```
 
@@ -67,229 +80,360 @@ interface KPICardProps {
 
 ### 2.1 테스트 케이스 목록
 
+> 설계 문서 010-design.md 비즈니스 규칙(BR) 기준으로 재구성
+
 | 테스트 ID | 대상 | 시나리오 | 예상 결과 | 요구사항 |
 |-----------|------|----------|----------|----------|
-| UT-001 | KPICard | 가동률 카드 정상 렌더링 | 타이틀, 값, 단위 표시 | FR-001 |
-| UT-002 | KPICard | 불량률 카드 정상 렌더링 | 타이틀, 값, 단위 표시 | FR-002 |
-| UT-003 | KPICard | 생산량 카드 정상 렌더링 | 타이틀, 값, 단위 표시 | FR-003 |
-| UT-004 | KPICard | 증감률 양수 - 상승 화살표 + 녹색 | ArrowUpOutlined 아이콘, 녹색 스타일 | FR-004, BR-001 |
-| UT-005 | KPICard | 증감률 음수 - 하락 화살표 + 빨간색 | ArrowDownOutlined 아이콘, 빨간색 스타일 | FR-004, BR-002 |
-| UT-006 | KPICard | 증감률 0 - 변화 없음 + 회색 | MinusOutlined 아이콘, 회색 스타일 | FR-004, BR-003 |
-| UT-007 | KPICard | 값 없음(null) - 대시(-) 표시 | "-" 문자열 표시 | BR-004 |
-| UT-008 | KPICard | 증감률 없음(null) - 미표시 | 증감률 영역 미렌더링 | BR-004 |
+| UT-001 | KPICard | 가동률(efficiency) 카드 정상 렌더링 | 타이틀, 값(87.3%), 단위 표시 | FR-001 |
+| UT-002 | KPICard | 불량률(defect) 카드 정상 렌더링 | 타이틀, 값(1.2%), 단위 표시 | FR-002 |
+| UT-003 | KPICard | 생산량(production) 카드 정상 렌더링 | 타이틀, 값(1,247개), 단위 표시 | FR-003 |
+| UT-004 | KPICard | 작업지시(orders) 카드 정상 렌더링 | 타이틀, 값(15건), 단위 표시 | FR-006 |
+| UT-004 | KPICard | **긍정 KPI** 증가(increase) - 상승 화살표 + **녹색** | ArrowUpOutlined, colorSuccess | FR-004, BR-001 |
+| UT-004-2 | KPICard | **긍정 KPI** 감소(decrease) - 하락 화살표 + **빨간색** | ArrowDownOutlined, colorError | FR-004, BR-002 |
+| UT-005 | KPICard | **부정 KPI(불량률)** 증가(increase) - 상승 화살표 + **빨간색** | ArrowUpOutlined, colorError | FR-004, BR-003 |
+| UT-005-2 | KPICard | **부정 KPI(불량률)** 감소(decrease) - 하락 화살표 + **녹색** | ArrowDownOutlined, colorSuccess | FR-004, BR-004 |
+| UT-006 | KPICard | 변화 없음(neutral) - MinusOutlined + **회색** | MinusOutlined, colorTextSecondary | FR-004, BR-005 |
+| UT-007 | KPICard | 값 없음(null) - 대시(-) 표시 | "-" 문자열 표시 | BR-009 |
+| UT-008 | KPICard | 증감률 없음(null) - 미표시 | 증감률 영역 미렌더링 | BR-009 |
 | UT-009 | KPICard | 로딩 상태 표시 | Skeleton 또는 Spin 표시 | NFR-001 |
-| UT-010 | KPICard | 소수점 자릿수(precision) 적용 | 지정된 자릿수로 값 포맷팅 | FR-001 |
-| UT-011 | KPICard | data-testid 속성 렌더링 | 모든 testid 속성 존재 | NFR-002 |
+| UT-010 | KPICard | 천 단위 콤마 포맷팅 | 1247 → "1,247" | BR-006 |
+| UT-010-2 | KPICard | 비율 소수점 1자리 표시 | 87.35 → "87.4%" | BR-007 |
+| UT-010-3 | KPICard | 수량/건수 정수 표시 | 15.7 → "15건" | BR-008 |
+| UT-011 | KPICard | data-testid 속성 렌더링 | 모든 testid 속성 존재 (`kpi-card-{id}`) | NFR-002 |
 
 ### 2.2 테스트 케이스 상세
 
-#### UT-001: 가동률 카드 정상 렌더링
+#### UT-001: 가동률(efficiency) 카드 정상 렌더링
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render operation rate card correctly')` |
+| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render efficiency card correctly')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 95.5, unit: '%', changeRate: 2.3 }` |
-| **검증 포인트** | 1. 타이틀 '가동률' 표시<br>2. 값 '95.5' 표시<br>3. 단위 '%' 표시<br>4. data-testid 존재 |
-| **커버리지 대상** | render() 정상 분기 |
+| **입력 데이터** | `{ data: { id: 'efficiency', title: '가동률', value: 87.3, unit: '%', change: 2.1, changeType: 'increase', icon: 'activity' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 타이틀 '가동률' 표시<br>2. 값 '87.3' 표시 (소수점 1자리)<br>3. 단위 '%' 표시<br>4. data-testid `kpi-card-efficiency` 존재 |
+| **커버리지 대상** | render() 정상 분기, BR-007 |
 | **관련 요구사항** | FR-001: 가동률 카드 표시 |
 
 ```typescript
-it('should render operation rate card correctly', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={95.5}
-      unit="%"
-      changeRate={2.3}
-    />
-  )
+it('should render efficiency card correctly', () => {
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.3,
+    unit: '%',
+    change: 2.1,
+    changeType: 'increase',
+    icon: 'activity'
+  }
+
+  render(<KPICard data={data} valueType="positive" />)
 
   // 타이틀 확인
   expect(screen.getByText('가동률')).toBeInTheDocument()
 
-  // 값 확인
-  expect(screen.getByTestId('kpi-value')).toHaveTextContent('95.5')
+  // 값 확인 (소수점 1자리)
+  expect(screen.getByTestId('kpi-value-efficiency')).toHaveTextContent('87.3')
 
   // 단위 확인
   expect(screen.getByText('%')).toBeInTheDocument()
 
-  // data-testid 확인
-  expect(screen.getByTestId('kpi-card-operationRate')).toBeInTheDocument()
+  // data-testid 확인 (설계 문서 기준: kpi-card-{id})
+  expect(screen.getByTestId('kpi-card-efficiency')).toBeInTheDocument()
 })
 ```
 
-#### UT-002: 불량률 카드 정상 렌더링
+#### UT-002: 불량률(defect) 카드 정상 렌더링
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render defect rate card correctly')` |
+| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render defect card correctly')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'defectRate', title: '불량률', value: 0.8, unit: '%', changeRate: -0.2 }` |
-| **검증 포인트** | 1. 타이틀 '불량률' 표시<br>2. 값 '0.8' 표시<br>3. 단위 '%' 표시 |
-| **커버리지 대상** | render() 정상 분기 |
+| **입력 데이터** | `{ data: { id: 'defect', title: '불량률', value: 1.2, unit: '%', change: -0.3, changeType: 'decrease', icon: 'alert-triangle' }, valueType: 'negative' }` |
+| **검증 포인트** | 1. 타이틀 '불량률' 표시<br>2. 값 '1.2' 표시<br>3. 단위 '%' 표시<br>4. data-testid `kpi-card-defect` 존재 |
+| **커버리지 대상** | render() 정상 분기, BR-007, 부정 KPI |
 | **관련 요구사항** | FR-002: 불량률 카드 표시 |
 
 ```typescript
-it('should render defect rate card correctly', () => {
-  render(
-    <KPICard
-      type="defectRate"
-      title="불량률"
-      value={0.8}
-      unit="%"
-      changeRate={-0.2}
-    />
-  )
+it('should render defect card correctly', () => {
+  const data: KPICardData = {
+    id: 'defect',
+    title: '불량률',
+    value: 1.2,
+    unit: '%',
+    change: -0.3,
+    changeType: 'decrease',
+    icon: 'alert-triangle'
+  }
+
+  render(<KPICard data={data} valueType="negative" />)
 
   expect(screen.getByText('불량률')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-value')).toHaveTextContent('0.8')
-  expect(screen.getByTestId('kpi-card-defectRate')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-value-defect')).toHaveTextContent('1.2')
+  expect(screen.getByTestId('kpi-card-defect')).toBeInTheDocument()
 })
 ```
 
-#### UT-003: 생산량 카드 정상 렌더링
+#### UT-003: 생산량(production) 카드 정상 렌더링
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render production volume card correctly')` |
+| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render production card correctly')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'productionVolume', title: '생산량', value: 12500, unit: '대', changeRate: 5.0 }` |
-| **검증 포인트** | 1. 타이틀 '생산량' 표시<br>2. 값 '12,500' 표시 (천 단위 구분자)<br>3. 단위 '대' 표시 |
-| **커버리지 대상** | render() 정상 분기, 숫자 포맷팅 |
+| **입력 데이터** | `{ data: { id: 'production', title: '금일 생산량', value: 1247, unit: '개', change: 12.5, changeType: 'increase', icon: 'package' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 타이틀 '금일 생산량' 표시<br>2. 값 '1,247' 표시 (천 단위 콤마, BR-006)<br>3. 단위 '개' 표시<br>4. data-testid `kpi-card-production` 존재 |
+| **커버리지 대상** | render() 정상 분기, BR-006, BR-008 |
 | **관련 요구사항** | FR-003: 생산량 카드 표시 |
 
 ```typescript
-it('should render production volume card correctly', () => {
-  render(
-    <KPICard
-      type="productionVolume"
-      title="생산량"
-      value={12500}
-      unit="대"
-      changeRate={5.0}
-    />
-  )
+it('should render production card correctly', () => {
+  const data: KPICardData = {
+    id: 'production',
+    title: '금일 생산량',
+    value: 1247,
+    unit: '개',
+    change: 12.5,
+    changeType: 'increase',
+    icon: 'package'
+  }
 
-  expect(screen.getByText('생산량')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-value')).toHaveTextContent('12,500')
-  expect(screen.getByText('대')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-card-productionVolume')).toBeInTheDocument()
+  render(<KPICard data={data} valueType="positive" />)
+
+  expect(screen.getByText('금일 생산량')).toBeInTheDocument()
+  // 천 단위 콤마 적용 (BR-006)
+  expect(screen.getByTestId('kpi-value-production')).toHaveTextContent('1,247')
+  expect(screen.getByText('개')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-card-production')).toBeInTheDocument()
 })
 ```
 
-#### UT-004: 증감률 양수 - 상승 화살표 + 녹색
+#### UT-004: 작업지시(orders) 카드 정상 렌더링
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('change rate') -> it('should show up arrow with green color for positive change')` |
+| **테스트 블록** | `describe('KPICard') -> describe('rendering') -> it('should render orders card correctly')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 95.5, changeRate: 2.3 }` |
-| **검증 포인트** | 1. 상승 화살표 아이콘 표시<br>2. 녹색 색상 적용<br>3. '+2.3%' 또는 '2.3%' 텍스트 |
-| **커버리지 대상** | changeRate > 0 분기 |
+| **입력 데이터** | `{ data: { id: 'orders', title: '작업지시', value: 15, unit: '건', change: 0, changeType: 'neutral', icon: 'clipboard' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 타이틀 '작업지시' 표시<br>2. 값 '15' 표시 (정수, BR-008)<br>3. 단위 '건' 표시<br>4. data-testid `kpi-card-orders` 존재 |
+| **커버리지 대상** | render() 정상 분기, BR-008 |
+| **관련 요구사항** | FR-006: 작업지시 카드 표시 |
+
+```typescript
+it('should render orders card correctly', () => {
+  const data: KPICardData = {
+    id: 'orders',
+    title: '작업지시',
+    value: 15,
+    unit: '건',
+    change: 0,
+    changeType: 'neutral',
+    icon: 'clipboard'
+  }
+
+  render(<KPICard data={data} valueType="positive" />)
+
+  expect(screen.getByText('작업지시')).toBeInTheDocument()
+  // 정수 표시 (BR-008)
+  expect(screen.getByTestId('kpi-value-orders')).toHaveTextContent('15')
+  expect(screen.getByText('건')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-card-orders')).toBeInTheDocument()
+})
+```
+
+#### UT-004: 긍정 KPI 증가(increase) - 상승 화살표 + 녹색
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
+| **테스트 블록** | `describe('KPICard') -> describe('change indicator') -> it('should show green up arrow for positive KPI increase')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | `{ data: { id: 'efficiency', ..., change: 2.1, changeType: 'increase' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 상승 화살표(ArrowUpOutlined) 표시<br>2. **녹색**(colorSuccess) 색상 적용<br>3. '+2.1%' 텍스트 |
+| **커버리지 대상** | valueType='positive' + changeType='increase' → 녹색 (BR-001) |
 | **관련 요구사항** | FR-004, BR-001 |
 
 ```typescript
-it('should show up arrow with green color for positive change', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={95.5}
-      changeRate={2.3}
-    />
-  )
+it('should show green up arrow for positive KPI increase', () => {
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.3,
+    unit: '%',
+    change: 2.1,
+    changeType: 'increase',
+    icon: 'activity'
+  }
 
-  const changeRateElement = screen.getByTestId('kpi-change-rate')
-  expect(changeRateElement).toBeInTheDocument()
+  render(<KPICard data={data} valueType="positive" />)
+
+  const changeElement = screen.getByTestId('kpi-change-efficiency')
+  expect(changeElement).toBeInTheDocument()
 
   // 상승 아이콘 확인 (ArrowUpOutlined)
-  const icon = screen.getByTestId('kpi-change-icon')
+  const icon = screen.getByTestId('kpi-change-icon-efficiency')
   expect(icon).toBeInTheDocument()
 
-  // 녹색 스타일 확인 (클래스명 또는 스타일)
-  expect(changeRateElement).toHaveClass('text-green-500')
-  // 또는 expect(changeRateElement).toHaveStyle({ color: 'rgb(82, 196, 26)' })
+  // 녹색 스타일 확인 (긍정 KPI + 증가 = 좋음 = 녹색)
+  expect(changeElement).toHaveStyle({ color: 'rgb(82, 196, 26)' }) // colorSuccess
 
   // 증감률 값 확인
-  expect(changeRateElement).toHaveTextContent('2.3')
+  expect(changeElement).toHaveTextContent('2.1')
 })
 ```
 
-#### UT-005: 증감률 음수 - 하락 화살표 + 빨간색
+#### UT-004-2: 긍정 KPI 감소(decrease) - 하락 화살표 + 빨간색
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('change rate') -> it('should show down arrow with red color for negative change')` |
+| **테스트 블록** | `describe('KPICard') -> describe('change indicator') -> it('should show red down arrow for positive KPI decrease')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'defectRate', title: '불량률', value: 0.8, changeRate: -0.5 }` |
-| **검증 포인트** | 1. 하락 화살표 아이콘 표시<br>2. 빨간색 색상 적용<br>3. '-0.5%' 텍스트 |
-| **커버리지 대상** | changeRate < 0 분기 |
+| **입력 데이터** | `{ data: { id: 'production', ..., change: -5.0, changeType: 'decrease' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 하락 화살표(ArrowDownOutlined) 표시<br>2. **빨간색**(colorError) 색상 적용<br>3. '-5.0%' 텍스트 |
+| **커버리지 대상** | valueType='positive' + changeType='decrease' → 빨간색 (BR-002) |
 | **관련 요구사항** | FR-004, BR-002 |
 
 ```typescript
-it('should show down arrow with red color for negative change', () => {
-  render(
-    <KPICard
-      type="defectRate"
-      title="불량률"
-      value={0.8}
-      changeRate={-0.5}
-    />
-  )
+it('should show red down arrow for positive KPI decrease', () => {
+  const data: KPICardData = {
+    id: 'production',
+    title: '금일 생산량',
+    value: 1000,
+    unit: '개',
+    change: -5.0,
+    changeType: 'decrease',
+    icon: 'package'
+  }
 
-  const changeRateElement = screen.getByTestId('kpi-change-rate')
-  expect(changeRateElement).toBeInTheDocument()
+  render(<KPICard data={data} valueType="positive" />)
 
-  // 하락 아이콘 확인 (ArrowDownOutlined)
-  const icon = screen.getByTestId('kpi-change-icon')
-  expect(icon).toBeInTheDocument()
+  const changeElement = screen.getByTestId('kpi-change-production')
 
-  // 빨간색 스타일 확인
-  expect(changeRateElement).toHaveClass('text-red-500')
+  // 빨간색 스타일 확인 (긍정 KPI + 감소 = 나쁨 = 빨간색)
+  expect(changeElement).toHaveStyle({ color: 'rgb(255, 77, 79)' }) // colorError
 
   // 증감률 값 확인
-  expect(changeRateElement).toHaveTextContent('-0.5')
+  expect(changeElement).toHaveTextContent('-5.0')
 })
 ```
 
-#### UT-006: 증감률 0 - 변화 없음 + 회색
+#### UT-005: 부정 KPI(불량률) 증가(increase) - 상승 화살표 + 빨간색
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('change rate') -> it('should show neutral indicator with gray color for zero change')` |
+| **테스트 블록** | `describe('KPICard') -> describe('change indicator') -> it('should show red up arrow for negative KPI increase')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 90.0, changeRate: 0 }` |
-| **검증 포인트** | 1. 중립 아이콘(MinusOutlined) 또는 텍스트 표시<br>2. 회색 색상 적용<br>3. '0%' 또는 '-' 텍스트 |
-| **커버리지 대상** | changeRate === 0 분기 |
+| **입력 데이터** | `{ data: { id: 'defect', ..., change: 0.5, changeType: 'increase' }, valueType: 'negative' }` |
+| **검증 포인트** | 1. 상승 화살표(ArrowUpOutlined) 표시<br>2. **빨간색**(colorError) 색상 적용 ← **핵심: 불량률 증가는 나쁨**<br>3. '+0.5%' 텍스트 |
+| **커버리지 대상** | valueType='negative' + changeType='increase' → 빨간색 (BR-003) |
 | **관련 요구사항** | FR-004, BR-003 |
 
 ```typescript
-it('should show neutral indicator with gray color for zero change', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={90.0}
-      changeRate={0}
-    />
-  )
+it('should show red up arrow for negative KPI (defect rate) increase', () => {
+  const data: KPICardData = {
+    id: 'defect',
+    title: '불량률',
+    value: 1.7,
+    unit: '%',
+    change: 0.5,
+    changeType: 'increase',
+    icon: 'alert-triangle'
+  }
 
-  const changeRateElement = screen.getByTestId('kpi-change-rate')
-  expect(changeRateElement).toBeInTheDocument()
+  // 불량률은 valueType='negative' (부정 KPI)
+  render(<KPICard data={data} valueType="negative" />)
 
-  // 중립 아이콘 또는 회색 스타일 확인
-  expect(changeRateElement).toHaveClass('text-gray-500')
+  const changeElement = screen.getByTestId('kpi-change-defect')
+  expect(changeElement).toBeInTheDocument()
 
-  // 증감률 값 확인 (0 또는 변화 없음 표시)
-  expect(changeRateElement).toHaveTextContent('0')
+  // 상승 아이콘 확인
+  const icon = screen.getByTestId('kpi-change-icon-defect')
+  expect(icon).toBeInTheDocument()
+
+  // **빨간색** 스타일 확인 (부정 KPI + 증가 = 나쁨 = 빨간색)
+  expect(changeElement).toHaveStyle({ color: 'rgb(255, 77, 79)' }) // colorError
+
+  // 증감률 값 확인
+  expect(changeElement).toHaveTextContent('0.5')
+})
+```
+
+#### UT-005-2: 부정 KPI(불량률) 감소(decrease) - 하락 화살표 + 녹색
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
+| **테스트 블록** | `describe('KPICard') -> describe('change indicator') -> it('should show green down arrow for negative KPI decrease')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | `{ data: { id: 'defect', ..., change: -0.3, changeType: 'decrease' }, valueType: 'negative' }` |
+| **검증 포인트** | 1. 하락 화살표(ArrowDownOutlined) 표시<br>2. **녹색**(colorSuccess) 색상 적용 ← **핵심: 불량률 감소는 좋음**<br>3. '-0.3%' 텍스트 |
+| **커버리지 대상** | valueType='negative' + changeType='decrease' → 녹색 (BR-004) |
+| **관련 요구사항** | FR-004, BR-004 |
+
+```typescript
+it('should show green down arrow for negative KPI (defect rate) decrease', () => {
+  const data: KPICardData = {
+    id: 'defect',
+    title: '불량률',
+    value: 1.2,
+    unit: '%',
+    change: -0.3,
+    changeType: 'decrease',
+    icon: 'alert-triangle'
+  }
+
+  // 불량률은 valueType='negative' (부정 KPI)
+  render(<KPICard data={data} valueType="negative" />)
+
+  const changeElement = screen.getByTestId('kpi-change-defect')
+
+  // **녹색** 스타일 확인 (부정 KPI + 감소 = 좋음 = 녹색)
+  expect(changeElement).toHaveStyle({ color: 'rgb(82, 196, 26)' }) // colorSuccess
+
+  // 증감률 값 확인
+  expect(changeElement).toHaveTextContent('-0.3')
+})
+```
+
+#### UT-006: 변화 없음(neutral) - MinusOutlined + 회색
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
+| **테스트 블록** | `describe('KPICard') -> describe('change indicator') -> it('should show gray neutral indicator for zero change')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | `{ data: { id: 'orders', ..., change: 0, changeType: 'neutral' }, valueType: 'positive' }` |
+| **검증 포인트** | 1. 중립 아이콘(MinusOutlined) 표시<br>2. 회색(colorTextSecondary) 색상 적용<br>3. '0%' 텍스트 |
+| **커버리지 대상** | changeType='neutral' → 회색 (BR-005) |
+| **관련 요구사항** | FR-004, BR-005 |
+
+```typescript
+it('should show gray neutral indicator for zero change', () => {
+  const data: KPICardData = {
+    id: 'orders',
+    title: '작업지시',
+    value: 15,
+    unit: '건',
+    change: 0,
+    changeType: 'neutral',
+    icon: 'clipboard'
+  }
+
+  render(<KPICard data={data} valueType="positive" />)
+
+  const changeElement = screen.getByTestId('kpi-change-orders')
+  expect(changeElement).toBeInTheDocument()
+
+  // 회색 스타일 확인 (neutral = 회색)
+  // colorTextSecondary 또는 해당 Ant Design 토큰 색상
+  expect(changeElement).toHaveClass('text-gray-500')
+
+  // 증감률 값 확인
+  expect(changeElement).toHaveTextContent('0')
 })
 ```
 
@@ -300,23 +444,26 @@ it('should show neutral indicator with gray color for zero change', () => {
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
 | **테스트 블록** | `describe('KPICard') -> describe('null handling') -> it('should show dash when value is null')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: null, changeRate: null }` |
+| **입력 데이터** | `{ data: { id: 'efficiency', title: '가동률', value: null, ... } }` |
 | **검증 포인트** | 1. 값 영역에 '-' 표시<br>2. 에러 발생하지 않음 |
-| **커버리지 대상** | value === null 분기 |
-| **관련 요구사항** | BR-004 |
+| **커버리지 대상** | value === null 분기 (BR-009) |
+| **관련 요구사항** | BR-009 |
 
 ```typescript
 it('should show dash when value is null', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={null}
-      changeRate={null}
-    />
-  )
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: null as unknown as number, // null 테스트
+    unit: '%',
+    change: 0,
+    changeType: 'neutral',
+    icon: 'activity'
+  }
 
-  const valueElement = screen.getByTestId('kpi-value')
+  render(<KPICard data={data} />)
+
+  const valueElement = screen.getByTestId('kpi-value-efficiency')
   expect(valueElement).toHaveTextContent('-')
 })
 ```
@@ -326,26 +473,28 @@ it('should show dash when value is null', () => {
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('null handling') -> it('should not render change rate when null')` |
+| **테스트 블록** | `describe('KPICard') -> describe('null handling') -> it('should not render change indicator when change is null')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 95.5, changeRate: null }` |
+| **입력 데이터** | `{ data: { id: 'efficiency', ..., change: null } }` |
 | **검증 포인트** | 1. 증감률 영역이 렌더링되지 않음 |
-| **커버리지 대상** | changeRate === null 분기 |
-| **관련 요구사항** | BR-004 |
+| **커버리지 대상** | change === null 분기 (BR-009) |
+| **관련 요구사항** | BR-009 |
 
 ```typescript
-it('should not render change rate when null', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={95.5}
-      changeRate={null}
-    />
-  )
+it('should not render change indicator when change is null', () => {
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.3,
+    unit: '%',
+    change: null as unknown as number, // null 테스트
+    changeType: 'neutral',
+    icon: 'activity'
+  }
 
-  expect(screen.queryByTestId('kpi-change-rate')).not.toBeInTheDocument()
-  expect(screen.queryByTestId('kpi-change-icon')).not.toBeInTheDocument()
+  render(<KPICard data={data} />)
+
+  expect(screen.queryByTestId('kpi-change-efficiency')).not.toBeInTheDocument()
 })
 ```
 
@@ -356,57 +505,123 @@ it('should not render change rate when null', () => {
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
 | **테스트 블록** | `describe('KPICard') -> describe('loading state') -> it('should show loading skeleton when loading')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: null, changeRate: null, loading: true }` |
+| **입력 데이터** | `{ data: mockData, loading: true }` |
 | **검증 포인트** | 1. Skeleton 또는 Spin 컴포넌트 표시<br>2. 값이 표시되지 않음 |
 | **커버리지 대상** | loading === true 분기 |
 | **관련 요구사항** | NFR-001 |
 
 ```typescript
 it('should show loading skeleton when loading', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={null}
-      changeRate={null}
-      loading={true}
-    />
-  )
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.3,
+    unit: '%',
+    change: 2.1,
+    changeType: 'increase',
+    icon: 'activity'
+  }
+
+  render(<KPICard data={data} loading={true} />)
+
+  // 카드는 렌더링되어야 함
+  expect(screen.getByTestId('kpi-card-efficiency')).toBeInTheDocument()
 
   // Skeleton 또는 Spin이 표시되는지 확인
-  expect(screen.getByTestId('kpi-card-operationRate')).toBeInTheDocument()
-
-  // 로딩 중에는 실제 값이 표시되지 않음
-  // Ant Design Statistic은 loading prop 지원
+  expect(screen.getByTestId('kpi-loading-skeleton')).toBeInTheDocument()
 })
 ```
 
-#### UT-010: 소수점 자릿수(precision) 적용
+#### UT-010: 천 단위 콤마 포맷팅 (BR-006)
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
-| **테스트 블록** | `describe('KPICard') -> describe('formatting') -> it('should format value with specified precision')` |
+| **테스트 블록** | `describe('KPICard') -> describe('formatting') -> it('should format integer with thousand separator')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 95.567, precision: 1 }` |
-| **검증 포인트** | 1. 값이 '95.6'으로 표시됨 (소수점 1자리) |
-| **커버리지 대상** | precision prop 처리 로직 |
-| **관련 요구사항** | FR-001 |
+| **입력 데이터** | `{ data: { id: 'production', value: 12345, unit: '개' } }` |
+| **검증 포인트** | 12345 → "12,345" 포맷팅 |
+| **커버리지 대상** | formatKPIValue() - 정수 분기 (BR-006) |
+| **관련 요구사항** | BR-006 |
 
 ```typescript
-it('should format value with specified precision', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={95.567}
-      unit="%"
-      changeRate={0}
-      precision={1}
-    />
-  )
+it('should format integer with thousand separator', () => {
+  const data: KPICardData = {
+    id: 'production',
+    title: '금일 생산량',
+    value: 12345,
+    unit: '개',
+    change: 5.0,
+    changeType: 'increase',
+    icon: 'package'
+  }
 
-  expect(screen.getByTestId('kpi-value')).toHaveTextContent('95.6')
+  render(<KPICard data={data} />)
+
+  // 천 단위 콤마 적용 (BR-006)
+  expect(screen.getByTestId('kpi-value-production')).toHaveTextContent('12,345')
+})
+```
+
+#### UT-010-2: 비율 소수점 1자리 표시 (BR-007)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
+| **테스트 블록** | `describe('KPICard') -> describe('formatting') -> it('should format percentage with one decimal place')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | `{ data: { id: 'efficiency', value: 87.35, unit: '%' } }` |
+| **검증 포인트** | 87.35 → "87.4" 포맷팅 (반올림) |
+| **커버리지 대상** | formatKPIValue() - 비율 분기 (BR-007) |
+| **관련 요구사항** | BR-007 |
+
+```typescript
+it('should format percentage with one decimal place', () => {
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.35,
+    unit: '%',
+    change: 2.1,
+    changeType: 'increase',
+    icon: 'activity'
+  }
+
+  render(<KPICard data={data} />)
+
+  // 소수점 1자리 표시 (BR-007)
+  expect(screen.getByTestId('kpi-value-efficiency')).toHaveTextContent('87.4')
+})
+```
+
+#### UT-010-3: 수량/건수 정수 표시 (BR-008)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
+| **테스트 블록** | `describe('KPICard') -> describe('formatting') -> it('should format count as integer')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | `{ data: { id: 'orders', value: 15.7, unit: '건' } }` |
+| **검증 포인트** | 15.7 → "15" 포맷팅 (소수점 버림) |
+| **커버리지 대상** | formatKPIValue() - 건수 분기 (BR-008) |
+| **관련 요구사항** | BR-008 |
+
+```typescript
+it('should format count as integer', () => {
+  const data: KPICardData = {
+    id: 'orders',
+    title: '작업지시',
+    value: 15.7,
+    unit: '건',
+    change: 0,
+    changeType: 'neutral',
+    icon: 'clipboard'
+  }
+
+  render(<KPICard data={data} />)
+
+  // 정수 표시 (BR-008)
+  expect(screen.getByTestId('kpi-value-orders')).toHaveTextContent('15')
 })
 ```
 
@@ -417,26 +632,30 @@ it('should format value with specified precision', () => {
 | **파일** | `components/dashboard/__tests__/KPICard.test.tsx` |
 | **테스트 블록** | `describe('KPICard') -> describe('accessibility') -> it('should render all required data-testid attributes')` |
 | **Mock 의존성** | - |
-| **입력 데이터** | `{ type: 'operationRate', title: '가동률', value: 95.5, changeRate: 2.3 }` |
-| **검증 포인트** | 모든 필수 data-testid 속성 존재 확인 |
+| **입력 데이터** | `{ data: { id: 'efficiency', ... } }` |
+| **검증 포인트** | 모든 필수 data-testid 속성 존재 확인 (설계 문서 기준 `kpi-card-{id}` 형식) |
 | **커버리지 대상** | data-testid 속성 렌더링 |
 | **관련 요구사항** | NFR-002 |
 
 ```typescript
 it('should render all required data-testid attributes', () => {
-  render(
-    <KPICard
-      type="operationRate"
-      title="가동률"
-      value={95.5}
-      changeRate={2.3}
-    />
-  )
+  const data: KPICardData = {
+    id: 'efficiency',
+    title: '가동률',
+    value: 87.3,
+    unit: '%',
+    change: 2.1,
+    changeType: 'increase',
+    icon: 'activity'
+  }
 
-  expect(screen.getByTestId('kpi-card-operationRate')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-value')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-change-rate')).toBeInTheDocument()
-  expect(screen.getByTestId('kpi-change-icon')).toBeInTheDocument()
+  render(<KPICard data={data} valueType="positive" />)
+
+  // 설계 문서 기준 data-testid 형식: kpi-{element}-{id}
+  expect(screen.getByTestId('kpi-card-efficiency')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-value-efficiency')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-change-efficiency')).toBeInTheDocument()
+  expect(screen.getByTestId('kpi-change-icon-efficiency')).toBeInTheDocument()
 })
 ```
 
@@ -446,119 +665,129 @@ it('should render all required data-testid attributes', () => {
 
 ### 3.1 테스트 케이스 목록
 
+> 설계 문서 010-design.md 기준으로 4개 KPI 카드 테스트
+
 | 테스트 ID | 시나리오 | 사전조건 | 실행 단계 | 예상 결과 | 요구사항 |
 |-----------|----------|----------|----------|----------|----------|
-| E2E-001 | 대시보드 KPI 카드 3종 표시 확인 | 로그인, 대시보드 접속 | 1. 대시보드 페이지 이동 | 가동률, 불량률, 생산량 카드 표시 | FR-001, FR-002, FR-003 |
-| E2E-002 | KPI 값 정확성 확인 | 대시보드 접속, mock 데이터 로드 | 1. 각 KPI 카드 값 확인 | mock 데이터와 일치하는 값 표시 | FR-005 |
-| E2E-003 | 증감률 색상/아이콘 확인 | 대시보드 접속 | 1. 양수 증감률 카드 확인<br>2. 음수 증감률 카드 확인 | 적절한 색상과 아이콘 표시 | FR-004, BR-001, BR-002 |
-| E2E-004 | 반응형 레이아웃 확인 | 대시보드 접속 | 1. 데스크톱 크기 확인<br>2. 태블릿 크기 확인<br>3. 모바일 크기 확인 | 각 breakpoint에서 적절한 레이아웃 | NFR-003 |
+| E2E-001 | 대시보드 KPI 카드 **4종** 표시 확인 | 로그인, 대시보드 접속 | 1. 대시보드 페이지 이동 | 가동률, 불량률, 생산량, **작업지시** 카드 표시 | FR-001, FR-002, FR-003, **FR-006** |
+| E2E-002 | KPI 값 정확성 및 포맷팅 확인 | 대시보드 접속, mock 데이터 로드 | 1. 각 KPI 카드 값 확인 | mock 데이터와 일치, 천 단위 콤마/소수점 포맷팅 | FR-005, **BR-006, BR-007, BR-008** |
+| E2E-003 | 증감률 색상/아이콘 확인 (**긍정/부정 KPI**) | 대시보드 접속 | 1. 긍정 KPI 증가 확인<br>2. **부정 KPI(불량률) 감소 확인** | **불량률 감소 시 녹색** 표시 | FR-004, BR-001~BR-005 |
+| E2E-004 | 반응형 레이아웃 확인 | 대시보드 접속 | 1. 데스크톱 크기 확인<br>2. 태블릿 크기 확인<br>3. 모바일 크기 확인 | 각 breakpoint에서 적절한 레이아웃 (4열/2열/1열) | NFR-003 |
 
 ### 3.2 테스트 케이스 상세
 
-#### E2E-001: 대시보드 KPI 카드 3종 표시 확인
+#### E2E-001: 대시보드 KPI 카드 4종 표시 확인
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `tests/e2e/dashboard-kpi.spec.ts` |
-| **테스트명** | `test('대시보드에 3종 KPI 카드가 표시된다')` |
+| **테스트명** | `test('대시보드에 4종 KPI 카드가 표시된다')` |
 | **사전조건** | 로그인 (fixture 사용), 대시보드 접근 |
-| **data-testid 셀렉터** | |
-| - 가동률 카드 | `[data-testid="kpi-card-operationRate"]` |
-| - 불량률 카드 | `[data-testid="kpi-card-defectRate"]` |
-| - 생산량 카드 | `[data-testid="kpi-card-productionVolume"]` |
-| **검증 포인트** | 3개 KPI 카드 모두 표시 |
+| **data-testid 셀렉터** | (설계 문서 기준 `kpi-card-{id}` 형식) |
+| - 가동률 카드 | `[data-testid="kpi-card-efficiency"]` |
+| - 불량률 카드 | `[data-testid="kpi-card-defect"]` |
+| - 생산량 카드 | `[data-testid="kpi-card-production"]` |
+| - 작업지시 카드 | `[data-testid="kpi-card-orders"]` |
+| **검증 포인트** | **4개** KPI 카드 모두 표시 |
 | **스크린샷** | `e2e-001-kpi-cards.png` |
-| **관련 요구사항** | FR-001, FR-002, FR-003 |
+| **관련 요구사항** | FR-001, FR-002, FR-003, **FR-006** |
 
 ```typescript
-test('대시보드에 3종 KPI 카드가 표시된다', async ({ page }) => {
+test('대시보드에 4종 KPI 카드가 표시된다', async ({ page }) => {
   // Given: 로그인 및 대시보드 페이지 접속
   await page.goto('/sample/dashboard')
   await page.waitForSelector('[data-testid="dashboard-layout"]')
 
-  // Then: 3종 KPI 카드 확인
-  await expect(page.locator('[data-testid="kpi-card-operationRate"]')).toBeVisible()
-  await expect(page.locator('[data-testid="kpi-card-defectRate"]')).toBeVisible()
-  await expect(page.locator('[data-testid="kpi-card-productionVolume"]')).toBeVisible()
+  // Then: 4종 KPI 카드 확인 (설계 문서 기준 id)
+  await expect(page.locator('[data-testid="kpi-card-efficiency"]')).toBeVisible()
+  await expect(page.locator('[data-testid="kpi-card-defect"]')).toBeVisible()
+  await expect(page.locator('[data-testid="kpi-card-production"]')).toBeVisible()
+  await expect(page.locator('[data-testid="kpi-card-orders"]')).toBeVisible()
 
   // 스크린샷
   await page.screenshot({ path: 'e2e-001-kpi-cards.png' })
 })
 ```
 
-#### E2E-002: KPI 값 정확성 확인
+#### E2E-002: KPI 값 정확성 및 포맷팅 확인
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `tests/e2e/dashboard-kpi.spec.ts` |
-| **테스트명** | `test('KPI 카드에 mock 데이터 값이 정확히 표시된다')` |
+| **테스트명** | `test('KPI 카드에 mock 데이터 값이 포맷팅되어 표시된다')` |
 | **사전조건** | 대시보드 접속, mock-data/dashboard.json 로드 |
-| **data-testid 셀렉터** | |
-| - KPI 값 | `[data-testid="kpi-value"]` |
-| **API/데이터 확인** | mock-data/dashboard.json의 kpi 섹션 데이터 |
-| **검증 포인트** | 각 KPI 카드의 값이 mock 데이터와 일치 |
+| **data-testid 셀렉터** | (설계 문서 기준 `kpi-value-{id}` 형식) |
+| - 가동률 값 | `[data-testid="kpi-value-efficiency"]` |
+| - 불량률 값 | `[data-testid="kpi-value-defect"]` |
+| - 생산량 값 | `[data-testid="kpi-value-production"]` |
+| - 작업지시 값 | `[data-testid="kpi-value-orders"]` |
+| **검증 포인트** | 1. 값이 mock 데이터와 일치<br>2. 천 단위 콤마 적용 (BR-006)<br>3. 소수점 1자리 적용 (BR-007)<br>4. 정수 표시 (BR-008) |
 | **스크린샷** | `e2e-002-kpi-values.png` |
-| **관련 요구사항** | FR-005 |
+| **관련 요구사항** | FR-005, BR-006, BR-007, BR-008 |
 
 ```typescript
-test('KPI 카드에 mock 데이터 값이 정확히 표시된다', async ({ page }) => {
+test('KPI 카드에 mock 데이터 값이 포맷팅되어 표시된다', async ({ page }) => {
   // Given: 대시보드 페이지 접속
   await page.goto('/sample/dashboard')
   await page.waitForSelector('[data-testid="dashboard-layout"]')
 
-  // Mock 데이터 기대값 (dashboard.json 기준)
+  // Mock 데이터 기대값 (설계 문서 dashboard.json 기준)
   const expectedKPIs = {
-    operationRate: { value: '95.5', unit: '%' },
-    defectRate: { value: '0.8', unit: '%' },
-    productionVolume: { value: '12,500', unit: '대' }
+    efficiency: { value: '87.3', unit: '%' },     // 소수점 1자리 (BR-007)
+    defect: { value: '1.2', unit: '%' },          // 소수점 1자리 (BR-007)
+    production: { value: '1,247', unit: '개' },   // 천 단위 콤마 (BR-006)
+    orders: { value: '15', unit: '건' }           // 정수 (BR-008)
   }
 
-  // Then: 각 KPI 값 확인
-  const operationRateCard = page.locator('[data-testid="kpi-card-operationRate"]')
-  await expect(operationRateCard.locator('[data-testid="kpi-value"]')).toContainText(expectedKPIs.operationRate.value)
-
-  const defectRateCard = page.locator('[data-testid="kpi-card-defectRate"]')
-  await expect(defectRateCard.locator('[data-testid="kpi-value"]')).toContainText(expectedKPIs.defectRate.value)
-
-  const productionVolumeCard = page.locator('[data-testid="kpi-card-productionVolume"]')
-  await expect(productionVolumeCard.locator('[data-testid="kpi-value"]')).toContainText(expectedKPIs.productionVolume.value)
+  // Then: 각 KPI 값 확인 (설계 문서 기준 data-testid)
+  await expect(page.locator('[data-testid="kpi-value-efficiency"]')).toContainText(expectedKPIs.efficiency.value)
+  await expect(page.locator('[data-testid="kpi-value-defect"]')).toContainText(expectedKPIs.defect.value)
+  await expect(page.locator('[data-testid="kpi-value-production"]')).toContainText(expectedKPIs.production.value)
+  await expect(page.locator('[data-testid="kpi-value-orders"]')).toContainText(expectedKPIs.orders.value)
 
   await page.screenshot({ path: 'e2e-002-kpi-values.png' })
 })
 ```
 
-#### E2E-003: 증감률 색상/아이콘 확인
+#### E2E-003: 증감률 색상/아이콘 확인 (긍정/부정 KPI)
 
 | 항목 | 내용 |
 |------|------|
 | **파일** | `tests/e2e/dashboard-kpi.spec.ts` |
-| **테스트명** | `test('증감률에 따라 적절한 색상과 아이콘이 표시된다')` |
+| **테스트명** | `test('긍정/부정 KPI에 따라 적절한 색상과 아이콘이 표시된다')` |
 | **사전조건** | 대시보드 접속 |
-| **data-testid 셀렉터** | |
-| - 증감률 영역 | `[data-testid="kpi-change-rate"]` |
-| - 증감률 아이콘 | `[data-testid="kpi-change-icon"]` |
-| **검증 포인트** | 양수 증감률 - 녹색/상승 아이콘, 음수 증감률 - 빨간색/하락 아이콘 |
+| **data-testid 셀렉터** | (설계 문서 기준 `kpi-change-{id}` 형식) |
+| - 가동률 증감률 | `[data-testid="kpi-change-efficiency"]` |
+| - 불량률 증감률 | `[data-testid="kpi-change-defect"]` |
+| **핵심 검증** | **불량률(부정 KPI) 감소 시 녹색** 표시 (BR-004) |
 | **스크린샷** | `e2e-003-change-rates.png` |
-| **관련 요구사항** | FR-004, BR-001, BR-002 |
+| **관련 요구사항** | FR-004, BR-001~BR-005 |
 
 ```typescript
-test('증감률에 따라 적절한 색상과 아이콘이 표시된다', async ({ page }) => {
+test('긍정/부정 KPI에 따라 적절한 색상과 아이콘이 표시된다', async ({ page }) => {
   // Given: 대시보드 페이지 접속
   await page.goto('/sample/dashboard')
   await page.waitForSelector('[data-testid="dashboard-layout"]')
 
-  // 가동률 카드 (양수 증감률 예상)
-  const operationRateChange = page.locator('[data-testid="kpi-card-operationRate"] [data-testid="kpi-change-rate"]')
-  await expect(operationRateChange).toBeVisible()
-
-  // 색상 확인 (CSS class 또는 computed style)
-  // 양수면 녹색 계열
-  const operationRateClass = await operationRateChange.getAttribute('class')
-  // expect(operationRateClass).toContain('green') 또는 toContain('success')
+  // 가동률 카드 (긍정 KPI + 증가 → 녹색, BR-001)
+  const efficiencyChange = page.locator('[data-testid="kpi-change-efficiency"]')
+  await expect(efficiencyChange).toBeVisible()
+  // 녹색 스타일 확인 (colorSuccess)
+  await expect(efficiencyChange).toHaveCSS('color', 'rgb(82, 196, 26)')
 
   // 아이콘 확인
-  const operationRateIcon = page.locator('[data-testid="kpi-card-operationRate"] [data-testid="kpi-change-icon"]')
-  await expect(operationRateIcon).toBeVisible()
+  const efficiencyIcon = page.locator('[data-testid="kpi-change-icon-efficiency"]')
+  await expect(efficiencyIcon).toBeVisible()
+
+  // **불량률 카드 (부정 KPI + 감소 → 녹색, BR-004) - 핵심 테스트**
+  const defectChange = page.locator('[data-testid="kpi-change-defect"]')
+  await expect(defectChange).toBeVisible()
+  // **녹색 스타일 확인** (부정 KPI + 감소 = 좋음 = 녹색)
+  await expect(defectChange).toHaveCSS('color', 'rgb(82, 196, 26)')
+
+  // 작업지시 카드 (neutral → 회색, BR-005)
+  const ordersChange = page.locator('[data-testid="kpi-change-orders"]')
+  await expect(ordersChange).toBeVisible()
 
   await page.screenshot({ path: 'e2e-003-change-rates.png' })
 })
@@ -571,32 +800,32 @@ test('증감률에 따라 적절한 색상과 아이콘이 표시된다', async 
 | **파일** | `tests/e2e/dashboard-kpi.spec.ts` |
 | **테스트명** | `test('화면 크기에 따라 KPI 카드 레이아웃이 조정된다')` |
 | **사전조건** | 대시보드 접속 |
-| **검증 포인트** | 데스크톱(1280px): 3~4열, 태블릿(768px): 2열, 모바일(375px): 1열 |
+| **검증 포인트** | 데스크톱(1280px): 4열, 태블릿(768px): 2열, 모바일(375px): 1열 |
 | **스크린샷** | `e2e-004-responsive-desktop.png`, `e2e-004-responsive-tablet.png`, `e2e-004-responsive-mobile.png` |
 | **관련 요구사항** | NFR-003 |
 
 ```typescript
 test('화면 크기에 따라 KPI 카드 레이아웃이 조정된다', async ({ page }) => {
-  // Desktop (1280px)
+  // Desktop (1280px) - 4열 레이아웃
   await page.setViewportSize({ width: 1280, height: 720 })
   await page.goto('/sample/dashboard')
   await page.waitForSelector('[data-testid="dashboard-layout"]')
   await page.screenshot({ path: 'e2e-004-responsive-desktop.png' })
 
-  // KPI 카드가 한 줄에 여러 개 표시되는지 확인
+  // 4개 KPI 카드가 모두 표시되는지 확인
   const kpiCards = page.locator('[data-testid^="kpi-card-"]')
-  await expect(kpiCards).toHaveCount(3)
+  await expect(kpiCards).toHaveCount(4)
 
-  // Tablet (768px)
+  // Tablet (768px) - 2열 레이아웃
   await page.setViewportSize({ width: 768, height: 1024 })
   await page.screenshot({ path: 'e2e-004-responsive-tablet.png' })
 
-  // Mobile (375px)
+  // Mobile (375px) - 1열 레이아웃
   await page.setViewportSize({ width: 375, height: 667 })
   await page.screenshot({ path: 'e2e-004-responsive-mobile.png' })
 
   // 모바일에서도 모든 카드가 표시되는지 확인
-  await expect(kpiCards).toHaveCount(3)
+  await expect(kpiCards).toHaveCount(4)
 })
 ```
 
@@ -686,41 +915,61 @@ test('화면 크기에 따라 KPI 카드 레이아웃이 조정된다', async ({
 
 ### 5.1 단위 테스트용 Mock 데이터
 
+> 설계 문서 010-design.md 섹션 7.2 기준 KPICardData 인터페이스 적용
+
 | 데이터 ID | 용도 | 값 |
 |-----------|------|-----|
-| MOCK-KPI-OPERATION-RATE | 가동률 KPI | `{ type: 'operationRate', title: '가동률', value: 95.5, unit: '%', changeRate: 2.3 }` |
-| MOCK-KPI-DEFECT-RATE | 불량률 KPI | `{ type: 'defectRate', title: '불량률', value: 0.8, unit: '%', changeRate: -0.2 }` |
-| MOCK-KPI-PRODUCTION-VOLUME | 생산량 KPI | `{ type: 'productionVolume', title: '생산량', value: 12500, unit: '대', changeRate: 5.0 }` |
-| MOCK-KPI-NULL-VALUE | 값 없음 케이스 | `{ type: 'operationRate', title: '가동률', value: null, changeRate: null }` |
-| MOCK-KPI-ZERO-CHANGE | 변화 없음 케이스 | `{ type: 'operationRate', title: '가동률', value: 90.0, changeRate: 0 }` |
+| MOCK-KPI-EFFICIENCY | 가동률 KPI | `{ id: 'efficiency', title: '가동률', value: 87.3, unit: '%', change: 2.1, changeType: 'increase' }` |
+| MOCK-KPI-DEFECT | 불량률 KPI (부정) | `{ id: 'defect', title: '불량률', value: 1.2, unit: '%', change: -0.3, changeType: 'decrease' }` |
+| MOCK-KPI-PRODUCTION | 생산량 KPI | `{ id: 'production', title: '금일 생산량', value: 1247, unit: '개', change: 12.5, changeType: 'increase' }` |
+| MOCK-KPI-ORDERS | 작업지시 KPI | `{ id: 'orders', title: '작업지시', value: 15, unit: '건', change: 0, changeType: 'neutral' }` |
+| MOCK-KPI-NULL-VALUE | 값 없음 케이스 | `{ id: 'efficiency', ..., value: null }` |
+| MOCK-KPI-DEFECT-INCREASE | 불량률 증가 (나쁨 → 빨간색) | `{ id: 'defect', ..., change: 0.5, changeType: 'increase' }` |
 
 ### 5.2 E2E 테스트용 Mock 데이터 (dashboard.json)
 
+> 설계 문서 기준 kpiCards 배열 구조
+
 ```json
 {
-  "kpi": {
-    "operationRate": {
+  "kpiCards": [
+    {
+      "id": "production",
+      "title": "금일 생산량",
+      "value": 1247,
+      "unit": "개",
+      "change": 12.5,
+      "changeType": "increase",
+      "icon": "package"
+    },
+    {
+      "id": "efficiency",
       "title": "가동률",
-      "value": 95.5,
+      "value": 87.3,
       "unit": "%",
-      "changeRate": 2.3,
-      "trend": "up"
+      "change": 2.1,
+      "changeType": "increase",
+      "icon": "activity"
     },
-    "defectRate": {
+    {
+      "id": "defect",
       "title": "불량률",
-      "value": 0.8,
+      "value": 1.2,
       "unit": "%",
-      "changeRate": -0.2,
-      "trend": "down"
+      "change": -0.3,
+      "changeType": "decrease",
+      "icon": "alert-triangle"
     },
-    "productionVolume": {
-      "title": "생산량",
-      "value": 12500,
-      "unit": "대",
-      "changeRate": 5.0,
-      "trend": "up"
+    {
+      "id": "orders",
+      "title": "작업지시",
+      "value": 15,
+      "unit": "건",
+      "change": 0,
+      "changeType": "neutral",
+      "icon": "clipboard"
     }
-  }
+  ]
 }
 ```
 
@@ -733,67 +982,89 @@ test('화면 크기에 따라 KPI 카드 레이아웃이 조정된다', async ({
 
 ### 5.4 Mock 데이터 코드
 
+> 설계 문서 기준 KPICardData, KPICardProps 인터페이스 적용
+
 ```typescript
 // fixtures/kpi-card.fixtures.ts
 
-import { KPICardProps } from '@/components/dashboard/KPICard'
+import { KPICardData, KPICardProps } from '@/types/dashboard'
 
-export const mockOperationRateKPI: KPICardProps = {
-  type: 'operationRate',
+// 설계 문서 기준 Mock 데이터
+export const mockEfficiencyKPI: KPICardData = {
+  id: 'efficiency',
   title: '가동률',
-  value: 95.5,
+  value: 87.3,
   unit: '%',
-  changeRate: 2.3,
-  precision: 1,
+  change: 2.1,
+  changeType: 'increase',
+  icon: 'activity'
 }
 
-export const mockDefectRateKPI: KPICardProps = {
-  type: 'defectRate',
+export const mockDefectKPI: KPICardData = {
+  id: 'defect',
   title: '불량률',
-  value: 0.8,
+  value: 1.2,
   unit: '%',
-  changeRate: -0.2,
-  precision: 1,
+  change: -0.3,
+  changeType: 'decrease',
+  icon: 'alert-triangle'
 }
 
-export const mockProductionVolumeKPI: KPICardProps = {
-  type: 'productionVolume',
-  title: '생산량',
-  value: 12500,
-  unit: '대',
-  changeRate: 5.0,
-  precision: 0,
+export const mockProductionKPI: KPICardData = {
+  id: 'production',
+  title: '금일 생산량',
+  value: 1247,
+  unit: '개',
+  change: 12.5,
+  changeType: 'increase',
+  icon: 'package'
 }
 
-export const mockNullValueKPI: KPICardProps = {
-  type: 'operationRate',
-  title: '가동률',
-  value: null,
-  changeRate: null,
+export const mockOrdersKPI: KPICardData = {
+  id: 'orders',
+  title: '작업지시',
+  value: 15,
+  unit: '건',
+  change: 0,
+  changeType: 'neutral',
+  icon: 'clipboard'
 }
 
-export const mockZeroChangeKPI: KPICardProps = {
-  type: 'operationRate',
-  title: '가동률',
-  value: 90.0,
+// 부정 KPI 증가 케이스 (BR-003 테스트용)
+export const mockDefectIncreaseKPI: KPICardData = {
+  id: 'defect',
+  title: '불량률',
+  value: 1.7,
   unit: '%',
-  changeRate: 0,
+  change: 0.5,
+  changeType: 'increase',
+  icon: 'alert-triangle'
 }
 
-export const mockLoadingKPI: KPICardProps = {
-  type: 'operationRate',
+// 값 없음 케이스
+export const mockNullValueKPI: KPICardData = {
+  id: 'efficiency',
   title: '가동률',
-  value: null,
-  changeRate: null,
-  loading: true,
+  value: null as unknown as number,
+  unit: '%',
+  change: 0,
+  changeType: 'neutral',
+  icon: 'activity'
+}
+
+// 로딩 상태 Props
+export const mockLoadingProps: KPICardProps = {
+  data: mockEfficiencyKPI,
+  loading: true
 }
 
 // 전체 대시보드 KPI 데이터
-export const mockDashboardKPIs = {
-  operationRate: mockOperationRateKPI,
-  defectRate: mockDefectRateKPI,
-  productionVolume: mockProductionVolumeKPI,
-}
+export const mockDashboardKPIs: KPICardData[] = [
+  mockProductionKPI,
+  mockEfficiencyKPI,
+  mockDefectKPI,
+  mockOrdersKPI
+]
 ```
 
 ---
@@ -801,23 +1072,28 @@ export const mockDashboardKPIs = {
 ## 6. data-testid 목록
 
 > 프론트엔드 컴포넌트에 적용할 `data-testid` 속성 정의
+> **설계 문서 010-design.md 섹션 11.8 기준**: `kpi-{element}-{id}` 형식
 
 ### 6.1 KPICard 컴포넌트 셀렉터
 
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
-| `kpi-card-{type}` | KPI 카드 컨테이너 | 특정 타입의 KPI 카드 식별 |
-| `kpi-value` | KPI 값 표시 영역 | 숫자 값 확인 |
-| `kpi-change-rate` | 증감률 표시 영역 | 증감률 값 및 스타일 확인 |
-| `kpi-change-icon` | 증감률 아이콘 | 화살표 아이콘 확인 |
+| `kpi-card-{id}` | KPI 카드 컨테이너 | 특정 KPI 카드 식별 (예: `kpi-card-efficiency`) |
+| `kpi-value-{id}` | KPI 값 표시 영역 | 숫자 값 확인 (예: `kpi-value-production`) |
+| `kpi-change-{id}` | 증감률 표시 영역 | 증감률 값 및 스타일 확인 |
+| `kpi-change-icon-{id}` | 증감률 아이콘 | 화살표 아이콘 확인 |
+| `kpi-card-group` | KPI 카드 그룹 컨테이너 | 그룹 렌더링 확인 |
+| `kpi-loading-skeleton` | 로딩 스켈레톤 | 로딩 상태 확인 |
+| `kpi-error-result` | 에러 상태 | 에러 표시 확인 |
 
-### 6.2 타입별 data-testid
+### 6.2 KPI ID별 data-testid (설계 문서 기준)
 
 | data-testid | 설명 |
 |-------------|------|
-| `kpi-card-operationRate` | 가동률 카드 |
-| `kpi-card-defectRate` | 불량률 카드 |
-| `kpi-card-productionVolume` | 생산량 카드 |
+| `kpi-card-efficiency` | 가동률 카드 |
+| `kpi-card-defect` | 불량률 카드 |
+| `kpi-card-production` | 생산량 카드 |
+| `kpi-card-orders` | **작업지시 카드** |
 
 ### 6.3 대시보드 레이아웃 관련 셀렉터 (참조)
 
@@ -858,17 +1134,25 @@ export const mockDashboardKPIs = {
 
 ## 8. 요구사항 추적 매트릭스
 
+> 설계 문서 010-design.md 기준 긍정/부정 KPI 유형 비즈니스 규칙 반영
+
 | 요구사항 ID | 요구사항 설명 | 단위 테스트 | E2E 테스트 | 매뉴얼 테스트 |
 |-------------|--------------|------------|-----------|--------------|
-| FR-001 | 가동률 카드 표시 | UT-001, UT-010 | E2E-001, E2E-002 | TC-001 |
+| FR-001 | 가동률 카드 표시 | UT-001 | E2E-001, E2E-002 | TC-001 |
 | FR-002 | 불량률 카드 표시 | UT-002 | E2E-001, E2E-002 | TC-001 |
 | FR-003 | 생산량 카드 표시 | UT-003 | E2E-001, E2E-002 | TC-001 |
-| FR-004 | 증감률 표시 (화살표 + 색상) | UT-004, UT-005, UT-006 | E2E-003 | TC-002 |
+| FR-004 | 증감률 표시 (화살표 + 색상) | UT-004~UT-006 | E2E-003 | TC-002 |
 | FR-005 | mock-data/dashboard.json 데이터 로드 | - | E2E-002 | - |
-| BR-001 | 증감률 양수 -> 상승 화살표 + 녹색 | UT-004 | E2E-003 | TC-002 |
-| BR-002 | 증감률 음수 -> 하락 화살표 + 빨간색 | UT-005 | E2E-003 | TC-002 |
-| BR-003 | 증감률 0 -> 변화 없음 + 회색 | UT-006 | - | TC-002 |
-| BR-004 | KPI 값 없음 -> "-" 표시 | UT-007, UT-008 | - | - |
+| **FR-006** | **작업지시 카드 표시** | **UT-006** | **E2E-001, E2E-002** | **TC-001** |
+| BR-001 | 긍정 KPI + increase → 녹색 | UT-004 | E2E-003 | TC-002 |
+| BR-002 | 긍정 KPI + decrease → 빨간색 | UT-004-2 | E2E-003 | TC-002 |
+| BR-003 | **부정 KPI(불량률) + increase → 빨간색** | UT-005 | E2E-003 | TC-002 |
+| BR-004 | **부정 KPI(불량률) + decrease → 녹색** | UT-005-2 | E2E-003 | TC-002 |
+| BR-005 | changeType='neutral' → 회색 | UT-006 | - | TC-002 |
+| BR-006 | 천 단위 콤마 포맷팅 | UT-010 | E2E-002 | - |
+| BR-007 | 비율 소수점 1자리 표시 | UT-010-2 | E2E-002 | - |
+| BR-008 | 수량/건수 정수 표시 | UT-010-3 | E2E-002 | - |
+| BR-009 | 값 없음 시 '-' 표시 | UT-007, UT-008 | - | - |
 | NFR-001 | 로딩 상태 표시 | UT-009 | - | - |
 | NFR-002 | data-testid 속성 | UT-011 | E2E-001 ~ E2E-004 | - |
 | NFR-003 | 반응형 레이아웃 | - | E2E-004 | TC-004 |
@@ -889,6 +1173,7 @@ export const mockDashboardKPIs = {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영: 긍정/부정 KPI 색상 로직, 작업지시 카드, data-testid, BR-006~009 추가 |
 
 ---
 
