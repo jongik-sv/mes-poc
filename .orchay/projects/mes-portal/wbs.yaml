@@ -428,6 +428,7 @@ workPackages:
         category: development
         domain: frontend
         status: "[vf]"
+        test-result: pass
         priority: critical
         assignee: "-"
         tags:
