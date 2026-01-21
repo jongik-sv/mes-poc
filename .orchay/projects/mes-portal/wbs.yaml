@@ -165,11 +165,12 @@ workPackages:
             - react-hotkeys-hook으로 Ctrl+K 단축키 등록
             - next-themes useTheme 훅 사용
             - 브레드크럼이 현재 메뉴 경로 표시
+        execution: verify
       - id: TSK-01-03
         title: 사이드바 메뉴 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -203,12 +204,12 @@ workPackages:
             - Ant Design Menu 컴포넌트 사용
             - collapsed 상태 관리 (useState 또는 Context)
             - 메뉴 클릭 시 MDI 탭 오픈 함수 호출
-        execution: review
+        execution: build
       - id: TSK-01-04
         title: 푸터 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -232,12 +233,11 @@ workPackages:
           integrationCheck:
             - components/layout/Footer.tsx 파일 존재
             - 버전 정보는 package.json 또는 환경변수에서 가져오기
-        execution: review
       - id: TSK-01-05
         title: 전역 검색 모달
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -270,7 +270,7 @@ workPackages:
         title: 알림 패널
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: low
         assignee: "-"
         tags:
@@ -296,6 +296,7 @@ workPackages:
           integrationCheck:
             - components/common/NotificationPanel.tsx 파일 존재
             - 알림 데이터는 mock JSON 사용 (MVP)
+        execution: build
   - id: WP-02
     title: MDI 시스템
     status: planned
@@ -306,7 +307,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -339,7 +340,7 @@ workPackages:
         title: 탭 바 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -372,7 +373,7 @@ workPackages:
         title: 탭 드래그 앤 드롭
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -399,7 +400,7 @@ workPackages:
         title: 탭 컨텍스트 메뉴
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -427,7 +428,7 @@ workPackages:
         title: MDI 컨텐츠 영역
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -463,7 +464,7 @@ workPackages:
         title: 메뉴 데이터 모델
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -492,7 +493,7 @@ workPackages:
         title: 역할-메뉴 매핑
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -519,7 +520,7 @@ workPackages:
         title: 메뉴 API 엔드포인트
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -548,7 +549,7 @@ workPackages:
         title: 즐겨찾기 메뉴
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: low
         assignee: "-"
         tags:
@@ -580,7 +581,7 @@ workPackages:
         title: Prisma 및 SQLite 설정
         category: infrastructure
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -611,7 +612,7 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -641,7 +642,7 @@ workPackages:
         title: Auth.js 인증 설정
         category: development
         domain: backend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -674,7 +675,7 @@ workPackages:
         title: 로그인 페이지
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: critical
         assignee: "-"
         tags:
@@ -714,7 +715,7 @@ workPackages:
         title: 로딩 및 에러 상태 컴포넌트
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -744,7 +745,7 @@ workPackages:
         title: 확인 다이얼로그
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -772,7 +773,7 @@ workPackages:
         title: Toast 알림
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -800,7 +801,7 @@ workPackages:
         title: 테이블 공통 기능
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -833,7 +834,7 @@ workPackages:
         title: 날짜 선택기
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -861,7 +862,7 @@ workPackages:
         title: 키보드 단축키 시스템
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -896,7 +897,7 @@ workPackages:
         title: 목록(조회) 화면 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -925,7 +926,7 @@ workPackages:
         title: 상세 화면 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -952,7 +953,7 @@ workPackages:
         title: 입력/수정 폼 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -982,7 +983,7 @@ workPackages:
         title: 마스터-디테일 화면 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1008,7 +1009,7 @@ workPackages:
         title: 팝업(모달) 화면 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1035,7 +1036,7 @@ workPackages:
         title: 마법사(Wizard) 화면 템플릿
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: low
         assignee: "-"
         tags:
@@ -1064,7 +1065,7 @@ workPackages:
         title: "[샘플] 사용자 목록 화면"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1090,7 +1091,7 @@ workPackages:
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1114,7 +1115,7 @@ workPackages:
         title: "[샘플] 설정 마법사"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: low
         assignee: "-"
         tags:
@@ -1145,7 +1146,7 @@ workPackages:
         title: 대시보드 레이아웃
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -1173,7 +1174,7 @@ workPackages:
         title: KPI 카드 위젯
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -1204,7 +1205,7 @@ workPackages:
         title: 차트 위젯
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:

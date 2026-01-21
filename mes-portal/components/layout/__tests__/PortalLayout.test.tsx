@@ -192,4 +192,59 @@ describe('PortalLayout', () => {
       expect(screen.getByText('MES Portal © 2026')).toBeInTheDocument()
     })
   })
+
+  // IT-01: Footer 컴포넌트 통합 테스트 (TSK-01-04)
+  describe('IT-01: Footer 컴포넌트 통합', () => {
+    it('Footer 컴포넌트가 PortalLayout 내에서 정상 표시되어야 함', () => {
+      const MockFooter = () => (
+        <div data-testid="mock-footer">
+          <span data-testid="footer-copyright">Copyright © 2026</span>
+          <span data-testid="footer-version">v0.1.0</span>
+        </div>
+      )
+
+      render(
+        <PortalLayout footer={<MockFooter />}>
+          <div>Content</div>
+        </PortalLayout>
+      )
+
+      expect(screen.getByTestId('portal-footer')).toBeInTheDocument()
+      expect(screen.getByTestId('mock-footer')).toBeInTheDocument()
+      expect(screen.getByTestId('footer-copyright')).toBeInTheDocument()
+      expect(screen.getByTestId('footer-version')).toBeInTheDocument()
+    })
+
+    it('Footer 컴포넌트가 저작권 정보를 표시해야 함', () => {
+      const MockFooter = () => (
+        <div>
+          <span>Copyright © 2026 Company. All rights reserved.</span>
+        </div>
+      )
+
+      render(
+        <PortalLayout footer={<MockFooter />}>
+          <div>Content</div>
+        </PortalLayout>
+      )
+
+      expect(screen.getByText(/Copyright ©/)).toBeInTheDocument()
+    })
+
+    it('Footer 컴포넌트가 버전 정보를 표시해야 함', () => {
+      const MockFooter = () => (
+        <div>
+          <span>v0.1.0</span>
+        </div>
+      )
+
+      render(
+        <PortalLayout footer={<MockFooter />}>
+          <div>Content</div>
+        </PortalLayout>
+      )
+
+      expect(screen.getByText(/v\d+\.\d+\.\d+/)).toBeInTheDocument()
+    })
+  })
 })
