@@ -602,14 +602,18 @@ interface DetailTemplateProps<T = Record<string, unknown>> {
   onTabChange?: (activeKey: string) => void
   /** 탭 위치 (기본값: 'top') */
   tabPosition?: TabsProps['tabPosition']
+  /** 비활성 탭 컨텐츠 제거 여부 - 메모리 최적화 (기본값: false) */
+  destroyInactiveTabPane?: boolean
+  /** 탭 컨텐츠 지연 로딩 활성화 (기본값: false) */
+  lazyLoadTabs?: boolean
 
   // === 상태 ===
   /** 로딩 상태 */
   loading?: boolean
   /** 에러 상태 */
   error?: {
-    /** 에러 코드 (404, 500 등) */
-    status?: 404 | 500 | 'error'
+    /** 에러 코드 (403, 404, 500 등) */
+    status?: 403 | 404 | 500 | 'error'
     /** 에러 제목 */
     title?: string
     /** 에러 메시지 */
@@ -631,6 +635,21 @@ interface DetailTemplateProps<T = Record<string, unknown>> {
   deleteConfirmMessage?: string
   /** 삭제 확인 제목 (기본값: "삭제 확인") */
   deleteConfirmTitle?: string
+
+  // === 권한 ===
+  /**
+   * 사용자 권한 정보 (API 응답에서 전달)
+   * - onEdit/onDelete props와 함께 사용하여 버튼 표시 제어
+   * - 미제공 시 onEdit/onDelete 존재 여부로만 판단
+   * - ⚠️ 주의: 클라이언트 버튼 숨김은 UX 편의 기능일 뿐,
+   *   실제 권한 검증은 반드시 API 레이어에서 수행해야 함
+   */
+  permissions?: {
+    /** 수정 권한 (false 시 수정 버튼 숨김) */
+    canEdit?: boolean
+    /** 삭제 권한 (false 시 삭제 버튼 숨김) */
+    canDelete?: boolean
+  }
 }
 ```
 
@@ -754,6 +773,8 @@ erDiagram
 | BR-04 | 삭제 성공 후 목록 화면으로 자동 이동 | 삭제 완료 시 | 없음 |
 | BR-05 | 404 에러 시 목록 이동 버튼 제공 | 에러 화면 표시 시 | 없음 |
 | BR-06 | 삭제 중 중복 클릭 방지 | 삭제 API 호출 중 | 없음 |
+| BR-07 | 권한 검증은 API 레이어에서 필수 수행 | 수정/삭제 API 호출 시 | 클라이언트 버튼 숨김은 UX 편의만 |
+| BR-08 | 삭제는 소프트 삭제 방식 적용 | 삭제 API 호출 시 | deletedAt 타임스탬프 설정 |
 
 ### 8.2 규칙 상세 설명
 
@@ -785,6 +806,24 @@ const handleDelete = () => {
 - onEdit이 undefined이면 수정 버튼 미표시
 - onDelete가 undefined이면 삭제 버튼 미표시
 
+**BR-07: 권한 검증은 API 레이어에서 필수 수행**
+
+설명: 클라이언트 측 버튼 숨김은 UX 편의 기능일 뿐, 악의적 사용자가 브라우저 개발자 도구나 직접 API 호출로 우회할 수 있다. 따라서 모든 수정/삭제 API는 서버 측에서 반드시 권한을 재검증해야 한다.
+
+구현:
+- API 응답에 사용자 권한 정보(canEdit, canDelete) 포함 권장
+- 클라이언트는 API 응답의 권한 정보를 permissions props로 전달
+- 서버 API 미들웨어에서 권한 검증 필수 구현
+
+**BR-08: 삭제는 소프트 삭제 방식 적용**
+
+설명: 데이터 무결성 및 감사 추적을 위해 물리적 삭제(하드 삭제) 대신 논리적 삭제(소프트 삭제)를 적용한다.
+
+구현:
+- 삭제 시 `deletedAt` 필드에 타임스탬프 설정
+- 목록 조회 시 `deletedAt IS NULL` 조건으로 필터링
+- 삭제된 데이터 복구 가능 (관리자 기능)
+
 **BR-03: 탭 지연 로딩**
 
 설명: 성능 최적화를 위해 탭 컨텐츠는 해당 탭이 활성화될 때 로딩할 수 있다.
@@ -808,6 +847,7 @@ function ActivityHistoryTab({ userId }: { userId: string }) {
 
 | 상황 | 원인 | 사용자 메시지 | 복구 방법 |
 |------|------|--------------|----------|
+| 조회 실패 (403) | 접근 권한 없음 | "접근 권한이 없습니다" | 목록 이동 버튼, 관리자 문의 안내 |
 | 조회 실패 (404) | 없는 ID, 삭제된 항목 | "항목을 찾을 수 없습니다" | 목록 이동 버튼 |
 | 조회 실패 (500) | 서버 오류 | "데이터를 불러올 수 없습니다" | 재시도 버튼 |
 | 조회 실패 (네트워크) | 네트워크 오류 | "연결 상태를 확인해주세요" | 재시도 버튼 |
@@ -827,6 +867,18 @@ function ActivityHistoryTab({ userId }: { userId: string }) {
 ### 9.3 에러 상태 컴포넌트
 
 ```typescript
+// 403 에러 표시
+<Result
+  status="403"
+  title="접근 권한이 없습니다"
+  subTitle="이 항목을 조회할 권한이 없습니다. 관리자에게 문의해주세요."
+  extra={
+    <Button type="primary" onClick={onBack}>
+      목록으로 이동
+    </Button>
+  }
+/>
+
 // 404 에러 표시
 <Result
   status="404"
@@ -866,7 +918,54 @@ function ActivityHistoryTab({ userId }: { userId: string }) {
 
 ---
 
-## 10. 연관 문서
+## 10. 보안 가이드라인
+
+### 10.1 XSS 방지
+
+DetailTemplate에서 사용자 입력 데이터를 렌더링할 때 XSS 공격에 주의해야 한다.
+
+**안전한 렌더링:**
+- React는 기본적으로 JSX 내 문자열을 자동 이스케이핑
+- `descriptions.items[].children`에 사용자 입력 데이터는 텍스트로 전달
+- 태그가 필요한 경우 안전한 컴포넌트(Badge, Tag 등)로 래핑
+
+**위험한 패턴 (금지):**
+```typescript
+// 금지: dangerouslySetInnerHTML 직접 사용
+<div dangerouslySetInnerHTML={{ __html: userInput }} />
+
+// 금지: 신뢰할 수 없는 URL 직접 사용
+<a href={userProvidedUrl}>링크</a>
+```
+
+**안전한 패턴:**
+```typescript
+// 권장: React 자동 이스케이핑 활용
+<span>{userData.name}</span>
+
+// 권장: HTML 필요 시 DOMPurify 사용
+import DOMPurify from 'dompurify'
+<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(htmlContent) }} />
+
+// 권장: URL 검증 후 사용
+const safeUrl = isValidUrl(userUrl) ? userUrl : '#'
+```
+
+### 10.2 권한 보안
+
+- **클라이언트 보안**: permissions props로 버튼 숨김 (UX 편의)
+- **서버 보안**: 모든 API에서 JWT/세션 기반 권한 재검증 필수
+- **직접 접근 방지**: URL 직접 접근 시에도 API 레벨 권한 검증
+
+### 10.3 민감 정보 처리
+
+- 콘솔 로그에 민감 정보(토큰, 비밀번호 등) 출력 금지
+- 에러 메시지에 내부 구현 정보 노출 금지
+- 개발 환경과 운영 환경의 로그 레벨 분리
+
+---
+
+## 11. 연관 문서
 
 > 상세 테스트 명세 및 요구사항 추적은 별도 문서에서 관리합니다.
 
@@ -879,9 +978,9 @@ function ActivityHistoryTab({ userId }: { userId: string }) {
 
 ---
 
-## 11. 구현 범위
+## 12. 구현 범위
 
-### 11.1 영향받는 영역
+### 12.1 영향받는 영역
 
 | 영역 | 변경 내용 | 영향도 |
 |------|----------|--------|
@@ -889,7 +988,7 @@ function ActivityHistoryTab({ userId }: { userId: string }) {
 | components/templates/index.ts | export 추가 | 낮음 |
 | 샘플 화면 (사용자 상세) | 템플릿 사용 | 중간 |
 
-### 11.2 파일 구조
+### 12.2 파일 구조
 
 ```
 components/
@@ -904,7 +1003,7 @@ components/
         └── types.ts                # Props 인터페이스
 ```
 
-### 11.3 의존성
+### 12.3 의존성
 
 | 의존 항목 | 이유 | 상태 |
 |----------|------|------|
@@ -919,7 +1018,7 @@ components/
 | Ant Design message | 토스트 메시지 | 라이브러리 제공 |
 | TSK-05-02 확인 다이얼로그 | 삭제 확인 패턴 | 설계 완료 |
 
-### 11.4 제약 사항
+### 12.4 제약 사항
 
 | 제약 | 설명 | 대응 방안 |
 |------|------|----------|
@@ -929,9 +1028,9 @@ components/
 
 ---
 
-## 12. 체크리스트
+## 13. 체크리스트
 
-### 12.1 설계 완료 확인
+### 13.1 설계 완료 확인
 
 - [x] 문제 정의 및 목적 명확화
 - [x] 사용자 분석 완료
@@ -942,13 +1041,14 @@ components/
 - [x] 데이터 요구사항 정의 완료
 - [x] 비즈니스 규칙 정의 완료
 - [x] 에러 처리 정의 완료
+- [x] 보안 가이드라인 정의 완료
 
-### 12.2 연관 문서 작성
+### 13.2 연관 문서 작성
 
 - [ ] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
 - [ ] 테스트 명세서 작성 (-> `026-test-specification.md`)
 
-### 12.3 구현 준비
+### 13.3 구현 준비
 
 - [x] 구현 우선순위 결정
 - [x] 의존성 확인 완료
@@ -962,3 +1062,4 @@ components/
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
 | 2.0 | 2026-01-21 | Claude | 통합 설계 문서로 전면 개정 - 상세 Props 인터페이스, 사용 예시, 에러 처리, 화면 상세 추가 |
+| 2.1 | 2026-01-21 | Claude | 리뷰 반영 - permissions 속성 추가, 탭 지연 로딩 옵션, 보안 가이드라인, 403 에러 처리, BR-07/BR-08 추가 |

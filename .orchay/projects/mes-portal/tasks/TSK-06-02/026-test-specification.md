@@ -50,7 +50,7 @@
 interface DetailTemplateProps {
   title: string
   onEdit?: () => void
-  onDelete?: () => void
+  onDelete?: () => Promise<void>
   onBack?: () => void
   descriptions: DescriptionsProps
   tabs?: {
@@ -59,8 +59,20 @@ interface DetailTemplateProps {
     children: ReactNode
   }[]
   loading?: boolean
-  error?: Error | null
+  error?: {
+    status?: 403 | 404 | 500 | 'error'
+    title?: string
+    message?: string
+  }
   extra?: ReactNode
+  /** 탭 컨텐츠 지연 로딩 활성화 */
+  lazyLoadTabs?: boolean
+  /** 비활성 탭 컨텐츠 제거 여부 */
+  destroyInactiveTabPane?: boolean
+  /**
+   * 사용자 권한 정보 (API 응답에서 전달)
+   * ⚠️ 클라이언트 버튼 숨김은 UX 편의, 실제 권한 검증은 API 레이어
+   */
   permissions?: {
     canEdit?: boolean
     canDelete?: boolean
@@ -76,13 +88,13 @@ interface DetailTemplateProps {
 
 | 테스트 ID | 대상 | 시나리오 | 예상 결과 | 요구사항 |
 |-----------|------|----------|----------|----------|
-| UT-001 | DetailTemplate | 기본 렌더링 (데이터 표시) | 제목, Descriptions 정상 렌더링 | FR-DETAIL-01 |
-| UT-002 | DetailTemplate | 로딩 상태 표시 | Skeleton 컴포넌트 표시 | FR-DETAIL-02 |
-| UT-003 | DetailTemplate | 에러 상태 표시 | 에러 메시지 및 복구 버튼 표시 | FR-DETAIL-03 |
-| UT-004 | DetailTemplate | 탭 전환 동작 | 활성 탭 변경, 컨텐츠 전환 | FR-DETAIL-04 |
-| UT-005 | DetailTemplate | 수정 버튼 클릭 이벤트 | onEdit 콜백 호출 | FR-DETAIL-05 |
-| UT-006 | DetailTemplate | 삭제 버튼 클릭 이벤트 | 확인 다이얼로그 후 onDelete 호출 | FR-DETAIL-06 |
-| UT-007 | DetailTemplate | 목록 버튼 클릭 이벤트 | onBack 콜백 호출 | FR-DETAIL-07 |
+| UT-001 | DetailTemplate | 기본 렌더링 (데이터 표시) | 제목, Descriptions 정상 렌더링 | FR-001 |
+| UT-002 | DetailTemplate | 로딩 상태 표시 | Skeleton 컴포넌트 표시 | FR-002 |
+| UT-003 | DetailTemplate | 에러 상태 표시 | 에러 메시지 및 복구 버튼 표시 | FR-003 |
+| UT-004 | DetailTemplate | 탭 전환 동작 | 활성 탭 변경, 컨텐츠 전환 | FR-004 |
+| UT-005 | DetailTemplate | 수정 버튼 클릭 이벤트 | onEdit 콜백 호출 | FR-005 |
+| UT-006 | DetailTemplate | 삭제 버튼 클릭 이벤트 | 확인 다이얼로그 후 onDelete 호출 | FR-006 |
+| UT-007 | DetailTemplate | 목록 버튼 클릭 이벤트 | onBack 콜백 호출 | FR-007 |
 | UT-008 | DetailTemplate | 권한에 따른 버튼 표시/숨김 | canEdit/canDelete false시 버튼 숨김 | BR-02 |
 
 ### 2.2 테스트 케이스 상세
@@ -97,7 +109,7 @@ interface DetailTemplateProps {
 | **입력 데이터** | `{ title: '사용자 상세', descriptions: { items: [...] } }` |
 | **검증 포인트** | 1. 제목 텍스트 렌더링 확인<br>2. Descriptions 컴포넌트 렌더링 확인<br>3. 각 필드 라벨 및 값 표시 확인 |
 | **커버리지 대상** | render() 정상 분기, descriptions 매핑 |
-| **관련 요구사항** | FR-DETAIL-01: 정보 표시 영역 (읽기 전용) |
+| **관련 요구사항** | FR-001: 정보 표시 영역 (읽기 전용) |
 
 ```typescript
 it('should render title and descriptions correctly', () => {
@@ -131,7 +143,7 @@ it('should render title and descriptions correctly', () => {
 | **입력 데이터** | `{ title: '사용자 상세', loading: true, descriptions: {...} }` |
 | **검증 포인트** | 1. Skeleton 컴포넌트 표시<br>2. 실제 데이터 숨김<br>3. 로딩 표시자(data-testid) 존재 |
 | **커버리지 대상** | loading 상태 분기 |
-| **관련 요구사항** | FR-DETAIL-02: 로딩 상태 표시 |
+| **관련 요구사항** | FR-002: 로딩 상태 표시 |
 
 ```typescript
 it('should display skeleton when loading', () => {
@@ -158,7 +170,7 @@ it('should display skeleton when loading', () => {
 | **입력 데이터** | `{ title: '사용자 상세', error: new Error('데이터를 찾을 수 없습니다'), descriptions: {...} }` |
 | **검증 포인트** | 1. 에러 메시지 표시<br>2. 목록 이동 버튼 표시<br>3. Result 컴포넌트 404 상태 |
 | **커버리지 대상** | error 상태 분기 |
-| **관련 요구사항** | FR-DETAIL-03: 에러 상태 처리 |
+| **관련 요구사항** | FR-003: 에러 상태 처리 |
 
 ```typescript
 it('should display error message and recovery button', () => {
@@ -191,7 +203,7 @@ it('should display error message and recovery button', () => {
 | **입력 데이터** | tabs 배열 포함 props |
 | **검증 포인트** | 1. 탭 헤더 렌더링<br>2. 탭 클릭시 컨텐츠 전환<br>3. 활성 탭 스타일 적용 |
 | **커버리지 대상** | tabs 렌더링, 탭 전환 로직 |
-| **관련 요구사항** | FR-DETAIL-04: 탭 전환 동작 |
+| **관련 요구사항** | FR-004: 탭 전환 동작 |
 
 ```typescript
 it('should switch tab content on tab click', async () => {
@@ -237,7 +249,7 @@ it('should switch tab content on tab click', async () => {
 | **입력 데이터** | `{ onEdit: mockFn, ... }` |
 | **검증 포인트** | 1. 수정 버튼 존재<br>2. 클릭시 onEdit 콜백 호출 |
 | **커버리지 대상** | onEdit 핸들러 |
-| **관련 요구사항** | FR-DETAIL-05: 수정 버튼 클릭 시 폼 모드로 전환 |
+| **관련 요구사항** | FR-005: 수정 버튼 클릭 시 폼 모드로 전환 |
 
 ```typescript
 it('should call onEdit when edit button clicked', () => {
@@ -332,7 +344,7 @@ it('should not call onDelete when cancelled', async () => {
 | **입력 데이터** | `{ onBack: mockFn, ... }` |
 | **검증 포인트** | 1. 목록 버튼 존재<br>2. 클릭시 onBack 콜백 호출 |
 | **커버리지 대상** | onBack 핸들러 |
-| **관련 요구사항** | FR-DETAIL-07: 목록 복귀 기능 |
+| **관련 요구사항** | FR-007: 목록 복귀 기능 |
 
 ```typescript
 it('should call onBack when back button clicked', () => {
@@ -416,9 +428,9 @@ describe('permissions', () => {
 
 | 테스트 ID | 시나리오 | 사전조건 | 실행 단계 | 예상 결과 | 요구사항 |
 |-----------|----------|----------|----------|----------|----------|
-| E2E-001 | 상세 페이지 로드 및 정보 표시 | 로그인 상태, 유효한 ID | 1. 상세 페이지 접속 | 상세 정보 표시됨 | FR-DETAIL-01 |
-| E2E-002 | 탭 전환 및 데이터 유지 | 상세 페이지 로드 완료 | 1. 탭 전환 2. 원래 탭 복귀 | 데이터 유지됨 | FR-DETAIL-04 |
-| E2E-003 | 수정 버튼 클릭 후 폼 모드 전환 | 상세 페이지 로드 완료 | 1. 수정 버튼 클릭 | 수정 폼 표시 | FR-DETAIL-05 |
+| E2E-001 | 상세 페이지 로드 및 정보 표시 | 로그인 상태, 유효한 ID | 1. 상세 페이지 접속 | 상세 정보 표시됨 | FR-001 |
+| E2E-002 | 탭 전환 및 데이터 유지 | 상세 페이지 로드 완료 | 1. 탭 전환 2. 원래 탭 복귀 | 데이터 유지됨 | FR-004 |
+| E2E-003 | 수정 버튼 클릭 후 폼 모드 전환 | 상세 페이지 로드 완료 | 1. 수정 버튼 클릭 | 수정 폼 표시 | FR-005 |
 | E2E-004 | 삭제 확인 다이얼로그 | 상세 페이지 로드 완료 | 1. 삭제 클릭 2. 확인 | 삭제 후 목록 이동 | BR-01 |
 
 ### 3.2 테스트 케이스 상세
@@ -437,7 +449,7 @@ describe('permissions', () => {
 | **API 확인** | `GET /api/users/{id}` -> 200 |
 | **검증 포인트** | `expect(page.locator('[data-testid="detail-descriptions"]')).toBeVisible()` |
 | **스크린샷** | `e2e-001-detail-loaded.png` |
-| **관련 요구사항** | FR-DETAIL-01 |
+| **관련 요구사항** | FR-001 |
 
 ```typescript
 test('사용자가 상세 정보를 조회할 수 있다', async ({ page }) => {
@@ -470,7 +482,7 @@ test('사용자가 상세 정보를 조회할 수 있다', async ({ page }) => {
 | - 활동 이력 탭 | `[data-testid="detail-tab-history"]` |
 | **검증 포인트** | 탭 전환 후 데이터 유지, 원래 탭 복귀시 상태 보존 |
 | **스크린샷** | `e2e-002-tab-switch.png` |
-| **관련 요구사항** | FR-DETAIL-04 |
+| **관련 요구사항** | FR-004 |
 
 ```typescript
 test('탭 전환 시 데이터가 유지된다', async ({ page }) => {
@@ -510,7 +522,7 @@ test('탭 전환 시 데이터가 유지된다', async ({ page }) => {
 | **API 확인** | - |
 | **URL 확인** | `/users/user-1/edit` 또는 쿼리 파라미터 `?mode=edit` |
 | **스크린샷** | `e2e-003-edit-mode.png` |
-| **관련 요구사항** | FR-DETAIL-05 |
+| **관련 요구사항** | FR-005 |
 
 ```typescript
 test('수정 버튼 클릭 시 수정 폼으로 전환된다', async ({ page }) => {
@@ -599,12 +611,12 @@ test('삭제 취소 시 페이지가 유지된다', async ({ page }) => {
 
 | TC-ID | 테스트 항목 | 사전조건 | 테스트 단계 | 예상 결과 | 우선순위 | 요구사항 |
 |-------|-----------|---------|-----------|----------|---------|----------|
-| TC-001 | 상세 정보 표시 확인 | 로그인 | 1. 목록에서 항목 클릭 2. 상세 화면 확인 | 모든 필드 정상 표시 | High | FR-DETAIL-01 |
-| TC-002 | 탭 전환 UX 확인 | 상세 화면 | 1. 각 탭 클릭 2. 전환 애니메이션 확인 | 부드러운 전환 | Medium | FR-DETAIL-04 |
+| TC-001 | 상세 정보 표시 확인 | 로그인 | 1. 목록에서 항목 클릭 2. 상세 화면 확인 | 모든 필드 정상 표시 | High | FR-001 |
+| TC-002 | 탭 전환 UX 확인 | 상세 화면 | 1. 각 탭 클릭 2. 전환 애니메이션 확인 | 부드러운 전환 | Medium | FR-004 |
 | TC-003 | 반응형 레이아웃 확인 | 상세 화면 | 1. 브라우저 크기 조절 | 레이아웃 적응 | Medium | - |
 | TC-004 | 접근성 (키보드 네비게이션) | 상세 화면 | 1. Tab 키로 포커스 이동 2. Enter로 버튼 실행 | 모든 기능 접근 가능 | Medium | A11y |
-| TC-005 | 로딩 상태 확인 | 느린 네트워크 | 1. 상세 페이지 접속 | Skeleton 표시 | Low | FR-DETAIL-02 |
-| TC-006 | 없는 항목 접근 | 잘못된 ID | 1. 존재하지 않는 ID로 접근 | 404 에러 화면 | Medium | FR-DETAIL-03 |
+| TC-005 | 로딩 상태 확인 | 느린 네트워크 | 1. 상세 페이지 접속 | Skeleton 표시 | Low | FR-002 |
+| TC-006 | 없는 항목 접근 | 잘못된 ID | 1. 존재하지 않는 ID로 접근 | 404 에러 화면 | Medium | FR-003 |
 
 ### 4.2 매뉴얼 테스트 상세
 
@@ -853,13 +865,13 @@ export const mockPermissions = {
 
 | 요구사항 ID | 요구사항 설명 | 단위 테스트 | E2E 테스트 | 매뉴얼 테스트 |
 |-------------|--------------|------------|-----------|--------------|
-| FR-DETAIL-01 | 정보 표시 영역 (읽기 전용) | UT-001 | E2E-001 | TC-001 |
-| FR-DETAIL-02 | 로딩 상태 표시 | UT-002 | - | TC-005 |
-| FR-DETAIL-03 | 에러 상태 표시 | UT-003 | - | TC-006 |
-| FR-DETAIL-04 | 탭 전환 동작 | UT-004 | E2E-002 | TC-002 |
-| FR-DETAIL-05 | 수정 버튼 클릭 시 폼 모드 전환 | UT-005 | E2E-003 | - |
-| FR-DETAIL-06 | 삭제 버튼 클릭 이벤트 | UT-006 | E2E-004 | - |
-| FR-DETAIL-07 | 목록 복귀 기능 | UT-007 | - | - |
+| FR-001 | 정보 표시 영역 (읽기 전용) | UT-001 | E2E-001 | TC-001 |
+| FR-002 | 로딩 상태 표시 | UT-002 | - | TC-005 |
+| FR-003 | 에러 상태 표시 | UT-003 | - | TC-006 |
+| FR-004 | 탭 전환 동작 | UT-004 | E2E-002 | TC-002 |
+| FR-005 | 수정 버튼 클릭 시 폼 모드 전환 | UT-005 | E2E-003 | - |
+| FR-006 | 삭제 버튼 클릭 이벤트 | UT-006 | E2E-004 | - |
+| FR-007 | 목록 복귀 기능 | UT-007 | - | - |
 | BR-01 | 삭제 시 확인 다이얼로그 필수 | UT-006 | E2E-004 | - |
 | BR-02 | 권한에 따른 버튼 표시/숨김 | UT-008 | - | - |
 
@@ -878,3 +890,4 @@ export const mockPermissions = {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 리뷰 반영 - Props 인터페이스 업데이트, 요구사항 ID FR-XXX 형식 통일 |
