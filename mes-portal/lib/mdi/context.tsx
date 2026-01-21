@@ -25,7 +25,10 @@ type MDIAction =
   | { type: 'CLOSE_TAB'; payload: string }
   | { type: 'CLOSE_ALL_TABS' }
   | { type: 'CLOSE_OTHER_TABS'; payload: string }
-  | { type: 'SET_ACTIVE_TAB'; payload: string };
+  | { type: 'CLOSE_RIGHT_TABS'; payload: string }
+  | { type: 'REFRESH_TAB'; payload: string }
+  | { type: 'SET_ACTIVE_TAB'; payload: string }
+  | { type: 'REORDER_TABS'; payload: { activeId: string; overId: string } };
 
 // 초기 상태
 const initialState: MDIState = {
@@ -107,6 +110,48 @@ function mdiReducer(state: MDIState, action: MDIAction): MDIState {
       };
     }
 
+    // TSK-02-04: 오른쪽 탭 모두 닫기
+    case 'CLOSE_RIGHT_TABS': {
+      const targetIndex = state.tabs.findIndex(
+        (tab) => tab.id === action.payload
+      );
+      if (targetIndex === -1) return state;
+
+      // 지정된 탭 이하(왼쪽) + closable=false인 오른쪽 탭만 유지
+      const remainingTabs = state.tabs.filter(
+        (tab, index) => index <= targetIndex || !tab.closable
+      );
+
+      // 활성 탭이 닫혔는지 확인
+      const activeStillExists = remainingTabs.some(
+        (tab) => tab.id === state.activeTabId
+      );
+
+      return {
+        tabs: remainingTabs,
+        activeTabId: activeStillExists ? state.activeTabId : action.payload,
+      };
+    }
+
+    // TSK-02-04: 탭 새로고침
+    case 'REFRESH_TAB': {
+      const tabIndex = state.tabs.findIndex(
+        (tab) => tab.id === action.payload
+      );
+      if (tabIndex === -1) return state;
+
+      const updatedTabs = [...state.tabs];
+      updatedTabs[tabIndex] = {
+        ...updatedTabs[tabIndex],
+        refreshKey: Date.now(),
+      };
+
+      return {
+        ...state,
+        tabs: updatedTabs,
+      };
+    }
+
     case 'SET_ACTIVE_TAB': {
       const tabExists = state.tabs.some((tab) => tab.id === action.payload);
       if (!tabExists) {
@@ -115,6 +160,32 @@ function mdiReducer(state: MDIState, action: MDIAction): MDIState {
       return {
         ...state,
         activeTabId: action.payload,
+      };
+    }
+
+    case 'REORDER_TABS': {
+      const { activeId, overId } = action.payload;
+      // BR-02: 동일 위치 드롭 시 변경 없음
+      if (activeId === overId) {
+        return state;
+      }
+
+      const oldIndex = state.tabs.findIndex((tab) => tab.id === activeId);
+      const newIndex = state.tabs.findIndex((tab) => tab.id === overId);
+
+      // 유효성 검사
+      if (oldIndex === -1 || newIndex === -1) {
+        return state;
+      }
+
+      // 배열 순서 변경 (arrayMove 로직)
+      const newTabs = [...state.tabs];
+      const [movedTab] = newTabs.splice(oldIndex, 1);
+      newTabs.splice(newIndex, 0, movedTab);
+
+      return {
+        ...state,
+        tabs: newTabs,
       };
     }
 
@@ -189,6 +260,24 @@ export function MDIProvider({
     dispatch({ type: 'CLOSE_OTHER_TABS', payload: tabId });
   }, []);
 
+  // TSK-02-04: 오른쪽 탭 모두 닫기
+  const closeRightTabs = useCallback((tabId: string) => {
+    dispatch({ type: 'CLOSE_RIGHT_TABS', payload: tabId });
+  }, []);
+
+  // TSK-02-04: 탭 새로고침
+  const refreshTab = useCallback(
+    (tabId: string) => {
+      const tabExists = state.tabs.some((tab) => tab.id === tabId);
+      if (!tabExists) {
+        console.warn(`[MDI] 존재하지 않는 탭: ${tabId}`);
+        return;
+      }
+      dispatch({ type: 'REFRESH_TAB', payload: tabId });
+    },
+    [state.tabs]
+  );
+
   const setActiveTab = useCallback(
     (tabId: string) => {
       const tabExists = state.tabs.some((tab) => tab.id === tabId);
@@ -212,6 +301,10 @@ export function MDIProvider({
     return state.tabs;
   }, [state.tabs]);
 
+  const reorderTabs = useCallback((activeId: string, overId: string) => {
+    dispatch({ type: 'REORDER_TABS', payload: { activeId, overId } });
+  }, []);
+
   const value = useMemo<MDIContextType>(
     () => ({
       tabs: state.tabs,
@@ -220,9 +313,12 @@ export function MDIProvider({
       closeTab,
       closeAllTabs,
       closeOtherTabs,
+      closeRightTabs,
+      refreshTab,
       setActiveTab,
       getTab,
       getTabs,
+      reorderTabs,
     }),
     [
       state.tabs,
@@ -231,9 +327,12 @@ export function MDIProvider({
       closeTab,
       closeAllTabs,
       closeOtherTabs,
+      closeRightTabs,
+      refreshTab,
       setActiveTab,
       getTab,
       getTabs,
+      reorderTabs,
     ]
   );
 

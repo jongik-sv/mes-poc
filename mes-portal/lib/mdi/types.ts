@@ -20,6 +20,8 @@ export interface Tab {
   closable: boolean;
   /** 화면에 전달할 파라미터 */
   params?: Record<string, unknown>;
+  /** 탭 새로고침 키 (리마운트 트리거용) - TSK-02-04 */
+  refreshKey?: number;
 }
 
 /**
@@ -60,12 +62,18 @@ export interface MDIContextType extends MDIState {
   closeAllTabs: () => void;
   /** 해당 탭 제외 모든 탭 닫기 */
   closeOtherTabs: (tabId: string) => void;
+  /** 해당 탭 오른쪽 탭 모두 닫기 - TSK-02-04 */
+  closeRightTabs: (tabId: string) => void;
+  /** 탭 새로고침 (리마운트 트리거) - TSK-02-04 */
+  refreshTab: (tabId: string) => void;
   /** 활성 탭 변경 */
   setActiveTab: (tabId: string) => void;
   /** 탭 정보 조회 */
   getTab: (tabId: string) => Tab | undefined;
   /** 전체 탭 목록 조회 */
   getTabs: () => Tab[];
+  /** 탭 순서 변경 (드래그 앤 드롭) - TSK-02-03 */
+  reorderTabs: (activeId: string, overId: string) => void;
 }
 
 /**

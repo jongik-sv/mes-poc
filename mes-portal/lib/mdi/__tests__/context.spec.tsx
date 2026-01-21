@@ -364,4 +364,358 @@ describe('MDIContext', () => {
       expect(tab).toBeUndefined();
     });
   });
+
+  // TSK-02-04: 탭 컨텍스트 메뉴 - 신규 테스트 추가
+  describe('closeRightTabs', () => {
+    // UT-004: 오른쪽 탭 모두 닫기
+    it('지정 탭 오른쪽 closable 탭이 닫힌다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01); // tab-1
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02); // tab-2
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03); // tab-3
+      });
+      act(() => {
+        result.current.openTab({
+          id: 'tab-4',
+          title: '설비 관리',
+          path: '/equipment',
+          closable: true,
+        });
+      });
+
+      act(() => {
+        result.current.closeRightTabs('tab-2');
+      });
+
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-1', 'tab-2']);
+    });
+
+    it('closable=false인 오른쪽 탭은 유지된다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab({
+          id: 'pinned',
+          title: '고정 탭',
+          path: '/pinned',
+          closable: false,
+        });
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      act(() => {
+        result.current.closeRightTabs('tab-1');
+      });
+
+      // tab-2는 닫히고, pinned(closable=false)와 tab-3은 유지
+      // 실제로는 closable=false만 유지됨
+      expect(result.current.tabs.map((t) => t.id)).toContain('tab-1');
+      expect(result.current.tabs.map((t) => t.id)).toContain('pinned');
+    });
+
+    it('가장 오른쪽 탭에서 호출 시 아무 변화 없음', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+
+      act(() => {
+        result.current.closeRightTabs('tab-2');
+      });
+
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-1', 'tab-2']);
+    });
+
+    it('활성 탭이 닫히면 지정 탭 또는 인접 탭 활성화', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // tab-3 활성화
+      act(() => {
+        result.current.setActiveTab('tab-3');
+      });
+
+      expect(result.current.activeTabId).toBe('tab-3');
+
+      // tab-1에서 오른쪽 탭 닫기 → tab-2, tab-3 닫힘
+      act(() => {
+        result.current.closeRightTabs('tab-1');
+      });
+
+      // 활성 탭이 닫혔으므로 tab-1 활성화
+      expect(result.current.activeTabId).toBe('tab-1');
+    });
+  });
+
+  describe('refreshTab', () => {
+    // UT-005: 새로고침
+    it('탭 refreshKey가 변경된다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+
+      const initialKey = result.current.getTab('tab-1')?.refreshKey;
+
+      act(() => {
+        result.current.refreshTab('tab-1');
+      });
+
+      const newKey = result.current.getTab('tab-1')?.refreshKey;
+      expect(newKey).toBeDefined();
+      expect(newKey).not.toBe(initialKey);
+    });
+
+    it('존재하지 않는 탭 refreshTab 호출 시 아무 변화 없음', () => {
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+
+      act(() => {
+        result.current.refreshTab('non-existent');
+      });
+
+      expect(result.current.tabs).toHaveLength(1);
+      expect(consoleSpy).toHaveBeenCalled();
+      consoleSpy.mockRestore();
+    });
+
+    it('다른 탭은 영향받지 않는다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+
+      const tab2KeyBefore = result.current.getTab('tab-2')?.refreshKey;
+
+      act(() => {
+        result.current.refreshTab('tab-1');
+      });
+
+      const tab2KeyAfter = result.current.getTab('tab-2')?.refreshKey;
+      expect(tab2KeyAfter).toBe(tab2KeyBefore);
+    });
+  });
+
+  // TSK-02-03: 탭 드래그 앤 드롭 - reorderTabs 테스트
+  describe('reorderTabs', () => {
+    // UT-003: 탭 순서 변경
+    it('탭 순서를 올바르게 변경한다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // 초기 순서: [tab-1, tab-2, tab-3]
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-1', 'tab-2', 'tab-3']);
+
+      // tab-3을 tab-1 위치로 이동
+      act(() => {
+        result.current.reorderTabs('tab-3', 'tab-1');
+      });
+
+      // 결과: [tab-3, tab-1, tab-2]
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-3', 'tab-1', 'tab-2']);
+    });
+
+    // UT-005: 순서 변경 후 유지
+    it('탭 전환 후에도 순서가 유지된다 (BR-001)', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // 순서 변경
+      act(() => {
+        result.current.reorderTabs('tab-3', 'tab-1');
+      });
+
+      const orderAfterReorder = result.current.tabs.map((t) => t.id);
+
+      // 탭 전환
+      act(() => {
+        result.current.setActiveTab('tab-2');
+      });
+
+      // 순서 유지 확인
+      expect(result.current.tabs.map((t) => t.id)).toEqual(orderAfterReorder);
+    });
+
+    // UT-006: 동일 위치 드롭
+    it('동일 위치에 드롭하면 순서가 변경되지 않는다 (BR-002)', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+
+      const tabsBefore = result.current.tabs;
+
+      // 같은 위치에 드롭
+      act(() => {
+        result.current.reorderTabs('tab-1', 'tab-1');
+      });
+
+      // 같은 참조 유지 (변경 없음)
+      expect(result.current.tabs).toBe(tabsBefore);
+    });
+
+    // UT-007: 존재하지 않는 탭 ID
+    it('존재하지 않는 탭 ID로 호출하면 아무 변화 없음', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+
+      const orderBefore = result.current.tabs.map((t) => t.id);
+
+      // 존재하지 않는 탭 ID
+      act(() => {
+        result.current.reorderTabs('non-existent', 'tab-1');
+      });
+
+      expect(result.current.tabs.map((t) => t.id)).toEqual(orderBefore);
+
+      // 드롭 대상도 존재하지 않는 경우
+      act(() => {
+        result.current.reorderTabs('tab-1', 'non-existent');
+      });
+
+      expect(result.current.tabs.map((t) => t.id)).toEqual(orderBefore);
+    });
+
+    // UT-001: 드래그 시작 - 탭 순서 변경 후 활성 탭 유지
+    it('탭 순서 변경 후 활성 탭이 유지된다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // tab-2 활성화
+      act(() => {
+        result.current.setActiveTab('tab-2');
+      });
+
+      expect(result.current.activeTabId).toBe('tab-2');
+
+      // 순서 변경
+      act(() => {
+        result.current.reorderTabs('tab-3', 'tab-1');
+      });
+
+      // 활성 탭 유지
+      expect(result.current.activeTabId).toBe('tab-2');
+    });
+
+    // 앞에서 뒤로 이동
+    it('탭을 앞에서 뒤로 이동한다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // 초기: [tab-1, tab-2, tab-3]
+      // tab-1을 tab-3 위치로 이동
+      act(() => {
+        result.current.reorderTabs('tab-1', 'tab-3');
+      });
+
+      // 결과: [tab-2, tab-3, tab-1]
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-2', 'tab-3', 'tab-1']);
+    });
+
+    // 중간 탭 이동
+    it('중간 탭을 맨 앞으로 이동한다', () => {
+      const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
+
+      act(() => {
+        result.current.openTab(MOCK_TAB_01);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_02);
+      });
+      act(() => {
+        result.current.openTab(MOCK_TAB_03);
+      });
+
+      // 초기: [tab-1, tab-2, tab-3]
+      // tab-2을 tab-1 위치로 이동
+      act(() => {
+        result.current.reorderTabs('tab-2', 'tab-1');
+      });
+
+      // 결과: [tab-2, tab-1, tab-3]
+      expect(result.current.tabs.map((t) => t.id)).toEqual(['tab-2', 'tab-1', 'tab-3']);
+    });
+  });
 });
