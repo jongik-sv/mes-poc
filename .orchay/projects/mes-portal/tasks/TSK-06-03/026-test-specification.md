@@ -618,6 +618,7 @@ test.describe('유효성 검사 규칙', () => {
 | `form-template-title` | 폼 제목 | 제목 표시 확인 |
 | `form-submit-btn` | 저장 버튼 | 저장 동작 테스트 |
 | `form-cancel-btn` | 취소 버튼 | 취소 동작 테스트 |
+| `form-reset-btn` | 초기화 버튼 | 폼 리셋 동작 테스트 |
 | `form-field-{name}` | 폼 필드 입력 | 필드 입력 테스트 |
 | `form-field-{name}-error` | 필드 에러 메시지 | 유효성 에러 확인 |
 | `form-loading` | 로딩 오버레이 | 로딩 상태 확인 |

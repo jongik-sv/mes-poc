@@ -588,6 +588,11 @@ flowchart TD
 
 ### 7.2 Props 인터페이스
 
+**Form 인스턴스 관리 정책:**
+- **외부 주입 우선**: `form` prop이 제공되면 해당 인스턴스 사용
+- **미제공 시 내부 생성**: `form` prop이 없으면 `Form.useForm()`으로 내부 생성
+- **loading 상태**: API 호출 중 상태를 나타내며, 저장 버튼 비활성화에 사용
+
 ```typescript
 import { FormInstance, FormProps } from 'antd';
 import { ReactNode } from 'react';
@@ -597,7 +602,7 @@ import { ReactNode } from 'react';
  */
 interface FormTemplateProps<T extends Record<string, unknown>> {
   // ===== 폼 설정 =====
-  /** Ant Design Form 인스턴스 (외부에서 제어 시) */
+  /** Ant Design Form 인스턴스 (외부에서 제어 시, 미제공 시 내부 생성) */
   form?: FormInstance<T>;
   /** 폼 초기값 */
   initialValues?: Partial<T>;
@@ -815,6 +820,66 @@ const validationRules = {
 
 ---
 
+## 10. 보안 원칙
+
+### 10.1 유효성 검사 보안
+
+| 원칙 | 설명 | 적용 |
+|------|------|------|
+| **서버 사이드 검사 필수** | 클라이언트 검사는 UX 개선용이며, 서버에서 동일한 규칙으로 재검증 필수 | API 레이어에서 동일 규칙 적용 |
+| **클라이언트 검사 한계** | 브라우저 개발자 도구/Proxy로 우회 가능함을 인지 | 서버 검증 의존 |
+
+> ⚠️ **중요**: 클라이언트 사이드 유효성 검사만으로 데이터 무결성을 보장할 수 없습니다. 모든 입력 데이터는 서버에서 반드시 재검증해야 합니다.
+
+### 10.2 XSS 방어 전략
+
+| 방어 계층 | 방법 | 비고 |
+|----------|------|------|
+| React 기본 방어 | JSX 내 자동 이스케이프 | 기본 활성화 |
+| **금지 사항** | `dangerouslySetInnerHTML` 사용 금지 | 코드 리뷰 체크 |
+| CSP 헤더 | Content Security Policy 적용 권장 | 인프라 레벨 |
+
+```typescript
+// ❌ 금지: XSS 취약
+<div dangerouslySetInnerHTML={{ __html: userInput }} />
+
+// ✅ 권장: React 자동 이스케이프
+<div>{userInput}</div>
+```
+
+### 10.3 CSRF 방어 원칙
+
+| 원칙 | 설명 |
+|------|------|
+| **CSRF 토큰** | 폼 제출 시 CSRF 토큰 포함 (API 레이어에서 처리) |
+| **SameSite 쿠키** | `SameSite=Lax` 또는 `Strict` 설정 권장 |
+| **HTTPS 필수** | 모든 폼 데이터는 HTTPS로 전송 |
+
+### 10.4 에러 메시지 보안
+
+| 환경 | 에러 표시 수준 | 예시 |
+|------|---------------|------|
+| 개발 환경 | 상세 에러 (디버깅용) | 스택 트레이스 포함 |
+| 운영 환경 | 일반화된 메시지 | "처리 중 오류가 발생했습니다" |
+
+> **원칙**: 사용자에게 표시되는 에러 메시지는 시스템 내부 구조를 노출하지 않도록 합니다.
+
+### 10.5 민감 데이터 처리
+
+| 데이터 유형 | 처리 방법 | Ant Design 컴포넌트 |
+|------------|----------|-------------------|
+| 비밀번호 | 마스킹 표시, 자동완성 비활성화 | `Input.Password`, `autoComplete="new-password"` |
+| 개인정보 | 최소 수집 원칙, HTTPS 전송 | - |
+
+```typescript
+// 민감 데이터 필드 예시
+<Form.Item name="password" label="비밀번호">
+  <Input.Password autoComplete="new-password" />
+</Form.Item>
+```
+
+---
+
 ## 11. 구현 범위
 
 ### 11.1 영향받는 영역
@@ -893,11 +958,17 @@ FormTemplate/
 
 ```typescript
 // useFormDirty - 변경 감지 훅
-interface UseFormDirtyReturn<T> {
+interface UseFormDirtyOptions<T extends Record<string, unknown>> {
+  form: FormInstance<T>;
+  initialValues: Partial<T>;
+  deepCompare?: boolean; // 객체/배열 깊은 비교 여부 (기본: false)
+}
+
+interface UseFormDirtyReturn<T extends Record<string, unknown>> {
   isDirty: boolean;
-  dirtyFields: (keyof T)[];
+  dirtyFields: Set<keyof T>;
+  getDirtyValue: <K extends keyof T>(field: K) => { original: T[K]; current: T[K] } | null;
   resetDirty: () => void;
-  checkDirty: (field: keyof T, value: unknown) => boolean;
 }
 
 // useLeaveConfirm - 이탈 경고 훅
