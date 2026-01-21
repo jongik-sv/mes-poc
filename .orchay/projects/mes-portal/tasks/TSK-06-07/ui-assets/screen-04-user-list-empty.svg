@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <title>SCR-04: 사용자 목록 (Empty State)</title>
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .header-text { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #262626; }
+      .label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #595959; }
+      .body-text { font-family: Arial, sans-serif; font-size: 12px; fill: #262626; }
+      .muted-text { font-family: Arial, sans-serif; font-size: 11px; fill: #8c8c8c; }
+      .empty-title { font-family: Arial, sans-serif; font-size: 16px; fill: #262626; }
+      .empty-desc { font-family: Arial, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .input-filled { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-primary { fill: #1890ff; rx: 4; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-disabled { fill: #f5f5f5; rx: 4; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 12px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 12px; fill: #262626; }
+      .btn-text-disabled { font-family: Arial, sans-serif; font-size: 12px; fill: #bfbfbf; }
+      .table-header { fill: #fafafa; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .checkbox { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .empty-icon { fill: #d9d9d9; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Search Card -->
+  <rect class="card" x="24" y="24" width="1152" height="120" rx="4"/>
+
+  <!-- Search Fields Row (with filled values) -->
+  <!-- Name Field (Filled) -->
+  <text class="label-text" x="48" y="55">이름</text>
+  <rect class="input-filled" x="48" y="62" width="200" height="32"/>
+  <text class="body-text" x="60" y="82">존재하지않는이름</text>
+
+  <!-- Email Field -->
+  <text class="label-text" x="280" y="55">이메일</text>
+  <rect class="input" x="280" y="62" width="200" height="32"/>
+  <text class="muted-text" x="292" y="82">이메일 검색...</text>
+
+  <!-- Status Field -->
+  <text class="label-text" x="512" y="55">상태</text>
+  <rect class="input" x="512" y="62" width="150" height="32"/>
+  <text class="body-text" x="524" y="82">전체</text>
+  <path d="M 642 78 L 650 78 L 646 84 Z" fill="#8c8c8c"/>
+
+  <!-- Buttons -->
+  <rect class="btn-default" x="940" y="62" width="70" height="32"/>
+  <text class="btn-text-dark" x="960" y="82">초기화</text>
+
+  <rect class="btn-primary" x="1020" y="62" width="80" height="32"/>
+  <text class="btn-text" x="1045" y="82">검색</text>
+
+  <!-- Table Card -->
+  <rect class="card" x="24" y="168" width="1152" height="608" rx="4"/>
+
+  <!-- Toolbar -->
+  <rect class="btn-disabled" x="48" y="188" width="70" height="32"/>
+  <text class="btn-text-disabled" x="68" y="208">삭제</text>
+
+  <text class="muted-text" x="920" y="208">0건 선택됨</text>
+  <text class="body-text" x="1000" y="208">총 0건</text>
+
+  <!-- Table Header -->
+  <rect class="table-header" x="48" y="232" width="1104" height="40"/>
+  <line class="table-border" x1="48" y1="232" x2="1152" y2="232"/>
+  <line class="table-border" x1="48" y1="272" x2="1152" y2="272"/>
+
+  <!-- Header Checkbox -->
+  <rect class="checkbox" x="68" y="244" width="16" height="16" rx="2"/>
+
+  <!-- Header Texts -->
+  <text class="header-text" x="120" y="257">이름</text>
+  <text class="header-text" x="280" y="257">이메일</text>
+  <text class="header-text" x="520" y="257">상태</text>
+  <text class="header-text" x="620" y="257">역할</text>
+  <text class="header-text" x="780" y="257">부서</text>
+  <text class="header-text" x="950" y="257">생성일</text>
+
+  <!-- Empty State -->
+  <g transform="translate(600, 450)">
+    <!-- Empty Icon (Document) -->
+    <g transform="translate(-40, -80)">
+      <rect class="empty-icon" x="10" y="0" width="60" height="75" rx="4"/>
+      <rect fill="#f5f5f5" x="20" y="15" width="40" height="6" rx="2"/>
+      <rect fill="#f5f5f5" x="20" y="28" width="35" height="6" rx="2"/>
+      <rect fill="#f5f5f5" x="20" y="41" width="30" height="6" rx="2"/>
+      <rect fill="#f5f5f5" x="20" y="54" width="25" height="6" rx="2"/>
+    </g>
+
+    <!-- Empty Text -->
+    <text class="empty-title" x="0" y="20" text-anchor="middle">검색 결과가 없습니다</text>
+    <text class="empty-desc" x="0" y="45" text-anchor="middle">검색 조건을 변경하거나 필터를 초기화해보세요</text>
+
+    <!-- Reset Button -->
+    <rect class="btn-primary" x="-45" y="65" width="90" height="32"/>
+    <text class="btn-text" x="0" y="85" text-anchor="middle">조건 초기화</text>
+  </g>
+</svg>

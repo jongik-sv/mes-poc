@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <title>SCR-06: 삭제 확인 다이얼로그</title>
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .overlay { fill: rgba(0, 0, 0, 0.45); }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .modal { fill: #ffffff; }
+      .modal-shadow { fill: rgba(0, 0, 0, 0.1); }
+      .header-text { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #262626; }
+      .body-text { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .warning-text { font-family: Arial, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .btn-primary { fill: #1890ff; rx: 4; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-danger { fill: #ff4d4f; rx: 4; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 13px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 13px; fill: #262626; }
+      .warning-icon { fill: #faad14; }
+      .table-row-selected { fill: #e6f7ff; }
+      .table-row { fill: #ffffff; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .checkbox-checked { fill: #1890ff; stroke: #1890ff; stroke-width: 1; }
+      .checkbox { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .muted-text { font-family: Arial, sans-serif; font-size: 11px; fill: #8c8c8c; }
+      .highlight-text { font-family: Arial, sans-serif; font-size: 11px; fill: #1890ff; font-weight: bold; }
+      .label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #595959; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-disabled { fill: #f5f5f5; rx: 4; }
+      .btn-text-disabled { font-family: Arial, sans-serif; font-size: 12px; fill: #bfbfbf; }
+      .table-header { fill: #fafafa; }
+      .table-header-text { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #262626; }
+      .tag-success { fill: #f6ffed; stroke: #b7eb8f; stroke-width: 1; rx: 2; }
+      .tag-text-success { font-family: Arial, sans-serif; font-size: 10px; fill: #52c41a; }
+    </style>
+  </defs>
+
+  <!-- Background (with table showing selected rows) -->
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Simplified background table to show context -->
+  <rect class="card" x="24" y="24" width="1152" height="100" rx="4" opacity="0.5"/>
+  <rect class="card" x="24" y="148" width="1152" height="400" rx="4" opacity="0.5"/>
+
+  <!-- Overlay -->
+  <rect class="overlay" width="1200" height="800"/>
+
+  <!-- Modal Shadow -->
+  <rect class="modal-shadow" x="364" y="274" width="480" height="260" rx="8"/>
+
+  <!-- Modal -->
+  <rect class="modal" x="360" y="270" width="480" height="260" rx="8"/>
+
+  <!-- Warning Icon -->
+  <g transform="translate(400, 310)">
+    <circle class="warning-icon" cx="0" cy="0" r="20"/>
+    <text x="0" y="7" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#ffffff">!</text>
+  </g>
+
+  <!-- Modal Title -->
+  <text class="header-text" x="435" y="318">삭제 확인</text>
+
+  <!-- Modal Content -->
+  <text class="body-text" x="400" y="370">2명의 사용자를 삭제하시겠습니까?</text>
+  <text class="warning-text" x="400" y="400">이 작업은 되돌릴 수 없습니다.</text>
+
+  <!-- Selected Users List (small preview) -->
+  <g transform="translate(400, 420)">
+    <rect fill="#fafafa" x="0" y="0" width="400" height="50" rx="4"/>
+    <text class="muted-text" x="12" y="20">선택된 사용자:</text>
+    <text class="body-text" x="12" y="38">홍길동, 김영희</text>
+  </g>
+
+  <!-- Modal Footer -->
+  <line x1="360" y1="485" x2="840" y2="485" stroke="#f0f0f0" stroke-width="1"/>
+
+  <!-- Buttons -->
+  <rect class="btn-default" x="640" y="498" width="80" height="36"/>
+  <text class="btn-text-dark" x="667" y="521">취소</text>
+
+  <rect class="btn-danger" x="736" y="498" width="80" height="36"/>
+  <text class="btn-text" x="763" y="521">삭제</text>
+</svg>

@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <title>SCR-01: 사용자 목록 (기본)</title>
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .header-text { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #262626; }
+      .label-text { font-family: Arial, sans-serif; font-size: 12px; fill: #595959; }
+      .body-text { font-family: Arial, sans-serif; font-size: 12px; fill: #262626; }
+      .muted-text { font-family: Arial, sans-serif; font-size: 11px; fill: #8c8c8c; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-primary { fill: #1890ff; rx: 4; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .btn-danger { fill: #ff4d4f; rx: 4; }
+      .btn-disabled { fill: #f5f5f5; rx: 4; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 12px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 12px; fill: #262626; }
+      .btn-text-disabled { font-family: Arial, sans-serif; font-size: 12px; fill: #bfbfbf; }
+      .table-header { fill: #fafafa; }
+      .table-row { fill: #ffffff; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .tag-success { fill: #f6ffed; stroke: #b7eb8f; stroke-width: 1; rx: 2; }
+      .tag-error { fill: #fff2f0; stroke: #ffccc7; stroke-width: 1; rx: 2; }
+      .tag-warning { fill: #fffbe6; stroke: #ffe58f; stroke-width: 1; rx: 2; }
+      .tag-text-success { font-family: Arial, sans-serif; font-size: 10px; fill: #52c41a; }
+      .tag-text-error { font-family: Arial, sans-serif; font-size: 10px; fill: #ff4d4f; }
+      .tag-text-warning { font-family: Arial, sans-serif; font-size: 10px; fill: #faad14; }
+      .checkbox { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .link { fill: #1890ff; text-decoration: underline; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Search Card -->
+  <rect class="card" x="24" y="24" width="1152" height="120" rx="4"/>
+
+  <!-- Search Fields Row -->
+  <!-- Name Field -->
+  <text class="label-text" x="48" y="55">이름</text>
+  <rect class="input" x="48" y="62" width="200" height="32"/>
+  <text class="muted-text" x="60" y="82">이름 검색...</text>
+
+  <!-- Email Field -->
+  <text class="label-text" x="280" y="55">이메일</text>
+  <rect class="input" x="280" y="62" width="200" height="32"/>
+  <text class="muted-text" x="292" y="82">이메일 검색...</text>
+
+  <!-- Status Field -->
+  <text class="label-text" x="512" y="55">상태</text>
+  <rect class="input" x="512" y="62" width="150" height="32"/>
+  <text class="body-text" x="524" y="82">전체</text>
+  <path d="M 642 78 L 650 78 L 646 84 Z" fill="#8c8c8c"/>
+
+  <!-- Buttons -->
+  <rect class="btn-default" x="940" y="62" width="70" height="32"/>
+  <text class="btn-text-dark" x="960" y="82">초기화</text>
+
+  <rect class="btn-primary" x="1020" y="62" width="80" height="32"/>
+  <text class="btn-text" x="1045" y="82">검색</text>
+
+  <!-- Table Card -->
+  <rect class="card" x="24" y="168" width="1152" height="608" rx="4"/>
+
+  <!-- Toolbar -->
+  <rect class="btn-disabled" x="48" y="188" width="70" height="32"/>
+  <text class="btn-text-disabled" x="68" y="208">삭제</text>
+
+  <text class="muted-text" x="920" y="208">0건 선택됨</text>
+  <text class="body-text" x="1000" y="208">총 25건</text>
+
+  <!-- Table Header -->
+  <rect class="table-header" x="48" y="232" width="1104" height="40"/>
+  <line class="table-border" x1="48" y1="232" x2="1152" y2="232"/>
+  <line class="table-border" x1="48" y1="272" x2="1152" y2="272"/>
+
+  <!-- Header Checkbox -->
+  <rect class="checkbox" x="68" y="244" width="16" height="16" rx="2"/>
+
+  <!-- Header Texts -->
+  <text class="header-text" x="120" y="257">이름</text>
+  <text class="header-text" x="280" y="257">이메일</text>
+  <text class="header-text" x="520" y="257">상태</text>
+  <text class="header-text" x="620" y="257">역할</text>
+  <text class="header-text" x="780" y="257">부서</text>
+  <text class="header-text" x="950" y="257">생성일</text>
+
+  <!-- Table Rows -->
+  <!-- Row 1 -->
+  <rect class="table-row" x="48" y="272" width="1104" height="48"/>
+  <line class="table-border" x1="48" y1="320" x2="1152" y2="320"/>
+  <rect class="checkbox" x="68" y="288" width="16" height="16" rx="2"/>
+  <text class="body-text" x="120" y="300">홍길동</text>
+  <text class="body-text" x="280" y="300">hong@company.com</text>
+  <rect class="tag-success" x="520" y="288" width="40" height="20"/>
+  <text class="tag-text-success" x="528" y="302">활성</text>
+  <text class="body-text" x="620" y="300">관리자</text>
+  <text class="body-text" x="780" y="300">시스템관리팀</text>
+  <text class="body-text" x="950" y="300">2026-01-15</text>
+
+  <!-- Row 2 -->
+  <rect class="table-row" x="48" y="320" width="1104" height="48"/>
+  <line class="table-border" x1="48" y1="368" x2="1152" y2="368"/>
+  <rect class="checkbox" x="68" y="336" width="16" height="16" rx="2"/>
+  <text class="body-text" x="120" y="348">김영희</text>
+  <text class="body-text" x="280" y="348">kim@company.com</text>
+  <rect class="tag-success" x="520" y="336" width="40" height="20"/>
+  <text class="tag-text-success" x="528" y="350">활성</text>
+  <text class="body-text" x="620" y="348">사용자</text>
+  <text class="body-text" x="780" y="348">생산팀</text>
+  <text class="body-text" x="950" y="348">2026-01-14</text>
+
+  <!-- Row 3 -->
+  <rect class="table-row" x="48" y="368" width="1104" height="48"/>
+  <line class="table-border" x1="48" y1="416" x2="1152" y2="416"/>
+  <rect class="checkbox" x="68" y="384" width="16" height="16" rx="2"/>
+  <text class="body-text" x="120" y="396">이철수</text>
+  <text class="body-text" x="280" y="396">lee@company.com</text>
+  <rect class="tag-error" x="520" y="384" width="50" height="20"/>
+  <text class="tag-text-error" x="526" y="398">비활성</text>
+  <text class="body-text" x="620" y="396">사용자</text>
+  <text class="body-text" x="780" y="396">품질팀</text>
+  <text class="body-text" x="950" y="396">2026-01-13</text>
+
+  <!-- Row 4 -->
+  <rect class="table-row" x="48" y="416" width="1104" height="48"/>
+  <line class="table-border" x1="48" y1="464" x2="1152" y2="464"/>
+  <rect class="checkbox" x="68" y="432" width="16" height="16" rx="2"/>
+  <text class="body-text" x="120" y="444">박민수</text>
+  <text class="body-text" x="280" y="444">park@company.com</text>
+  <rect class="tag-warning" x="520" y="432" width="40" height="20"/>
+  <text class="tag-text-warning" x="528" y="446">대기</text>
+  <text class="body-text" x="620" y="444">사용자</text>
+  <text class="body-text" x="780" y="444">물류팀</text>
+  <text class="body-text" x="950" y="444">2026-01-12</text>
+
+  <!-- Row 5 -->
+  <rect class="table-row" x="48" y="464" width="1104" height="48"/>
+  <line class="table-border" x1="48" y1="512" x2="1152" y2="512"/>
+  <rect class="checkbox" x="68" y="480" width="16" height="16" rx="2"/>
+  <text class="body-text" x="120" y="492">정지영</text>
+  <text class="body-text" x="280" y="492">jung@company.com</text>
+  <rect class="tag-success" x="520" y="480" width="40" height="20"/>
+  <text class="tag-text-success" x="528" y="494">활성</text>
+  <text class="body-text" x="620" y="492">매니저</text>
+  <text class="body-text" x="780" y="492">영업팀</text>
+  <text class="body-text" x="950" y="492">2026-01-11</text>
+
+  <!-- Pagination -->
+  <text class="muted-text" x="48" y="740">총 25건</text>
+
+  <rect class="input" x="400" y="720" width="80" height="28"/>
+  <text class="body-text" x="412" y="738">10건/페이지</text>
+
+  <rect class="btn-default" x="900" y="720" width="28" height="28"/>
+  <text class="btn-text-dark" x="910" y="738">&lt;</text>
+
+  <rect class="btn-primary" x="936" y="720" width="28" height="28"/>
+  <text class="btn-text" x="947" y="738">1</text>
+
+  <rect class="btn-default" x="972" y="720" width="28" height="28"/>
+  <text class="btn-text-dark" x="983" y="738">2</text>
+
+  <rect class="btn-default" x="1008" y="720" width="28" height="28"/>
+  <text class="btn-text-dark" x="1019" y="738">3</text>
+
+  <rect class="btn-default" x="1044" y="720" width="28" height="28"/>
+  <text class="btn-text-dark" x="1054" y="738">&gt;</text>
+</svg>
