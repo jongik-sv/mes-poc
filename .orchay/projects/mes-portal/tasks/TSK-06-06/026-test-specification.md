@@ -44,43 +44,74 @@
 | 브라우저 | Chromium (기본), Firefox, WebKit |
 | 베이스 URL | `http://localhost:3000` |
 
-### 1.3 테스트 대상 컴포넌트
+### 1.3 테스트 대상 컴포넌트 (QA-001 반영 - 설계 기준 통일)
 
 ```typescript
 // components/templates/WizardTemplate.tsx
 interface WizardStep {
   key: string
   title: string
+  subTitle?: string
   description?: string
-  content: ReactNode
-  validation?: () => Promise<boolean> | boolean
+  icon?: ReactNode
+  content: ReactNode | ((context: WizardContextValue) => ReactNode)
+  validate?: () => Promise<boolean> | boolean
+  skippable?: boolean
+  disabled?: boolean
 }
 
-interface WizardTemplateProps {
+interface WizardTemplateProps<T extends Record<string, unknown> = Record<string, unknown>> {
   // 단계 정의
   steps: WizardStep[]
+  initialStep?: number
+  initialData?: Partial<T>
 
-  // 상태
-  currentStep?: number
-  onStepChange?: (step: number) => void
+  // Steps 설정
+  direction?: 'horizontal' | 'vertical'
+  size?: 'default' | 'small'
+  type?: 'default' | 'navigation' | 'inline'
+  progressDot?: boolean
+  allowStepClick?: boolean
 
   // 액션
-  onComplete: () => Promise<void>
+  onFinish: (data: T) => Promise<void>
   onCancel?: () => void
-
-  // 설정
-  title?: string
-  allowStepClick?: boolean // 단계 직접 클릭 허용
-  showStepDescription?: boolean
-
-  // 버튼 텍스트
-  prevText?: string
-  nextText?: string
-  completeText?: string
-  cancelText?: string
+  onStepChange?: (current: number, prev: number) => void
+  onDataChange?: (data: T) => void
 
   // 상태
   loading?: boolean
+
+  // 버튼 텍스트
+  prevButtonText?: string
+  nextButtonText?: string
+  finishButtonText?: string
+  cancelButtonText?: string
+  showCancel?: boolean
+  showPrev?: boolean
+  extraButtons?: ReactNode
+
+  // 이탈 경고
+  enableLeaveConfirm?: boolean
+  leaveConfirmMessage?: string
+
+  // 헤더
+  title?: string
+  extra?: ReactNode
+
+  // 확인/완료 단계
+  autoConfirmStep?: boolean
+  confirmStepTitle?: string
+  renderConfirmation?: (data: T) => ReactNode
+  autoFinishStep?: boolean
+  finishStepTitle?: string
+  finishMessage?: string
+  finishActions?: ReactNode
+
+  // 스타일
+  className?: string
+  stepsClassName?: string
+  contentClassName?: string
 }
 ```
 
@@ -100,6 +131,13 @@ interface WizardTemplateProps {
 | UT-006 | WizardTemplate | 마지막 단계 - 완료 버튼 표시 | 다음 버튼 대신 완료 버튼 표시 | FR-004 |
 | UT-007 | WizardTemplate | 완료 버튼 - onComplete 콜백 호출 | onComplete 콜백 실행 | FR-005 |
 | UT-008 | WizardTemplate | 단계 인디케이터 - 현재 단계 강조 | 현재 단계에 active 스타일 적용 | FR-006 |
+| UT-009 | WizardTemplate | 확인 단계 - 이전 단계 데이터 표시 | renderConfirmation에 전체 데이터 전달 | FR-004 |
+| UT-010 | WizardTemplate | onFinish 콜백 - 전체 데이터 전달 | onFinish 호출 시 모든 단계 데이터 포함 | FR-005 |
+| UT-011 | WizardTemplate | 로딩 상태 - 완료 버튼 비활성화 | loading=true 시 완료 버튼 disabled | BR-007 |
+| UT-012 | WizardTemplate | 첫 단계 - 이전 버튼 숨김/비활성화 | currentStep=0 시 이전 버튼 미표시 | BR-002 |
+| UT-013 | WizardTemplate | 마지막 단계 - 완료 버튼 표시 | 마지막 단계에서 다음 버튼 대신 완료 버튼 | BR-003 |
+| UT-014 | WizardTemplate | 미완료 단계 클릭 차단 | allowStepClick=true여도 미완료 단계 클릭 무시 | BR-004 |
+| UT-015 | WizardTemplate | 완료 중복 클릭 방지 | onFinish 실행 중 버튼 재클릭 차단 | BR-007 |
 
 ### 2.2 테스트 케이스 상세
 
@@ -385,6 +423,114 @@ it('should highlight current step in indicator', () => {
 })
 ```
 
+#### UT-009 ~ UT-015: 추가 테스트 케이스 (QA-003 반영)
+
+```typescript
+// UT-009: 확인 단계 - 이전 단계 데이터 표시
+it('should pass all step data to renderConfirmation', () => {
+  const mockRenderConfirmation = vi.fn().mockReturnValue(<div>Confirmation</div>)
+  const mockData = { basicInfo: { name: 'Test' }, detailSettings: { port: 8080 } }
+
+  render(
+    <WizardTemplate
+      steps={mockSteps}
+      initialData={mockData}
+      autoConfirmStep
+      renderConfirmation={mockRenderConfirmation}
+      onFinish={vi.fn()}
+    />
+  )
+
+  // 확인 단계로 이동 후 renderConfirmation이 전체 데이터와 함께 호출되는지 확인
+  expect(mockRenderConfirmation).toHaveBeenCalledWith(expect.objectContaining(mockData))
+})
+
+// UT-010: onFinish 콜백 - 전체 데이터 전달
+it('should call onFinish with complete wizard data', async () => {
+  const mockOnFinish = vi.fn().mockResolvedValue(undefined)
+
+  // 마지막 단계에서 완료 버튼 클릭
+  render(<WizardTemplate steps={mockSteps} initialStep={3} onFinish={mockOnFinish} />)
+
+  fireEvent.click(screen.getByTestId('wizard-finish-btn'))
+
+  await waitFor(() => {
+    expect(mockOnFinish).toHaveBeenCalledWith(expect.any(Object))
+  })
+})
+
+// UT-011: 로딩 상태 - 완료 버튼 비활성화
+it('should disable finish button when loading is true', () => {
+  render(<WizardTemplate steps={mockSteps} initialStep={3} loading={true} onFinish={vi.fn()} />)
+
+  const finishButton = screen.getByTestId('wizard-finish-btn')
+  expect(finishButton).toBeDisabled()
+})
+
+// UT-012: 첫 단계 - 이전 버튼 숨김 (BR-002)
+it('should hide or disable prev button on first step', () => {
+  render(<WizardTemplate steps={mockSteps} onFinish={vi.fn()} />)
+
+  const prevButton = screen.queryByTestId('wizard-prev-btn')
+  if (prevButton) {
+    expect(prevButton).toBeDisabled()
+  } else {
+    expect(prevButton).toBeNull()
+  }
+})
+
+// UT-013: 마지막 단계 - 완료 버튼 표시 (BR-003)
+it('should show finish button instead of next on last step', () => {
+  render(<WizardTemplate steps={mockSteps} initialStep={3} onFinish={vi.fn()} />)
+
+  expect(screen.getByTestId('wizard-finish-btn')).toBeInTheDocument()
+  expect(screen.queryByTestId('wizard-next-btn')).not.toBeInTheDocument()
+})
+
+// UT-014: 미완료 단계 클릭 차단 (BR-004)
+it('should not allow clicking incomplete steps', async () => {
+  const mockOnStepChange = vi.fn()
+
+  render(
+    <WizardTemplate
+      steps={mockSteps}
+      allowStepClick={true}
+      onStepChange={mockOnStepChange}
+      onFinish={vi.fn()}
+    />
+  )
+
+  // 미완료된 2단계 클릭 시도
+  const step2 = screen.getByTestId('wizard-step-1')
+  fireEvent.click(step2)
+
+  // 단계 변경이 호출되지 않아야 함
+  expect(mockOnStepChange).not.toHaveBeenCalled()
+})
+
+// UT-015: 완료 중복 클릭 방지 (BR-007)
+it('should prevent double click on finish button', async () => {
+  const mockOnFinish = vi.fn().mockImplementation(
+    () => new Promise(resolve => setTimeout(resolve, 1000))
+  )
+
+  render(<WizardTemplate steps={mockSteps} initialStep={3} onFinish={mockOnFinish} />)
+
+  const finishButton = screen.getByTestId('wizard-finish-btn')
+
+  // 첫 번째 클릭
+  fireEvent.click(finishButton)
+
+  // 두 번째 클릭 (중복)
+  fireEvent.click(finishButton)
+
+  await waitFor(() => {
+    // onFinish는 한 번만 호출되어야 함
+    expect(mockOnFinish).toHaveBeenCalledTimes(1)
+  })
+})
+```
+
 ---
 
 ## 3. E2E 테스트 시나리오
@@ -397,6 +543,8 @@ it('should highlight current step in indicator', () => {
 | E2E-002 | 유효성 검사 실패 시 다음 진행 불가 | 마법사 첫 단계 | 1. 필수 필드 비우기 2. 다음 클릭 | 에러 메시지, 현재 단계 유지 | FR-002 |
 | E2E-003 | 이전 버튼으로 뒤로 이동 가능 | 마법사 두 번째 단계 | 1. 이전 버튼 클릭 | 첫 번째 단계로 이동, 데이터 유지 | FR-003, BR-02 |
 | E2E-004 | 완료 후 콜백 동작 확인 | 마법사 마지막 단계 | 1. 완료 버튼 클릭 | 데이터 저장, 리다이렉트 또는 완료 메시지 | FR-005 |
+| E2E-005 | 확인 단계에서 수정 링크로 이전 단계 이동 | 확인 단계 도달 | 1. 수정 링크 클릭 2. 해당 단계에서 수정 3. 다시 확인 단계 이동 | 수정된 데이터 확인 단계에 반영 | FR-004, BR-008 |
+| E2E-006 | 이탈 경고 다이얼로그 동작 | 마법사 진행 중 (데이터 입력됨) | 1. 취소 버튼 클릭 2. 확인 다이얼로그에서 취소 3. 다시 취소 클릭 4. 확인 선택 | 데이터 있을 때만 다이얼로그, 확인 시 이탈 | BR-005 |
 
 ### 3.2 테스트 케이스 상세
 
@@ -794,19 +942,20 @@ export const mockSubmitPayload = {
 
 > 프론트엔드 컴포넌트에 적용할 `data-testid` 속성 정의
 
-### 6.1 WizardTemplate 컴포넌트 셀렉터
+### 6.1 WizardTemplate 컴포넌트 셀렉터 (QA-005 반영 - 설계 기준 통일)
 
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
-| `wizard-container` | 마법사 전체 컨테이너 | 마법사 로드 확인 |
+| `wizard-template-container` | 마법사 전체 컨테이너 | 마법사 로드 확인 |
 | `wizard-steps` | 단계 인디케이터 (Steps) | 단계 표시 영역 |
-| `wizard-step-{index}` | 개별 단계 (0부터 시작) | 특정 단계 상태 확인 |
+| `wizard-step-{n}` | 개별 단계 (0부터 시작) | 특정 단계 상태 확인 |
 | `wizard-content` | 단계별 컨텐츠 영역 | 컨텐츠 전환 확인 |
 | `wizard-prev-btn` | 이전 버튼 | 이전 단계 이동 |
 | `wizard-next-btn` | 다음 버튼 | 다음 단계 이동 |
 | `wizard-finish-btn` | 완료 버튼 | 마법사 완료 |
 | `wizard-cancel-btn` | 취소 버튼 | 마법사 취소 |
-| `step-{index}-form` | 단계별 폼 영역 | 각 단계 컨텐츠 식별 |
+| `wizard-confirmation` | 확인 단계 영역 | 확인 데이터 표시 |
+| `wizard-result` | 완료 단계 영역 | 완료 메시지 표시 |
 
 ### 6.2 단계별 입력 필드 셀렉터 (예시)
 
@@ -818,13 +967,13 @@ export const mockSubmitPayload = {
 | `wizard-option-select` | 옵션 선택 드롭다운 | Step 2 입력 |
 | `validation-error` | 유효성 에러 메시지 | 에러 표시 확인 |
 
-### 6.3 관련 다이얼로그 셀렉터
+### 6.3 관련 다이얼로그 셀렉터 (QA-006 반영 - 설계 기준 통일)
 
 | data-testid | 요소 | 용도 |
 |-------------|------|------|
-| `cancel-confirm-dialog` | 취소 확인 다이얼로그 | 취소 시 확인 |
-| `cancel-confirm-btn` | 확인 버튼 | 취소 확정 |
-| `cancel-dismiss-btn` | 취소 버튼 | 취소 취소 (마법사로 복귀) |
+| `leave-confirm-dialog` | 이탈 확인 다이얼로그 | 취소/이탈 시 확인 |
+| `leave-confirm-btn` | 확인 버튼 | 이탈 확정 |
+| `leave-dismiss-btn` | 취소 버튼 | 마법사로 복귀 |
 
 ---
 
@@ -863,12 +1012,17 @@ export const mockSubmitPayload = {
 | FR-001 | 단계별 컨텐츠 표시 | UT-001 | E2E-001 | TC-001 |
 | FR-002 | 단계별 유효성 검사 후 진행 | UT-002, UT-003 | E2E-002 | - |
 | FR-003 | 이전 단계 이동 | UT-004 | E2E-003 | - |
-| FR-004 | 마지막 단계에서 완료 버튼 | UT-006 | E2E-001 | - |
-| FR-005 | 완료 버튼 클릭 시 데이터 제출 | UT-007 | E2E-001, E2E-004 | TC-005 |
+| FR-004 | 마지막 단계에서 완료 버튼 | UT-006, UT-009 | E2E-001, E2E-005 | - |
+| FR-005 | 완료 버튼 클릭 시 데이터 제출 | UT-007, UT-010 | E2E-001, E2E-004 | TC-005 |
 | FR-006 | 진행 상황 시각화 (Steps) | UT-008 | E2E-001 | TC-001 |
-| BR-01 | 첫 단계에서 이전 버튼 비활성화 | UT-005 | E2E-003 | - |
-| BR-02 | 이전 단계 데이터 유지 | - | E2E-003 | - |
-| BR-03 | 취소 시 확인 필요 | - | - | TC-004 |
+| BR-001 | 유효성 검사 실패 시 이동 차단 | UT-002, UT-003 | E2E-002 | - |
+| BR-002 | 첫 단계에서 이전 버튼 비활성화 | UT-005, UT-012 | E2E-003 | - |
+| BR-003 | 마지막 단계 완료 버튼 표시 | UT-006, UT-013 | E2E-001 | - |
+| BR-004 | 단계 건너뛰기 불가 | UT-014 | E2E-002 | - |
+| BR-005 | 이탈 시 확인 다이얼로그 | - | E2E-006 | TC-004 |
+| BR-006 | 완료 버튼 마지막 단계 전용 | UT-006, UT-013 | E2E-001 | - |
+| BR-007 | 완료 중복 클릭 방지 | UT-011, UT-015 | E2E-004 | - |
+| BR-008 | 단계 간 데이터 유지 | - | E2E-003, E2E-005 | - |
 
 ---
 
@@ -885,3 +1039,4 @@ export const mockSubmitPayload = {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영 - QA-001(Props 인터페이스 통일), QA-003(UT-009~015 추가), QA-005(data-testid 통일), QA-006(다이얼로그 testid 수정), E2E-005~006 추가 |

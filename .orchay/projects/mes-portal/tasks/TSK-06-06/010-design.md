@@ -5,9 +5,9 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-06-06 |
-| 문서 버전 | 2.0 |
+| 문서 버전 | 2.1 |
 | 작성일 | 2026-01-21 |
-| 상태 | 작성중 |
+| 상태 | 설계 완료 |
 | 카테고리 | development |
 
 ---
@@ -740,6 +740,10 @@ interface WizardContextValue<T extends Record<string, unknown> = Record<string, 
   goTo: (step: number) => void;
   /** 마법사 취소 */
   cancel: () => void;
+  /** Form 인스턴스 등록 (ARCH-001 - 결합도 감소) */
+  registerStepForm: (stepKey: string, form: FormInstance) => void;
+  /** Form 인스턴스 해제 */
+  unregisterStepForm: (stepKey: string) => void;
 }
 
 /**
@@ -1029,6 +1033,45 @@ const steps: WizardStep[] = [
 
 > 주의: 클라이언트 사이드 유효성 검사만으로 데이터 무결성을 보장할 수 없습니다. 모든 입력 데이터는 서버에서 반드시 재검증해야 합니다.
 
+**서버 사이드 검증 구현 가이드라인 (SEC-001 반영):**
+
+| 단계 | 검증 항목 | 구현 위치 |
+|------|----------|----------|
+| API 엔드포인트 | 입력 스키마 검증 (Zod/Yup) | 백엔드 API 라우트 |
+| 비즈니스 로직 | 도메인 규칙 검증 | 서비스 레이어 |
+| 데이터베이스 | 제약 조건 검증 | 모델/스키마 정의 |
+
+```typescript
+// 예시: 서버 사이드 검증 스키마 (API 라우트에서 적용)
+import { z } from 'zod';
+
+const wizardDataSchema = z.object({
+  basicInfo: z.object({
+    companyName: z.string().min(1, '회사명 필수').max(100),
+    factoryName: z.string().min(1, '공장명 필수').max(100),
+  }),
+  detailSettings: z.object({
+    serverAddress: z.string().ip({ version: 'v4', message: '유효한 IP 주소 필요' }),
+    port: z.number().int().min(1).max(65535),
+    timeout: z.number().int().min(1).max(300).optional(),
+    autoReconnect: z.boolean().optional(),
+  }),
+});
+
+// API 라우트에서 검증
+export async function POST(request: Request) {
+  const body = await request.json();
+  const result = wizardDataSchema.safeParse(body);
+
+  if (!result.success) {
+    return Response.json({ errors: result.error.flatten() }, { status: 400 });
+  }
+
+  // 검증 통과 후 비즈니스 로직 수행
+  // ...
+}
+```
+
 ### 10.1.2 XSS 방어 전략
 
 | 방어 계층 | 방법 | 비고 |
@@ -1037,13 +1080,62 @@ const steps: WizardStep[] = [
 | **금지 사항** | `dangerouslySetInnerHTML` 사용 금지 | 코드 리뷰 체크 |
 | CSP 헤더 | Content Security Policy 적용 권장 | 인프라 레벨 |
 
-### 10.1.3 민감 데이터 처리
+### 10.1.3 민감 데이터 처리 (SEC-003 반영)
 
 | 데이터 유형 | 처리 방법 | 비고 |
 |------------|----------|------|
 | 비밀번호 | 마스킹 표시, 자동완성 비활성화 | Input.Password 사용 |
 | API 키/토큰 | 마스킹 표시, 저장 시 암호화 | 서버 사이드 암호화 |
 | 개인정보 | 최소 수집 원칙, HTTPS 전송 | - |
+
+**민감 데이터 필드 처리 가이드라인:**
+
+```typescript
+// WizardStep에서 민감 데이터 필드 식별
+interface WizardStep {
+  // ... 기존 속성 ...
+  /** 민감 데이터 필드 목록 (확인 단계에서 마스킹 처리) */
+  sensitiveFields?: string[];
+}
+
+// 확인 단계에서 민감 데이터 마스킹 표시 예시
+function maskSensitiveData(value: string, fieldName: string, sensitiveFields: string[]): string {
+  if (sensitiveFields.includes(fieldName)) {
+    return '••••••••'; // 마스킹 처리
+  }
+  return value;
+}
+```
+
+**WizardContext 메모리 관리:**
+- 민감 데이터는 마법사 완료 또는 취소 시 즉시 Context에서 제거
+- 브라우저 개발자 도구에서 민감 정보 노출 최소화
+
+### 10.1.4 CSRF 보호 (SEC-002 반영)
+
+| 보호 방법 | 설명 | 적용 |
+|----------|------|------|
+| **SameSite 쿠키** | 인증 쿠키에 `SameSite=Strict` 또는 `Lax` 적용 | Next.js 기본 설정 |
+| **CSRF 토큰** | 상태 변경 API 호출 시 토큰 포함 | POST/PUT/DELETE 요청 |
+| **Origin 검증** | 서버에서 요청 Origin 헤더 검증 | API 미들웨어 |
+
+```typescript
+// Next.js API 라우트에서 CSRF 보호 예시
+import { headers } from 'next/headers';
+
+export async function POST(request: Request) {
+  const headersList = headers();
+  const origin = headersList.get('origin');
+
+  // Origin 검증
+  const allowedOrigins = [process.env.NEXT_PUBLIC_APP_URL];
+  if (!origin || !allowedOrigins.includes(origin)) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  // ... 비즈니스 로직
+}
+```
 
 ---
 
@@ -1089,6 +1181,36 @@ lib/
 | Ant Design Result | 완료 화면 | TRD 확인됨 |
 | Ant Design Descriptions | 확인 단계 데이터 표시 | TRD 확인됨 |
 | Ant Design Modal | 이탈 확인 다이얼로그 | TRD 확인됨 |
+
+### 11.3.1 TSK-06-03 FormTemplate 통합 가이드라인 (ARCH-002 반영)
+
+**계층 분리 원칙:**
+
+| 컴포넌트 | 책임 | FormTemplate 활용 |
+|----------|------|------------------|
+| WizardTemplate | 전체 흐름 제어, 단계 간 네비게이션 | 이탈 경고만 위임 가능 |
+| 단계별 폼 | 개별 단계 데이터 입력/검증 | FormTemplate의 폼 구조 패턴 참고 |
+
+**책임 분리:**
+
+```
+WizardTemplate 책임:
+├── 단계 표시 (Steps)
+├── 단계 간 네비게이션 (이전/다음/완료)
+├── 단계 간 데이터 공유 (WizardContext)
+├── 이탈 경고 (자체 구현 또는 FormTemplate 위임)
+└── 완료 처리 (onFinish)
+
+단계별 폼 책임 (FormTemplate 패턴 활용):
+├── 개별 단계 폼 레이아웃
+├── 단계별 유효성 검사
+└── 실시간 폼 데이터 관리
+```
+
+**통합 시 주의사항:**
+1. 이탈 경고 중복 방지: WizardTemplate이 전체 이탈 경고 관리, 개별 단계에서는 비활성화
+2. 저장 버튼 중복 방지: 단계별 폼에서는 저장 버튼 숨김, WizardTemplate의 완료 버튼만 사용
+3. 폼 상태 동기화: 단계별 폼의 값 변경을 WizardContext에 즉시 반영
 
 ### 11.4 사용할 Ant Design 컴포넌트
 
@@ -1158,8 +1280,8 @@ lib/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (-> `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (-> `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
@@ -1252,6 +1374,37 @@ export function useWizardContext<T extends Record<string, unknown>>() {
     throw new Error('useWizardContext must be used within WizardProvider');
   }
   return context as WizardContextValue<T>;
+}
+
+/**
+ * useWizardStep 훅 - Form과 Context 결합도 감소 (ARCH-001 반영)
+ *
+ * 목적: 단계 컴포넌트가 Form 인스턴스를 Context에 자동 등록/해제하여
+ * validate 함수와 Form 간 암묵적 결합을 제거
+ */
+export function useWizardStep<T = unknown>(stepKey: string, form: FormInstance) {
+  const { setStepData, getStepData, registerStepForm, unregisterStepForm } = useWizardContext();
+
+  // 컴포넌트 마운트 시 Form 인스턴스 등록
+  useEffect(() => {
+    registerStepForm(stepKey, form);
+    return () => unregisterStepForm(stepKey);
+  }, [stepKey, form, registerStepForm, unregisterStepForm]);
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    const savedData = getStepData(stepKey);
+    if (savedData) {
+      form.setFieldsValue(savedData as T);
+    }
+  }, [stepKey, getStepData, form]);
+
+  // 폼 값 변경 핸들러
+  const handleValuesChange = useCallback((_: unknown, allValues: T) => {
+    setStepData(stepKey, allValues);
+  }, [stepKey, setStepData]);
+
+  return { handleValuesChange };
 }
 ```
 
@@ -1383,3 +1536,4 @@ function SettingsWizard() {
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
 | 2.0 | 2026-01-21 | Claude | PRD/TRD/TSK-06-03 기반 상세화 - 유즈케이스 9개 정의, 4종 와이어프레임, Props 인터페이스 상세화, Context 구조, 보안 원칙, data-testid 정의 |
+| 2.1 | 2026-01-21 | Claude | 설계 리뷰(021-design-review-claude-1.md) 반영 - SEC-001(서버 검증 가이드라인), SEC-002(CSRF 보호), SEC-003(민감 데이터 처리), ARCH-001(useWizardStep 훅), ARCH-002(TSK-06-03 통합 가이드라인) 적용 |
