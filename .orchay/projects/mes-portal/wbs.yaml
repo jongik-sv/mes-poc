@@ -130,7 +130,7 @@ workPackages:
         title: 헤더 컴포넌트
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: high
         assignee: "-"
         tags:
@@ -165,7 +165,6 @@ workPackages:
             - react-hotkeys-hook으로 Ctrl+K 단축키 등록
             - next-themes useTheme 훅 사용
             - 브레드크럼이 현재 메뉴 경로 표시
-        execution: verify
       - id: TSK-01-03
         title: 사이드바 메뉴 컴포넌트
         category: development
@@ -295,6 +294,7 @@ workPackages:
           integrationCheck:
             - components/common/NotificationPanel.tsx 파일 존재
             - 알림 데이터는 mock JSON 사용 (MVP)
+        execution: verify
   - id: WP-02
     title: MDI 시스템
     status: planned
@@ -305,7 +305,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
@@ -333,7 +333,6 @@ workPackages:
             - lib/mdi/context.tsx 또는 lib/mdi/store.ts 파일 존재
             - useMDI 훅 내보내기
             - openTab, closeTab, setActiveTab 함수 제공
-        execution: build
       - id: TSK-02-02
         title: 탭 바 컴포넌트
         category: development
