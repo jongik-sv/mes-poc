@@ -268,9 +268,10 @@
 
 ## 관련 문서
 
-- 기본설계: `010-design.md`
+- 기본설계: `010-design.md` (v2.1)
 - 상세설계: `020-detail-design.md` (작성 예정)
-- 테스트 명세: `026-test-specification.md` (작성 예정)
+- 테스트 명세: `026-test-specification.md` (v1.1)
+- 설계 리뷰: `021-design-review-claude-1(적용완료).md`
 - PRD: `.orchay/projects/mes-portal/prd.md`
 
 ---
@@ -280,6 +281,7 @@
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 - PRD 4.1.1 기반 요구사항 추적 매트릭스 |
+| 1.1 | 2026-01-21 | Claude | 관련 문서 참조 업데이트 (설계 리뷰 반영 버전) |
 
 ---
 

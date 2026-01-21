@@ -65,6 +65,11 @@
 | UT-003 | 검색 실행 함수 | 검색 버튼 클릭 | onSearch 콜백 호출, 검색 조건 전달 | P0 |
 | UT-004 | 검색 조건 초기화 함수 | 초기화 버튼 클릭 | onReset 콜백 호출, 조건 기본값 복원 | P1 |
 | UT-005 | 액션 버튼 클릭 핸들러 | 신규/삭제 버튼 클릭 | 해당 콜백 함수 호출 | P1 |
+| UT-006 | 페이지네이션 | 페이지 변경 시 | 해당 페이지 데이터 표시 | P1 |
+| UT-007 | 그리드 정렬 | 컬럼 헤더 클릭 | 정렬 상태 변경, 아이콘 표시 | P1 |
+| UT-008 | 행 선택 | 체크박스 클릭 | 선택 상태 변경, 선택 건수 표시 | P1 |
+| UT-009 | 빈 값 필터링 | 빈 검색 조건으로 검색 | 빈 값이 API 파라미터에서 제외됨 | P1 |
+| UT-010 | 삭제 확인 다이얼로그 | 삭제 버튼 클릭 시 | 확인 다이얼로그 표시 | P0 |
 
 ### 2.2 테스트 케이스 상세
 
@@ -448,6 +453,307 @@ describe('액션 버튼', () => {
 });
 ```
 
+#### UT-006: 페이지네이션 동작
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/templates/__tests__/ListTemplate.spec.tsx` |
+| **테스트 블록** | `describe('ListTemplate') -> describe('페이지네이션') -> it('페이지 변경 시 해당 페이지 데이터가 표시된다')` |
+| **Mock 의존성** | dataSource (대량 데이터) |
+| **입력 데이터** | 55건 데이터, 페이지당 10건 |
+| **검증 포인트** | |
+| - | 페이지 번호 클릭 시 해당 페이지 데이터 표시 |
+| - | 현재 페이지 번호 강조 |
+| - | 페이지 크기 변경 시 목록 갱신 |
+| **커버리지 대상** | 페이지네이션 상태 관리 |
+
+```typescript
+describe('페이지네이션', () => {
+  it('페이지 변경 시 해당 페이지 데이터가 표시된다', async () => {
+    const largeDataSource = Array.from({ length: 55 }, (_, i) => ({
+      id: `${i + 1}`,
+      name: `사용자 ${i + 1}`,
+    }));
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={largeDataSource}
+        rowKey="id"
+        pagination={{ pageSize: 10 }}
+      />
+    );
+
+    // 첫 페이지 확인 (10건)
+    expect(screen.getAllByTestId('grid-row')).toHaveLength(10);
+
+    // 2페이지로 이동
+    await userEvent.click(screen.getByTestId('page-2'));
+    expect(screen.getAllByTestId('grid-row')).toHaveLength(10);
+  });
+
+  it('페이지 크기 변경 시 목록이 갱신된다', async () => {
+    const largeDataSource = Array.from({ length: 30 }, (_, i) => ({
+      id: `${i + 1}`,
+      name: `사용자 ${i + 1}`,
+    }));
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={largeDataSource}
+        rowKey="id"
+        pagination={{ pageSize: 10, pageSizeOptions: [10, 20, 50] }}
+      />
+    );
+
+    // 페이지 크기를 20으로 변경
+    await userEvent.selectOptions(screen.getByTestId('page-size-select'), '20');
+    expect(screen.getAllByTestId('grid-row')).toHaveLength(20);
+  });
+});
+```
+
+#### UT-007: 그리드 정렬
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/templates/__tests__/ListTemplate.spec.tsx` |
+| **테스트 블록** | `describe('ListTemplate') -> describe('정렬') -> it('컬럼 헤더 클릭 시 정렬된다')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | 정렬 가능한 데이터 |
+| **검증 포인트** | |
+| - | 컬럼 헤더 클릭 시 오름차순 정렬 |
+| - | 재클릭 시 내림차순 전환 |
+| - | 정렬 아이콘 표시 |
+| **커버리지 대상** | 정렬 상태 관리 |
+
+```typescript
+describe('정렬', () => {
+  it('컬럼 헤더 클릭 시 정렬된다', async () => {
+    const dataSource = [
+      { id: '1', name: '홍길동' },
+      { id: '2', name: '김철수' },
+      { id: '3', name: '이영희' },
+    ];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name', sorter: true }]}
+        dataSource={dataSource}
+        rowKey="id"
+      />
+    );
+
+    // 이름 컬럼 클릭 (오름차순)
+    await userEvent.click(screen.getByTestId('sort-name'));
+
+    const rows = screen.getAllByTestId('grid-row');
+    expect(rows[0]).toHaveTextContent('김철수');
+    expect(rows[1]).toHaveTextContent('이영희');
+    expect(rows[2]).toHaveTextContent('홍길동');
+
+    // 재클릭 (내림차순)
+    await userEvent.click(screen.getByTestId('sort-name'));
+    const rowsDesc = screen.getAllByTestId('grid-row');
+    expect(rowsDesc[0]).toHaveTextContent('홍길동');
+  });
+});
+```
+
+#### UT-008: 행 선택
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/templates/__tests__/ListTemplate.spec.tsx` |
+| **테스트 블록** | `describe('ListTemplate') -> describe('행 선택') -> it('체크박스 클릭 시 선택 상태가 변경된다')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | rowSelection 활성화 |
+| **검증 포인트** | |
+| - | 체크박스 클릭 시 선택 상태 변경 |
+| - | 선택 건수 표시 업데이트 |
+| - | 전체 선택/해제 동작 |
+| **커버리지 대상** | 행 선택 상태 관리 |
+
+```typescript
+describe('행 선택', () => {
+  it('체크박스 클릭 시 선택 상태가 변경된다', async () => {
+    const dataSource = [
+      { id: '1', name: '홍길동' },
+      { id: '2', name: '김철수' },
+    ];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={dataSource}
+        rowKey="id"
+        rowSelection={{ type: 'checkbox' }}
+      />
+    );
+
+    // 첫 번째 행 선택
+    await userEvent.click(screen.getByTestId('row-checkbox-1'));
+    expect(screen.getByTestId('selected-count')).toHaveTextContent('1건 선택됨');
+
+    // 두 번째 행도 선택
+    await userEvent.click(screen.getByTestId('row-checkbox-2'));
+    expect(screen.getByTestId('selected-count')).toHaveTextContent('2건 선택됨');
+  });
+
+  it('전체 선택 체크박스 클릭 시 모든 행이 선택된다', async () => {
+    const dataSource = [
+      { id: '1', name: '홍길동' },
+      { id: '2', name: '김철수' },
+    ];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={dataSource}
+        rowKey="id"
+        rowSelection={{ type: 'checkbox' }}
+      />
+    );
+
+    await userEvent.click(screen.getByTestId('select-all-checkbox'));
+    expect(screen.getByTestId('selected-count')).toHaveTextContent('2건 선택됨');
+  });
+});
+```
+
+#### UT-009: 빈 값 필터링 (BR-001)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `lib/utils/__tests__/searchParams.spec.ts` |
+| **테스트 블록** | `describe('transformSearchParams') -> it('빈 값은 API 파라미터에서 제외된다')` |
+| **Mock 의존성** | - |
+| **입력 데이터** | 일부 빈 값 포함 검색 조건 |
+| **검증 포인트** | |
+| - | null, undefined, 빈 문자열 제외 확인 |
+| - | 유효한 값만 파라미터에 포함 |
+| **커버리지 대상** | transformSearchParams 함수 |
+
+```typescript
+describe('transformSearchParams', () => {
+  it('빈 값은 API 파라미터에서 제외된다', () => {
+    const fields: SearchFieldDefinition[] = [
+      { name: 'name', label: '이름', type: 'text' },
+      { name: 'status', label: '상태', type: 'select' },
+      { name: 'type', label: '유형', type: 'text' },
+    ];
+    const values = {
+      name: '테스트',
+      status: '',
+      type: null,
+    };
+
+    const result = transformSearchParams(values, fields);
+
+    expect(result).toEqual({ name: '테스트' });
+    expect(result).not.toHaveProperty('status');
+    expect(result).not.toHaveProperty('type');
+  });
+
+  it('문자열 값이 sanitize 된다', () => {
+    const fields: SearchFieldDefinition[] = [
+      { name: 'name', label: '이름', type: 'text' },
+    ];
+    const values = { name: '  테스트  ' };
+
+    const result = transformSearchParams(values, fields);
+
+    expect(result.name).toBe('테스트'); // trim 적용
+  });
+});
+```
+
+#### UT-010: 삭제 확인 다이얼로그 (BR-003)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `components/templates/__tests__/ListTemplate.spec.tsx` |
+| **테스트 블록** | `describe('ListTemplate') -> describe('삭제') -> it('삭제 버튼 클릭 시 확인 다이얼로그가 표시된다')` |
+| **Mock 의존성** | onDelete 콜백 |
+| **입력 데이터** | 선택된 행 |
+| **검증 포인트** | |
+| - | 확인 다이얼로그 표시 |
+| - | "N건의 항목을 삭제하시겠습니까?" 메시지 |
+| - | 확인 클릭 시 onDelete 호출 |
+| - | 취소 클릭 시 다이얼로그 닫힘 |
+| **커버리지 대상** | 삭제 확인 로직 |
+
+```typescript
+describe('삭제', () => {
+  it('삭제 버튼 클릭 시 확인 다이얼로그가 표시된다', async () => {
+    const onDelete = vi.fn();
+    const dataSource = [{ id: '1', name: '테스트' }];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={dataSource}
+        rowKey="id"
+        onDelete={onDelete}
+        rowSelection={{ type: 'checkbox' }}
+      />
+    );
+
+    // 행 선택 후 삭제
+    await userEvent.click(screen.getByTestId('row-checkbox-1'));
+    await userEvent.click(screen.getByTestId('delete-btn'));
+
+    // 다이얼로그 확인
+    expect(screen.getByTestId('confirm-dialog')).toBeInTheDocument();
+    expect(screen.getByText(/1건의 항목을 삭제하시겠습니까/)).toBeInTheDocument();
+  });
+
+  it('확인 클릭 시 onDelete가 호출된다', async () => {
+    const onDelete = vi.fn();
+    const dataSource = [{ id: '1', name: '테스트' }];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={dataSource}
+        rowKey="id"
+        onDelete={onDelete}
+        rowSelection={{ type: 'checkbox' }}
+      />
+    );
+
+    await userEvent.click(screen.getByTestId('row-checkbox-1'));
+    await userEvent.click(screen.getByTestId('delete-btn'));
+    await userEvent.click(screen.getByTestId('confirm-ok-btn'));
+
+    expect(onDelete).toHaveBeenCalledWith([dataSource[0]]);
+  });
+
+  it('취소 클릭 시 다이얼로그가 닫힌다', async () => {
+    const onDelete = vi.fn();
+    const dataSource = [{ id: '1', name: '테스트' }];
+
+    render(
+      <ListTemplate
+        columns={[{ title: '이름', dataIndex: 'name', key: 'name' }]}
+        dataSource={dataSource}
+        rowKey="id"
+        onDelete={onDelete}
+        rowSelection={{ type: 'checkbox' }}
+      />
+    );
+
+    await userEvent.click(screen.getByTestId('row-checkbox-1'));
+    await userEvent.click(screen.getByTestId('delete-btn'));
+    await userEvent.click(screen.getByTestId('confirm-cancel-btn'));
+
+    expect(screen.queryByTestId('confirm-dialog')).not.toBeInTheDocument();
+    expect(onDelete).not.toHaveBeenCalled();
+  });
+});
+```
+
 ---
 
 ## 3. E2E 테스트 시나리오
@@ -461,6 +767,7 @@ describe('액션 버튼', () => {
 | E2E-003 | 검색 조건 초기화 | 검색 조건 입력됨 | 1. 초기화 클릭 | 조건 초기화, 전체 조회 | P1 |
 | E2E-004 | 신규 버튼 클릭 | 목록 화면 진입 | 1. 신규 버튼 클릭 | 등록 화면/모달 열림 | P1 |
 | E2E-005 | 행 선택 후 삭제 | 목록 데이터 존재 | 1. 행 선택 2. 삭제 클릭 3. 확인 | 선택 행 삭제됨 | P1 |
+| E2E-006 | 삭제 확인 다이얼로그 | 행 선택됨 | 1. 삭제 클릭 2. 다이얼로그 확인 | 확인 다이얼로그 표시, 취소 시 삭제 안됨 | P1 |
 
 ### 3.2 테스트 케이스 상세
 
@@ -745,6 +1052,64 @@ test('E2E-005: 사용자가 행을 선택하고 삭제할 수 있다', async ({ 
   await expect(page.locator('[data-testid="toast-success"]')).toBeVisible();
 
   await page.screenshot({ path: 'tests/screenshots/e2e-005-after-delete.png' });
+});
+```
+
+#### E2E-006: 삭제 확인 다이얼로그 (BR-003)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/list-template.spec.ts` |
+| **테스트명** | `test('삭제 확인 다이얼로그가 표시되고 취소할 수 있다')` |
+| **사전조건** | 행이 선택된 상태 |
+| **data-testid 셀렉터** | |
+| - 삭제 버튼 | `[data-testid="delete-btn"]` |
+| - 확인 다이얼로그 | `[data-testid="confirm-dialog"]` |
+| - 취소 버튼 | `[data-testid="confirm-cancel-btn"]` |
+| **실행 단계** | |
+| 1 | 행 체크박스 클릭하여 선택 |
+| 2 | 삭제 버튼 클릭 |
+| 3 | 확인 다이얼로그 표시 확인 |
+| 4 | 취소 버튼 클릭 |
+| **검증 포인트** | |
+| - | 다이얼로그에 "N건의 항목을 삭제하시겠습니까?" 메시지 표시 |
+| - | 취소 클릭 시 다이얼로그 닫힘 |
+| - | 삭제가 수행되지 않음 (행 유지) |
+| **스크린샷** | `e2e-006-delete-dialog.png`, `e2e-006-after-cancel.png` |
+
+```typescript
+test('E2E-006: 삭제 확인 다이얼로그가 표시되고 취소할 수 있다', async ({ page }) => {
+  await page.goto('/users');
+  await page.waitForSelector('[data-testid="list-template-container"]');
+
+  // 초기 건수 확인
+  const initialCount = await page.locator('[data-testid="grid-row"]').count();
+
+  // 첫 번째 행 선택
+  const firstRowId = await page.locator('[data-testid="grid-row"]').first()
+    .getAttribute('data-row-id');
+  await page.click(`[data-testid="row-checkbox-${firstRowId}"]`);
+
+  // 삭제 버튼 클릭
+  await page.click('[data-testid="delete-btn"]');
+
+  // 확인 다이얼로그 표시 확인
+  await expect(page.locator('[data-testid="confirm-dialog"]')).toBeVisible();
+  await expect(page.locator('[data-testid="confirm-dialog"]')).toContainText('1건의 항목을 삭제하시겠습니까');
+
+  await page.screenshot({ path: 'tests/screenshots/e2e-006-delete-dialog.png' });
+
+  // 취소 버튼 클릭
+  await page.click('[data-testid="confirm-cancel-btn"]');
+
+  // 다이얼로그 닫힘 확인
+  await expect(page.locator('[data-testid="confirm-dialog"]')).not.toBeVisible();
+
+  // 삭제가 수행되지 않음 확인 (건수 유지)
+  const afterCount = await page.locator('[data-testid="grid-row"]').count();
+  expect(afterCount).toBe(initialCount);
+
+  await page.screenshot({ path: 'tests/screenshots/e2e-006-after-cancel.png' });
 });
 ```
 
@@ -1072,6 +1437,7 @@ npm run seed:test -- --fixture=SEED-E2E-SEARCH
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude (Quality Engineer) | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영 - UT-006~010 상세 시나리오 추가(QA-002), E2E-006 시나리오 추가(QA-003) |
 
 ---
 

@@ -5,9 +5,9 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-06-01 |
-| 문서 버전 | 2.0 |
+| 문서 버전 | 2.1 |
 | 작성일 | 2026-01-21 |
-| 상태 | 작성중 |
+| 상태 | 리뷰 반영 완료 |
 | 카테고리 | development |
 
 ---
@@ -298,22 +298,26 @@ flowchart LR
 |------|------|
 | 액터 | 일반 사용자 |
 | 목적 | 선택한 항목들을 삭제 |
-| 사전 조건 | 1개 이상의 행이 선택됨, onDelete prop 설정 |
+| 사전 조건 | 1개 이상의 행이 선택됨, onDelete prop 설정, **삭제 권한 보유** |
 | 사후 조건 | 선택된 항목이 삭제됨 |
 | 트리거 | 삭제 버튼 클릭 |
 
 **기본 흐름:**
 1. 사용자가 삭제할 행들을 체크박스로 선택한다
-2. 사용자가 [삭제] 버튼을 클릭한다
-3. 시스템이 확인 다이얼로그를 표시한다: "N건의 항목을 삭제하시겠습니까?"
-4. 사용자가 [확인]을 클릭한다
-5. onDelete 콜백이 선택된 행 목록과 함께 호출된다
-6. 삭제 성공 시 그리드가 갱신된다
+2. **시스템이 사용자의 삭제 권한을 확인한다 (permissions.canDelete)**
+3. 사용자가 [삭제] 버튼을 클릭한다
+4. 시스템이 확인 다이얼로그를 표시한다: "N건의 항목을 삭제하시겠습니까?"
+5. 사용자가 [확인]을 클릭한다
+6. onDelete 콜백이 선택된 행 목록과 함께 호출된다
+7. 삭제 성공 시 그리드가 갱신된다
 
 **예외 흐름:**
-- 2a. 선택된 행이 없는 경우:
+- 2a. 삭제 권한이 없는 경우 (permissions.canDelete === false):
   - 삭제 버튼이 비활성화 상태 (disabled)
-- 4a. 사용자가 [취소]를 클릭하면:
+  - 또는 삭제 버튼이 화면에 표시되지 않음
+- 3a. 선택된 행이 없는 경우:
+  - 삭제 버튼이 비활성화 상태 (disabled)
+- 5a. 사용자가 [취소]를 클릭하면:
   - 삭제가 취소되고 다이얼로그가 닫힘
 
 #### UC-09: 행 클릭 상세 이동
@@ -701,8 +705,18 @@ interface SearchFieldDefinition {
   endParamName?: string;                     // 종료일 파라미터명 (dateRange용)
 }
 
+// 권한 인터페이스 (SEC-001)
+interface ListTemplatePermissions {
+  canAdd?: boolean;                          // 신규 등록 권한 (기본: true)
+  canDelete?: boolean;                       // 삭제 권한 (기본: true)
+  canView?: boolean;                         // 조회 권한 (기본: true)
+}
+
 // ListTemplate Props
 interface ListTemplateProps<T extends Record<string, unknown>> {
+  // === 권한 관리 ===
+  permissions?: ListTemplatePermissions;     // 권한 설정 (SEC-001)
+
   // === 검색 조건 영역 ===
   searchFields?: SearchFieldDefinition[];    // 검색 필드 정의
   initialValues?: Record<string, unknown>;   // 초기 검색 조건 값
@@ -755,6 +769,27 @@ interface ListTemplateProps<T extends Record<string, unknown>> {
 ### 7.3 검색 조건 -> API 파라미터 변환 로직
 
 ```typescript
+// 검색 입력값 Sanitization (SEC-002)
+const MAX_SEARCH_LENGTH = 100;
+
+function sanitizeSearchValue(value: unknown, fieldType: SearchFieldType): unknown {
+  if (typeof value === 'string') {
+    let sanitized = value.trim();
+    // 최대 길이 제한
+    sanitized = sanitized.substring(0, MAX_SEARCH_LENGTH);
+    // 특수 제어 문자 제거
+    sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, '');
+    return sanitized;
+  }
+  // 숫자 타입 검증
+  if (fieldType === 'number' && typeof value === 'number') {
+    if (!Number.isFinite(value)) {
+      return undefined;
+    }
+  }
+  return value;
+}
+
 // 검색 조건 변환 유틸리티
 function transformSearchParams(
   values: Record<string, unknown>,
@@ -763,10 +798,16 @@ function transformSearchParams(
   const params: Record<string, unknown> = {};
 
   for (const field of fields) {
-    const value = values[field.name];
+    let value = values[field.name];
 
     // 빈 값은 건너뜀
     if (value === undefined || value === null || value === '') {
+      continue;
+    }
+
+    // 입력값 Sanitization 적용 (SEC-002)
+    value = sanitizeSearchValue(value, field.type);
+    if (value === undefined) {
       continue;
     }
 
@@ -812,7 +853,19 @@ function transformSearchParams(
 }
 ```
 
-### 7.4 데이터 유효성 규칙
+### 7.4 필드 타입별 기본 검증 규칙 (SEC-004)
+
+| 필드 타입 | 최대 길이 | 허용 패턴 | 검증 규칙 |
+|----------|----------|----------|----------|
+| text | 100자 | `[^\\x00-\\x1F\\x7F]*` | 제어 문자 제외, 공백 trim |
+| select | - | 옵션 값 매칭 | 정의된 options 내 값만 허용 |
+| multiSelect | - | 옵션 값 배열 | 정의된 options 내 값들만 허용 |
+| date | - | YYYY-MM-DD | 유효한 날짜 형식 |
+| dateRange | - | [YYYY-MM-DD, YYYY-MM-DD] | 시작일 <= 종료일 |
+| number | - | 유한 숫자 | `Number.isFinite()`, 범위 검증 |
+| checkbox | - | boolean | true/false만 허용 |
+
+### 7.5 데이터 유효성 규칙
 
 | 데이터 필드 | 규칙 | 위반 시 메시지 |
 |------------|------|---------------|
@@ -836,6 +889,7 @@ function transformSearchParams(
 | BR-05 | 검색 시 첫 페이지로 이동 | 검색 버튼 클릭 | 없음 |
 | BR-06 | 초기화 시 기본값으로 복원 | 초기화 버튼 클릭 | 없음 |
 | BR-07 | 행 클릭 시 체크박스 영역 제외 | 행 클릭 이벤트 | 체크박스 클릭은 선택만 |
+| BR-08 | 삭제 작업 전 권한 검증 필수 | 삭제 버튼 표시/클릭 | permissions.canDelete 확인 |
 
 ### 8.2 규칙 상세 설명
 
@@ -858,6 +912,54 @@ function transformSearchParams(
 **BR-05: 검색 시 첫 페이지 이동**
 
 설명: 새로운 검색 조건으로 조회 시 결과 건수가 달라질 수 있으므로 항상 첫 페이지로 이동한다.
+
+**BR-08: 삭제 작업 전 권한 검증 필수**
+
+설명: 삭제 버튼 표시 및 클릭 시 사용자의 삭제 권한을 확인한다. 권한이 없는 경우 버튼을 비활성화하거나 숨긴다.
+
+예시:
+- permissions.canDelete === false: 삭제 버튼 비활성화 또는 미표시
+- permissions.canDelete === true (기본): 삭제 버튼 정상 표시
+
+---
+
+## 8.3 보안 요구사항 (SEC-003)
+
+> **주의**: 클라이언트 측 권한 검사는 UX 편의를 위한 것이며, 반드시 서버 측에서도 동일한 검증을 수행해야 합니다.
+
+| 요구사항 ID | 설명 | 검증 위치 |
+|------------|------|----------|
+| SR-01 | 삭제 API는 서버 측에서 세션 기반 사용자 인증 필수 | 서버 (API 미들웨어) |
+| SR-02 | 삭제 API는 서버 측에서 역할 기반 권한 검증 필수 | 서버 (API 미들웨어) |
+| SR-03 | 삭제 대상 리소스에 대한 소유권/접근권 검증 필수 | 서버 (비즈니스 로직) |
+| SR-04 | API 호출 시 CSRF 토큰 검증 (서버 설정에 따름) | 서버 (프레임워크) |
+
+### 8.3.1 XSS 방어 가이드라인 (SEC-005)
+
+**컬럼 render 함수 사용 시 주의사항:**
+
+```typescript
+// ❌ 위험: dangerouslySetInnerHTML 사용 금지
+columns = [{
+  render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />
+}];
+
+// ✅ 안전: React의 기본 텍스트 렌더링 사용
+columns = [{
+  render: (text) => <span>{text}</span>
+}];
+
+// ✅ 안전: 필요시 sanitization 라이브러리 사용
+import DOMPurify from 'dompurify';
+columns = [{
+  render: (text) => <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />
+}];
+```
+
+**권장 사항:**
+- dataSource 데이터는 신뢰할 수 없는 외부 입력으로 간주
+- columns render 함수에서 HTML 직접 삽입 최소화
+- 사용자 입력 데이터 표시 시 React의 기본 이스케이핑 활용
 
 ---
 
@@ -956,6 +1058,47 @@ lib/
 | 서버 정렬/페이징 | 클라이언트 기본, 서버 정렬 시 콜백 필요 | sortMode, onSort prop 제공 |
 | DataTable 의존 | TSK-05-04 완료 필요 | 의존성 관리 |
 
+### 11.6 Server/Client Component 구분 (ARC-002)
+
+> TRD에서 React 19 / Next.js 16 환경에서 `'use client'` 지침을 명시하고 있습니다.
+
+| 컴포넌트 | 타입 | 사유 |
+|----------|------|------|
+| ListTemplate | Client Component | Ant Design 컴포넌트 사용, 상태 관리 |
+| SearchForm | Client Component | Form 상태, 이벤트 핸들러 |
+| Toolbar | Client Component | 버튼 클릭 이벤트 |
+| 부모 페이지 컴포넌트 | Server Component (권장) | 데이터 페칭, 초기 렌더링 최적화 |
+
+**권장 패턴:**
+```typescript
+// app/users/page.tsx (Server Component)
+export default async function UsersPage() {
+  const initialData = await fetchUsers(); // 서버에서 초기 데이터 페칭
+  return <UserListClient initialData={initialData} />;
+}
+
+// components/UserListClient.tsx (Client Component)
+'use client';
+export function UserListClient({ initialData }: Props) {
+  return <ListTemplate dataSource={initialData} ... />;
+}
+```
+
+### 11.7 주요 data-testid 정의 (QA-004)
+
+> 테스트 명세서(026-test-specification.md)에 전체 목록이 정의되어 있습니다. 구현 시 아래 주요 셀렉터를 적용하세요.
+
+| data-testid | 요소 | 용도 |
+|-------------|------|------|
+| `list-template-container` | 템플릿 최상위 컨테이너 | 페이지 로드 확인 |
+| `search-condition-card` | 검색 조건 Card 영역 | 검색 영역 표시 확인 |
+| `search-btn` | 검색 버튼 | 검색 실행 |
+| `reset-btn` | 초기화 버튼 | 조건 초기화 |
+| `data-grid` | 데이터 그리드 영역 | 그리드 표시 확인 |
+| `add-btn` | 신규 버튼 | 등록 화면 열기 |
+| `delete-btn` | 삭제 버튼 | 선택 행 삭제 |
+| `confirm-dialog` | 확인 다이얼로그 | 삭제 확인 등 |
+
 ---
 
 ## 12. 체크리스트
@@ -974,8 +1117,8 @@ lib/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (-> `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (-> `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
@@ -991,3 +1134,4 @@ lib/
 |------|------|--------|----------|
 | 1.0 | 2026-01-20 | Claude | 최초 작성 |
 | 2.0 | 2026-01-21 | Claude | 상세 설계 보강 - 검색 필드 타입, API 파라미터 변환 로직, Props 인터페이스 상세화, 와이어프레임 개선 |
+| 2.1 | 2026-01-21 | Claude | 설계 리뷰 반영 - 권한 인터페이스 추가(SEC-001), 입력값 Sanitization(SEC-002), 보안 요구사항 섹션(SEC-003), 필드별 검증 규칙(SEC-004), XSS 방어 가이드라인(SEC-005), Server/Client 구분(ARC-002), data-testid 명시(QA-004) |
