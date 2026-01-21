@@ -617,7 +617,8 @@ workPackages:
         title: 사용자 및 역할 모델
         category: development
         domain: backend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: critical
         assignee: "-"
         tags:
