@@ -578,7 +578,7 @@ workPackages:
         title: Prisma 및 SQLite 설정
         category: infrastructure
         domain: backend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
