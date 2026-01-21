@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-05: Wizard Error - Validation Error State</title>
+  <desc>MES Portal - Wizard Template Wireframe - Validation Error</desc>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+
+  <!-- ==================== HEADER ==================== -->
+  <g id="header">
+    <rect x="24" y="24" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+    <text x="48" y="55" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#000000d9">Configuration Wizard</text>
+  </g>
+
+  <!-- ==================== STEPS ==================== -->
+  <g id="steps" transform="translate(24, 88)">
+    <rect x="0" y="0" width="752" height="80" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step 1 - Error State -->
+    <g id="step-1" transform="translate(80, 20)">
+      <!-- Error Circle -->
+      <circle cx="20" cy="20" r="16" fill="#ff4d4f"/>
+      <!-- X Icon -->
+      <path d="M14 14 L26 26 M26 14 L14 26" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#ff4d4f" text-anchor="middle">Basic Info</text>
+      <text x="20" y="68" font-family="Arial, sans-serif" font-size="12" fill="#ff4d4f" text-anchor="middle">(Error)</text>
+    </g>
+
+    <!-- Connector 1-2 -->
+    <line x1="136" y1="108" x2="236" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 2 - Wait -->
+    <g id="step-2" transform="translate(250, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">2</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Details</text>
+    </g>
+
+    <!-- Connector 2-3 -->
+    <line x1="306" y1="108" x2="406" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 3 - Wait -->
+    <g id="step-3" transform="translate(420, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">3</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Confirm</text>
+    </g>
+
+    <!-- Connector 3-4 -->
+    <line x1="476" y1="108" x2="576" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 4 - Wait -->
+    <g id="step-4" transform="translate(590, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">4</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Complete</text>
+    </g>
+  </g>
+
+  <!-- ==================== ERROR ALERT ==================== -->
+  <g id="error-alert" transform="translate(24, 180)">
+    <rect x="0" y="0" width="752" height="44" rx="6" fill="#fff2f0" stroke="#ffccc7" stroke-width="1"/>
+    <!-- Error Icon -->
+    <circle cx="28" cy="22" r="10" fill="none" stroke="#ff4d4f" stroke-width="1.5"/>
+    <text x="28" y="27" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ff4d4f" text-anchor="middle">!</text>
+    <text x="52" y="27" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Please check the input fields. Required fields are missing.</text>
+    <!-- Close Icon -->
+    <path d="M732 16 L742 26 M742 16 L732 26" stroke="#8c8c8c" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ==================== CONTENT CARD ==================== -->
+  <g id="content-card">
+    <rect x="24" y="240" width="752" height="284" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step Title -->
+    <text x="48" y="276" font-family="Arial, sans-serif" font-size="16" font-weight="500" fill="#000000d9">Step 1: Basic Information</text>
+    <line x1="48" y1="292" x2="752" y2="292" stroke="#f0f0f0" stroke-width="1"/>
+
+    <!-- Form Fields with Errors -->
+    <g id="form-fields" transform="translate(48, 308)">
+      <!-- Field 1: Name (Error) -->
+      <g id="field-name-error">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Name</text>
+        <text x="40" y="0" font-family="Arial, sans-serif" font-size="14" fill="#ff4d4f">*</text>
+        <!-- Input with error border -->
+        <rect x="0" y="10" width="680" height="32" rx="6" fill="#ffffff" stroke="#ff4d4f" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">Enter name...</text>
+        <!-- Error icon inside input -->
+        <circle cx="660" cy="26" r="8" fill="none" stroke="#ff4d4f" stroke-width="1.5"/>
+        <text x="660" y="31" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff4d4f" text-anchor="middle">!</text>
+        <!-- Error message -->
+        <text x="0" y="58" font-family="Arial, sans-serif" font-size="12" fill="#ff4d4f">Please enter the name.</text>
+      </g>
+
+      <!-- Field 2: Email (Error) -->
+      <g id="field-email-error" transform="translate(0, 80)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Email</text>
+        <text x="40" y="0" font-family="Arial, sans-serif" font-size="14" fill="#ff4d4f">*</text>
+        <!-- Input with error border and invalid value -->
+        <rect x="0" y="10" width="680" height="32" rx="6" fill="#ffffff" stroke="#ff4d4f" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">invalid-email</text>
+        <!-- Error icon inside input -->
+        <circle cx="660" cy="26" r="8" fill="none" stroke="#ff4d4f" stroke-width="1.5"/>
+        <text x="660" y="31" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff4d4f" text-anchor="middle">!</text>
+        <!-- Error message -->
+        <text x="0" y="58" font-family="Arial, sans-serif" font-size="12" fill="#ff4d4f">Please enter a valid email address.</text>
+      </g>
+
+      <!-- Field 3: Category (No Error) -->
+      <g id="field-category" transform="translate(0, 160)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Category</text>
+        <rect x="0" y="10" width="320" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Category A</text>
+        <path d="M296 23 L302 29 L308 23" stroke="#bfbfbf" stroke-width="1.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER / NAVIGATION ==================== -->
+  <g id="footer">
+    <rect x="24" y="540" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Cancel Button (Left) -->
+    <g id="btn-cancel">
+      <rect x="40" y="548" width="72" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="76" y="569" font-family="Arial, sans-serif" font-size="14" fill="#000000d9" text-anchor="middle">Cancel</text>
+    </g>
+
+    <!-- Next Button (Right) - Still enabled to allow retry -->
+    <g id="btn-next">
+      <rect x="680" y="548" width="80" height="32" rx="6" fill="#1677ff"/>
+      <text x="708" y="569" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">Next</text>
+      <path d="M738 560 L744 564 L738 568" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(24, 580)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="10" fill="#8c8c8c">SCR-05: Wizard Error - Validation failed state with error alert and field errors</text>
+  </g>
+</svg>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-02: Wizard Step Form - Middle Step</title>
+  <desc>MES Portal - Wizard Template Wireframe - Step 2 with Form</desc>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+
+  <!-- ==================== HEADER ==================== -->
+  <g id="header">
+    <rect x="24" y="24" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+    <text x="48" y="55" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#000000d9">Configuration Wizard</text>
+  </g>
+
+  <!-- ==================== STEPS ==================== -->
+  <g id="steps" transform="translate(24, 88)">
+    <rect x="0" y="0" width="752" height="80" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step 1 - Finished -->
+    <g id="step-1" transform="translate(80, 20)">
+      <circle cx="20" cy="20" r="16" fill="#1677ff"/>
+      <!-- Check Icon -->
+      <path d="M12 20 L17 25 L28 14" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9" text-anchor="middle">Basic Info</text>
+      <text x="20" y="68" font-family="Arial, sans-serif" font-size="12" fill="#52c41a" text-anchor="middle">(Done)</text>
+    </g>
+
+    <!-- Connector 1-2 (Completed) -->
+    <line x1="136" y1="108" x2="236" y2="108" stroke="#1677ff" stroke-width="2"/>
+
+    <!-- Step 2 - Current/Process -->
+    <g id="step-2" transform="translate(250, 20)">
+      <circle cx="20" cy="20" r="16" fill="#1677ff"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#ffffff" text-anchor="middle">2</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9" text-anchor="middle">Details</text>
+      <text x="20" y="68" font-family="Arial, sans-serif" font-size="12" fill="#1677ff" text-anchor="middle">(Current)</text>
+    </g>
+
+    <!-- Connector 2-3 -->
+    <line x1="306" y1="108" x2="406" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 3 - Wait -->
+    <g id="step-3" transform="translate(420, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">3</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Confirm</text>
+    </g>
+
+    <!-- Connector 3-4 -->
+    <line x1="476" y1="108" x2="576" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 4 - Wait -->
+    <g id="step-4" transform="translate(590, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">4</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Complete</text>
+    </g>
+  </g>
+
+  <!-- ==================== CONTENT CARD ==================== -->
+  <g id="content-card">
+    <rect x="24" y="184" width="752" height="340" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step Title -->
+    <text x="48" y="220" font-family="Arial, sans-serif" font-size="16" font-weight="500" fill="#000000d9">Step 2: Detail Settings</text>
+    <line x1="48" y1="236" x2="752" y2="236" stroke="#f0f0f0" stroke-width="1"/>
+
+    <!-- Form Fields -->
+    <g id="form-fields" transform="translate(48, 256)">
+      <!-- Field 1: Type (Select) -->
+      <g id="field-type">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Type</text>
+        <text x="32" y="0" font-family="Arial, sans-serif" font-size="14" fill="#ff4d4f">*</text>
+        <rect x="0" y="10" width="320" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">Select type...</text>
+        <path d="M296 23 L302 29 L308 23" stroke="#bfbfbf" stroke-width="1.5" fill="none"/>
+      </g>
+
+      <!-- Field 2: Status (Switch) -->
+      <g id="field-status" transform="translate(360, 0)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Enable</text>
+        <!-- Switch ON -->
+        <rect x="0" y="12" width="44" height="24" rx="12" fill="#1677ff"/>
+        <circle cx="32" cy="24" r="9" fill="#ffffff"/>
+        <text x="56" y="29" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Enabled</text>
+      </g>
+
+      <!-- Field 3: Options (Checkbox Group) -->
+      <g id="field-options" transform="translate(0, 70)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Options</text>
+        <g transform="translate(0, 14)">
+          <!-- Option A (unchecked) -->
+          <rect x="0" y="0" width="16" height="16" rx="2" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+          <text x="24" y="13" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Option A</text>
+
+          <!-- Option B (unchecked) -->
+          <rect x="120" y="0" width="16" height="16" rx="2" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+          <text x="144" y="13" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Option B</text>
+
+          <!-- Option C (checked) -->
+          <rect x="240" y="0" width="16" height="16" rx="2" fill="#1677ff" stroke="#1677ff" stroke-width="1"/>
+          <path d="M244 8 L247 11 L252 5" stroke="#ffffff" stroke-width="2" fill="none"/>
+          <text x="264" y="13" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Option C</text>
+        </g>
+      </g>
+
+      <!-- Field 4: Start Date -->
+      <g id="field-start-date" transform="translate(0, 130)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Start Date</text>
+        <text x="62" y="0" font-family="Arial, sans-serif" font-size="14" fill="#ff4d4f">*</text>
+        <rect x="0" y="10" width="200" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">2026-01-21</text>
+        <!-- Calendar Icon -->
+        <rect x="168" y="18" width="16" height="16" rx="2" fill="none" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="172" y1="16" x2="172" y2="20" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="180" y1="16" x2="180" y2="20" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="168" y1="24" x2="184" y2="24" stroke="#bfbfbf" stroke-width="1"/>
+      </g>
+
+      <!-- Field 5: End Date -->
+      <g id="field-end-date" transform="translate(240, 130)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">End Date</text>
+        <rect x="0" y="10" width="200" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="12" y="31" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">YYYY-MM-DD</text>
+        <rect x="168" y="18" width="16" height="16" rx="2" fill="none" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="172" y1="16" x2="172" y2="20" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="180" y1="16" x2="180" y2="20" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="168" y1="24" x2="184" y2="24" stroke="#bfbfbf" stroke-width="1"/>
+      </g>
+
+      <!-- Field 6: Notes -->
+      <g id="field-notes" transform="translate(0, 190)">
+        <text x="0" y="0" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Notes</text>
+        <rect x="0" y="10" width="680" height="56" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="12" y="35" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">Additional notes (optional)...</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER / NAVIGATION ==================== -->
+  <g id="footer">
+    <rect x="24" y="540" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Cancel Button (Left) -->
+    <g id="btn-cancel">
+      <rect x="40" y="548" width="72" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="76" y="569" font-family="Arial, sans-serif" font-size="14" fill="#000000d9" text-anchor="middle">Cancel</text>
+    </g>
+
+    <!-- Previous Button (Right group) -->
+    <g id="btn-prev">
+      <rect x="576" y="548" width="88" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <path d="M590 564 L584 564 M584 560 L578 564 L584 568" stroke="#000000d9" stroke-width="1.5" fill="none"/>
+      <text x="628" y="569" font-family="Arial, sans-serif" font-size="14" fill="#000000d9" text-anchor="middle">Previous</text>
+    </g>
+
+    <!-- Next Button (Right group) -->
+    <g id="btn-next">
+      <rect x="680" y="548" width="80" height="32" rx="6" fill="#1677ff"/>
+      <text x="708" y="569" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">Next</text>
+      <path d="M738 560 L744 564 L738 568" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(24, 580)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="10" fill="#8c8c8c">SCR-02: Wizard Step Form - Middle Step (Previous + Next buttons visible)</text>
+  </g>
+</svg>

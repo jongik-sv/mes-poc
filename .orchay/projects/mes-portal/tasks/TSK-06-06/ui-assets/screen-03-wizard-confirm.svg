@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-03: Wizard Confirm - Review Step</title>
+  <desc>MES Portal - Wizard Template Wireframe - Confirmation Step</desc>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f5f5"/>
+
+  <!-- ==================== HEADER ==================== -->
+  <g id="header">
+    <rect x="24" y="24" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+    <text x="48" y="55" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#000000d9">Configuration Wizard</text>
+  </g>
+
+  <!-- ==================== STEPS ==================== -->
+  <g id="steps" transform="translate(24, 88)">
+    <rect x="0" y="0" width="752" height="80" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step 1 - Finished -->
+    <g id="step-1" transform="translate(80, 20)">
+      <circle cx="20" cy="20" r="16" fill="#1677ff"/>
+      <path d="M12 20 L17 25 L28 14" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9" text-anchor="middle">Basic Info</text>
+    </g>
+
+    <!-- Connector 1-2 (Completed) -->
+    <line x1="136" y1="108" x2="236" y2="108" stroke="#1677ff" stroke-width="2"/>
+
+    <!-- Step 2 - Finished -->
+    <g id="step-2" transform="translate(250, 20)">
+      <circle cx="20" cy="20" r="16" fill="#1677ff"/>
+      <path d="M262 20 L267 25 L278 14" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9" text-anchor="middle">Details</text>
+    </g>
+
+    <!-- Connector 2-3 (Completed) -->
+    <line x1="306" y1="108" x2="406" y2="108" stroke="#1677ff" stroke-width="2"/>
+
+    <!-- Step 3 - Current -->
+    <g id="step-3" transform="translate(420, 20)">
+      <circle cx="20" cy="20" r="16" fill="#1677ff"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#ffffff" text-anchor="middle">3</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9" text-anchor="middle">Confirm</text>
+      <text x="20" y="68" font-family="Arial, sans-serif" font-size="12" fill="#1677ff" text-anchor="middle">(Current)</text>
+    </g>
+
+    <!-- Connector 3-4 -->
+    <line x1="476" y1="108" x2="576" y2="108" stroke="#f0f0f0" stroke-width="2"/>
+
+    <!-- Step 4 - Wait -->
+    <g id="step-4" transform="translate(590, 20)">
+      <circle cx="20" cy="20" r="16" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="20" y="26" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">4</text>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="14" fill="#8c8c8c" text-anchor="middle">Complete</text>
+    </g>
+  </g>
+
+  <!-- ==================== CONTENT CARD ==================== -->
+  <g id="content-card">
+    <rect x="24" y="184" width="752" height="340" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Step Title -->
+    <text x="48" y="220" font-family="Arial, sans-serif" font-size="16" font-weight="500" fill="#000000d9">Review Your Information</text>
+    <line x1="48" y1="236" x2="752" y2="236" stroke="#f0f0f0" stroke-width="1"/>
+
+    <!-- Summary Sections -->
+    <g id="summary-sections" transform="translate(48, 250)">
+
+      <!-- Section 1: Basic Info -->
+      <g id="section-basic">
+        <rect x="0" y="0" width="680" height="100" rx="6" fill="#fafafa" stroke="#f0f0f0" stroke-width="1"/>
+        <!-- Header -->
+        <rect x="0" y="0" width="680" height="32" rx="6" fill="#fafafa"/>
+        <text x="16" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Basic Information</text>
+        <!-- Edit Button -->
+        <text x="640" y="22" font-family="Arial, sans-serif" font-size="13" fill="#1677ff" text-anchor="end" style="cursor: pointer;">Edit</text>
+        <line x1="0" y1="32" x2="680" y2="32" stroke="#f0f0f0" stroke-width="1"/>
+        <!-- Content -->
+        <g transform="translate(16, 48)">
+          <text x="0" y="0" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Name</text>
+          <text x="120" y="0" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Test Configuration</text>
+
+          <text x="0" y="24" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Description</text>
+          <text x="120" y="24" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">This is a test configuration for demo purposes.</text>
+        </g>
+      </g>
+
+      <!-- Section 2: Details -->
+      <g id="section-details" transform="translate(0, 116)">
+        <rect x="0" y="0" width="680" height="124" rx="6" fill="#fafafa" stroke="#f0f0f0" stroke-width="1"/>
+        <!-- Header -->
+        <rect x="0" y="0" width="680" height="32" rx="6" fill="#fafafa"/>
+        <text x="16" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Detail Settings</text>
+        <!-- Edit Button -->
+        <text x="640" y="22" font-family="Arial, sans-serif" font-size="13" fill="#1677ff" text-anchor="end" style="cursor: pointer;">Edit</text>
+        <line x1="0" y1="32" x2="680" y2="32" stroke="#f0f0f0" stroke-width="1"/>
+        <!-- Content -->
+        <g transform="translate(16, 48)">
+          <text x="0" y="0" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Type</text>
+          <text x="120" y="0" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Type A</text>
+
+          <text x="0" y="24" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Status</text>
+          <text x="120" y="24" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Enabled</text>
+
+          <text x="0" y="48" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Options</text>
+          <text x="120" y="48" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Option C</text>
+
+          <text x="0" y="72" font-family="Arial, sans-serif" font-size="13" fill="#8c8c8c">Period</text>
+          <text x="120" y="72" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">2026-01-21 ~ 2026-12-31</text>
+        </g>
+      </g>
+
+      <!-- Info Alert -->
+      <g id="info-alert" transform="translate(0, 256)">
+        <rect x="0" y="0" width="680" height="36" rx="6" fill="#e6f4ff" stroke="#91caff" stroke-width="1"/>
+        <!-- Info Icon -->
+        <circle cx="24" cy="18" r="8" fill="none" stroke="#1677ff" stroke-width="1.5"/>
+        <text x="24" y="22" font-family="Arial, sans-serif" font-size="11" fill="#1677ff" text-anchor="middle">i</text>
+        <text x="44" y="23" font-family="Arial, sans-serif" font-size="13" fill="#000000d9">Please review your information and click [Complete] to finish.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== FOOTER / NAVIGATION ==================== -->
+  <g id="footer">
+    <rect x="24" y="540" width="752" height="48" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Cancel Button (Left) -->
+    <g id="btn-cancel">
+      <rect x="40" y="548" width="72" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="76" y="569" font-family="Arial, sans-serif" font-size="14" fill="#000000d9" text-anchor="middle">Cancel</text>
+    </g>
+
+    <!-- Previous Button (Right group) -->
+    <g id="btn-prev">
+      <rect x="560" y="548" width="88" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <path d="M574 564 L568 564 M568 560 L562 564 L568 568" stroke="#000000d9" stroke-width="1.5" fill="none"/>
+      <text x="612" y="569" font-family="Arial, sans-serif" font-size="14" fill="#000000d9" text-anchor="middle">Previous</text>
+    </g>
+
+    <!-- Complete Button (Right group) - Last step shows Complete instead of Next -->
+    <g id="btn-complete">
+      <rect x="664" y="548" width="96" height="32" rx="6" fill="#1677ff"/>
+      <!-- Check Icon -->
+      <path d="M680 564 L685 569 L695 559" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="724" y="569" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">Complete</text>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(24, 580)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="10" fill="#8c8c8c">SCR-03: Wizard Confirm - Review step with Summary (Complete button instead of Next)</text>
+  </g>
+</svg>
