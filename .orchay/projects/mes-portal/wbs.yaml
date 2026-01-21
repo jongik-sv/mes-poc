@@ -496,7 +496,7 @@ workPackages:
         title: 역할-메뉴 매핑
         category: development
         domain: backend
-        status: "[ap]"
+        status: "[im]"
         priority: critical
         assignee: "-"
         tags:
@@ -519,7 +519,6 @@ workPackages:
           integrationCheck:
             - prisma/schema.prisma에 RoleMenu 모델
             - GET /api/menus 에서 세션 사용자 역할로 필터링
-        execution: build
       - id: TSK-03-03
         title: 메뉴 API 엔드포인트
         category: development
@@ -676,7 +675,7 @@ workPackages:
             - lib/auth.ts 또는 auth.ts 설정 파일
             - app/api/auth/[...nextauth]/route.ts
             - middleware.ts에 인증 미들웨어
-        execution: review
+        execution: build
       - id: TSK-04-04
         title: 로그인 페이지
         category: development

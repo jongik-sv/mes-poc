@@ -21,6 +21,9 @@ vi.mock('@/lib/prisma', () => ({
       delete: vi.fn(),
       count: vi.fn(),
     },
+    roleMenu: {
+      findMany: vi.fn(),
+    },
   },
 }))
 
@@ -32,6 +35,9 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>
     delete: ReturnType<typeof vi.fn>
     count: ReturnType<typeof vi.fn>
+  }
+  roleMenu: {
+    findMany: ReturnType<typeof vi.fn>
   }
 }
 
@@ -634,4 +640,168 @@ describe('MenuService', () => {
       expect(result).toBeNull()
     })
   })
+
+  // TSK-03-02: 역할 기반 메뉴 조회 테스트
+  describe('findByRole (TSK-03-02)', () => {
+    // UT-001: OPERATOR 역할 메뉴 조회
+    it('should return mapped menus for OPERATOR role (UT-001)', async () => {
+      // Arrange
+      const operatorRoleId = 3
+      mockPrisma.roleMenu.findMany.mockResolvedValue([
+        { menuId: 1 }, // DASHBOARD
+        { menuId: 11 }, // WORK_ORDER
+        { menuId: 13 }, // PRODUCTION_ENTRY
+      ])
+      mockPrisma.menu.findMany.mockResolvedValue([
+        { id: 1, code: 'DASHBOARD', name: '대시보드', parentId: null, sortOrder: 1, isActive: true, path: null, icon: 'DashboardOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 10, code: 'PRODUCTION', name: '생산 관리', parentId: null, sortOrder: 2, isActive: true, path: null, icon: 'ToolOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 11, code: 'WORK_ORDER', name: '작업 지시', parentId: 10, sortOrder: 1, isActive: true, path: '/portal/production/work-order', icon: 'FileTextOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 12, code: 'PRODUCTION_RESULT', name: '실적 관리', parentId: 10, sortOrder: 2, isActive: true, path: null, icon: 'FolderOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 13, code: 'PRODUCTION_ENTRY', name: '생산 실적 입력', parentId: 12, sortOrder: 1, isActive: true, path: '/portal/production/result/entry', icon: 'EditOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 90, code: 'SYSTEM', name: '시스템 관리', parentId: null, sortOrder: 9, isActive: true, path: null, icon: 'SettingOutlined', createdAt: new Date(), updatedAt: new Date() },
+      ])
+
+      // Act
+      const result = await menuService.findByRole(operatorRoleId)
+
+      // Assert
+      // 결과에 DASHBOARD, PRODUCTION(부모), WORK_ORDER, PRODUCTION_RESULT(부모), PRODUCTION_ENTRY가 있어야 함
+      const allCodes = extractAllCodes(result)
+      expect(allCodes).toContain('DASHBOARD')
+      expect(allCodes).toContain('PRODUCTION') // 부모 자동 포함 (BR-02)
+      expect(allCodes).toContain('WORK_ORDER')
+      expect(allCodes).toContain('PRODUCTION_RESULT') // 부모 자동 포함 (BR-02)
+      expect(allCodes).toContain('PRODUCTION_ENTRY')
+      expect(allCodes).not.toContain('SYSTEM') // 시스템 관리 미포함
+    })
+
+    // UT-002: MANAGER 역할 메뉴 조회
+    it('should return mapped menus for MANAGER role (UT-002)', async () => {
+      // Arrange
+      const managerRoleId = 2
+      mockPrisma.roleMenu.findMany.mockResolvedValue([
+        { menuId: 1 }, // DASHBOARD
+        { menuId: 10 }, // PRODUCTION
+        { menuId: 11 }, // WORK_ORDER
+        { menuId: 12 }, // PRODUCTION_RESULT
+        { menuId: 13 }, // PRODUCTION_ENTRY
+        { menuId: 14 }, // PRODUCTION_HISTORY
+      ])
+      mockPrisma.menu.findMany.mockResolvedValue([
+        { id: 1, code: 'DASHBOARD', name: '대시보드', parentId: null, sortOrder: 1, isActive: true, path: null, icon: 'DashboardOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 10, code: 'PRODUCTION', name: '생산 관리', parentId: null, sortOrder: 2, isActive: true, path: null, icon: 'ToolOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 11, code: 'WORK_ORDER', name: '작업 지시', parentId: 10, sortOrder: 1, isActive: true, path: '/portal/production/work-order', icon: 'FileTextOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 12, code: 'PRODUCTION_RESULT', name: '실적 관리', parentId: 10, sortOrder: 2, isActive: true, path: null, icon: 'FolderOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 13, code: 'PRODUCTION_ENTRY', name: '생산 실적 입력', parentId: 12, sortOrder: 1, isActive: true, path: '/portal/production/result/entry', icon: 'EditOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 14, code: 'PRODUCTION_HISTORY', name: '생산 이력 조회', parentId: 12, sortOrder: 2, isActive: true, path: '/portal/production/result/history', icon: 'HistoryOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 90, code: 'SYSTEM', name: '시스템 관리', parentId: null, sortOrder: 9, isActive: true, path: null, icon: 'SettingOutlined', createdAt: new Date(), updatedAt: new Date() },
+      ])
+
+      // Act
+      const result = await menuService.findByRole(managerRoleId)
+
+      // Assert
+      const allCodes = extractAllCodes(result)
+      expect(allCodes).toContain('DASHBOARD')
+      expect(allCodes).toContain('PRODUCTION')
+      expect(allCodes).toContain('WORK_ORDER')
+      expect(allCodes).toContain('PRODUCTION_RESULT')
+      expect(allCodes).toContain('PRODUCTION_ENTRY')
+      expect(allCodes).toContain('PRODUCTION_HISTORY')
+      expect(allCodes).not.toContain('SYSTEM') // 시스템 관리 미포함
+    })
+
+    // UT-003: 자식만 권한 시 부모 포함 (BR-02)
+    it('should include parent menu when child has permission (UT-003)', async () => {
+      // Arrange
+      const roleId = 3
+      mockPrisma.roleMenu.findMany.mockResolvedValue([
+        { menuId: 11 }, // WORK_ORDER만 권한
+      ])
+      mockPrisma.menu.findMany.mockResolvedValue([
+        { id: 10, code: 'PRODUCTION', name: '생산 관리', parentId: null, sortOrder: 2, isActive: true, path: null, icon: 'ToolOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 11, code: 'WORK_ORDER', name: '작업 지시', parentId: 10, sortOrder: 1, isActive: true, path: '/portal/production/work-order', icon: 'FileTextOutlined', createdAt: new Date(), updatedAt: new Date() },
+      ])
+
+      // Act
+      const result = await menuService.findByRole(roleId)
+
+      // Assert
+      expect(result).toHaveLength(1) // 최상위 메뉴 1개 (PRODUCTION)
+      expect(result[0].code).toBe('PRODUCTION')
+      expect(result[0].children).toHaveLength(1) // 자식 1개 (WORK_ORDER)
+      expect(result[0].children[0].code).toBe('WORK_ORDER')
+    })
+
+    // UT-004: 메뉴 정렬 순서
+    it('should return menus sorted by sortOrder (UT-004)', async () => {
+      // Arrange
+      const roleId = 2
+      mockPrisma.roleMenu.findMany.mockResolvedValue([
+        { menuId: 1 },
+        { menuId: 10 },
+      ])
+      mockPrisma.menu.findMany.mockResolvedValue([
+        { id: 10, code: 'PRODUCTION', name: '생산 관리', parentId: null, sortOrder: 2, isActive: true, path: null, icon: 'ToolOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 1, code: 'DASHBOARD', name: '대시보드', parentId: null, sortOrder: 1, isActive: true, path: null, icon: 'DashboardOutlined', createdAt: new Date(), updatedAt: new Date() },
+      ])
+
+      // Act
+      const result = await menuService.findByRole(roleId)
+
+      // Assert
+      expect(result[0].sortOrder).toBeLessThan(result[1].sortOrder)
+      expect(result[0].code).toBe('DASHBOARD')
+      expect(result[1].code).toBe('PRODUCTION')
+    })
+
+    // UT-005: ADMIN 역할 전체 메뉴 조회 (BR-03)
+    it('should return all active menus for ADMIN role (UT-005)', async () => {
+      // Arrange
+      const adminRoleId = 1 // SYSTEM_ADMIN_ROLE_ID
+      const allActiveMenus = [
+        { id: 1, code: 'DASHBOARD', name: '대시보드', parentId: null, sortOrder: 1, isActive: true, path: null, icon: 'DashboardOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 10, code: 'PRODUCTION', name: '생산 관리', parentId: null, sortOrder: 2, isActive: true, path: null, icon: 'ToolOutlined', createdAt: new Date(), updatedAt: new Date() },
+        { id: 90, code: 'SYSTEM', name: '시스템 관리', parentId: null, sortOrder: 9, isActive: true, path: null, icon: 'SettingOutlined', createdAt: new Date(), updatedAt: new Date() },
+      ]
+      mockPrisma.menu.findMany.mockResolvedValue(allActiveMenus)
+
+      // Act
+      const result = await menuService.findByRole(adminRoleId)
+
+      // Assert
+      const allCodes = extractAllCodes(result)
+      expect(allCodes).toContain('DASHBOARD')
+      expect(allCodes).toContain('PRODUCTION')
+      expect(allCodes).toContain('SYSTEM') // ADMIN은 시스템 관리도 포함
+      expect(mockPrisma.roleMenu.findMany).not.toHaveBeenCalled() // RoleMenu 조회 안 함
+    })
+
+    // 역할에 매핑된 메뉴가 없는 경우
+    it('should return empty array when no menus are mapped to role', async () => {
+      // Arrange
+      const roleId = 99
+      mockPrisma.roleMenu.findMany.mockResolvedValue([])
+
+      // Act
+      const result = await menuService.findByRole(roleId)
+
+      // Assert
+      expect(result).toEqual([])
+    })
+  })
 })
+
+/**
+ * 메뉴 트리에서 모든 코드를 추출하는 헬퍼 함수
+ */
+function extractAllCodes(menus: { code: string; children: any[] }[]): string[] {
+  const codes: string[] = []
+  for (const menu of menus) {
+    codes.push(menu.code)
+    if (menu.children && menu.children.length > 0) {
+      codes.push(...extractAllCodes(menu.children))
+    }
+  }
+  return codes
+}

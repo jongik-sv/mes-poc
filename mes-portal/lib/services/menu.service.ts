@@ -1,5 +1,5 @@
 /**
- * MenuService - 메뉴 데이터 서비스 (TSK-03-01)
+ * MenuService - 메뉴 데이터 서비스 (TSK-03-01, TSK-03-02)
  *
  * 비즈니스 규칙:
  * - BR-001: 메뉴 코드 유일성
@@ -8,6 +8,11 @@
  * - BR-004: sortOrder 정렬
  * - BR-005: 순환 참조 금지
  * - BR-006: 자식 메뉴 삭제 보호
+ *
+ * TSK-03-02 비즈니스 규칙:
+ * - BR-01: 역할 기반 메뉴 필터링
+ * - BR-02: 자식 → 부모 자동 표시
+ * - BR-03: ADMIN 역할 전체 메뉴 접근
  */
 
 import prisma from '@/lib/prisma'
@@ -51,6 +56,12 @@ const ValidationRules = {
 }
 
 /**
+ * 시스템 관리자 역할 ID (TSK-03-02 BR-03)
+ * - 시드 데이터에서 ADMIN은 항상 ID=1로 생성
+ */
+const SYSTEM_ADMIN_ROLE_ID = 1
+
+/**
  * MenuService 클래스
  */
 export class MenuService {
@@ -67,6 +78,62 @@ export class MenuService {
     })
 
     return this.buildMenuTree(menus)
+  }
+
+  /**
+   * 역할별 메뉴 조회 (TSK-03-02)
+   * - BR-01: 역할에 매핑된 메뉴만 반환
+   * - BR-02: 자식 권한 시 부모 메뉴 자동 포함
+   * - BR-03: ADMIN 역할은 모든 메뉴 반환
+   */
+  async findByRole(roleId: number): Promise<MenuItem[]> {
+    // BR-03: ADMIN 역할은 모든 메뉴 반환
+    if (roleId === SYSTEM_ADMIN_ROLE_ID) {
+      return this.findAll()
+    }
+
+    // BR-01: 역할에 매핑된 메뉴 ID 조회
+    const roleMenus = await prisma.roleMenu.findMany({
+      where: { roleId },
+      select: { menuId: true },
+    })
+    const allowedMenuIds = roleMenus.map((rm) => rm.menuId)
+
+    if (allowedMenuIds.length === 0) {
+      return []
+    }
+
+    // 모든 활성 메뉴 조회 (부모 추론을 위해)
+    const allMenus = await prisma.menu.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    })
+
+    // BR-02: 자식 권한 시 부모 메뉴 자동 포함
+    const expandedMenuIds = this.expandParentMenuIds(allMenus, allowedMenuIds)
+
+    // 허용된 메뉴만 필터링
+    const filteredMenus = allMenus.filter((menu) => expandedMenuIds.has(menu.id))
+
+    return this.buildMenuTree(filteredMenus)
+  }
+
+  /**
+   * BR-02: 자식 메뉴 권한이 있으면 부모 메뉴도 포함
+   */
+  private expandParentMenuIds(allMenus: Menu[], allowedMenuIds: number[]): Set<number> {
+    const expandedSet = new Set(allowedMenuIds)
+    const menuById = new Map(allMenus.map((m) => [m.id, m]))
+
+    for (const menuId of allowedMenuIds) {
+      let currentMenu = menuById.get(menuId)
+      while (currentMenu?.parentId) {
+        expandedSet.add(currentMenu.parentId)
+        currentMenu = menuById.get(currentMenu.parentId)
+      }
+    }
+
+    return expandedSet
   }
 
   /**

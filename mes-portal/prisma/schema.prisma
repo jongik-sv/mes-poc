@@ -25,8 +25,9 @@ model Menu {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  parent   Menu?  @relation("MenuHierarchy", fields: [parentId], references: [id])
-  children Menu[] @relation("MenuHierarchy")
+  parent    Menu?      @relation("MenuHierarchy", fields: [parentId], references: [id])
+  children  Menu[]     @relation("MenuHierarchy")
+  roleMenus RoleMenu[]
 
   @@index([parentId])
   @@index([isActive])
@@ -43,7 +44,8 @@ model Role {
   name      String
   createdAt DateTime @default(now())
 
-  users User[]
+  users     User[]
+  roleMenus RoleMenu[]
 
   @@map("roles")
 }
@@ -66,4 +68,21 @@ model User {
   @@index([roleId])
   @@index([isActive])
   @@map("users")
+}
+
+// ============================================
+// RoleMenu Model - 역할-메뉴 매핑 (TSK-03-02)
+// ============================================
+model RoleMenu {
+  id     Int @id @default(autoincrement())
+  roleId Int
+  menuId Int
+
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, menuId])
+  @@index([roleId])
+  @@index([menuId])
+  @@map("role_menus")
 }

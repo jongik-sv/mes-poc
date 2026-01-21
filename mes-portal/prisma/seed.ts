@@ -3,6 +3,7 @@
  *
  * - TSK-03-01: 초기 메뉴 데이터 생성
  * - TSK-04-02: 역할 및 사용자 데이터 생성
+ * - TSK-03-02: 역할-메뉴 매핑 데이터 생성
  */
 
 import 'dotenv/config'
@@ -271,6 +272,116 @@ async function seedMenus() {
   console.log(`✅ Created ${menus.length} menus`)
 }
 
+// ============================================
+// 역할-메뉴 매핑 데이터 (TSK-03-02)
+// ============================================
+
+/**
+ * 역할별 메뉴 매핑 설정
+ * - ADMIN: 모든 메뉴 접근
+ * - MANAGER: 대시보드, 생산 관리, 샘플 화면 (시스템 관리 제외)
+ * - OPERATOR: 대시보드, 작업 지시, 생산 실적 (BR-02에 의해 부모 자동 표시)
+ */
+const roleMenuMappings: { roleCode: string; menuCodes: string[] }[] = [
+  // ADMIN - 모든 메뉴 (menuCodes: ['*']는 모든 메뉴 의미)
+  { roleCode: 'ADMIN', menuCodes: ['*'] },
+
+  // MANAGER - 생산/품질/설비 관리 (시스템 관리 제외)
+  {
+    roleCode: 'MANAGER',
+    menuCodes: [
+      'DASHBOARD',
+      'DASHBOARD_MAIN',
+      'PRODUCTION',
+      'WORK_ORDER',
+      'PRODUCTION_RESULT',
+      'PRODUCTION_ENTRY',
+      'PRODUCTION_HISTORY',
+      'SAMPLE',
+      'SAMPLE_USER_LIST',
+      'SAMPLE_MASTER_DETAIL',
+      'SAMPLE_WIZARD',
+    ],
+  },
+
+  // OPERATOR - 작업 관련만 (BR-02 규칙에 의해 부모 메뉴 자동 표시)
+  {
+    roleCode: 'OPERATOR',
+    menuCodes: [
+      'DASHBOARD',
+      'DASHBOARD_MAIN',
+      'WORK_ORDER',
+      'PRODUCTION_ENTRY',
+      // 부모 메뉴 PRODUCTION, PRODUCTION_RESULT는
+      // BR-02 규칙에 의해 클라이언트에서 자동 표시됨
+      // 그러나 시드에서는 명시적으로 매핑하여 DB 조회 일관성 유지
+      'PRODUCTION',
+      'PRODUCTION_RESULT',
+    ],
+  },
+]
+
+async function seedRoleMenus() {
+  console.log('🔗 Seeding role-menu mappings...')
+
+  // 기존 매핑 삭제
+  await prisma.roleMenu.deleteMany({})
+
+  // 모든 역할 조회
+  const allRoles = await prisma.role.findMany()
+  const roleMap = new Map(allRoles.map((r) => [r.code, r.id]))
+
+  // 모든 메뉴 조회
+  const allMenus = await prisma.menu.findMany()
+  const menuMap = new Map(allMenus.map((m) => [m.code, m.id]))
+
+  let totalCreated = 0
+
+  for (const mapping of roleMenuMappings) {
+    const roleId = roleMap.get(mapping.roleCode)
+    if (!roleId) {
+      console.warn(`⚠️ Role not found: ${mapping.roleCode}`)
+      continue
+    }
+
+    // '*' 와일드카드: 모든 활성 메뉴 매핑
+    const menuCodesToMap =
+      mapping.menuCodes[0] === '*'
+        ? allMenus.filter((m) => m.isActive).map((m) => m.code)
+        : mapping.menuCodes
+
+    const roleMenuData = menuCodesToMap
+      .map((code) => {
+        const menuId = menuMap.get(code)
+        if (!menuId) {
+          console.warn(`⚠️ Menu not found: ${code}`)
+          return null
+        }
+        return { roleId, menuId }
+      })
+      .filter((item): item is { roleId: number; menuId: number } => item !== null)
+
+    // upsert를 위해 개별 생성 (createMany는 onConflict 미지원)
+    for (const data of roleMenuData) {
+      await prisma.roleMenu.upsert({
+        where: {
+          roleId_menuId: { roleId: data.roleId, menuId: data.menuId },
+        },
+        update: {},
+        create: data,
+      })
+      totalCreated++
+    }
+
+    console.log(`  ✅ ${mapping.roleCode}: ${roleMenuData.length}개 메뉴 매핑`)
+  }
+
+  console.log(`✅ Total role-menu mappings created: ${totalCreated}`)
+}
+
+// 테스트에서 사용할 수 있도록 export
+export { seedRoleMenus }
+
 async function main() {
   console.log('🌱 Seeding database...')
 
@@ -279,6 +390,9 @@ async function main() {
 
   // 메뉴 시드 (TSK-03-01)
   await seedMenus()
+
+  // 역할-메뉴 매핑 시드 (TSK-03-02)
+  await seedRoleMenus()
 
   console.log('🎉 Seeding completed!')
 }
