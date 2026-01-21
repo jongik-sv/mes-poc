@@ -10,7 +10,7 @@ import {
   useMemo,
   type KeyboardEvent,
 } from 'react'
-import { Modal, Input, theme } from 'antd'
+import { Modal, Input, theme, type InputRef } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { MenuIcon } from '../layout/MenuIcon'
 
@@ -144,7 +144,7 @@ export function GlobalSearch({
   const { token } = theme.useToken()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<InputRef>(null)
   const listRef = useRef<HTMLDivElement>(null)
 
   // 검색 결과
@@ -244,7 +244,7 @@ export function GlobalSearch({
       keyboard={false} // 자체 키보드 핸들링 사용
       styles={{
         body: { padding: 0 },
-        content: { marginTop: '10vh' },
+        wrapper: { marginTop: '10vh' },
       }}
       rootClassName="global-search-modal"
       aria-modal="true"
@@ -254,7 +254,7 @@ export function GlobalSearch({
       <div data-testid="global-search-modal">
         <div className="p-3 border-b border-gray-200 dark:border-gray-700">
         <Input
-          ref={inputRef as unknown as React.Ref<HTMLInputElement>}
+          ref={inputRef}
           placeholder="메뉴 또는 화면 검색..."
           prefix={<SearchOutlined className="text-gray-400" />}
           suffix={
