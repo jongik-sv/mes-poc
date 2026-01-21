@@ -305,7 +305,7 @@ workPackages:
         title: MDI 상태 관리
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: critical
         assignee: "-"
         tags:
@@ -365,7 +365,7 @@ workPackages:
             - components/mdi/TabBar.tsx 파일 존재
             - MDI Context에서 탭 목록 구독
             - 탭 클릭/닫기 이벤트 핸들링
-        execution: review
+        execution: build
       - id: TSK-02-03
         title: 탭 드래그 앤 드롭
         category: development
