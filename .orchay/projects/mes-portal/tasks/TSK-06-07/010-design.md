@@ -366,7 +366,9 @@ flowchart LR
 |------|-----------|------------|----------|
 | 1 | 이름에 "없는사용자명" 입력 후 검색 | 로딩 후 Empty State 표시 | - |
 | 2 | Empty State 메시지 확인 | "검색 결과가 없습니다" + 조건 초기화 버튼 | 조건 변경 안내 |
-| 3 | 조건 초기화 버튼 클릭 | 조건 리셋, 전체 목록 표시 | 다시 검색 |
+| 3 | 조건 초기화 버튼 클릭 | 조건 리셋 + 자동 검색 실행 → 전체 목록 표시 | 다시 검색 |
+
+> **UX-02 반영**: Empty State의 "조건 초기화" 버튼은 항상 조건 리셋 + 자동 검색을 수행함 (`autoSearchOnReset` 동작과 일관성 유지)
 
 ---
 
@@ -779,14 +781,92 @@ src/
 │   └── users.json                  # mock 데이터
 ```
 
-### 11.2 영향받는 영역
+### 11.2 useUserList 훅 인터페이스 (ARCH-01 반영)
+
+> 훅의 책임을 명확히 분리: 데이터 로딩 및 CRUD 작업만 담당
+
+```typescript
+// useUserList.ts - 데이터 로딩 책임만
+interface UseUserListReturn {
+  // 데이터 상태
+  users: User[];
+  loading: boolean;
+  error: Error | null;
+
+  // CRUD 작업
+  deleteUsers: (ids: string[]) => Promise<void>;
+  refetch: () => void;
+}
+```
+
+**책임 분리 원칙:**
+- `useUserList`: 데이터 로딩 및 CRUD 작업만 담당
+- 검색/필터 상태: `ListTemplate`의 내부 `searchValues`로 위임
+- 모달 상태: 컴포넌트 로컬 상태(`useState`)로 관리
+
+### 11.3 ListTemplate Props 사용 명세 (ARCH-03 반영)
+
+> TSK-06-01 ListTemplate에 전달하는 Props 명세
+
+```typescript
+<ListTemplate<User>
+  // 필수 Props
+  columns={columns}
+  dataSource={users}
+  rowKey="id"
+
+  // 검색 영역
+  searchFields={searchFields}
+  onSearch={handleSearch}
+  autoSearchOnReset={true}
+
+  // 행 선택
+  rowSelection={{
+    type: 'checkbox',
+    selectedRowKeys,
+    onChange: setSelectedRowKeys,
+  }}
+
+  // 액션
+  onDelete={handleDelete}
+  onRowClick={handleRowClick}
+
+  // 페이지네이션
+  pagination={{ pageSize: 10 }}
+  total={filteredUsers.length}
+/>
+```
+
+### 11.4 Mock 데이터 전략 (ARCH-02 반영)
+
+> 샘플 화면은 ListTemplate 기능 검증이 목적이므로 mock 데이터 직접 사용 허용
+
+**현재 구현 (Phase 1 - 샘플):**
+```typescript
+// JSON import 방식 - 샘플 화면에서 허용
+import usersData from '@/mock-data/users.json';
+```
+
+**향후 API 연동 시 (Phase 2 - 실제 화면):**
+```typescript
+// TRD 2.3 데이터 로딩 전략에 따른 서비스 추상화
+export const userService = {
+  getUsers: async (params?: SearchParams): Promise<UserListResponse> => {
+    return apiClient<UserListResponse>('/users', { params });
+  },
+};
+```
+
+> 샘플 화면에서 mock 직접 사용은 TRD 예외로 허용됨
+
+### 11.5 영향받는 영역
 
 | 영역 | 변경 내용 | 영향도 |
 |------|----------|--------|
 | screens/sample/UserList/ | 신규 생성 | 높음 |
 | mock-data/users.json | 신규 생성 | 중간 |
 
-### 11.3 의존성
+### 11.6 의존성
 
 | 의존 항목 | 이유 | 상태 |
 |----------|------|------|
@@ -796,7 +876,7 @@ src/
 | Ant Design Descriptions | 상세 정보 표시 | TRD 확인됨 |
 | Ant Design Tag | 상태 표시 | TRD 확인됨 |
 
-### 11.4 사용할 Ant Design 컴포넌트
+### 11.7 사용할 Ant Design 컴포넌트
 
 | 컴포넌트 | 용도 |
 |----------|------|
@@ -805,7 +885,7 @@ src/
 | Tag | 상태 표시 (활성/비활성/대기) |
 | Avatar | 사용자 아바타 |
 
-### 11.5 제약 사항
+### 11.8 제약 사항
 
 | 제약 | 설명 | 대응 방안 |
 |------|------|----------|
@@ -813,7 +893,7 @@ src/
 | 클라이언트 필터링 | 서버 필터링 없음 | useMemo로 필터 로직 구현 |
 | TSK-06-01 의존 | ListTemplate 필요 | 의존성 관리 (순차 구현) |
 
-### 11.6 Server/Client Component 구분
+### 11.9 Server/Client Component 구분
 
 | 컴포넌트 | 타입 | 사유 |
 |----------|------|------|
@@ -838,8 +918,8 @@ src/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (→ `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (→ `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (→ `026-test-specification.md`)
 
 ### 12.3 구현 준비
 

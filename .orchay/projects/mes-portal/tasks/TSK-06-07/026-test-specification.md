@@ -201,6 +201,9 @@
 | E2E-007 | 행 선택 | - | 1. 체크박스 클릭 | 선택 건수 표시, 삭제 버튼 활성화 | FR-008 |
 | E2E-008 | 삭제 | 2건 선택 | 1. 삭제 클릭 2. 확인 | 목록에서 제거, 토스트 표시 | FR-009 |
 | E2E-009 | 상세 보기 | - | 1. 행 클릭 | 상세 모달 표시 | FR-010 |
+| E2E-010 | 복합 조건 검색 | - | 1. 이름+상태 입력 2. 검색 | AND 조건 적용 결과 | BR-006 |
+| E2E-011 | 전체 선택 후 삭제 | - | 1. 헤더 체크박스 2. 삭제 | 현재 페이지 전체 삭제 | FR-008, FR-009 |
+| E2E-012 | Empty State 초기화 | 결과 없음 | 1. 조건 초기화 버튼 | 전체 목록 복원 | FR-005 |
 
 ### 3.2 테스트 케이스 상세
 
@@ -297,9 +300,9 @@
 | **테스트명** | `test('페이지를 이동할 수 있다')` |
 | **사전조건** | 25건 데이터, 10건/페이지 |
 | **data-testid 셀렉터** | |
-| - 페이지 2 버튼 | `.ant-pagination-item-2` |
+| - 페이지 2 버튼 | `[data-testid="pagination-page-2"]` (QA-02 반영) |
 | **실행 단계** | |
-| 1 | `await page.click('.ant-pagination-item-2')` |
+| 1 | `await page.click('[data-testid="pagination-page-2"]')` |
 | **검증 포인트** | 11~20번째 데이터가 표시되는지 확인 |
 | **스크린샷** | `e2e-006-pagination.png` |
 | **관련 요구사항** | FR-007 |
@@ -312,11 +315,11 @@
 | **테스트명** | `test('행을 선택할 수 있다')` |
 | **사전조건** | 페이지 로드 완료 |
 | **data-testid 셀렉터** | |
-| - 첫 행 체크박스 | `[data-testid="user-row"]:first-child .ant-checkbox-input` |
+| - 첫 행 체크박스 | `[data-testid="row-checkbox-user-001"]` (QA-02 반영) |
 | - 선택 건수 | `[data-testid="selected-count"]` |
 | - 삭제 버튼 | `[data-testid="delete-btn"]` |
 | **실행 단계** | |
-| 1 | `await page.click('[data-testid="user-row"]:first-child .ant-checkbox-input')` |
+| 1 | `await page.click('[data-testid="row-checkbox-user-001"]')` |
 | **검증 포인트** | "1건 선택됨" 표시, 삭제 버튼 활성화 |
 | **스크린샷** | `e2e-007-select.png` |
 | **관련 요구사항** | FR-008, BR-004 |
@@ -330,11 +333,11 @@
 | **사전조건** | 2건 선택 상태 |
 | **data-testid 셀렉터** | |
 | - 삭제 버튼 | `[data-testid="delete-btn"]` |
-| - 확인 버튼 | `.ant-modal-confirm-btns .ant-btn-primary` |
+| - 확인 버튼 | `[data-testid="confirm-ok-btn"]` (QA-02 반영) |
 | **실행 단계** | |
 | 1 | 2건 체크박스 선택 |
 | 2 | `await page.click('[data-testid="delete-btn"]')` |
-| 3 | `await page.click('.ant-modal-confirm-btns .ant-btn-primary')` |
+| 3 | `await page.click('[data-testid="confirm-ok-btn"]')` |
 | **검증 포인트** | 목록에서 제거, 토스트 메시지 표시 |
 | **스크린샷** | `e2e-008-delete.png` |
 | **관련 요구사항** | FR-009, BR-003 |
@@ -355,6 +358,54 @@
 | **스크린샷** | `e2e-009-detail.png` |
 | **관련 요구사항** | FR-010, BR-005 |
 
+#### E2E-010: 복합 조건 검색 (QA-03 반영)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/sample/user-list.spec.ts` |
+| **테스트명** | `test('복합 조건으로 검색할 수 있다')` |
+| **사전조건** | 페이지 로드 완료 |
+| **실행 단계** | |
+| 1 | `await page.fill('[data-testid="search-name-input"]', '홍')` |
+| 2 | `await page.click('[data-testid="search-status-select"]')` |
+| 3 | `await page.click('[data-testid="status-option-active"]')` |
+| 4 | `await page.click('[data-testid="search-btn"]')` |
+| **검증 포인트** | 이름에 '홍'이 포함되고 상태가 '활성'인 사용자만 표시 (AND 조건) |
+| **스크린샷** | `e2e-010-multi-filter.png` |
+| **관련 요구사항** | BR-006 |
+
+#### E2E-011: 전체 선택 후 삭제 (QA-03 반영)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/sample/user-list.spec.ts` |
+| **테스트명** | `test('헤더 체크박스로 전체 선택 후 삭제할 수 있다')` |
+| **사전조건** | 페이지 로드 완료 (10건 표시) |
+| **실행 단계** | |
+| 1 | `await page.click('[data-testid="header-checkbox"]')` |
+| 2 | 선택 건수 "10건 선택됨" 확인 |
+| 3 | `await page.click('[data-testid="delete-btn"]')` |
+| 4 | `await page.click('[data-testid="confirm-ok-btn"]')` |
+| **검증 포인트** | 현재 페이지 10건 모두 삭제, 다음 페이지 데이터 표시 |
+| **스크린샷** | `e2e-011-select-all-delete.png` |
+| **관련 요구사항** | FR-008, FR-009 |
+
+#### E2E-012: Empty State 초기화 (QA-03 반영)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `tests/e2e/sample/user-list.spec.ts` |
+| **테스트명** | `test('Empty State에서 조건 초기화 시 전체 목록이 복원된다')` |
+| **사전조건** | 결과 없는 검색 실행 상태 |
+| **실행 단계** | |
+| 1 | `await page.fill('[data-testid="search-name-input"]', '존재하지않는사용자')` |
+| 2 | `await page.click('[data-testid="search-btn"]')` |
+| 3 | Empty State 표시 확인 |
+| 4 | `await page.click('[data-testid="empty-reset-btn"]')` |
+| **검증 포인트** | 검색 조건 초기화 + 전체 목록 자동 조회 |
+| **스크린샷** | `e2e-012-empty-reset.png` |
+| **관련 요구사항** | FR-005 |
+
 ---
 
 ## 4. UI 테스트케이스 (매뉴얼)
@@ -373,7 +424,9 @@
 | TC-008 | 삭제 | 선택 상태 | 1. 삭제 클릭 2. 확인 | 삭제됨 | High | FR-009 |
 | TC-009 | 상세 보기 | - | 1. 행 클릭 | 모달 표시 | Medium | FR-010 |
 | TC-010 | 반응형 | - | 1. 화면 크기 변경 | 레이아웃 적응 | Low | - |
-| TC-011 | 접근성 | - | 1. 키보드 탐색 | 모든 기능 접근 | Low | - |
+| TC-011-1 | Tab 키 포커스 순서 | - | 1. Tab 키 반복 | 검색 → 버튼 → 테이블 순서 | Low | - |
+| TC-011-2 | Enter 키 검색 실행 | - | 1. 검색 필드에서 Enter | 검색 실행 | Low | - |
+| TC-011-3 | Escape 키 모달 닫기 | 모달 열림 | 1. Escape 키 | 모달 닫힘 | Low | - |
 
 ### 4.2 매뉴얼 테스트 상세
 
@@ -457,35 +510,61 @@
 }
 ```
 
+### 5.4 테스트 데이터 다양성 요구사항 (DOC-02 반영)
+
+> mock 데이터는 다음 유형을 최소 1건씩 포함해야 함
+
+| 유형 | 필수 데이터 | 용도 |
+|------|-----------|------|
+| 상태별 | active 10건+, inactive 5건+, pending 5건+ | 상태 필터링 테스트 |
+| 역할별 | ADMIN 2건+, MANAGER 5건+, USER 10건+ | 역할 다양성 확인 |
+| 이름 패턴 | "홍"으로 시작하는 이름 3건+ | 부분 일치 검색 테스트 |
+| 이메일 도메인 | @company.com, @other.com | 이메일 검색 테스트 |
+
 ---
 
-## 6. data-testid 목록
+## 6. data-testid 목록 (QA-01, QA-02 반영)
 
 > 프론트엔드 컴포넌트에 적용할 `data-testid` 속성 정의
 
-### 6.1 페이지별 셀렉터
+### 6.1 셀렉터 계층 구조
+
+> **QA-01 반영**: 템플릿(ListTemplate)과 페이지(UserList) 수준 셀렉터 계층화
+
+| 계층 | 접두사 패턴 | 예시 |
+|------|-----------|------|
+| 템플릿 요소 | `list-template-*` | `list-template-container` |
+| 페이지 고유 요소 | `user-*` | `user-list-page` |
+| 공통 검색 요소 | `search-*` | `search-btn` |
+
+### 6.2 페이지별 셀렉터
 
 #### 사용자 목록 페이지
 
-| data-testid | 요소 | 용도 |
-|-------------|------|------|
-| `user-list-page` | 페이지 컨테이너 | 페이지 로드 확인 |
-| `search-condition-card` | 검색 조건 Card | 검색 영역 표시 확인 |
-| `search-name-input` | 이름 검색 입력 | 이름 검색 |
-| `search-email-input` | 이메일 검색 입력 | 이메일 검색 |
-| `search-status-select` | 상태 셀렉트 | 상태 필터링 |
-| `status-option-active` | 활성 옵션 | 활성 상태 선택 |
-| `status-option-inactive` | 비활성 옵션 | 비활성 상태 선택 |
-| `status-option-pending` | 대기 옵션 | 대기 상태 선택 |
-| `search-btn` | 검색 버튼 | 검색 실행 |
-| `reset-btn` | 초기화 버튼 | 조건 초기화 |
-| `user-list-table` | 사용자 테이블 | 테이블 표시 확인 |
-| `user-row` | 테이블 행 | 행 데이터 확인 |
-| `column-header-name` | 이름 컬럼 헤더 | 정렬 클릭 |
-| `column-header-email` | 이메일 컬럼 헤더 | 정렬 클릭 |
-| `selected-count` | 선택 건수 표시 | 선택 상태 확인 |
-| `total-count` | 총 건수 표시 | 총 건수 확인 |
-| `delete-btn` | 삭제 버튼 | 삭제 실행 |
+| data-testid | 요소 | 계층 | 용도 |
+|-------------|------|------|------|
+| `user-list-page` | 페이지 컨테이너 | 페이지 | 페이지 로드 확인 |
+| `list-template-container` | ListTemplate 래퍼 | 템플릿 | 템플릿 렌더링 확인 |
+| `search-condition-card` | 검색 조건 Card | 템플릿 | 검색 영역 표시 확인 |
+| `search-name-input` | 이름 검색 입력 | 페이지 | 이름 검색 |
+| `search-email-input` | 이메일 검색 입력 | 페이지 | 이메일 검색 |
+| `search-status-select` | 상태 셀렉트 | 페이지 | 상태 필터링 |
+| `status-option-active` | 활성 옵션 | 페이지 | 활성 상태 선택 |
+| `status-option-inactive` | 비활성 옵션 | 페이지 | 비활성 상태 선택 |
+| `status-option-pending` | 대기 옵션 | 페이지 | 대기 상태 선택 |
+| `search-btn` | 검색 버튼 | 템플릿 | 검색 실행 |
+| `reset-btn` | 초기화 버튼 | 템플릿 | 조건 초기화 |
+| `data-grid` | DataTable 컨테이너 | 템플릿 | 테이블 표시 확인 |
+| `user-row-{id}` | 테이블 행 | 페이지 | 특정 행 식별 |
+| `row-checkbox-{id}` | 행 체크박스 | 페이지 | 개별 행 선택 (QA-02) |
+| `column-header-name` | 이름 컬럼 헤더 | 템플릿 | 정렬 클릭 |
+| `column-header-email` | 이메일 컬럼 헤더 | 템플릿 | 정렬 클릭 |
+| `selected-count` | 선택 건수 표시 | 템플릿 | 선택 상태 확인 |
+| `total-count` | 총 건수 표시 | 템플릿 | 총 건수 확인 |
+| `delete-btn` | 삭제 버튼 | 템플릿 | 삭제 실행 |
+| `pagination-page-{n}` | 페이지 n 버튼 | 페이지 | 페이지 이동 (QA-02) |
+| `confirm-ok-btn` | 확인 버튼 | 공통 | 다이얼로그 확인 (QA-02) |
+| `confirm-cancel-btn` | 취소 버튼 | 공통 | 다이얼로그 취소 (QA-02) |
 
 #### 사용자 상세 모달
 
