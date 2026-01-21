@@ -4,10 +4,13 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
+import { message } from 'antd'
 import { PortalLayout, Header, Footer, Sidebar } from '@/components/layout'
 import type { MenuItem } from '@/components/layout'
 import { findMenuByPath, findParentKeys } from '@/components/layout/Sidebar'
 import type { Notification } from '@/components/common'
+import { MDIProvider, useMDI, type Tab } from '@/lib/mdi'
+import { TabBar } from '@/components/mdi'
 import menuData from '@/mock-data/menus.json'
 import notificationData from '@/mock-data/notifications.json'
 
@@ -16,8 +19,25 @@ export default function PortalGroupLayout({
 }: {
   children: React.ReactNode
 }) {
+  return (
+    <MDIProvider
+      maxTabs={10}
+      onMaxTabsReached={() => {
+        message.warning('최대 10개의 탭만 열 수 있습니다.')
+      }}
+    >
+      <PortalLayoutContent>{children}</PortalLayoutContent>
+    </MDIProvider>
+  )
+}
+
+/**
+ * 포털 레이아웃 내부 컴포넌트 (MDI Context 사용)
+ */
+function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+  const { openTab, tabs } = useMDI()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
@@ -56,15 +76,27 @@ export default function PortalGroupLayout({
     }
   }, [pathname, menus])
 
-  // 메뉴 클릭 핸들러
+  // 메뉴 클릭 핸들러 - MDI 탭으로 열기
   const handleMenuClick = useCallback(
     (menu: MenuItem) => {
       if (menu.path) {
         setSelectedKeys([menu.id])
+
+        // 탭으로 열기
+        const tab: Tab = {
+          id: menu.id,
+          title: menu.name,
+          path: menu.path,
+          icon: menu.icon,
+          closable: menu.id !== 'dashboard', // 대시보드는 닫기 불가
+        }
+        openTab(tab)
+
+        // 라우터로 이동
         router.push(menu.path)
       }
     },
-    [router]
+    [router, openTab]
   )
 
   // 서브메뉴 열기/닫기 핸들러
@@ -107,6 +139,7 @@ export default function PortalGroupLayout({
           onOpenChange={handleOpenChange}
         />
       }
+      tabBar={tabs.length > 0 ? <TabBar /> : undefined}
       footer={<Footer />}
     >
       {children}
