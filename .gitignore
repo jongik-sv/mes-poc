@@ -54,3 +54,4 @@ coverage/
 # Temporary files
 nul
 
+.orchay/logs/orchay.log
