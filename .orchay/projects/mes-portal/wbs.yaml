@@ -398,7 +398,8 @@ workPackages:
         title: 탭 컨텍스트 메뉴
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -422,7 +423,6 @@ workPackages:
           integrationCheck:
             - components/mdi/TabContextMenu.tsx 파일 존재
             - closeOtherTabs, closeRightTabs, refreshTab 함수 구현
-        execution: verify
       - id: TSK-02-05
         title: MDI 컨텐츠 영역
         category: development
