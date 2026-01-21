@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-04: List Screen Empty State</title>
+  <desc>MES Portal - List Template Empty Data State Wireframe</desc>
+
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f5f5f5"/>
+
+  <!-- ==================== SEARCH AREA (Card) ==================== -->
+  <g id="search-card">
+    <!-- Card Background -->
+    <rect x="24" y="24" width="1152" height="160" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Search Fields Row 1 -->
+    <g id="search-fields">
+      <!-- Field 1 with value -->
+      <g id="field-1">
+        <text x="48" y="58" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Search Field 1</text>
+        <rect x="48" y="68" width="200" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="60" y="89" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Specific Value</text>
+      </g>
+
+      <!-- Field 2 -->
+      <g id="field-2">
+        <text x="280" y="58" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Search Field 2</text>
+        <rect x="280" y="68" width="200" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="292" y="89" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">Select...</text>
+        <path d="M464 82 L470 88 L476 82" stroke="#bfbfbf" stroke-width="1.5" fill="none"/>
+      </g>
+
+      <!-- Field 3: Date Range -->
+      <g id="field-3">
+        <text x="512" y="58" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Date Range</text>
+        <rect x="512" y="68" width="280" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="524" y="89" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">2026-01-01</text>
+        <text x="636" y="89" font-family="Arial, sans-serif" font-size="14" fill="#bfbfbf">~</text>
+        <text x="668" y="89" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">2026-01-21</text>
+        <rect x="756" y="76" width="16" height="16" rx="2" fill="none" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="760" y1="74" x2="760" y2="78" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="768" y1="74" x2="768" y2="78" stroke="#bfbfbf" stroke-width="1"/>
+        <line x1="756" y1="82" x2="772" y2="82" stroke="#bfbfbf" stroke-width="1"/>
+      </g>
+
+      <!-- More Button -->
+      <g id="more-button">
+        <rect x="824" y="68" width="80" height="32" rx="6" fill="#ffffff" stroke="none"/>
+        <text x="838" y="89" font-family="Arial, sans-serif" font-size="14" fill="#1677ff">More</text>
+        <path d="M886 82 L892 88 L898 82" stroke="#1677ff" stroke-width="1.5" fill="none"/>
+      </g>
+    </g>
+
+    <!-- Buttons Row -->
+    <g id="search-buttons">
+      <!-- Reset Button -->
+      <rect x="952" y="132" width="80" height="32" rx="6" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="975" y="153" font-family="Arial, sans-serif" font-size="14" fill="#000000d9">Reset</text>
+
+      <!-- Search Button -->
+      <rect x="1044" y="132" width="100" height="32" rx="6" fill="#1677ff" stroke="none"/>
+      <circle cx="1068" cy="148" r="6" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="1072" y1="152" x2="1078" y2="158" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="1084" y="153" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">Search</text>
+    </g>
+  </g>
+
+  <!-- ==================== ACTION BAR ==================== -->
+  <g id="action-bar">
+    <rect x="24" y="200" width="1152" height="48" rx="0" fill="transparent"/>
+
+    <!-- Left: Action Buttons -->
+    <g id="action-buttons-left">
+      <!-- New Button -->
+      <rect x="24" y="208" width="80" height="32" rx="6" fill="#1677ff" stroke="none"/>
+      <text x="38" y="229" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">+ New</text>
+
+      <!-- Delete Button (Disabled) -->
+      <rect x="116" y="208" width="80" height="32" rx="6" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="130" y="229" font-family="Arial, sans-serif" font-size="14" fill="#00000040">Delete</text>
+    </g>
+
+    <!-- Right: Total Count (0 items) -->
+    <text x="1100" y="229" font-family="Arial, sans-serif" font-size="14" fill="#000000a6" text-anchor="end">Total: 0 items</text>
+  </g>
+
+  <!-- ==================== DATA TABLE with Empty State ==================== -->
+  <g id="data-table">
+    <!-- Table Container -->
+    <rect x="24" y="260" width="1152" height="460" rx="8" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+    <!-- Table Header -->
+    <g id="table-header">
+      <rect x="24" y="260" width="1152" height="48" rx="8" fill="#fafafa"/>
+      <rect x="24" y="300" width="1152" height="8" fill="#ffffff"/>
+      <line x1="24" y1="308" x2="1176" y2="308" stroke="#f0f0f0" stroke-width="1"/>
+
+      <!-- Checkbox Column -->
+      <rect x="48" y="276" width="16" height="16" rx="2" fill="#ffffff" stroke="#d9d9d9" stroke-width="1"/>
+
+      <!-- Column Headers -->
+      <text x="100" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Column 1</text>
+      <path d="M162 282 L168 276 L174 282 M162 294 L168 300 L174 294" stroke="#bfbfbf" stroke-width="1" fill="none"/>
+
+      <text x="280" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Column 2</text>
+      <path d="M342 282 L348 276 L354 282 M342 294 L348 300 L354 294" stroke="#bfbfbf" stroke-width="1" fill="none"/>
+
+      <text x="460" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Column 3</text>
+      <path d="M522 282 L528 276 L534 282 M522 294 L528 300 L534 294" stroke="#bfbfbf" stroke-width="1" fill="none"/>
+
+      <text x="640" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Column 4</text>
+      <path d="M702 282 L708 276 L714 282 M702 294 L708 300 L714 294" stroke="#bfbfbf" stroke-width="1" fill="none"/>
+
+      <text x="820" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Status</text>
+      <path d="M866 282 L872 276 L878 282 M866 294 L872 300 L878 294" stroke="#bfbfbf" stroke-width="1" fill="none"/>
+
+      <text x="1000" y="289" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#000000d9">Actions</text>
+    </g>
+
+    <!-- Empty State -->
+    <g id="empty-state" transform="translate(600, 460)">
+      <!-- Empty Box Icon -->
+      <g transform="translate(-40, -80)">
+        <!-- Box base -->
+        <path d="M0 30 L40 50 L80 30 L40 10 Z" fill="#fafafa" stroke="#d9d9d9" stroke-width="1.5"/>
+        <!-- Box left side -->
+        <path d="M0 30 L0 60 L40 80 L40 50 Z" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1.5"/>
+        <!-- Box right side -->
+        <path d="M80 30 L80 60 L40 80 L40 50 Z" fill="#ffffff" stroke="#d9d9d9" stroke-width="1.5"/>
+        <!-- Dashed line inside -->
+        <line x1="20" y1="40" x2="60" y2="40" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4,2"/>
+        <line x1="40" y1="25" x2="40" y2="45" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="4,2"/>
+      </g>
+
+      <!-- Primary message -->
+      <text x="0" y="30" font-family="Arial, sans-serif" font-size="16" fill="#000000a6" text-anchor="middle">No search results found.</text>
+
+      <!-- Secondary message -->
+      <text x="0" y="55" font-family="Arial, sans-serif" font-size="14" fill="#00000073" text-anchor="middle">Try adjusting your search conditions and search again.</text>
+
+      <!-- Reset Search Button -->
+      <g transform="translate(-60, 75)">
+        <rect x="0" y="0" width="120" height="32" rx="6" fill="#ffffff" stroke="#1677ff" stroke-width="1"/>
+        <text x="60" y="21" font-family="Arial, sans-serif" font-size="14" fill="#1677ff" text-anchor="middle">Reset Search</text>
+      </g>
+    </g>
+
+    <!-- Pagination (Hidden/Disabled when empty) -->
+    <g id="pagination" opacity="0.3">
+      <rect x="24" y="660" width="1152" height="60" fill="#ffffff"/>
+
+      <!-- Page Size Selector -->
+      <rect x="1040" y="680" width="100" height="28" rx="4" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1"/>
+      <text x="1055" y="699" font-family="Arial, sans-serif" font-size="13" fill="#00000040">10 / page</text>
+
+      <!-- Page Numbers -->
+      <g id="page-numbers" transform="translate(500, 680)">
+        <rect x="0" y="0" width="28" height="28" rx="4" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1"/>
+        <path d="M16 8 L10 14 L16 20" stroke="#bfbfbf" stroke-width="1.5" fill="none"/>
+
+        <rect x="36" y="0" width="28" height="28" rx="4" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1"/>
+        <text x="46" y="19" font-family="Arial, sans-serif" font-size="14" fill="#00000040">0</text>
+
+        <rect x="72" y="0" width="28" height="28" rx="4" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="1"/>
+        <path d="M82 8 L88 14 L82 20" stroke="#bfbfbf" stroke-width="1.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" transform="translate(24, 750)">
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="11" fill="#8c8c8c">SCR-04: List Screen - Empty Data State | No results found with reset option</text>
+  </g>
+</svg>
