@@ -496,7 +496,8 @@ workPackages:
         title: 역할-메뉴 매핑
         category: development
         domain: backend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: critical
         assignee: "-"
         tags:
