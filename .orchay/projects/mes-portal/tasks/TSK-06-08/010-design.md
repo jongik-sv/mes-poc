@@ -5,9 +5,9 @@
 | 항목 | 내용 |
 |------|------|
 | Task ID | TSK-06-08 |
-| 문서 버전 | 1.0 |
+| 문서 버전 | 1.1 |
 | 작성일 | 2026-01-21 |
-| 상태 | 작성중 |
+| 상태 | 리뷰반영 |
 | 카테고리 | development |
 
 ---
@@ -467,17 +467,17 @@ erDiagram
 ```typescript
 // 카테고리 데이터 타입
 interface Category {
-  id: number
+  id: string        // string으로 통일 (QR-002 반영)
   name: string
   icon: string
-  parentId: number | null
+  parentId: string | null
   children?: Category[]
 }
 
 // 제품 데이터 타입
 interface Product {
-  id: number
-  categoryId: number
+  id: string        // string으로 통일 (QR-002 반영)
+  categoryId: string
   code: string
   name: string
   spec: string
@@ -487,13 +487,86 @@ interface Product {
   status: 'active' | 'inactive'
 }
 
-// 컴포넌트 Props
+// 컴포넌트 Props - 기능별 분리 (ARCH-001 반영)
+interface SearchProps {
+  searchValue: string
+  onSearchChange: (value: string) => void
+  placeholder?: string
+}
+
+interface FilterProps {
+  statusFilter?: 'all' | 'active' | 'inactive'
+  onStatusChange?: (status: 'all' | 'active' | 'inactive') => void
+}
+
+interface PaginationProps {
+  current: number
+  pageSize: number
+  total: number
+  onChange: (page: number, pageSize: number) => void
+}
+
+interface SortProps {
+  sortField?: string
+  sortOrder?: 'ascend' | 'descend' | null
+  onSortChange?: (field: string, order: 'ascend' | 'descend' | null) => void
+}
+
+// ProductTable Props (기능별 Props 조합)
+type ProductTableProps = {
+  products: Product[]
+  loading?: boolean
+  selectedCategory?: Category | null
+} & SearchProps & FilterProps & PaginationProps & SortProps
+
+// CategoryProductScreen Props
 interface CategoryProductScreenProps {
-  // 별도 props 없음 (자체 데이터 로드)
+  defaultSplit?: [number, number]  // [마스터%, 디테일%]
+  minMasterWidth?: number          // 기본: 200px (BR-003)
+  minDetailWidth?: number          // 기본: 300px (BR-003)
 }
 ```
 
-### 7.4 데이터 유효성 규칙
+### 7.4 유틸리티 함수 (ARCH-003 반영)
+
+```typescript
+/**
+ * 상위 카테고리와 모든 하위 카테고리의 제품을 조회
+ * BR-02: 상위 카테고리 선택 시 하위 제품 모두 표시
+ */
+function getProductsByCategoryWithChildren(
+  categoryId: string,
+  categories: Category[],
+  products: Product[]
+): Product[] {
+  // 해당 카테고리와 모든 하위 카테고리 ID 수집
+  const categoryIds = collectChildCategoryIds(categoryId, categories)
+
+  // 수집된 카테고리들에 속하는 모든 제품 반환
+  return products.filter(product => categoryIds.includes(product.categoryId))
+}
+
+/**
+ * 특정 카테고리의 모든 하위 카테고리 ID를 재귀적으로 수집
+ */
+function collectChildCategoryIds(
+  categoryId: string,
+  categories: Category[]
+): string[] {
+  const result = [categoryId]
+  const category = findCategoryById(categoryId, categories)
+
+  if (category?.children) {
+    category.children.forEach(child => {
+      result.push(...collectChildCategoryIds(child.id, categories))
+    })
+  }
+
+  return result
+}
+```
+
+### 7.5 데이터 유효성 규칙
 
 | 데이터 필드 | 규칙 | 위반 시 메시지 |
 |------------|------|---------------|
@@ -575,12 +648,17 @@ interface CategoryProductScreenProps {
 
 ### 11.2 의존성
 
-| 의존 항목 | 이유 | 상태 |
-|----------|------|------|
-| TSK-06-04 MasterDetailTemplate | 화면 템플릿 | [dd] |
-| Ant Design Tree | 카테고리 트리 | 라이브러리 |
-| Ant Design Table | 제품 테이블 | 라이브러리 |
-| mock-data/categories-products.json | 샘플 데이터 | 완료 |
+| 의존 항목 | 이유 | 상태 | 비고 |
+|----------|------|------|------|
+| TSK-06-04 MasterDetailTemplate | 화면 템플릿 | [dd] | 인터페이스 기반 병렬 개발 가능 (ARCH-004) |
+| Ant Design Tree | 카테고리 트리 | 라이브러리 | - |
+| Ant Design Table | 제품 테이블 | 라이브러리 | - |
+| Ant Design Splitter | 분할 패널 | 라이브러리 | TRD에 명시 필요 (ARCH-006) |
+| mock-data/categories-products.json | 샘플 데이터 | 완료 | - |
+
+> **참고 (ARCH-004)**: TSK-06-04가 `[dd]` 상태이므로, 해당 Task의 인터페이스 정의(MasterDetailTemplateProps)를 기반으로 병렬 개발을 진행합니다. TSK-06-04 완료 후 인터페이스 변경이 있을 경우 조정이 필요합니다.
+
+> **TRD 업데이트 권고 (ARCH-006)**: TRD에서 `react-split-pane`으로 명시되어 있으나, Ant Design 우선 원칙에 따라 `Ant Design Splitter`를 사용합니다. TRD 업데이트가 필요합니다.
 
 ### 11.3 제약 사항
 
@@ -624,8 +702,8 @@ mes-portal/
 
 ### 12.2 연관 문서 작성
 
-- [ ] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
-- [ ] 테스트 명세서 작성 (-> `026-test-specification.md`)
+- [x] 요구사항 추적 매트릭스 작성 (-> `025-traceability-matrix.md`)
+- [x] 테스트 명세서 작성 (-> `026-test-specification.md`)
 
 ### 12.3 구현 준비
 
@@ -640,3 +718,4 @@ mes-portal/
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영 (ARCH-001, ARCH-003, ARCH-004, ARCH-006, QR-002, QR-004) |

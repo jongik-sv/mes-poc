@@ -95,13 +95,15 @@ interface CategoryProductPageProps {
 | UT-001 | CategoryProductPage | 컴포넌트 초기 렌더링 | 마스터/디테일 영역 표시, 카테고리 트리 로드 | P1 |
 | UT-002 | CategoryTree | 카테고리 선택 시 콜백 호출 | onSelect 콜백 호출, 선택된 카테고리 ID 전달 | P1 |
 | UT-003 | ProductTable | 제품 목록 데이터 렌더링 | 테이블에 제품 데이터 표시, 컬럼 정상 렌더링 | P1 |
-| UT-004 | ProductTable | 검색 필터링 동작 | 입력된 검색어로 제품 목록 필터링 | P3 |
-| UT-005 | CategoryProductPage | 빈 카테고리 처리 | 제품이 없는 카테고리 선택 시 Empty 상태 표시 | P2 |
-| UT-006 | CategoryProductPage | 카테고리 미선택 상태 | "카테고리를 선택하세요" 안내 메시지 표시 | P2 |
+| UT-004 | ProductTable | 검색 필터링 동작 (BR-005) | 입력된 검색어로 제품 목록 필터링, 대소문자 무시 | P3 |
+| UT-005 | CategoryProductPage | 빈 카테고리 처리 (BR-004) | 제품이 없는 카테고리 선택 시 Empty 상태 표시 | P2 |
+| UT-006 | CategoryProductPage | 카테고리 미선택 상태 (BR-001) | "카테고리를 선택하세요" 안내 메시지 표시 | P2 |
 | UT-007 | CategoryTree | 트리 노드 펼침/접힘 | 하위 카테고리 표시/숨김 토글 | P3 |
 | UT-008 | ProductTable | 테이블 정렬 동작 | 컬럼 헤더 클릭 시 정렬 적용 | P3 |
 | UT-009 | ProductTable | 테이블 페이지네이션 | 페이지 전환 동작 | P3 |
 | UT-010 | CategoryProductPage | 로딩 상태 표시 | 데이터 로딩 중 스켈레톤/스피너 표시 | P2 |
+| UT-011 | CategoryProductPage | 상위 카테고리 선택 시 하위 제품 표시 (BR-002) | 상위 카테고리의 모든 하위 제품 표시 | P1 |
+| UT-012 | CategoryProductPage | 패널 최소 너비 제한 (BR-003) | 최소 너비(200px/300px) 유지 | P2 |
 
 ### 2.2 테스트 케이스 상세
 
@@ -364,6 +366,92 @@ it('데이터 로딩 중 스켈레톤이 표시되어야 한다', () => {
 
   // 로딩 상태 확인
   expect(screen.getByTestId('product-loading')).toBeInTheDocument()
+})
+```
+
+#### UT-011: 상위 카테고리 선택 시 하위 제품 모두 표시 (BR-002)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `app/(portal)/sample/category-product/__tests__/page.spec.tsx` |
+| **테스트 블록** | `describe('CategoryProductPage') -> describe('비즈니스 규칙') -> it('상위 카테고리 선택 시 하위 카테고리의 모든 제품이 표시되어야 한다')` |
+| **입력 데이터** | 계층 구조 카테고리 + 다양한 카테고리의 제품 데이터 |
+| **검증 포인트** | 상위 카테고리 선택 시 하위 모든 제품 포함 |
+| **커버리지 대상** | getProductsByCategoryWithChildren() 로직 |
+
+```typescript
+it('상위 카테고리 선택 시 하위 카테고리의 모든 제품이 표시되어야 한다', async () => {
+  const mockCategories = [
+    {
+      id: 'electronics',
+      name: '전자제품',
+      children: [
+        { id: 'laptops', name: '노트북', parentId: 'electronics' },
+        { id: 'phones', name: '휴대폰', parentId: 'electronics' },
+      ],
+    },
+  ]
+
+  const mockProducts = [
+    { id: 'p1', name: '맥북 프로', categoryId: 'laptops', price: 3500000, status: 'active' },
+    { id: 'p2', name: '갤럭시 북', categoryId: 'laptops', price: 1800000, status: 'active' },
+    { id: 'p3', name: '아이폰 15', categoryId: 'phones', price: 1550000, status: 'active' },
+  ]
+
+  render(
+    <CategoryProductPage
+      initialCategories={mockCategories}
+      initialProducts={mockProducts}
+    />
+  )
+
+  // 상위 카테고리 '전자제품' 선택
+  const parentCategory = screen.getByTestId('category-item-electronics')
+  await userEvent.click(parentCategory)
+
+  // 하위 카테고리의 모든 제품이 표시되어야 함 (노트북 2개 + 휴대폰 1개 = 3개)
+  await waitFor(() => {
+    expect(screen.getByText('맥북 프로')).toBeInTheDocument()
+    expect(screen.getByText('갤럭시 북')).toBeInTheDocument()
+    expect(screen.getByText('아이폰 15')).toBeInTheDocument()
+  })
+
+  // 제품 행 개수 확인
+  const productRows = screen.getAllByTestId(/^product-row/)
+  expect(productRows).toHaveLength(3)
+})
+```
+
+#### UT-012: 패널 최소 너비 제한 (BR-003)
+
+| 항목 | 내용 |
+|------|------|
+| **파일** | `app/(portal)/sample/category-product/__tests__/page.spec.tsx` |
+| **테스트 블록** | `describe('CategoryProductPage') -> describe('비즈니스 규칙') -> it('패널 리사이즈 시 최소 너비가 유지되어야 한다')` |
+| **입력 데이터** | 기본 Props + 최소 너비 설정 |
+| **검증 포인트** | Splitter min 속성이 올바르게 전달되는지 확인 |
+| **커버리지 대상** | MasterDetailTemplate 최소 너비 설정 |
+
+```typescript
+it('패널 리사이즈 시 최소 너비가 유지되어야 한다', () => {
+  const MIN_MASTER_WIDTH = 200
+  const MIN_DETAIL_WIDTH = 300
+
+  render(
+    <CategoryProductPage
+      minMasterWidth={MIN_MASTER_WIDTH}
+      minDetailWidth={MIN_DETAIL_WIDTH}
+    />
+  )
+
+  // Splitter 컴포넌트가 올바른 min 속성을 가지고 있는지 확인
+  const categoryPanel = screen.getByTestId('category-tree').closest('[class*="splitter-panel"]')
+  const productPanel = screen.getByTestId('product-list').closest('[class*="splitter-panel"]')
+
+  // Ant Design Splitter는 min 속성을 통해 최소 너비를 설정함
+  // 렌더링된 패널의 최소 너비 스타일 또는 속성 확인
+  expect(categoryPanel).toHaveStyle({ minWidth: `${MIN_MASTER_WIDTH}px` })
+  expect(productPanel).toHaveStyle({ minWidth: `${MIN_DETAIL_WIDTH}px` })
 })
 ```
 
@@ -1078,6 +1166,7 @@ export const getChildCategories = (parentId: string): string[] => {
 | 버전 | 일자 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
 | 1.0 | 2026-01-21 | Claude | 최초 작성 |
+| 1.1 | 2026-01-21 | Claude | 설계 리뷰 반영 - UT-011, UT-012 추가 (QR-001, QR-003) |
 
 ---
 

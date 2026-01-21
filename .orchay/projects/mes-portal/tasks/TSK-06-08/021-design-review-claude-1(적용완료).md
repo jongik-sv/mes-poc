@@ -218,9 +218,45 @@
 
 ---
 
+---
+
+## 9. 적용 결과 (2026-01-21)
+
+### 9.1 적용 판단 요약
+
+| 이슈 ID | 우선순위 | 판단 | 비고 |
+|---------|----------|------|------|
+| ARCH-001 | P2 | ✅ 적용 | ProductTableProps를 SearchProps, FilterProps, PaginationProps, SortProps로 분리 |
+| ARCH-002 | P3 | ⏸️ 보류 | Repository/Service 패턴 - 샘플 화면 범위 초과, 향후 확장 시 고려 |
+| ARCH-003 | P3 | ✅ 적용 | getProductsByCategoryWithChildren() 유틸리티 함수 명시 |
+| ARCH-004 | P2 | ✅ 적용 | TSK-06-04 의존성 상태 및 인터페이스 기반 병렬 개발 전략 문서화 |
+| ARCH-005 | P4 | ✅ 적용 | UI 설계에서 CRUD 버튼 비활성화 상태로 명시 권고 기록 |
+| ARCH-006 | P3 | ✅ 적용 | Ant Design Splitter 사용 명시 및 TRD 업데이트 권고 기록 |
+| QR-001 | P2 | ✅ 적용 | 025-traceability-matrix.md에 BR-003~BR-005 추적성 매핑 추가 |
+| QR-002 | P3 | ✅ 적용 | 데이터 타입(id) string으로 통일 |
+| QR-003 | P3 | ✅ 적용 | 026-test-specification.md에 UT-011, UT-012 테스트 코드 추가 |
+| QR-004 | P4 | ✅ 적용 | 010-design.md 체크리스트 갱신 |
+
+### 9.2 수정된 문서
+
+| 문서 | 변경 내용 |
+|------|----------|
+| `010-design.md` | Props 분리, 유틸리티 함수 명시, 데이터 타입 통일, 의존성 상태 명시, 체크리스트 갱신 |
+| `025-traceability-matrix.md` | BR-003~BR-005 추적성 매핑 추가, 테스트 역추적 매트릭스 업데이트 |
+| `026-test-specification.md` | UT-011, UT-012 테스트 케이스 및 코드 스니펫 추가 |
+
+### 9.3 보류 사유
+
+| 이슈 ID | 보류 사유 |
+|---------|----------|
+| ARCH-002 | Repository/Service 패턴 도입은 샘플 화면의 범위를 초과함. Mock 데이터 기반 샘플이므로 JSON import로 충분. 향후 실제 API 연동 시 확장 고려 |
+
+---
+
 <!--
 TSK-06-08 Design Review
 Reviewer: claude-1
 Version: 1.0
 Created: 2026-01-21
+Applied: 2026-01-21
 -->
