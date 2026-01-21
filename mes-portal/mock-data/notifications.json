@@ -1,0 +1,52 @@
+{
+  "notifications": [
+    {
+      "id": "noti-001",
+      "type": "error",
+      "title": "설비 이상 발생",
+      "message": "A라인 1호기 온도 이상 감지됨",
+      "isRead": false,
+      "createdAt": "2026-01-20T09:25:00Z",
+      "link": "/equipment/status",
+      "linkTitle": "설비 현황"
+    },
+    {
+      "id": "noti-002",
+      "type": "warning",
+      "title": "작업 지시 변경",
+      "message": "WO-2026-001 수량이 100 → 150으로 변경됨",
+      "isRead": false,
+      "createdAt": "2026-01-20T09:20:00Z",
+      "link": "/production/work-order",
+      "linkTitle": "작업 지시"
+    },
+    {
+      "id": "noti-003",
+      "type": "success",
+      "title": "품질 검사 완료",
+      "message": "LOT-2026-001 검사 합격",
+      "isRead": true,
+      "createdAt": "2026-01-20T08:30:00Z",
+      "link": "/quality/inspection",
+      "linkTitle": "품질 검사"
+    },
+    {
+      "id": "noti-004",
+      "type": "info",
+      "title": "시스템 업데이트",
+      "message": "시스템 정기 점검이 예정되어 있습니다",
+      "isRead": false,
+      "createdAt": "2026-01-20T08:00:00Z"
+    },
+    {
+      "id": "noti-005",
+      "type": "warning",
+      "title": "재고 부족 경고",
+      "message": "원자재 A-001 재고가 안전 재고 이하입니다",
+      "isRead": true,
+      "createdAt": "2026-01-19T16:30:00Z",
+      "link": "/inventory/materials",
+      "linkTitle": "원자재 재고"
+    }
+  ]
+}

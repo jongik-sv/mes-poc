@@ -170,7 +170,7 @@ workPackages:
         title: 사이드바 메뉴 컴포넌트
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: high
         assignee: "-"
         tags:
@@ -204,7 +204,6 @@ workPackages:
             - Ant Design Menu 컴포넌트 사용
             - collapsed 상태 관리 (useState 또는 Context)
             - 메뉴 클릭 시 MDI 탭 오픈 함수 호출
-        execution: build
       - id: TSK-01-04
         title: 푸터 컴포넌트
         category: development
@@ -233,6 +232,7 @@ workPackages:
           integrationCheck:
             - components/layout/Footer.tsx 파일 존재
             - 버전 정보는 package.json 또는 환경변수에서 가져오기
+        execution: verify
       - id: TSK-01-05
         title: 전역 검색 모달
         category: development

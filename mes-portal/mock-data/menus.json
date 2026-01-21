@@ -1,0 +1,172 @@
+{
+  "menus": [
+    {
+      "id": "1",
+      "code": "DASHBOARD",
+      "name": "대시보드",
+      "path": "/dashboard",
+      "icon": "DashboardOutlined",
+      "sortOrder": 1,
+      "isActive": true
+    },
+    {
+      "id": "2",
+      "code": "PRODUCTION",
+      "name": "생산",
+      "icon": "BuildOutlined",
+      "sortOrder": 2,
+      "isActive": true,
+      "children": [
+        {
+          "id": "2-1",
+          "code": "WORK_ORDER",
+          "name": "작업 지시",
+          "path": "/production/work-order",
+          "icon": "FileTextOutlined",
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "id": "2-2",
+          "code": "PRODUCTION_STATUS",
+          "name": "생산 현황",
+          "path": "/production/status",
+          "icon": "LineChartOutlined",
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "id": "2-3",
+          "code": "PRODUCTION_RESULT",
+          "name": "실적 입력",
+          "path": "/production/result",
+          "icon": "EditOutlined",
+          "sortOrder": 3,
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "code": "QUALITY",
+      "name": "품질",
+      "icon": "CheckCircleOutlined",
+      "sortOrder": 3,
+      "isActive": true,
+      "children": [
+        {
+          "id": "3-1",
+          "code": "INSPECTION",
+          "name": "검사 관리",
+          "path": "/quality/inspection",
+          "icon": "SearchOutlined",
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "id": "3-2",
+          "code": "DEFECT",
+          "name": "불량 관리",
+          "path": "/quality/defect",
+          "icon": "WarningOutlined",
+          "sortOrder": 2,
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "code": "EQUIPMENT",
+      "name": "설비",
+      "icon": "ToolOutlined",
+      "sortOrder": 4,
+      "isActive": true,
+      "children": [
+        {
+          "id": "4-1",
+          "code": "EQUIPMENT_STATUS",
+          "name": "설비 현황",
+          "path": "/equipment/status",
+          "icon": "DesktopOutlined",
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "id": "4-2",
+          "code": "MAINTENANCE",
+          "name": "유지보수",
+          "path": "/equipment/maintenance",
+          "icon": "ToolOutlined",
+          "sortOrder": 2,
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "code": "SETTINGS",
+      "name": "설정",
+      "icon": "SettingOutlined",
+      "sortOrder": 5,
+      "isActive": true,
+      "children": [
+        {
+          "id": "5-1",
+          "code": "USER",
+          "name": "사용자",
+          "icon": "UserOutlined",
+          "sortOrder": 1,
+          "isActive": true,
+          "children": [
+            {
+              "id": "5-1-1",
+              "code": "USER_LIST",
+              "name": "사용자 관리",
+              "path": "/settings/user/list",
+              "icon": "TeamOutlined",
+              "sortOrder": 1,
+              "isActive": true
+            },
+            {
+              "id": "5-1-2",
+              "code": "ROLE",
+              "name": "역할 관리",
+              "path": "/settings/user/role",
+              "icon": "SafetyCertificateOutlined",
+              "sortOrder": 2,
+              "isActive": true
+            }
+          ]
+        },
+        {
+          "id": "5-2",
+          "code": "SYSTEM",
+          "name": "시스템",
+          "icon": "ControlOutlined",
+          "sortOrder": 2,
+          "isActive": true,
+          "children": [
+            {
+              "id": "5-2-1",
+              "code": "MENU_MANAGE",
+              "name": "메뉴 관리",
+              "path": "/settings/system/menu",
+              "icon": "MenuOutlined",
+              "sortOrder": 1,
+              "isActive": true
+            },
+            {
+              "id": "5-2-2",
+              "code": "CODE_MANAGE",
+              "name": "코드 관리",
+              "path": "/settings/system/code",
+              "icon": "DatabaseOutlined",
+              "sortOrder": 2,
+              "isActive": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
