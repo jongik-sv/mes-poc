@@ -1132,7 +1132,6 @@ workPackages:
           integrationCheck:
             - screens/sample/SettingWizard.tsx
             - WizardTemplate 사용
-        execution: apply
   - id: WP-07
     title: 대시보드
     status: planned
@@ -1167,6 +1166,7 @@ workPackages:
           integrationCheck:
             - screens/dashboard/Dashboard.tsx
             - 반응형 breakpoint 설정 (xs, sm, md, lg, xl)
+        execution: review
       - id: TSK-07-02
         title: KPI 카드 위젯
         category: development
@@ -1197,11 +1197,12 @@ workPackages:
           integrationCheck:
             - components/dashboard/KPICard.tsx
             - Statistic prefix/suffix로 아이콘/단위 표시
+        execution: review
       - id: TSK-07-03
         title: 차트 위젯
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1227,4 +1228,3 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
-        execution: start
