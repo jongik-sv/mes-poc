@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Background -->
+  <rect width="800" height="200" fill="#F5F5F5"/>
+
+  <!-- Title -->
+  <text x="20" y="30" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">Form - Inline Layout (Search Filter)</text>
+
+  <!-- Form Container -->
+  <rect x="20" y="50" width="760" height="100" fill="#FFFFFF" stroke="#D9D9D9" rx="4"/>
+
+  <!-- Form Title -->
+  <rect x="20" y="50" width="760" height="35" fill="#FAFAFA" stroke="#D9D9D9" rx="4"/>
+  <text x="40" y="73" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#333">Search Filters</text>
+
+  <!-- Inline Form Fields -->
+  <!-- Field 1: Name Input -->
+  <rect x="40" y="100" width="140" height="32" fill="#FFFFFF" stroke="#D9D9D9" rx="6"/>
+  <text x="52" y="121" font-family="Arial, sans-serif" font-size="12" fill="#BFBFBF">Name</text>
+
+  <!-- Field 2: Department Select -->
+  <rect x="195" y="100" width="150" height="32" fill="#FFFFFF" stroke="#D9D9D9" rx="6"/>
+  <text x="207" y="121" font-family="Arial, sans-serif" font-size="12" fill="#BFBFBF">Department</text>
+  <!-- Dropdown Arrow -->
+  <path d="M323 112 L329 118 L335 112" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+
+  <!-- Field 3: Status Select -->
+  <rect x="360" y="100" width="120" height="32" fill="#FFFFFF" stroke="#D9D9D9" rx="6"/>
+  <text x="372" y="121" font-family="Arial, sans-serif" font-size="12" fill="#BFBFBF">Status</text>
+  <!-- Dropdown Arrow -->
+  <path d="M458 112 L464 118 L470 112" fill="none" stroke="#BFBFBF" stroke-width="1.5"/>
+
+  <!-- Field 4: Date Range -->
+  <rect x="495" y="100" width="150" height="32" fill="#FFFFFF" stroke="#D9D9D9" rx="6"/>
+  <text x="507" y="121" font-family="Arial, sans-serif" font-size="12" fill="#BFBFBF">Start ~ End Date</text>
+  <!-- Calendar Icon -->
+  <rect x="620" y="107" width="12" height="11" fill="none" stroke="#BFBFBF" stroke-width="1" rx="1"/>
+  <line x1="623" y1="105" x2="623" y2="108" stroke="#BFBFBF" stroke-width="1"/>
+  <line x1="629" y1="105" x2="629" y2="108" stroke="#BFBFBF" stroke-width="1"/>
+
+  <!-- Search Button -->
+  <rect x="660" y="100" width="60" height="32" fill="#1677FF" stroke="#1677FF" rx="6"/>
+  <!-- Search Icon -->
+  <circle cx="682" cy="116" r="7" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="687" y1="121" x2="692" y2="126" stroke="#FFFFFF" stroke-width="2"/>
+
+  <!-- Reset Button -->
+  <rect x="730" y="100" width="40" height="32" fill="#FFFFFF" stroke="#D9D9D9" rx="6"/>
+  <!-- Reset Icon -->
+  <path d="M745 110 A6 6 0 1 1 751 116" fill="none" stroke="#666" stroke-width="1.5"/>
+  <path d="M745 107 L745 112 L750 112" fill="none" stroke="#666" stroke-width="1.5"/>
+
+  <!-- Footer Note -->
+  <text x="20" y="185" font-family="Arial, sans-serif" font-size="10" fill="#999">TSK-06-03 Form Template - Inline Layout (Search Filter)</text>
+</svg>
