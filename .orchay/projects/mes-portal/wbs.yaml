@@ -575,6 +575,7 @@ workPackages:
           integrationCheck:
             - localStorage 또는 UserPreference 테이블 사용
             - components/common/FavoriteMenu.tsx 파일 존재
+        execution: build
   - id: WP-04
     title: 인증 및 권한
     status: planned
@@ -648,7 +649,8 @@ workPackages:
         title: Auth.js 인증 설정
         category: development
         domain: backend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: critical
         assignee: "-"
         tags:
@@ -676,7 +678,6 @@ workPackages:
             - lib/auth.ts 또는 auth.ts 설정 파일
             - app/api/auth/[...nextauth]/route.ts
             - middleware.ts에 인증 미들웨어
-        execution: build
       - id: TSK-04-04
         title: 로그인 페이지
         category: development
