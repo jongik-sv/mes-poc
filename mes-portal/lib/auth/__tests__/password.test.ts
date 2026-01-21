@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest'
 import { hashPassword, verifyPassword } from '../password'
 
 describe('Password Utility', () => {

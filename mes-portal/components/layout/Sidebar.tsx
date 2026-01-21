@@ -3,7 +3,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Menu, Tooltip } from 'antd'
+import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import {
   DashboardOutlined,
@@ -25,7 +25,8 @@ import {
   DatabaseOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons'
-import type { ReactNode, Key } from 'react'
+import type { ReactNode } from 'react'
+import { FavoriteButton } from '@/components/common/FavoriteButton'
 
 // 아이콘 매핑
 const iconMap: Record<string, ReactNode> = {
@@ -60,6 +61,16 @@ export interface MenuItem {
   isActive: boolean
 }
 
+// 즐겨찾기 기능 props
+export interface FavoriteOptions {
+  /** 즐겨찾기 여부 확인 함수 */
+  isFavorite: (menuId: number) => boolean
+  /** 즐겨찾기 토글 함수 */
+  toggleFavorite: (menuId: number) => void
+  /** 즐겨찾기 추가 가능 여부 */
+  canAddFavorite: () => boolean
+}
+
 // Sidebar Props 인터페이스
 export interface SidebarProps {
   menus: MenuItem[]
@@ -68,6 +79,8 @@ export interface SidebarProps {
   openKeys?: string[]
   onMenuClick?: (menu: MenuItem) => void
   onOpenChange?: (openKeys: string[]) => void
+  /** 즐겨찾기 기능 (선택) */
+  favoriteOptions?: FavoriteOptions
 }
 
 // 아이콘 가져오기 헬퍼 함수
@@ -80,6 +93,7 @@ const getIcon = (iconName?: string): ReactNode => {
 const convertToMenuItems = (
   menus: MenuItem[],
   collapsed: boolean,
+  favoriteOptions?: FavoriteOptions,
   level: number = 1,
   maxLevel: number = 3
 ): MenuProps['items'] => {
@@ -91,13 +105,35 @@ const convertToMenuItems = (
     .map((menu) => {
       const hasChildren = menu.children && menu.children.length > 0
       const icon = getIcon(menu.icon)
+      const isLeaf = menu.path !== undefined && menu.path !== null
+      const menuIdNum = parseInt(menu.id, 10)
 
       // leaf 메뉴 또는 최대 레벨 도달
       if (!hasChildren || level >= maxLevel) {
+        // 즐겨찾기 버튼을 포함한 레이블
+        const labelWithFavorite =
+          favoriteOptions && isLeaf && !collapsed ? (
+            <div className="flex items-center justify-between w-full group">
+              <span>{menu.name}</span>
+              <FavoriteButton
+                isFavorite={favoriteOptions.isFavorite(menuIdNum)}
+                onToggle={() => favoriteOptions.toggleFavorite(menuIdNum)}
+                disabled={
+                  !favoriteOptions.isFavorite(menuIdNum) &&
+                  !favoriteOptions.canAddFavorite()
+                }
+                className="opacity-0 group-hover:opacity-100 transition-opacity ml-2"
+                showTooltip={true}
+              />
+            </div>
+          ) : (
+            menu.name
+          )
+
         const menuItem: NonNullable<MenuProps['items']>[number] = {
           key: menu.id,
           icon: level === 1 ? icon : null,
-          label: menu.name,
+          label: labelWithFavorite,
           'data-testid': `menu-${menu.code.toLowerCase()}`,
         }
         return menuItem
@@ -108,7 +144,13 @@ const convertToMenuItems = (
         key: menu.id,
         icon: level === 1 ? icon : null,
         label: menu.name,
-        children: convertToMenuItems(menu.children || [], collapsed, level + 1, maxLevel),
+        children: convertToMenuItems(
+          menu.children || [],
+          collapsed,
+          favoriteOptions,
+          level + 1,
+          maxLevel
+        ),
         'data-testid': `menu-${menu.code.toLowerCase()}`,
       }
       return subMenuItem
@@ -116,7 +158,10 @@ const convertToMenuItems = (
 }
 
 // 경로로 메뉴 찾기
-export const findMenuByPath = (menus: MenuItem[], path: string): MenuItem | null => {
+export const findMenuByPath = (
+  menus: MenuItem[],
+  path: string
+): MenuItem | null => {
   for (const menu of menus) {
     if (menu.path === path) return menu
     if (menu.children) {
@@ -128,7 +173,10 @@ export const findMenuByPath = (menus: MenuItem[], path: string): MenuItem | null
 }
 
 // ID로 메뉴 찾기
-export const findMenuById = (menus: MenuItem[], id: string): MenuItem | null => {
+export const findMenuById = (
+  menus: MenuItem[],
+  id: string
+): MenuItem | null => {
   for (const menu of menus) {
     if (menu.id === id) return menu
     if (menu.children) {
@@ -140,12 +188,19 @@ export const findMenuById = (menus: MenuItem[], id: string): MenuItem | null => 
 }
 
 // 메뉴의 상위 키 경로 찾기
-export const findParentKeys = (menus: MenuItem[], targetId: string, parents: string[] = []): string[] => {
+export const findParentKeys = (
+  menus: MenuItem[],
+  targetId: string,
+  parents: string[] = []
+): string[] => {
   for (const menu of menus) {
     if (menu.id === targetId) return parents
     if (menu.children) {
-      const found = findParentKeys(menu.children, targetId, [...parents, menu.id])
-      if (found.length > 0 || menu.children.some(child => child.id === targetId)) {
+      const found = findParentKeys(menu.children, targetId, [
+        ...parents,
+        menu.id,
+      ])
+      if (found.length > 0 || menu.children.some((child) => child.id === targetId)) {
         return found.length > 0 ? found : [...parents, menu.id]
       }
     }
@@ -160,11 +215,12 @@ export function Sidebar({
   openKeys = [],
   onMenuClick,
   onOpenChange,
+  favoriteOptions,
 }: SidebarProps) {
   // Ant Design Menu 아이템으로 변환
   const menuItems = useMemo(
-    () => convertToMenuItems(menus, collapsed),
-    [menus, collapsed]
+    () => convertToMenuItems(menus, collapsed, favoriteOptions),
+    [menus, collapsed, favoriteOptions]
   )
 
   // 메뉴 클릭 핸들러

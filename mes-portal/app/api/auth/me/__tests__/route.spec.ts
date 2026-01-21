@@ -1,10 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { NextResponse } from 'next/server'
+// Mock auth 함수 - 호이스팅을 위해 jest.fn() 직접 사용
+const mockAuth = jest.fn()
 
-// Mock auth 함수
-const mockAuth = vi.fn()
-
-vi.mock('@/auth', () => ({
+jest.mock('@/auth', () => ({
   auth: () => mockAuth(),
 }))
 
@@ -12,7 +9,7 @@ import { GET } from '../route'
 
 describe('GET /api/auth/me', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   it('should return user info when authenticated', async () => {

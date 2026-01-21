@@ -3,7 +3,6 @@
  * @description TSK-02-02 탭 바 컴포넌트 - TabBar 테스트
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TabBar } from '../TabBar';
@@ -78,7 +77,7 @@ function TabLoader({ tabs, activeTabId }: { tabs: Tab[]; activeTabId: string }) 
 
 describe('TabBar', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('렌더링', () => {

@@ -1,14 +1,14 @@
 // components/layout/__tests__/Header.test.tsx
 // Header 컴포넌트 단위 테스트
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Header } from '../Header'
 
 // next-themes 모킹
-const mockSetTheme = vi.fn()
-vi.mock('next-themes', () => ({
+const mockSetTheme = jest.fn()
+jest.mock('next-themes', () => ({
+  __esModule: true,
   useTheme: () => ({
     theme: 'light',
     setTheme: mockSetTheme,
@@ -17,14 +17,16 @@ vi.mock('next-themes', () => ({
 }))
 
 // next/link 모킹
-vi.mock('next/link', () => ({
+jest.mock('next/link', () => ({
+  __esModule: true,
   default: ({ children, href, ...props }: any) => (
     <a href={href} {...props}>{children}</a>
   ),
 }))
 
-// NotificationPanel 모킹
-vi.mock('@/components/common', () => ({
+// NotificationPanel, QuickMenu 모킹
+jest.mock('@/components/common', () => ({
+  __esModule: true,
   NotificationPanel: ({ open, notifications, onClose, onMarkAsRead, onMarkAllAsRead, onNavigate }: any) => (
     open ? (
       <div data-testid="mock-notification-panel">
@@ -33,18 +35,25 @@ vi.mock('@/components/common', () => ({
       </div>
     ) : null
   ),
+  QuickMenu: ({ favoriteMenus, onMenuClick, isLoading }: any) => (
+    <button data-testid="quick-menu-button" aria-label="빠른 메뉴 열기">
+      <span data-testid="star-icon">star</span>
+    </button>
+  ),
 }))
 
 // react-hotkeys-hook 모킹
 const hotkeyCallbacks: Record<string, Function> = {}
-vi.mock('react-hotkeys-hook', () => ({
+jest.mock('react-hotkeys-hook', () => ({
+  __esModule: true,
   useHotkeys: (keys: string, callback: Function) => {
     hotkeyCallbacks[keys] = callback
   },
 }))
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
+  __esModule: true,
   Button: ({ children, icon, onClick, type, title, ...props }: any) => (
     <button onClick={onClick} title={title} data-type={type} {...props}>
       {icon}
@@ -95,7 +104,8 @@ vi.mock('antd', () => ({
 }))
 
 // Ant Design Icons 모킹
-vi.mock('@ant-design/icons', () => ({
+jest.mock('@ant-design/icons', () => ({
+  __esModule: true,
   StarOutlined: () => <span data-testid="star-icon">star</span>,
   SearchOutlined: () => <span data-testid="search-icon">search</span>,
   BellOutlined: () => <span data-testid="bell-icon">bell</span>,
@@ -108,14 +118,14 @@ vi.mock('@ant-design/icons', () => ({
 
 describe('Header', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.useFakeTimers()
+    jest.clearAllMocks()
+    jest.useFakeTimers()
     // hotkeyCallbacks 초기화
     Object.keys(hotkeyCallbacks).forEach(key => delete hotkeyCallbacks[key])
   })
 
   afterEach(() => {
-    vi.useRealTimers()
+    jest.useRealTimers()
   })
 
   // UT-001: 로고 렌더링
@@ -182,7 +192,7 @@ describe('Header', () => {
 
       // 1초 후
       act(() => {
-        vi.advanceTimersByTime(1000)
+        jest.advanceTimersByTime(1000)
       })
 
       // 시간이 업데이트됨 (시간 형식 유지)
@@ -193,7 +203,7 @@ describe('Header', () => {
   // UT-005: 검색 버튼 클릭
   describe('UT-005: 검색 버튼 클릭', () => {
     it('검색 버튼 클릭 시 onSearchOpen 콜백이 호출되어야 함', async () => {
-      const onSearchOpen = vi.fn()
+      const onSearchOpen = jest.fn()
       render(<Header onSearchOpen={onSearchOpen} />)
 
       const searchButton = screen.getByTestId('search-button')
@@ -292,7 +302,7 @@ describe('Header', () => {
   // UT-010: 시계 1초 갱신 (BR-002)
   describe('UT-010: 시계 1초 갱신 (BR-002)', () => {
     it('setInterval이 1000ms 간격으로 설정되어야 함', () => {
-      const setIntervalSpy = vi.spyOn(global, 'setInterval')
+      const setIntervalSpy = jest.spyOn(global, 'setInterval')
       render(<Header />)
 
       expect(setIntervalSpy).toHaveBeenCalledWith(expect.any(Function), 1000)
@@ -300,7 +310,7 @@ describe('Header', () => {
     })
 
     it('컴포넌트 언마운트 시 interval이 정리되어야 함', () => {
-      const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
+      const clearIntervalSpy = jest.spyOn(global, 'clearInterval')
       const { unmount } = render(<Header />)
 
       unmount()
@@ -340,7 +350,7 @@ describe('Header', () => {
   // UT-013: Ctrl+K 단축키 (BR-005)
   describe('UT-013: Ctrl+K 단축키 (BR-005)', () => {
     it('Ctrl+K 단축키가 등록되어야 함', () => {
-      const onSearchOpen = vi.fn()
+      const onSearchOpen = jest.fn()
       render(<Header onSearchOpen={onSearchOpen} />)
 
       // useHotkeys가 호출되었는지 확인
@@ -348,11 +358,11 @@ describe('Header', () => {
     })
 
     it('Ctrl+K 단축키 호출 시 onSearchOpen이 실행되어야 함', () => {
-      const onSearchOpen = vi.fn()
+      const onSearchOpen = jest.fn()
       render(<Header onSearchOpen={onSearchOpen} />)
 
       // 단축키 콜백 직접 호출 (모킹된 환경)
-      const event = { preventDefault: vi.fn() }
+      const event = { preventDefault: jest.fn() }
       hotkeyCallbacks['ctrl+k, meta+k']?.(event)
 
       expect(event.preventDefault).toHaveBeenCalled()

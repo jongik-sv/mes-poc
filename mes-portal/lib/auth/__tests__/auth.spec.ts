@@ -1,4 +1,36 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
+// Jest mock 설정 - jest.fn()을 팩토리 내부에서 직접 사용
+jest.mock('bcrypt', () => ({
+  __esModule: true,
+  default: {
+    compare: jest.fn(),
+    hash: jest.fn(),
+  },
+  compare: jest.fn(),
+  hash: jest.fn(),
+}))
+
+jest.mock('@/lib/prisma', () => ({
+  prisma: {
+    user: {
+      findUnique: jest.fn(),
+    },
+  },
+  default: {
+    user: {
+      findUnique: jest.fn(),
+    },
+  },
+}))
+
+// Mock된 모듈 import
+import bcrypt from 'bcrypt'
+import { prisma } from '@/lib/prisma'
+import { authorizeCredentials, jwtCallback, sessionCallback } from '../auth.config'
+
+// Mock 함수 참조 (import 이후에 가져옴)
+const mockBcryptCompare = bcrypt.compare as jest.Mock
+const mockBcryptHash = bcrypt.hash as jest.Mock
+const mockUserFindUnique = prisma.user.findUnique as jest.Mock
 
 // Mock 데이터
 const mockAdminRole = {
@@ -39,42 +71,16 @@ const mockInactiveUser = {
   role: mockUserRole,
 }
 
-// Mock을 먼저 설정 (호이스팅)
-vi.mock('bcrypt', () => ({
-  default: {
-    compare: vi.fn(),
-    hash: vi.fn(),
-  },
-}))
-
-vi.mock('@/lib/prisma', () => ({
-  prisma: {
-    user: {
-      findUnique: vi.fn(),
-    },
-  },
-  default: {
-    user: {
-      findUnique: vi.fn(),
-    },
-  },
-}))
-
-// Mock된 모듈 import
-import bcrypt from 'bcrypt'
-import { prisma } from '@/lib/prisma'
-import { authorizeCredentials, jwtCallback, sessionCallback } from '../auth.config'
-
 describe('authorizeCredentials', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   // UT-001: 정상 로그인
   it('should return user object with valid credentials', async () => {
     // Arrange
-    ;(prisma.user.findUnique as Mock).mockResolvedValue(mockAdminUser)
-    ;(bcrypt.compare as Mock).mockResolvedValue(true)
+    ;mockUserFindUnique.mockResolvedValue(mockAdminUser)
+    ;mockBcryptCompare.mockResolvedValue(true)
 
     const credentials = { email: 'admin@test.com', password: 'test1234' }
 
@@ -98,7 +104,7 @@ describe('authorizeCredentials', () => {
   // UT-002: 존재하지 않는 이메일
   it('should return null for non-existent email', async () => {
     // Arrange
-    ;(prisma.user.findUnique as Mock).mockResolvedValue(null)
+    ;mockUserFindUnique.mockResolvedValue(null)
 
     const credentials = { email: 'notexist@test.com', password: 'test1234' }
 
@@ -113,8 +119,8 @@ describe('authorizeCredentials', () => {
   // UT-003: 잘못된 비밀번호
   it('should return null for invalid password', async () => {
     // Arrange
-    ;(prisma.user.findUnique as Mock).mockResolvedValue(mockAdminUser)
-    ;(bcrypt.compare as Mock).mockResolvedValue(false)
+    ;mockUserFindUnique.mockResolvedValue(mockAdminUser)
+    ;mockBcryptCompare.mockResolvedValue(false)
 
     const credentials = { email: 'admin@test.com', password: 'wrongpassword' }
 
@@ -129,7 +135,7 @@ describe('authorizeCredentials', () => {
   // UT-004: 비활성화된 계정
   it('should return null for inactive user', async () => {
     // Arrange
-    ;(prisma.user.findUnique as Mock).mockResolvedValue(mockInactiveUser)
+    ;mockUserFindUnique.mockResolvedValue(mockInactiveUser)
 
     const credentials = { email: 'inactive@test.com', password: 'test1234' }
 

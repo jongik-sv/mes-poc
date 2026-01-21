@@ -26,3 +26,7 @@ export type { ErrorBoundaryProps } from './ErrorBoundary'
 
 export { ErrorPage } from './ErrorPage'
 export type { ErrorPageProps, ErrorStatus } from './ErrorPage'
+
+// TSK-03-04: 즐겨찾기 관련 컴포넌트
+export { FavoriteButton } from './FavoriteButton'
+export { QuickMenu } from './QuickMenu'

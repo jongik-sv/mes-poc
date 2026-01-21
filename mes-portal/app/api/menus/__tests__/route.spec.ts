@@ -13,45 +13,46 @@
  * - UT-009: 비활성 사용자 403
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { NextResponse } from 'next/server'
 
-// Mock modules
-vi.mock('@/auth', () => ({
-  auth: vi.fn(),
+// Jest mock 설정 - jest.fn()을 팩토리 내부에서 직접 사용
+jest.mock('@/auth', () => ({
+  __esModule: true,
+  auth: jest.fn(),
 }))
 
-vi.mock('@/lib/prisma', () => ({
+jest.mock('@/lib/prisma', () => ({
+  __esModule: true,
   default: {
     user: {
-      findUnique: vi.fn(),
+      findUnique: jest.fn(),
     },
     menu: {
-      findMany: vi.fn(),
+      findMany: jest.fn(),
     },
     roleMenu: {
-      findMany: vi.fn(),
+      findMany: jest.fn(),
     },
   },
 }))
 
+import { GET } from '../route'
 import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
-import { GET } from '../route'
 
-// Type definitions for mocks
-const mockAuth = vi.mocked(auth)
-const mockPrismaUser = vi.mocked(prisma.user)
-const mockPrismaMenu = vi.mocked(prisma.menu)
-const mockPrismaRoleMenu = vi.mocked(prisma.roleMenu)
+// Mock 함수 참조 (import 이후에 가져옴)
+const mockAuth = auth as jest.Mock
+const mockPrismaUser = { findUnique: prisma.user.findUnique as jest.Mock }
+const mockPrismaMenu = { findMany: prisma.menu.findMany as jest.Mock }
+const mockPrismaRoleMenu = { findMany: prisma.roleMenu.findMany as jest.Mock }
 
 describe('GET /api/menus', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   afterEach(() => {
-    vi.resetAllMocks()
+    jest.resetAllMocks()
   })
 
   describe('UT-007: 인증 검사', () => {

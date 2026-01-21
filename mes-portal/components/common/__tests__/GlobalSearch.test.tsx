@@ -3,7 +3,6 @@
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { GlobalSearch, filterMenus, type SearchableMenuItem } from '../GlobalSearch'
 import { ConfigProvider } from 'antd'
 
@@ -90,9 +89,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -103,9 +102,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={false}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -120,9 +119,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -139,9 +138,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -161,9 +160,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -186,9 +185,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -208,9 +207,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -263,9 +262,9 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={multiResultMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -294,12 +293,12 @@ describe('GlobalSearch', () => {
   describe('UT-006: Enter로 선택', () => {
     it('Enter 키로 선택된 항목을 열고 onSelect가 호출된다', async () => {
       const user = userEvent.setup()
-      const onSelect = vi.fn()
+      const onSelect = jest.fn()
 
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
           onSelect={onSelect}
         />
@@ -325,12 +324,12 @@ describe('GlobalSearch', () => {
 
     it('클릭으로 항목을 선택할 수 있다', async () => {
       const user = userEvent.setup()
-      const onSelect = vi.fn()
+      const onSelect = jest.fn()
 
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={mockMenus}
           onSelect={onSelect}
         />
@@ -359,14 +358,14 @@ describe('GlobalSearch', () => {
   describe('UT-007: Escape로 닫기', () => {
     it('Escape 키를 누르면 onClose가 호출된다', async () => {
       const user = userEvent.setup()
-      const onClose = vi.fn()
+      const onClose = jest.fn()
 
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
           onClose={onClose}
           menus={mockMenus}
-          onSelect={vi.fn()}
+          onSelect={jest.fn()}
         />
       )
 
@@ -382,7 +381,7 @@ describe('GlobalSearch', () => {
   describe('UT-009: 폴더 메뉴 선택 불가', () => {
     it('path가 없는 폴더 메뉴는 선택해도 onSelect가 호출되지 않는다', async () => {
       const user = userEvent.setup()
-      const onSelect = vi.fn()
+      const onSelect = jest.fn()
 
       // 폴더 메뉴만 포함한 검색 결과
       const menusWithFolder: SearchableMenuItem[] = [
@@ -399,7 +398,7 @@ describe('GlobalSearch', () => {
       renderWithProvider(
         <GlobalSearch
           isOpen={true}
-          onClose={vi.fn()}
+          onClose={jest.fn()}
           menus={menusWithFolder}
           onSelect={onSelect}
         />

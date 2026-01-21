@@ -3,7 +3,6 @@
  * @description TSK-02-02 탭 바 컴포넌트 - TabItem 테스트
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TabItem } from '../TabItem';
@@ -21,12 +20,12 @@ describe('TabItem', () => {
   const defaultProps = {
     tab: defaultTab,
     isActive: false,
-    onClick: vi.fn(),
-    onClose: vi.fn(),
+    onClick: jest.fn(),
+    onClose: jest.fn(),
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('렌더링', () => {

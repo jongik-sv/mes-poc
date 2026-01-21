@@ -9,7 +9,6 @@
  * (시드 데이터가 이미 존재한다고 가정)
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { PrismaClient } from '../../lib/generated/prisma/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 

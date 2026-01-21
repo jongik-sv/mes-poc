@@ -1,13 +1,12 @@
 // components/common/__tests__/EmptyState.test.tsx
 // EmptyState 컴포넌트 단위 테스트 (TSK-05-01)
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { EmptyState } from '../EmptyState'
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Empty: ({ image, description, children, ...props }: any) => (
     <div data-testid="ant-empty" {...props}>
       {image && <div data-testid="empty-image">{image}</div>}
@@ -32,7 +31,7 @@ vi.mock('antd', () => ({
 }))
 
 // Ant Design Icons 모킹
-vi.mock('@ant-design/icons', () => ({
+jest.mock('@ant-design/icons', () => ({
   InboxOutlined: () => <span data-testid="inbox-icon">inbox</span>,
   SearchOutlined: () => <span data-testid="search-icon">search</span>,
   FilterOutlined: () => <span data-testid="filter-icon">filter</span>,
@@ -48,7 +47,7 @@ const renderWithUser = (ui: React.ReactElement) => {
 
 describe('EmptyState', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   // UT-009: 기본 빈 상태
@@ -97,7 +96,7 @@ describe('EmptyState', () => {
   // UT-011: 필터 초기화 버튼
   describe('UT-011: 필터 초기화 버튼', () => {
     it('calls onReset callback when filter reset button clicked', async () => {
-      const onReset = vi.fn()
+      const onReset = jest.fn()
       const { user } = renderWithUser(<EmptyState type="filter" onReset={onReset} />)
 
       await user.click(screen.getByTestId('empty-state-action'))
@@ -135,7 +134,7 @@ describe('EmptyState', () => {
   // UT-013: 액션 버튼 렌더링
   describe('UT-013: 액션 버튼 렌더링', () => {
     it('renders action button', async () => {
-      const onClick = vi.fn()
+      const onClick = jest.fn()
       const { user } = renderWithUser(
         <EmptyState action={<button onClick={onClick}>새로 추가</button>} />
       )
@@ -187,7 +186,7 @@ describe('EmptyState', () => {
     })
 
     it('action button is keyboard accessible', async () => {
-      const onAction = vi.fn()
+      const onAction = jest.fn()
       render(<EmptyState actionText="액션" onAction={onAction} />)
 
       const button = screen.getByTestId('empty-state-action')

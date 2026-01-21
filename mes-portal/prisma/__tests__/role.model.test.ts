@@ -1,4 +1,3 @@
-import { describe, it, expect, afterAll, beforeEach } from 'vitest'
 import { PrismaClient } from '../../lib/generated/prisma/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { hashPassword } from '../../lib/auth/password'

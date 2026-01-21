@@ -6,7 +6,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Button, Dropdown, Avatar, Badge, Breadcrumb } from 'antd'
 import type { MenuProps } from 'antd'
 import {
-  StarOutlined,
   SearchOutlined,
   BellOutlined,
   UserOutlined,
@@ -18,7 +17,8 @@ import {
 import { useTheme } from 'next-themes'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Link from 'next/link'
-import { NotificationPanel, Notification } from '@/components/common'
+import { NotificationPanel, Notification, QuickMenu } from '@/components/common'
+import type { FavoriteMenuItem } from '@/lib/types/favorites'
 
 interface BreadcrumbItem {
   title: string
@@ -38,6 +38,12 @@ interface HeaderProps {
   onSearchOpen?: () => void
   onNotificationNavigate?: (link: string, title: string) => void
   onLogout?: () => void
+  /** 즐겨찾기 메뉴 목록 (TSK-03-04) */
+  favoriteMenus?: FavoriteMenuItem[]
+  /** 즐겨찾기 메뉴 클릭 콜백 (TSK-03-04) */
+  onFavoriteMenuClick?: (menu: FavoriteMenuItem) => void
+  /** 즐겨찾기 로딩 상태 (TSK-03-04) */
+  isFavoriteLoading?: boolean
 }
 
 export function Header({
@@ -47,12 +53,16 @@ export function Header({
   onSearchOpen,
   onNotificationNavigate,
   onLogout,
+  favoriteMenus = [],
+  onFavoriteMenuClick,
+  isFavoriteLoading = false,
 }: HeaderProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [currentTime, setCurrentTime] = useState('')
   const [mounted, setMounted] = useState(false)
   const [notificationPanelOpen, setNotificationPanelOpen] = useState(false)
-  const [localNotifications, setLocalNotifications] = useState<Notification[]>(notifications)
+  const [localNotifications, setLocalNotifications] =
+    useState<Notification[]>(notifications)
   const notificationRef = useRef<HTMLDivElement>(null)
 
   // notifications prop이 변경되면 로컬 상태 업데이트
@@ -162,8 +172,13 @@ export function Header({
     [onNotificationNavigate]
   )
 
-  // 빠른 메뉴 (즐겨찾기) - 빈 상태
-  const quickMenuItems: MenuProps['items'] = []
+  // 즐겨찾기 메뉴 클릭 핸들러
+  const handleFavoriteMenuClick = useCallback(
+    (menu: FavoriteMenuItem) => {
+      onFavoriteMenuClick?.(menu)
+    },
+    [onFavoriteMenuClick]
+  )
 
   // 프로필 드롭다운 메뉴
   const profileMenuItems: MenuProps['items'] = [
@@ -207,14 +222,12 @@ export function Header({
           MES Portal
         </Link>
 
-        {/* 빠른 메뉴 */}
-        <Dropdown menu={{ items: quickMenuItems }} trigger={['click']}>
-          <Button
-            type="text"
-            icon={<StarOutlined />}
-            data-testid="quick-menu-button"
-          />
-        </Dropdown>
+        {/* 빠른 메뉴 (즐겨찾기) - TSK-03-04 */}
+        <QuickMenu
+          favoriteMenus={favoriteMenus}
+          onMenuClick={handleFavoriteMenuClick}
+          isLoading={isFavoriteLoading}
+        />
 
         {/* 구분선 */}
         <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />

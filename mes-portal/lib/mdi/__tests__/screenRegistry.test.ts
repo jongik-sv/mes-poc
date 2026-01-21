@@ -3,11 +3,10 @@
  * @description TSK-02-05 MDI 컨텐츠 영역 - screenRegistry 테스트
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('screenRegistry', () => {
   beforeEach(() => {
-    vi.resetModules();
+    jest.resetModules();
   });
 
   describe('TC-BR-04: 경로 매핑', () => {

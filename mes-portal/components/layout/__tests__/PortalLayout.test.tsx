@@ -1,12 +1,11 @@
 // components/layout/__tests__/PortalLayout.test.tsx
 // PortalLayout 컴포넌트 단위 테스트
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { PortalLayout } from '../PortalLayout'
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Layout: Object.assign(
     ({ children, className, style, ...props }: any) => (
       <div className={className} style={style} {...props}>{children}</div>
@@ -28,16 +27,16 @@ vi.mock('antd', () => ({
   ),
 }))
 
-vi.mock('@ant-design/icons', () => ({
+jest.mock('@ant-design/icons', () => ({
   MenuFoldOutlined: () => <span data-testid="menu-fold-icon">Fold</span>,
   MenuUnfoldOutlined: () => <span data-testid="menu-unfold-icon">Unfold</span>,
 }))
 
 describe('PortalLayout', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    localStorage.getItem = vi.fn().mockReturnValue(null)
-    localStorage.setItem = vi.fn()
+    jest.clearAllMocks()
+    localStorage.getItem = jest.fn().mockReturnValue(null)
+    localStorage.setItem = jest.fn()
 
     // innerWidth 기본값 설정 (데스크톱)
     Object.defineProperty(window, 'innerWidth', {

@@ -1,7 +1,6 @@
 // components/layout/__tests__/Sidebar.test.tsx
 // Sidebar 컴포넌트 단위 테스트
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { Sidebar, MenuItem, findMenuById, findMenuByPath, findParentKeys } from '../Sidebar'
 
@@ -114,7 +113,7 @@ const mockMenus3Level: MenuItem[] = [
 
 describe('Sidebar', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   // UT-001: 초기 렌더링 (펼침 상태)
@@ -219,7 +218,7 @@ describe('Sidebar', () => {
 
   // UT-006: 메뉴 클릭 핸들러 호출
   it('calls onMenuClick when leaf menu clicked', async () => {
-    const onMenuClick = vi.fn()
+    const onMenuClick = jest.fn()
 
     render(
       <Sidebar
@@ -248,7 +247,7 @@ describe('Sidebar', () => {
 
   // UT-007: 서브메뉴 펼침/접힘 핸들러
   it('calls onOpenChange when submenu expanded/collapsed', async () => {
-    const onOpenChange = vi.fn()
+    const onOpenChange = jest.fn()
 
     render(
       <Sidebar

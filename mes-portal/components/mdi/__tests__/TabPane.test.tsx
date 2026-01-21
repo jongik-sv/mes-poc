@@ -3,7 +3,6 @@
  * @description TSK-02-05 MDI 컨텐츠 영역 - TabPane 테스트
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { TabPane } from '../TabPane';
 
@@ -15,7 +14,7 @@ describe('TabPane', () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('TC-02-01: 비활성 탭 display:none', () => {

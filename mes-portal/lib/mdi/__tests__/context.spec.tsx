@@ -4,7 +4,6 @@
  */
 
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MDIProvider, useMDI } from '../context';
 import type { Tab } from '../types';
 
@@ -93,7 +92,7 @@ describe('MDIContext', () => {
 
     // UT-009: 최대 탭 초과
     it('최대 탭 개수 초과 시 추가 안됨', () => {
-      const onMaxTabsReached = vi.fn();
+      const onMaxTabsReached = jest.fn();
       const wrapper = ({ children }: { children: React.ReactNode }) => (
         <MDIProvider maxTabs={3} onMaxTabsReached={onMaxTabsReached}>
           {children}
@@ -122,7 +121,7 @@ describe('MDIContext', () => {
 
     // 잘못된 경로 형식 검증
     it('잘못된 경로 형식은 탭 열기 거부', () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
 
       act(() => {
@@ -326,7 +325,7 @@ describe('MDIContext', () => {
     });
 
     it('존재하지 않는 탭 ID는 무시', () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
 
       act(() => {
@@ -495,7 +494,7 @@ describe('MDIContext', () => {
     });
 
     it('존재하지 않는 탭 refreshTab 호출 시 아무 변화 없음', () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
       const { result } = renderHook(() => useMDI(), { wrapper: MDIProvider });
 
       act(() => {

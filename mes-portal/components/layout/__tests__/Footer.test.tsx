@@ -1,12 +1,11 @@
 // components/layout/__tests__/Footer.test.tsx
 // Footer 컴포넌트 단위 테스트 (TDD)
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Footer } from '../Footer'
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Layout: {
     Footer: ({ children, className, style, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <footer className={className} style={style} {...props}>{children}</footer>
@@ -16,9 +15,7 @@ vi.mock('antd', () => ({
 
 describe('Footer', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    // 환경변수 초기화
-    vi.stubEnv('NEXT_PUBLIC_APP_VERSION', undefined as unknown as string)
+    jest.clearAllMocks()
   })
 
   // UT-01: Footer 컴포넌트 렌더링

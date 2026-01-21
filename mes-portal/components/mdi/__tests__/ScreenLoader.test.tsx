@@ -3,12 +3,11 @@
  * @description TSK-02-05 MDI 컨텐츠 영역 - ScreenLoader 테스트
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Suspense } from 'react';
 
-// vi.mock은 파일 최상단에서 호출되어야 함
-vi.mock('@/lib/mdi/screenRegistry', () => ({
+// jest.mock은 파일 최상단에서 호출되어야 함
+jest.mock('@/lib/mdi/screenRegistry', () => ({
   screenRegistry: {
     '/dashboard': () =>
       Promise.resolve({
@@ -48,7 +47,7 @@ import { ScreenLoader } from '../ScreenLoader';
 
 describe('ScreenLoader', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('TC-03-01: 동적 로딩', () => {

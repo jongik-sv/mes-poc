@@ -4,41 +4,42 @@
  * 테스트 명세서(026-test-specification.md) 기반
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { MenuService, MenuServiceError } from '../menu.service'
-import { MenuErrorCode } from '@/lib/types/menu'
-import prisma from '@/lib/prisma'
-import type { Menu } from '@/lib/generated/prisma/client'
-
-// Mock Prisma
-vi.mock('@/lib/prisma', () => ({
+// Jest mock 설정 - jest.fn()을 팩토리 내부에서 직접 사용
+jest.mock('@/lib/prisma', () => ({
+  __esModule: true,
   default: {
     menu: {
-      findMany: vi.fn(),
-      findUnique: vi.fn(),
-      create: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
-      count: vi.fn(),
+      findMany: jest.fn(),
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+      count: jest.fn(),
     },
     roleMenu: {
-      findMany: vi.fn(),
+      findMany: jest.fn(),
     },
   },
 }))
 
-const mockPrisma = prisma as unknown as {
+import { MenuService, MenuServiceError } from '../menu.service'
+import { MenuErrorCode } from '@/lib/types/menu'
+import type { Menu } from '@/lib/generated/prisma/client'
+import prisma from '@/lib/prisma'
+
+// Mock 함수 참조 (import 이후에 가져옴)
+const mockPrisma = {
   menu: {
-    findMany: ReturnType<typeof vi.fn>
-    findUnique: ReturnType<typeof vi.fn>
-    create: ReturnType<typeof vi.fn>
-    update: ReturnType<typeof vi.fn>
-    delete: ReturnType<typeof vi.fn>
-    count: ReturnType<typeof vi.fn>
-  }
+    findMany: prisma.menu.findMany as jest.Mock,
+    findUnique: prisma.menu.findUnique as jest.Mock,
+    create: prisma.menu.create as jest.Mock,
+    update: prisma.menu.update as jest.Mock,
+    delete: prisma.menu.delete as jest.Mock,
+    count: prisma.menu.count as jest.Mock,
+  },
   roleMenu: {
-    findMany: ReturnType<typeof vi.fn>
-  }
+    findMany: prisma.roleMenu.findMany as jest.Mock,
+  },
 }
 
 describe('MenuService', () => {
@@ -46,11 +47,11 @@ describe('MenuService', () => {
 
   beforeEach(() => {
     menuService = new MenuService()
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   afterEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   describe('findAll', () => {

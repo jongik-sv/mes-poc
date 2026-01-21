@@ -1,12 +1,11 @@
 // components/common/__tests__/ComponentSkeleton.test.tsx
 // ComponentSkeleton 컴포넌트 단위 테스트 (TSK-05-01)
 
-import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ComponentSkeleton } from '../ComponentSkeleton'
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Skeleton: {
     Input: ({ active, style, size, ...props }: any) => (
       <div

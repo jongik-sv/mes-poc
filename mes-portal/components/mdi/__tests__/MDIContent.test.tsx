@@ -3,7 +3,6 @@
  * @description TSK-02-05 MDI 컨텐츠 영역 테스트
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import { ReactNode, useEffect } from 'react';
 import { MDIProvider, useMDI } from '@/lib/mdi';
@@ -11,7 +10,7 @@ import type { Tab } from '@/lib/mdi/types';
 import { MDIContent } from '../MDIContent';
 
 // Mock screenRegistry
-vi.mock('@/lib/mdi/screenRegistry', () => ({
+jest.mock('@/lib/mdi/screenRegistry', () => ({
   screenRegistry: {
     '/dashboard': () =>
       Promise.resolve({
@@ -89,7 +88,7 @@ describe('MDIContent', () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('TC-01-02: 빈 상태 표시', () => {

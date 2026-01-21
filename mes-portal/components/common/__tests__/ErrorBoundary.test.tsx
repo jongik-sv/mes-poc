@@ -1,7 +1,6 @@
 // components/common/__tests__/ErrorBoundary.test.tsx
 // ErrorBoundary 컴포넌트 단위 테스트 (TSK-05-01)
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ErrorBoundary } from '../ErrorBoundary'
@@ -27,12 +26,12 @@ describe('ErrorBoundary', () => {
   const originalConsoleError = console.error
 
   beforeEach(() => {
-    console.error = vi.fn()
+    console.error = jest.fn()
   })
 
   afterEach(() => {
     console.error = originalConsoleError
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   // UT-014: ErrorBoundary 에러 캐치
@@ -62,7 +61,7 @@ describe('ErrorBoundary', () => {
   // UT-015: ErrorBoundary 에러 콜백 호출
   describe('UT-015: 에러 콜백 호출', () => {
     it('calls onError callback with error info', () => {
-      const onError = vi.fn()
+      const onError = jest.fn()
 
       render(
         <ErrorBoundary onError={onError}>
@@ -78,7 +77,7 @@ describe('ErrorBoundary', () => {
     })
 
     it('filters sensitive information from error logs', () => {
-      const onError = vi.fn()
+      const onError = jest.fn()
       const errorWithSensitiveInfo = () => {
         const error = new Error('Error with password=secret123')
         throw error
@@ -140,7 +139,7 @@ describe('ErrorBoundary', () => {
     })
 
     it('renders fallbackRender function with error and reset', () => {
-      const fallbackRender = vi.fn(({ error, resetError }) => (
+      const fallbackRender = jest.fn(({ error, resetError }) => (
         <div data-testid="fallback-render">
           <span>{error.message}</span>
           <button onClick={resetError} data-testid="reset-btn">Reset</button>

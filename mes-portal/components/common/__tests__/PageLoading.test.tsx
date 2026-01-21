@@ -1,12 +1,11 @@
 // components/common/__tests__/PageLoading.test.tsx
 // PageLoading 컴포넌트 단위 테스트 (TSK-05-01)
 
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, act, waitFor } from '@testing-library/react'
 import { PageLoading } from '../PageLoading'
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Spin: ({ spinning, tip, size, children, ...props }: any) => (
     spinning !== false ? (
       <div
@@ -24,12 +23,12 @@ vi.mock('antd', () => ({
 
 describe('PageLoading', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
+    jest.useFakeTimers()
   })
 
   afterEach(() => {
-    vi.useRealTimers()
-    vi.clearAllMocks()
+    jest.useRealTimers()
+    jest.clearAllMocks()
   })
 
   // UT-001: PageLoading 로딩 표시
@@ -39,7 +38,7 @@ describe('PageLoading', () => {
 
       // 기본 delay(200ms)를 건너뛰기 위해 타이머 진행
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -62,7 +61,7 @@ describe('PageLoading', () => {
       render(<PageLoading tip="데이터 처리 중..." />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('spin-tip')).toHaveTextContent('데이터 처리 중...')
@@ -72,7 +71,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('spin-tip')).toHaveTextContent('로딩 중입니다...')
@@ -85,7 +84,7 @@ describe('PageLoading', () => {
       render(<PageLoading fullScreen />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -96,7 +95,7 @@ describe('PageLoading', () => {
       render(<PageLoading fullScreen={false} />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -112,7 +111,7 @@ describe('PageLoading', () => {
         render(<PageLoading size={size} />)
 
         await act(async () => {
-          vi.advanceTimersByTime(200)
+          jest.advanceTimersByTime(200)
         })
 
         const spinner = screen.getByTestId('spin-component')
@@ -128,14 +127,14 @@ describe('PageLoading', () => {
 
       // 100ms 시점에서는 스피너 미표시
       await act(async () => {
-        vi.advanceTimersByTime(100)
+        jest.advanceTimersByTime(100)
       })
 
       expect(screen.queryByTestId('page-loading')).not.toBeInTheDocument()
 
       // 200ms 이후 스피너 표시
       await act(async () => {
-        vi.advanceTimersByTime(100)
+        jest.advanceTimersByTime(100)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -145,13 +144,13 @@ describe('PageLoading', () => {
       render(<PageLoading delay={500} />)
 
       await act(async () => {
-        vi.advanceTimersByTime(400)
+        jest.advanceTimersByTime(400)
       })
 
       expect(screen.queryByTestId('page-loading')).not.toBeInTheDocument()
 
       await act(async () => {
-        vi.advanceTimersByTime(100)
+        jest.advanceTimersByTime(100)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -164,7 +163,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -175,7 +174,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -186,7 +185,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        vi.advanceTimersByTime(200)
+        jest.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')

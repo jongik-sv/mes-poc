@@ -1,15 +1,14 @@
 // components/common/__tests__/ErrorPage.test.tsx
 // ErrorPage 컴포넌트 단위 테스트 (TSK-05-01)
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ErrorPage } from '../ErrorPage'
 
 // next/navigation 모킹
-const mockPush = vi.fn()
-const mockBack = vi.fn()
-vi.mock('next/navigation', () => ({
+const mockPush = jest.fn()
+const mockBack = jest.fn()
+jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
     back: mockBack,
@@ -17,7 +16,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 // Ant Design 모킹
-vi.mock('antd', () => ({
+jest.mock('antd', () => ({
   Result: ({ status, title, subTitle, extra, icon, ...props }: any) => (
     <div data-testid="result" data-status={status} {...props}>
       {icon && <div data-testid="result-icon">{icon}</div>}
@@ -43,7 +42,7 @@ vi.mock('antd', () => ({
 }))
 
 // Ant Design Icons 모킹
-vi.mock('@ant-design/icons', () => ({
+jest.mock('@ant-design/icons', () => ({
   WifiOutlined: () => <span data-testid="wifi-icon">wifi</span>,
   ClockCircleOutlined: () => <span data-testid="clock-icon">clock</span>,
   LockOutlined: () => <span data-testid="lock-icon">lock</span>,
@@ -65,7 +64,7 @@ const renderWithUser = (ui: React.ReactElement) => {
 
 describe('ErrorPage', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
+    jest.clearAllMocks()
   })
 
   // UT-018: ErrorPage 404 렌더링
@@ -95,7 +94,7 @@ describe('ErrorPage', () => {
     })
 
     it('shows retry and home buttons on 500 page', () => {
-      render(<ErrorPage status={500} onRetry={vi.fn()} />)
+      render(<ErrorPage status={500} onRetry={jest.fn()} />)
 
       expect(screen.getByTestId('error-page-retry-btn')).toBeInTheDocument()
       expect(screen.getByTestId('error-page-home-btn')).toBeInTheDocument()
@@ -122,7 +121,7 @@ describe('ErrorPage', () => {
   // UT-021: ErrorPage 네트워크 에러
   describe('UT-021: 네트워크 에러', () => {
     it('renders network error page', () => {
-      render(<ErrorPage status="network" onRetry={vi.fn()} />)
+      render(<ErrorPage status="network" onRetry={jest.fn()} />)
 
       expect(screen.getByTestId('error-page-message')).toHaveTextContent('네트워크 연결을 확인해주세요')
       expect(screen.getByTestId('error-page-retry-btn')).toBeInTheDocument()
@@ -154,7 +153,7 @@ describe('ErrorPage', () => {
   // UT-022: ErrorPage 재시도 버튼
   describe('UT-022: 재시도 버튼', () => {
     it('calls onRetry when retry button clicked', async () => {
-      const onRetry = vi.fn()
+      const onRetry = jest.fn()
       const { user } = renderWithUser(<ErrorPage status={500} onRetry={onRetry} />)
 
       await user.click(screen.getByTestId('error-page-retry-btn'))
@@ -163,7 +162,7 @@ describe('ErrorPage', () => {
     })
 
     it('shows loading state on retry button', () => {
-      render(<ErrorPage status={500} onRetry={vi.fn()} retrying />)
+      render(<ErrorPage status={500} onRetry={jest.fn()} retrying />)
 
       const retryBtn = screen.getByTestId('error-page-retry-btn')
       expect(retryBtn).toHaveAttribute('data-loading', 'true')
@@ -181,7 +180,7 @@ describe('ErrorPage', () => {
     })
 
     it('calls onGoHome if provided instead of default navigation', async () => {
-      const onGoHome = vi.fn()
+      const onGoHome = jest.fn()
       const { user } = renderWithUser(<ErrorPage status={404} onGoHome={onGoHome} />)
 
       await user.click(screen.getByTestId('error-page-home-btn'))
@@ -202,7 +201,7 @@ describe('ErrorPage', () => {
     })
 
     it('calls onLogin if provided', async () => {
-      const onLogin = vi.fn()
+      const onLogin = jest.fn()
       const { user } = renderWithUser(<ErrorPage status={403} onLogin={onLogin} />)
 
       await user.click(screen.getByTestId('error-page-login-btn'))
