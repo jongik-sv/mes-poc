@@ -1,0 +1,194 @@
+{
+  "organizations": [
+    {
+      "id": "root",
+      "key": "root",
+      "name": "주식회사 A",
+      "title": "주식회사 A",
+      "code": "CORP",
+      "parentId": null,
+      "manager": "홍길동",
+      "contact": "02-1234-5678",
+      "headcount": 150,
+      "description": "종합 제조 기업",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2026-01-10T00:00:00Z",
+      "children": [
+        {
+          "id": "dept-mgmt",
+          "key": "dept-mgmt",
+          "name": "경영지원본부",
+          "title": "경영지원본부",
+          "code": "MGMT",
+          "parentId": "root",
+          "manager": "김영수",
+          "contact": "02-1234-5679",
+          "headcount": 30,
+          "description": "인사, 재무, 총무 등 경영 지원 업무",
+          "createdAt": "2024-01-15T00:00:00Z",
+          "updatedAt": "2026-01-08T00:00:00Z",
+          "children": [
+            {
+              "id": "dept-hr",
+              "key": "dept-hr",
+              "name": "인사팀",
+              "title": "인사팀",
+              "code": "HR",
+              "parentId": "dept-mgmt",
+              "manager": "박지영",
+              "contact": "02-1234-5681",
+              "headcount": 8,
+              "description": "인사 관리 및 채용 담당",
+              "createdAt": "2024-02-01T00:00:00Z",
+              "updatedAt": "2026-01-05T00:00:00Z"
+            },
+            {
+              "id": "dept-finance",
+              "key": "dept-finance",
+              "name": "재무팀",
+              "title": "재무팀",
+              "code": "FIN",
+              "parentId": "dept-mgmt",
+              "manager": "이철호",
+              "contact": "02-1234-5682",
+              "headcount": 10,
+              "description": "재무 관리 및 회계 담당",
+              "createdAt": "2024-02-01T00:00:00Z",
+              "updatedAt": "2026-01-04T00:00:00Z"
+            },
+            {
+              "id": "dept-admin",
+              "key": "dept-admin",
+              "name": "총무팀",
+              "title": "총무팀",
+              "code": "ADM",
+              "parentId": "dept-mgmt",
+              "manager": "최미나",
+              "contact": "02-1234-5683",
+              "headcount": 12,
+              "description": "시설 관리 및 총무 업무",
+              "createdAt": "2024-02-01T00:00:00Z",
+              "updatedAt": "2026-01-03T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "dept-prod",
+          "key": "dept-prod",
+          "name": "생산본부",
+          "title": "생산본부",
+          "code": "PROD",
+          "parentId": "root",
+          "manager": "정대현",
+          "contact": "02-1234-5690",
+          "headcount": 80,
+          "description": "제품 생산 및 품질 관리",
+          "createdAt": "2024-01-15T00:00:00Z",
+          "updatedAt": "2026-01-07T00:00:00Z",
+          "children": [
+            {
+              "id": "dept-prod1",
+              "key": "dept-prod1",
+              "name": "생산1팀",
+              "title": "생산1팀",
+              "code": "P1",
+              "parentId": "dept-prod",
+              "manager": "이철수",
+              "contact": "02-1234-5691",
+              "headcount": 25,
+              "description": "제품 A 생산 담당",
+              "createdAt": "2024-03-01T00:00:00Z",
+              "updatedAt": "2026-01-10T00:00:00Z"
+            },
+            {
+              "id": "dept-prod2",
+              "key": "dept-prod2",
+              "name": "생산2팀",
+              "title": "생산2팀",
+              "code": "P2",
+              "parentId": "dept-prod",
+              "manager": "강민호",
+              "contact": "02-1234-5692",
+              "headcount": 25,
+              "description": "제품 B 생산 담당",
+              "createdAt": "2024-03-01T00:00:00Z",
+              "updatedAt": "2026-01-09T00:00:00Z"
+            },
+            {
+              "id": "dept-qc",
+              "key": "dept-qc",
+              "name": "품질관리팀",
+              "title": "품질관리팀",
+              "code": "QC",
+              "parentId": "dept-prod",
+              "manager": "송주연",
+              "contact": "02-1234-5693",
+              "headcount": 15,
+              "description": "제품 품질 검사 및 관리",
+              "createdAt": "2024-03-01T00:00:00Z",
+              "updatedAt": "2026-01-06T00:00:00Z"
+            },
+            {
+              "id": "dept-tech",
+              "key": "dept-tech",
+              "name": "기술지원팀",
+              "title": "기술지원팀",
+              "code": "TECH",
+              "parentId": "dept-prod",
+              "manager": "윤상훈",
+              "contact": "02-1234-5694",
+              "headcount": 15,
+              "description": "생산 기술 지원 및 설비 관리",
+              "createdAt": "2024-04-01T00:00:00Z",
+              "updatedAt": "2026-01-02T00:00:00Z"
+            }
+          ]
+        },
+        {
+          "id": "dept-sales",
+          "key": "dept-sales",
+          "name": "영업본부",
+          "title": "영업본부",
+          "code": "SALES",
+          "parentId": "root",
+          "manager": "한정민",
+          "contact": "02-1234-5700",
+          "headcount": 40,
+          "description": "국내외 영업 및 마케팅",
+          "createdAt": "2024-01-15T00:00:00Z",
+          "updatedAt": "2026-01-05T00:00:00Z",
+          "children": [
+            {
+              "id": "dept-domestic",
+              "key": "dept-domestic",
+              "name": "국내영업팀",
+              "title": "국내영업팀",
+              "code": "DOM",
+              "parentId": "dept-sales",
+              "manager": "배성준",
+              "contact": "02-1234-5701",
+              "headcount": 20,
+              "description": "국내 시장 영업 담당",
+              "createdAt": "2024-04-01T00:00:00Z",
+              "updatedAt": "2026-01-04T00:00:00Z"
+            },
+            {
+              "id": "dept-overseas",
+              "key": "dept-overseas",
+              "name": "해외영업팀",
+              "title": "해외영업팀",
+              "code": "OVS",
+              "parentId": "dept-sales",
+              "manager": "장은희",
+              "contact": "02-1234-5702",
+              "headcount": 20,
+              "description": "해외 시장 영업 담당",
+              "createdAt": "2024-04-01T00:00:00Z",
+              "updatedAt": "2026-01-03T00:00:00Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
