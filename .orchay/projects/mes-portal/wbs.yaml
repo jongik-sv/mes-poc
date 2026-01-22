@@ -165,6 +165,7 @@ workPackages:
             - react-hotkeys-hook으로 Ctrl+K 단축키 등록
             - next-themes useTheme 훅 사용
             - 브레드크럼이 현재 메뉴 경로 표시
+        execution: test
       - id: TSK-01-03
         title: 사이드바 메뉴 컴포넌트
         category: development
@@ -1134,8 +1135,9 @@ workPackages:
         title: "[샘플] 설정 마법사"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: low
+        test-result: pass
         assignee: "-"
         tags:
           - sample
@@ -1155,7 +1157,180 @@ workPackages:
           integrationCheck:
             - screens/sample/SettingWizard.tsx
             - WizardTemplate 사용
-        execution: build
+      - id: TSK-06-10
+        title: "[샘플] 설비 모니터링 카드뷰"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: medium
+        assignee: "-"
+        tags:
+          - sample
+          - card-view
+          - monitoring
+        depends:
+          - TSK-00-02
+        requirements:
+          prdRef: PRD 4.1.1 카드뷰 샘플
+          items:
+            - 설비 상태 카드 그리드 (가동/정지/고장/점검)
+            - 상태별 색상 구분 (녹색/회색/빨강/노랑)
+            - 카드 클릭 시 상세 정보 Drawer
+            - 실시간 상태 갱신 시뮬레이션 (5초 간격)
+            - 필터링 (상태별, 라인별)
+          acceptance:
+            - 반응형 카드 그리드 (xs:1, sm:2, md:3, lg:4)
+            - 상태별 뱃지 및 색상 적용
+            - Drawer로 상세 정보 표시
+            - mock-data/equipment.json 데이터 사용
+          uiSpec:
+            - Ant Design Card, Row, Col
+            - Ant Design Badge, Tag
+            - Ant Design Drawer
+          integrationCheck:
+            - screens/sample/EquipmentMonitor.tsx
+            - components/sample/EquipmentCard.tsx
+            - mock-data/equipment.json 로드
+        execution: start
+      - id: TSK-06-11
+        title: "[샘플] 작업 일정 캘린더"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: medium
+        assignee: "-"
+        tags:
+          - sample
+          - calendar
+          - schedule
+        depends:
+          - TSK-00-02
+        requirements:
+          prdRef: PRD 4.1.1 캘린더 샘플
+          items:
+            - 월간/주간/일간 뷰 전환
+            - 작업 일정 표시 (색상 구분)
+            - 일정 클릭 시 상세 팝업
+            - 드래그로 일정 이동 (옵션)
+            - 새 일정 추가 모달
+          acceptance:
+            - 캘린더 렌더링 및 뷰 전환
+            - 일정 항목 클릭 시 상세 모달
+            - 일정 추가 폼 동작
+            - mock-data/schedule.json 데이터 사용
+          uiSpec:
+            - Ant Design Calendar 또는 FullCalendar
+            - Ant Design Modal
+          techSpec:
+            - "@fullcalendar/react (선택사항)"
+            - dayjs 날짜 처리
+          integrationCheck:
+            - screens/sample/WorkCalendar.tsx
+            - mock-data/schedule.json 로드
+      - id: TSK-06-12
+        title: "[샘플] 품질 검사 입력 폼"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: medium
+        assignee: "-"
+        tags:
+          - sample
+          - form
+          - dynamic
+        depends:
+          - TSK-06-03
+        requirements:
+          prdRef: PRD 4.1.1 동적 폼 샘플
+          items:
+            - 검사 유형 선택 시 동적 필드 렌더링
+            - 반복 항목 추가/삭제 (Form.List)
+            - 조건부 필드 표시 (검사 결과에 따른 추가 입력)
+            - 파일 첨부 (이미지 업로드)
+            - 폼 데이터 미리보기 및 제출
+          acceptance:
+            - 검사 유형별 다른 폼 필드 표시
+            - 동적 항목 추가/삭제 동작
+            - 조건부 필드 렌더링 (예: 불량 시 불량 사유 입력)
+            - 이미지 업로드 미리보기
+          uiSpec:
+            - Ant Design Form, Form.List
+            - Ant Design Upload
+            - Ant Design Segmented (검사 유형 선택)
+          integrationCheck:
+            - screens/sample/QualityInspection.tsx
+            - 조건부 렌더링 로직
+            - Form.List로 반복 항목 처리
+      - id: TSK-06-13
+        title: "[샘플] 조직/부서 트리"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: medium
+        assignee: "-"
+        tags:
+          - sample
+          - tree
+          - crud
+        depends:
+          - TSK-00-02
+        requirements:
+          prdRef: PRD 4.1.1 트리 관리 샘플
+          items:
+            - 계층형 트리 구조 표시
+            - 노드 추가/수정/삭제
+            - 드래그 앤 드롭으로 위치 이동
+            - 검색 및 필터링
+            - 노드 선택 시 우측에 상세 정보 표시
+          acceptance:
+            - 트리 렌더링 및 펼침/접힘
+            - 우클릭 컨텍스트 메뉴 (추가/수정/삭제)
+            - 드래그로 노드 이동
+            - 검색어 입력 시 트리 필터링
+          uiSpec:
+            - Ant Design Tree (draggable)
+            - Ant Design Dropdown (컨텍스트 메뉴)
+            - 좌우 분할 레이아웃
+          integrationCheck:
+            - screens/sample/OrganizationTree.tsx
+            - mock-data/organization.json 로드
+            - Tree onDrop 핸들러 구현
+      - id: TSK-06-14
+        title: "[샘플] 생산 계획 간트 차트"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: low
+        assignee: "-"
+        tags:
+          - sample
+          - gantt
+          - timeline
+        depends:
+          - TSK-00-02
+        requirements:
+          prdRef: PRD 4.1.1 간트 차트 샘플
+          items:
+            - 타임라인 형태의 일정 표시
+            - 작업 항목 바 (시작일~종료일)
+            - 의존성 연결선 (옵션)
+            - 확대/축소 (일/주/월 단위)
+            - 진행률 표시
+          acceptance:
+            - 간트 차트 렌더링
+            - 바 호버 시 상세 정보 툴팁
+            - 확대/축소 동작
+            - mock-data/production-plan.json 데이터 사용
+          uiSpec:
+            - 커스텀 타임라인 또는 라이브러리 사용
+            - Ant Design Slider (확대/축소)
+            - Ant Design Tooltip
+          techSpec:
+            - "@ant-design/charts (timeline) 또는 gantt-task-react"
+          integrationCheck:
+            - screens/sample/ProductionGantt.tsx
+            - mock-data/production-plan.json 로드
+            - 확대/축소 상태 관리
   - id: WP-07
     title: 대시보드
     status: planned
@@ -1253,4 +1428,4 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
-        execution: build
+        execution: verify
