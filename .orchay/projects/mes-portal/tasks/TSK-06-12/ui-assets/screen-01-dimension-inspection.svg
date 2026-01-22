@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 900">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .header { fill: #fafafa; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #000000d9; }
+      .text-sm { font-size: 12px; }
+      .text-md { font-size: 14px; }
+      .text-lg { font-size: 16px; }
+      .text-muted { fill: #00000073; }
+      .text-required { fill: #ff4d4f; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .input-focus { stroke: #1677ff; stroke-width: 2; }
+      .segmented { fill: #f5f5f5; rx: 8; }
+      .segmented-active { fill: #ffffff; stroke: #d9d9d9; }
+      .btn-primary { fill: #1677ff; rx: 6; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; rx: 6; }
+      .btn-text { fill: #ffffff; }
+      .tag-success { fill: #f6ffed; stroke: #b7eb8f; rx: 4; }
+      .tag-error { fill: #fff2f0; stroke: #ffccc7; rx: 4; }
+      .text-success { fill: #52c41a; }
+      .text-error { fill: #ff4d4f; }
+      .upload-area { fill: #fafafa; stroke: #d9d9d9; stroke-dasharray: 4,4; rx: 8; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="900"/>
+
+  <!-- Main Card -->
+  <rect class="card" x="20" y="20" width="760" height="860" rx="8"/>
+
+  <!-- Header -->
+  <rect class="header" x="20" y="20" width="760" height="50" rx="8"/>
+  <text class="text text-lg" x="40" y="52" font-weight="600">품질 검사 입력</text>
+  <rect class="btn-default" x="680" y="32" width="80" height="28"/>
+  <text class="text text-sm" x="705" y="50">초기화</text>
+
+  <!-- Segmented: 검사 유형 -->
+  <text class="text text-md" x="40" y="100">검사 유형</text>
+  <rect class="segmented" x="40" y="110" width="300" height="36"/>
+  <rect class="segmented-active" x="42" y="112" width="98" height="32" rx="6"/>
+  <text class="text text-sm" x="70" y="133">치수 검사</text>
+  <text class="text text-sm text-muted" x="162" y="133">외관 검사</text>
+  <text class="text text-sm text-muted" x="258" y="133">기능 검사</text>
+
+  <!-- 기본 정보 섹션 -->
+  <text class="text text-md" x="40" y="180" font-weight="500">기본 정보</text>
+
+  <!-- 제품코드 -->
+  <text class="text text-sm" x="40" y="205">제품코드 <tspan class="text-required">*</tspan></text>
+  <rect class="input" x="40" y="210" width="230" height="32"/>
+  <text class="text text-sm text-muted" x="50" y="231">PROD-001</text>
+
+  <!-- 로트번호 -->
+  <text class="text text-sm" x="290" y="205">로트번호 <tspan class="text-required">*</tspan></text>
+  <rect class="input" x="290" y="210" width="230" height="32"/>
+  <text class="text text-sm text-muted" x="300" y="231">LOT-20260122-001</text>
+
+  <!-- 검사일시 -->
+  <text class="text text-sm" x="40" y="265">검사일시 <tspan class="text-required">*</tspan></text>
+  <rect class="input" x="40" y="270" width="230" height="32"/>
+  <text class="text text-sm text-muted" x="50" y="291">2026-01-22 14:30</text>
+
+  <!-- 측정 항목 헤더 -->
+  <text class="text text-md" x="40" y="340" font-weight="500">측정 항목</text>
+  <rect class="btn-default" x="640" y="320" width="100" height="28"/>
+  <text class="text text-sm" x="655" y="338">+ 항목 추가</text>
+
+  <!-- 항목 #1 -->
+  <rect class="card" x="40" y="350" width="700" height="100" rx="6"/>
+  <text class="text text-sm" x="55" y="375" font-weight="500">#1</text>
+  <rect class="btn-default" x="700" y="358" width="28" height="28"/>
+  <text class="text text-sm text-error" x="709" y="377">🗑</text>
+
+  <text class="text text-sm" x="55" y="400">측정위치 <tspan class="text-required">*</tspan></text>
+  <rect class="input" x="55" y="405" width="90" height="28"/>
+  <text class="text text-sm" x="65" y="424">A</text>
+
+  <text class="text text-sm" x="160" y="400">기준값(mm)</text>
+  <rect class="input" x="160" y="405" width="90" height="28"/>
+  <text class="text text-sm" x="170" y="424">100</text>
+
+  <text class="text text-sm" x="265" y="400">허용오차</text>
+  <rect class="input" x="265" y="405" width="90" height="28"/>
+  <text class="text text-sm" x="275" y="424">±0.5</text>
+
+  <text class="text text-sm" x="370" y="400">측정값(mm)</text>
+  <rect class="input" x="370" y="405" width="90" height="28"/>
+  <text class="text text-sm" x="380" y="424">100.3</text>
+
+  <text class="text text-sm" x="475" y="400">판정</text>
+  <rect class="tag-success" x="475" y="405" width="60" height="28"/>
+  <text class="text text-sm text-success" x="490" y="424">✓ 합격</text>
+
+  <!-- 항목 #2 -->
+  <rect class="card" x="40" y="460" width="700" height="100" rx="6"/>
+  <text class="text text-sm" x="55" y="485" font-weight="500">#2</text>
+  <rect class="btn-default" x="700" y="468" width="28" height="28"/>
+  <text class="text text-sm text-error" x="709" y="487">🗑</text>
+
+  <text class="text text-sm" x="55" y="510">측정위치 <tspan class="text-required">*</tspan></text>
+  <rect class="input" x="55" y="515" width="90" height="28"/>
+  <text class="text text-sm" x="65" y="534">B</text>
+
+  <text class="text text-sm" x="160" y="510">기준값(mm)</text>
+  <rect class="input" x="160" y="515" width="90" height="28"/>
+  <text class="text text-sm" x="170" y="534">50</text>
+
+  <text class="text text-sm" x="265" y="510">허용오차</text>
+  <rect class="input" x="265" y="515" width="90" height="28"/>
+  <text class="text text-sm" x="275" y="534">±0.3</text>
+
+  <text class="text text-sm" x="370" y="510">측정값(mm)</text>
+  <rect class="input" x="370" y="515" width="90" height="28"/>
+  <text class="text text-sm" x="380" y="534">50.8</text>
+
+  <text class="text text-sm" x="475" y="510">판정</text>
+  <rect class="tag-error" x="475" y="515" width="70" height="28"/>
+  <text class="text text-sm text-error" x="487" y="534">✗ 불합격</text>
+
+  <!-- 첨부 이미지 -->
+  <text class="text text-md" x="40" y="600" font-weight="500">첨부 이미지</text>
+  <rect class="upload-area" x="40" y="610" width="700" height="100"/>
+  <text class="text text-sm text-muted" x="320" y="655">📁</text>
+  <text class="text text-sm text-muted" x="255" y="680">이미지를 드래그하거나 클릭하여 업로드</text>
+  <text class="text text-sm text-muted" x="280" y="700">(JPG, PNG / 최대 5MB / 최대 5개)</text>
+
+  <!-- 비고 -->
+  <text class="text text-md" x="40" y="745" font-weight="500">비고</text>
+  <rect class="input" x="40" y="755" width="700" height="60"/>
+  <text class="text text-sm text-muted" x="50" y="790">검사 관련 메모...</text>
+  <text class="text text-sm text-muted" x="700" y="830">0/500</text>
+
+  <!-- 버튼 영역 -->
+  <rect class="btn-default" x="500" y="840" width="80" height="32"/>
+  <text class="text text-sm" x="520" y="861">미리보기</text>
+
+  <rect class="btn-default" x="590" y="840" width="60" height="32"/>
+  <text class="text text-sm" x="608" y="861">취소</text>
+
+  <rect class="btn-primary" x="660" y="840" width="80" height="32"/>
+  <text class="text text-sm btn-text" x="680" y="861">💾 저장</text>
+</svg>
