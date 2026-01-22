@@ -1,0 +1,22 @@
+{
+  "defectTypes": [
+    { "value": "surface", "label": "표면불량" },
+    { "value": "dimension", "label": "치수불량" },
+    { "value": "function", "label": "기능불량" },
+    { "value": "material", "label": "재질불량" },
+    { "value": "other", "label": "기타" }
+  ],
+  "inspectionAreas": [
+    { "value": "external", "label": "외부 표면" },
+    { "value": "internal", "label": "내부" },
+    { "value": "edge", "label": "모서리" },
+    { "value": "connection", "label": "연결부" }
+  ],
+  "checkItems": [
+    { "value": "scratch", "label": "스크래치" },
+    { "value": "dent", "label": "찍힘" },
+    { "value": "stain", "label": "얼룩" },
+    { "value": "crack", "label": "균열" },
+    { "value": "discolor", "label": "변색" }
+  ]
+}

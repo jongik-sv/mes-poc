@@ -1161,7 +1161,7 @@ workPackages:
         title: "[샘플] 설비 모니터링 카드뷰"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1191,11 +1191,12 @@ workPackages:
             - screens/sample/EquipmentMonitor.tsx
             - components/sample/EquipmentCard.tsx
             - mock-data/equipment.json 로드
+        execution: build
       - id: TSK-06-11
         title: "[샘플] 작업 일정 캘린더"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1226,11 +1227,13 @@ workPackages:
           integrationCheck:
             - screens/sample/WorkCalendar.tsx
             - mock-data/schedule.json 로드
+        execution: build
       - id: TSK-06-12
         title: "[샘플] 품질 검사 입력 폼"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -1260,12 +1263,11 @@ workPackages:
             - screens/sample/QualityInspection.tsx
             - 조건부 렌더링 로직
             - Form.List로 반복 항목 처리
-        execution: build
       - id: TSK-06-13
         title: "[샘플] 조직/부서 트리"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -1295,7 +1297,8 @@ workPackages:
             - screens/sample/OrganizationTree.tsx
             - mock-data/organization.json 로드
             - Tree onDrop 핸들러 구현
-        execution: build
+        execution: verify
+        test-result: pass
       - id: TSK-06-14
         title: "[샘플] 생산 계획 간트 차트"
         category: development
@@ -1332,6 +1335,7 @@ workPackages:
             - screens/sample/ProductionGantt.tsx
             - mock-data/production-plan.json 로드
             - 확대/축소 상태 관리
+        execution: verify
       - id: TSK-06-15
         title: "[샘플] 재고 현황 조회"
         category: development

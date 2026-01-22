@@ -136,6 +136,60 @@
           "icon": "FundProjectionScreenOutlined",
           "sortOrder": 3,
           "isActive": true
+        },
+        {
+          "id": "6-4",
+          "code": "SAMPLE_WORK_CALENDAR",
+          "name": "작업 일정 캘린더",
+          "path": "/sample/work-calendar",
+          "icon": "HistoryOutlined",
+          "sortOrder": 4,
+          "isActive": true
+        },
+        {
+          "id": "6-5",
+          "code": "SAMPLE_ORGANIZATION_TREE",
+          "name": "조직/부서 트리",
+          "path": "/sample/organization-tree",
+          "icon": "TeamOutlined",
+          "sortOrder": 5,
+          "isActive": true
+        },
+        {
+          "id": "6-6",
+          "code": "SAMPLE_PRODUCTION_GANTT",
+          "name": "생산 계획 간트",
+          "path": "/sample/production-gantt",
+          "icon": "BarChartOutlined",
+          "sortOrder": 6,
+          "isActive": true
+        },
+        {
+          "id": "6-7",
+          "code": "SAMPLE_INVENTORY_DETAIL",
+          "name": "재고 현황 조회",
+          "path": "/sample/inventory-detail",
+          "icon": "DatabaseOutlined",
+          "sortOrder": 7,
+          "isActive": true
+        },
+        {
+          "id": "6-8",
+          "code": "SAMPLE_EQUIPMENT_MONITOR",
+          "name": "설비 모니터링",
+          "path": "/sample/equipment-monitor",
+          "icon": "MonitorOutlined",
+          "sortOrder": 8,
+          "isActive": true
+        },
+        {
+          "id": "6-9",
+          "code": "SAMPLE_QUALITY_INSPECTION",
+          "name": "품질 검사 입력",
+          "path": "/sample/quality-inspection",
+          "icon": "FormOutlined",
+          "sortOrder": 9,
+          "isActive": true
         }
       ]
     },
