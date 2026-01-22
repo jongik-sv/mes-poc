@@ -12,3 +12,7 @@ export { DetailTemplate } from './DetailTemplate'
 // 입력/수정 폼 템플릿 (TSK-06-03)
 export * from './FormTemplate'
 export { FormTemplate } from './FormTemplate'
+
+// 마스터-디테일 화면 템플릿 (TSK-06-04)
+export * from './MasterDetailTemplate'
+export { MasterDetailTemplate } from './MasterDetailTemplate'
