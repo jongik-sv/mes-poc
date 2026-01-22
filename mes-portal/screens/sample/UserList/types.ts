@@ -15,6 +15,7 @@ export type UserRole = 'ADMIN' | 'MANAGER' | 'USER'
  * 사용자 정보 인터페이스
  */
 export interface User {
+  [key: string]: unknown
   id: string
   name: string
   email: string

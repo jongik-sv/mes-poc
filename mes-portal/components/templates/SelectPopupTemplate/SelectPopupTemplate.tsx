@@ -374,13 +374,15 @@ export function SelectPopupTemplate<T extends Record<string, unknown>>({
           rowKey={rowKey as string}
           loading={loading}
           rowSelection={rowSelection}
-          onRow={(record) => ({
-            onClick: () => handleRowClick(record),
-            style: { cursor: !multiple && permissions.canSelect ? 'pointer' : 'default' },
-            className: !multiple && internalSelectedKeys.includes(getRowKey(record))
-              ? 'ant-table-row-selected'
-              : '',
-          })}
+          onRow={(record) =>
+            ({
+              onClick: () => handleRowClick(record),
+              style: { cursor: !multiple && permissions.canSelect ? 'pointer' : 'default' },
+              className: !multiple && internalSelectedKeys.includes(getRowKey(record))
+                ? 'ant-table-row-selected'
+                : '',
+            }) as React.HTMLAttributes<HTMLTableRowElement>
+          }
           onChange={handleTableChange}
           locale={{ emptyText: renderEmpty() }}
           size="small"

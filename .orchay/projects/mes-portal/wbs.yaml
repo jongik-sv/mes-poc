@@ -1380,7 +1380,7 @@ workPackages:
         title: "[샘플] 작업 지시 등록"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:

@@ -132,7 +132,7 @@
           "id": "6-3",
           "code": "SAMPLE_WIZARD",
           "name": "설정 마법사",
-          "path": "/sample/wizard",
+          "path": "/sample/setting-wizard",
           "icon": "FundProjectionScreenOutlined",
           "sortOrder": 3,
           "isActive": true
@@ -189,6 +189,15 @@
           "path": "/sample/quality-inspection",
           "icon": "FormOutlined",
           "sortOrder": 9,
+          "isActive": true
+        },
+        {
+          "id": "6-10",
+          "code": "SAMPLE_MATERIAL_HISTORY",
+          "name": "자재 입출고 내역",
+          "path": "/sample/material-history",
+          "icon": "SwapOutlined",
+          "sortOrder": 10,
           "isActive": true
         }
       ]

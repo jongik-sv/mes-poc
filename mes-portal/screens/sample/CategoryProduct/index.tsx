@@ -203,9 +203,11 @@ export function CategoryProduct({
               showSizeChanger: true,
               showTotal: (total) => `총 ${total}건`,
             }}
-            onRow={(record) => ({
-              'data-testid': `product-row-${record.id}`,
-            })}
+            onRow={(record) =>
+              ({
+                'data-testid': `product-row-${record.id}`,
+              }) as React.HTMLAttributes<HTMLTableRowElement>
+            }
           />
         </div>
       ) : (

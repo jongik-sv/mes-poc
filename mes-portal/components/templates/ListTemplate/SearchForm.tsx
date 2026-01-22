@@ -89,6 +89,11 @@ function renderField(field: SearchFieldDefinition, value: unknown, onChange: (v:
       return (
         <RangePicker
           {...commonProps}
+          placeholder={
+            (commonProps.placeholder
+              ? [commonProps.placeholder, commonProps.placeholder]
+              : undefined) as [string, string] | undefined
+          }
           value={value as any}
           onChange={onChange}
           data-testid={`search-${field.name}-daterange`}

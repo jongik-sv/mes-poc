@@ -81,3 +81,7 @@ export function CodeManageScreen() {
 export function SettingWizardScreen() {
   return <PlaceholderScreen title="설정 마법사" description="설정 마법사 화면은 현재 개발 중입니다." />;
 }
+
+export function WorkCalendarScreen() {
+  return <PlaceholderScreen title="작업 일정 캘린더" description="작업 일정 캘린더 화면은 현재 개발 중입니다." />;
+}

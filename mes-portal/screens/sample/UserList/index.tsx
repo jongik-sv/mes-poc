@@ -6,7 +6,8 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { Tag, message, Empty, Button } from 'antd'
 import { ListTemplate } from '@/components/templates/ListTemplate'
-import type { SearchFieldDefinition, DataTableColumn } from '@/components/templates/ListTemplate'
+import type { SearchFieldDefinition } from '@/components/templates/ListTemplate'
+import type { DataTableColumn } from '@/components/common/DataTable'
 import dayjs from 'dayjs'
 import { useUserList, filterUsers } from './useUserList'
 import { UserDetailModal } from './UserDetailModal'
@@ -236,9 +237,6 @@ export function UserList() {
           type: 'checkbox',
           selectedRowKeys,
           onChange: handleRowSelectionChange,
-          getCheckboxProps: (record) => ({
-            'data-testid': `row-checkbox-${record.id}`,
-          }),
         }}
 
         // 액션

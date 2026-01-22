@@ -332,8 +332,12 @@ export function ListTemplate<T extends Record<string, unknown>>({
         >
           <Modal
             open={deleteConfirmVisible}
-            title="삭제 확인"
-            icon={<ExclamationCircleFilled />}
+            title={
+              <>
+                <ExclamationCircleFilled className="mr-2 text-yellow-500" />
+                삭제 확인
+              </>
+            }
             onOk={handleDeleteConfirm}
             onCancel={handleDeleteCancel}
             okText="삭제"

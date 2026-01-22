@@ -82,7 +82,7 @@ export default function Home() {
               <div className="mt-2">
                 <DatePickerField
                   value={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
+                  onChange={(date) => setSelectedDate(date as Dayjs | null)}
                   placeholder="날짜를 선택하세요"
                   presets={datePresets}
                   data-testid="date-picker"
@@ -99,7 +99,7 @@ export default function Home() {
               <div className="mt-2">
                 <RangePickerField
                   value={dateRange}
-                  onChange={(dates) => setDateRange(dates)}
+                  onChange={(dates) => setDateRange(dates as [Dayjs, Dayjs] | null)}
                   presets={rangePresets}
                   data-testid="range-picker"
                 />

@@ -60,3 +60,4 @@ nul
 
 .playwright-mcp
 .orchay/logs/launcher.log
+.orchay/logs/orchay.log
