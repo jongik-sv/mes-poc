@@ -23,6 +23,43 @@ afterAll(() => {
 // Prisma Mock
 vi.mock('@/lib/prisma')
 
+// Ant Design theme.useToken mock
+const mockToken = {
+  colorPrimary: '#2563EB',
+  colorPrimaryHover: '#1D4ED8',
+  colorPrimaryBg: '#DBEAFE',
+  colorSuccess: '#16A34A',
+  colorWarning: '#D97706',
+  colorError: '#DC2626',
+  colorErrorBg: '#FEE2E2',
+  colorInfo: '#0284C7',
+  colorText: '#0F172A',
+  colorTextSecondary: '#475569',
+  colorTextTertiary: '#64748B',
+  colorTextQuaternary: '#94A3B8',
+  colorBgContainer: '#FFFFFF',
+  colorBgElevated: '#FFFFFF',
+  colorBgLayout: '#F8FAFC',
+  colorBorder: '#E2E8F0',
+  colorBorderSecondary: '#F1F5F9',
+  colorFill: '#F1F5F9',
+  colorFillSecondary: '#F8FAFC',
+  borderRadius: 6,
+  boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+  boxShadowSecondary: '0 6px 16px 0 rgba(0, 0, 0, 0.08)',
+}
+
+vi.mock('antd', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual as object,
+    theme: {
+      ...(actual as { theme: object }).theme,
+      useToken: () => ({ token: mockToken }),
+    },
+  }
+})
+
 // matchMedia mock
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

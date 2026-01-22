@@ -28,7 +28,9 @@ function LoadingFallback() {
       data-testid="mdi-screen-loading"
       className="flex items-center justify-center h-full"
     >
-      <Spin size="large" tip="화면을 불러오는 중..." />
+      <Spin size="large" tip="화면을 불러오는 중...">
+        <div className="w-48 h-24" />
+      </Spin>
     </div>
   );
 }

@@ -5,6 +5,18 @@ import { vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { PortalLayout } from '../PortalLayout'
 
+// Mock token 값
+const mockToken = {
+  colorPrimary: '#2563EB',
+  colorBgContainer: '#FFFFFF',
+  colorBgLayout: '#F8FAFC',
+  colorBorder: '#E2E8F0',
+  colorTextSecondary: '#475569',
+  colorTextTertiary: '#64748B',
+  colorFillSecondary: '#F8FAFC',
+  boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+}
+
 // Ant Design 모킹
 vi.mock('antd', () => ({
   Layout: Object.assign(
@@ -27,6 +39,9 @@ vi.mock('antd', () => ({
     }
   ),
   Tooltip: ({ children }: any) => children,
+  theme: {
+    useToken: () => ({ token: mockToken }),
+  },
 }))
 
 vi.mock('@ant-design/icons', () => ({

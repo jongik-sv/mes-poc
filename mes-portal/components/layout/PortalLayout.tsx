@@ -2,7 +2,7 @@
 // MES Portal 기본 레이아웃 컴포넌트 - Enterprise Design
 'use client'
 
-import { Layout, Tooltip } from 'antd'
+import { Layout, Tooltip, theme } from 'antd'
 import { useState, useEffect, ReactNode } from 'react'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 
@@ -36,6 +36,7 @@ export function PortalLayout({
   footer,
   onCollapsedChange,
 }: PortalLayoutProps) {
+  const { token } = theme.useToken()
   const [collapsed, setCollapsed] = useState(false)
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('desktop')
   const [mounted, setMounted] = useState(false)
@@ -104,9 +105,9 @@ export function PortalLayout({
         style={{
           height: 'var(--header-height)',
           lineHeight: 'var(--header-height)',
-          backgroundColor: 'var(--color-gray-50)',
-          borderBottom: '1px solid var(--color-gray-200)',
-          boxShadow: 'var(--shadow-sm)',
+          backgroundColor: token.colorBgContainer,
+          borderBottom: `1px solid ${token.colorBorder}`,
+          boxShadow: token.boxShadow,
         }}
         data-testid="portal-header"
       >
@@ -117,15 +118,15 @@ export function PortalLayout({
             className="mr-4 p-2 rounded-md transition-colors duration-200 cursor-pointer"
             style={{
               backgroundColor: 'transparent',
-              color: 'var(--color-gray-600)',
+              color: token.colorTextSecondary,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'
-              e.currentTarget.style.color = 'var(--color-primary)'
+              e.currentTarget.style.backgroundColor = token.colorFillSecondary
+              e.currentTarget.style.color = token.colorPrimary
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent'
-              e.currentTarget.style.color = 'var(--color-gray-600)'
+              e.currentTarget.style.color = token.colorTextSecondary
             }}
             aria-label={collapsed ? '사이드바 펼치기' : '사이드바 접기'}
             aria-expanded={!collapsed}
@@ -156,8 +157,8 @@ export function PortalLayout({
             top: 'var(--header-height)',
             height: 'calc(100vh - var(--header-height))',
             overflow: 'auto',
-            backgroundColor: 'var(--color-gray-50)',
-            borderRight: '1px solid var(--color-gray-200)',
+            backgroundColor: token.colorBgContainer,
+            borderRight: `1px solid ${token.colorBorder}`,
           }}
           role="navigation"
           aria-expanded={!collapsed}
@@ -179,8 +180,8 @@ export function PortalLayout({
               className="sticky top-0 z-30"
               style={{
                 height: 'var(--tab-bar-height)',
-                backgroundColor: 'var(--color-gray-50)',
-                borderBottom: '1px solid var(--color-gray-200)',
+                backgroundColor: token.colorBgContainer,
+                borderBottom: `1px solid ${token.colorBorder}`,
               }}
               data-testid="portal-tabbar"
             >
@@ -195,7 +196,7 @@ export function PortalLayout({
               minHeight: tabBar
                 ? 'calc(100vh - var(--header-height) - var(--tab-bar-height) - var(--footer-height))'
                 : 'calc(100vh - var(--header-height) - var(--footer-height))',
-              backgroundColor: 'var(--background)',
+              backgroundColor: token.colorBgLayout,
             }}
             data-testid="portal-content"
           >
@@ -209,9 +210,9 @@ export function PortalLayout({
               height: 'var(--footer-height)',
               padding: '8px 24px',
               lineHeight: '20px',
-              backgroundColor: 'var(--color-gray-50)',
-              borderTop: '1px solid var(--color-gray-200)',
-              color: 'var(--color-gray-500)',
+              backgroundColor: token.colorBgContainer,
+              borderTop: `1px solid ${token.colorBorder}`,
+              color: token.colorTextTertiary,
             }}
             data-testid="portal-footer"
           >

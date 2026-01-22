@@ -7,6 +7,7 @@
 
 import { type MouseEvent, type KeyboardEvent, useCallback } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
+import { theme } from 'antd';
 import type { Tab } from '@/lib/mdi/types';
 import { TabIcon } from './TabIcon';
 
@@ -25,6 +26,8 @@ export interface TabItemProps {
  * 개별 탭 아이템 컴포넌트
  */
 export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
+  const { token } = theme.useToken();
+
   const handleClose = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -53,19 +56,19 @@ export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
       onKeyDown={handleKeyDown}
       className="flex items-center gap-2 px-3 h-8 mx-0.5 rounded cursor-pointer select-none transition-colors duration-200"
       style={{
-        backgroundColor: isActive ? 'var(--color-bg-container)' : 'var(--color-gray-100)',
-        color: isActive ? 'var(--color-text-base)' : 'var(--color-text-secondary)',
+        backgroundColor: isActive ? token.colorBgContainer : token.colorFillSecondary,
+        color: isActive ? token.colorText : token.colorTextSecondary,
         fontWeight: isActive ? 500 : 400,
-        borderBottom: isActive ? '2px solid var(--color-primary)' : 'none',
+        borderBottom: isActive ? `2px solid ${token.colorPrimary}` : 'none',
       }}
       onMouseEnter={(e) => {
         if (!isActive) {
-          e.currentTarget.style.backgroundColor = 'var(--color-gray-200)';
+          e.currentTarget.style.backgroundColor = token.colorFill;
         }
       }}
       onMouseLeave={(e) => {
         if (!isActive) {
-          e.currentTarget.style.backgroundColor = 'var(--color-gray-100)';
+          e.currentTarget.style.backgroundColor = token.colorFillSecondary;
         }
       }}
     >
@@ -89,13 +92,13 @@ export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
           aria-label={`${tab.title} 탭 닫기`}
           onClick={handleClose}
           className="flex items-center justify-center w-4 h-4 rounded transition-colors duration-150 flex-shrink-0"
-          style={{ color: 'var(--color-gray-400)' }}
+          style={{ color: token.colorTextQuaternary }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--color-error)';
-            e.currentTarget.style.backgroundColor = 'var(--color-error-light)';
+            e.currentTarget.style.color = token.colorError;
+            e.currentTarget.style.backgroundColor = token.colorErrorBg;
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'var(--color-gray-400)';
+            e.currentTarget.style.color = token.colorTextQuaternary;
             e.currentTarget.style.backgroundColor = 'transparent';
           }}
         >

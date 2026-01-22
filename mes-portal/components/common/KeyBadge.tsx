@@ -3,6 +3,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { theme } from 'antd'
 import { getModifierKey, isMacPlatform } from '@/lib/hooks/useGlobalHotkeys'
 
 export interface KeyBadgeProps {
@@ -56,6 +57,8 @@ export function KeyBadge({
   size = 'default',
   platform = 'auto',
 }: KeyBadgeProps) {
+  const { token } = theme.useToken()
+
   const displayKeys = useMemo(() => {
     const isMac =
       platform === 'mac' || (platform === 'auto' && isMacPlatform())
@@ -96,9 +99,9 @@ export function KeyBadge({
               ${sizeClasses[size]}
             `}
             style={{
-              backgroundColor: 'var(--key-badge-bg, #f0f0f0)',
-              borderColor: 'var(--key-badge-border, #d9d9d9)',
-              color: 'var(--key-badge-text, #595959)',
+              backgroundColor: token.colorFillSecondary,
+              borderColor: token.colorBorder,
+              color: token.colorTextSecondary,
             }}
           >
             {key}
@@ -106,7 +109,7 @@ export function KeyBadge({
           {index < displayKeys.length - 1 && (
             <span
               className="mx-0.5 text-xs"
-              style={{ color: 'var(--color-gray-400, #8c8c8c)' }}
+              style={{ color: token.colorTextQuaternary }}
               aria-hidden="true"
             >
               {separator}

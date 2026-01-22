@@ -3,7 +3,7 @@
 'use client'
 
 import { useMemo, useCallback } from 'react'
-import { Menu } from 'antd'
+import { Menu, theme } from 'antd'
 import type { MenuProps } from 'antd'
 import {
   DashboardOutlined,
@@ -233,6 +233,8 @@ export function Sidebar({
   onCollapsedChange,
   favoriteOptions,
 }: SidebarProps) {
+  const { token } = theme.useToken()
+
   // 부모 메뉴 아이콘 클릭 시 사이드바 펼침 + 메뉴 확장
   const handleParentIconClick = useCallback((menuId: string) => {
     if (onCollapsedChange) {
@@ -309,12 +311,12 @@ export function Sidebar({
         <div
           className="px-4 py-3 border-t"
           style={{
-            borderColor: 'var(--color-gray-200)',
+            borderColor: token.colorBorder,
           }}
         >
           <div
             className="text-xs"
-            style={{ color: 'var(--color-gray-400)' }}
+            style={{ color: token.colorTextQuaternary }}
           >
             MES Portal v0.1.0
           </div>

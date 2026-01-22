@@ -3,7 +3,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Button, Dropdown, Avatar, Badge, Breadcrumb, Tooltip } from 'antd'
+import { Button, Dropdown, Avatar, Badge, Breadcrumb, Tooltip, theme } from 'antd'
 import type { MenuProps } from 'antd'
 import {
   SearchOutlined,
@@ -54,7 +54,8 @@ export function Header({
   onFavoriteMenuClick,
   isFavoriteLoading = false,
 }: HeaderProps) {
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { token } = theme.useToken()
+  const { theme: themeMode, setTheme, resolvedTheme } = useTheme()
   const [currentTime, setCurrentTime] = useState('')
   const [mounted, setMounted] = useState(false)
   const [notificationPanelOpen, setNotificationPanelOpen] = useState(false)
@@ -128,11 +129,11 @@ export function Header({
   )
 
   const toggleTheme = () => {
-    const currentTheme = resolvedTheme || theme
+    const currentTheme = resolvedTheme || themeMode
     setTheme(currentTheme === 'dark' ? 'light' : 'dark')
   }
 
-  const isDark = mounted && (resolvedTheme || theme) === 'dark'
+  const isDark = mounted && (resolvedTheme || themeMode) === 'dark'
 
   const handleNotificationToggle = useCallback(() => {
     setNotificationPanelOpen((prev) => !prev)
@@ -228,7 +229,7 @@ export function Header({
         {/* 구분선 */}
         <div
           className="hidden md:block h-5 w-px"
-          style={{ backgroundColor: 'var(--color-gray-200)' }}
+          style={{ backgroundColor: token.colorBorder }}
         />
 
         {/* 브레드크럼 */}
@@ -242,11 +243,11 @@ export function Header({
         {/* 시계 */}
         <div
           className="hidden sm:flex items-center px-3 py-1.5 rounded-md mr-2"
-          style={{ backgroundColor: 'var(--color-gray-100)' }}
+          style={{ backgroundColor: token.colorFillSecondary }}
         >
           <span
             className="text-sm tabular-nums font-medium"
-            style={{ color: 'var(--color-gray-600)' }}
+            style={{ color: token.colorTextSecondary }}
             data-testid="header-clock"
           >
             {currentTime}
@@ -257,7 +258,7 @@ export function Header({
         <Tooltip title="검색 (Ctrl+K)">
           <Button
             type="text"
-            icon={<SearchOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
+            icon={<SearchOutlined style={{ fontSize: 16, color: token.colorTextSecondary }} />}
             onClick={onSearchOpen}
             aria-label="전역 검색 (Ctrl+K)"
             data-testid="search-button"
@@ -278,7 +279,7 @@ export function Header({
             <Badge count={unreadNotifications} size="small" overflowCount={99}>
               <Button
                 type="text"
-                icon={<BellOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
+                icon={<BellOutlined style={{ fontSize: 16, color: token.colorTextSecondary }} />}
                 onClick={handleNotificationToggle}
                 aria-label={`알림 ${unreadNotifications}개`}
                 data-testid="notification-button"
@@ -307,7 +308,7 @@ export function Header({
         <Tooltip title={isDark ? '라이트 모드' : '다크 모드'}>
           <Button
             type="text"
-            icon={isDark ? <SunOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} /> : <MoonOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
+            icon={isDark ? <SunOutlined style={{ fontSize: 16, color: token.colorTextSecondary }} /> : <MoonOutlined style={{ fontSize: 16, color: token.colorTextSecondary }} />}
             onClick={toggleTheme}
             aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
             data-testid="theme-toggle"
@@ -325,7 +326,7 @@ export function Header({
         {/* 구분선 */}
         <div
           className="h-5 w-px mx-2"
-          style={{ backgroundColor: 'var(--color-gray-200)' }}
+          style={{ backgroundColor: token.colorBorder }}
         />
 
         {/* 프로필 */}
@@ -341,7 +342,7 @@ export function Header({
               backgroundColor: 'transparent',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'
+              e.currentTarget.style.backgroundColor = token.colorFillSecondary
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent'
@@ -352,20 +353,20 @@ export function Header({
               icon={!user?.avatar && <UserOutlined />}
               size={32}
               style={{
-                backgroundColor: 'var(--color-primary)',
+                backgroundColor: token.colorPrimary,
                 flexShrink: 0,
               }}
             />
             <div className="hidden md:flex flex-col items-start">
               <span
                 className="text-sm font-medium leading-tight"
-                style={{ color: 'var(--color-gray-900)' }}
+                style={{ color: token.colorText }}
               >
                 {user?.name}
               </span>
               <span
                 className="text-xs leading-tight"
-                style={{ color: 'var(--color-gray-500)' }}
+                style={{ color: token.colorTextTertiary }}
               >
                 관리자
               </span>

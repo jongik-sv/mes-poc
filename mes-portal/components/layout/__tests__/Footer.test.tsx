@@ -4,12 +4,25 @@
 import { render, screen } from '@testing-library/react'
 import { Footer } from '../Footer'
 
+// Mock token 값
+const mockToken = {
+  colorPrimary: '#2563EB',
+  colorPrimaryBg: '#DBEAFE',
+  colorBgContainer: '#FFFFFF',
+  colorBorder: '#E2E8F0',
+  colorTextTertiary: '#64748B',
+  colorTextQuaternary: '#94A3B8',
+}
+
 // Ant Design 모킹
 vi.mock('antd', () => ({
   Layout: {
     Footer: ({ children, className, style, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <footer className={className} style={style} {...props}>{children}</footer>
     ),
+  },
+  theme: {
+    useToken: () => ({ token: mockToken }),
   },
 }))
 

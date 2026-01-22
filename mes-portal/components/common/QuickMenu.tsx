@@ -4,7 +4,7 @@
  */
 'use client'
 
-import { Dropdown, Button, Empty, Typography } from 'antd'
+import { Dropdown, Button, Empty, Typography, theme } from 'antd'
 import { StarOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import type { FavoriteMenuItem } from '@/lib/types/favorites'
 import { MenuIcon } from '@/components/layout/MenuIcon'
@@ -29,27 +29,29 @@ export function QuickMenu({
   onMenuClick,
   isLoading = false,
 }: QuickMenuProps) {
+  const { token } = theme.useToken()
+
   // 빈 상태 컨텐츠
   const emptyContent = (
     <div
       className="p-4 text-center min-w-[200px] rounded-lg"
       style={{
-        backgroundColor: 'var(--color-bg-elevated)',
-        boxShadow: 'var(--shadow-lg)',
-        border: '1px solid var(--color-gray-200)',
+        backgroundColor: token.colorBgElevated,
+        boxShadow: token.boxShadowSecondary,
+        border: `1px solid ${token.colorBorder}`,
       }}
       data-testid="quick-menu-empty"
     >
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description={
-          <span style={{ color: 'var(--color-text-secondary)' }}>
+          <span style={{ color: token.colorTextSecondary }}>
             즐겨찾기한 메뉴가 없습니다
           </span>
         }
       />
       <div className="mt-2 flex items-center justify-center gap-1">
-        <InfoCircleOutlined style={{ color: 'var(--color-gray-400)' }} />
+        <InfoCircleOutlined style={{ color: token.colorTextQuaternary }} />
         <Text type="secondary" className="text-xs">
           사이드바 메뉴에서 별을 클릭하여 추가하세요
         </Text>

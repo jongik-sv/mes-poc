@@ -26,11 +26,16 @@ function AntdConfigProvider({ children }: ThemeProviderProps) {
     setMounted(true)
   }, [])
 
-  // 마운트 전에는 기본 라이트 테마 사용 (SSR 호환)
-  const isDark = mounted ? resolvedTheme === 'dark' : false
+  // 기본 테마: 라이트 (새로고침 시 항상 라이트로 시작)
+  // 마운트 후 사용자가 테마 전환하면 resolvedTheme 반영
+  const isDark = mounted && resolvedTheme === 'dark'
+
+  // key prop으로 테마 변경 시 ConfigProvider 리마운트 → 스타일 재생성
+  const themeKey = isDark ? 'dark' : 'light'
 
   return (
     <ConfigProvider
+      key={themeKey}
       theme={{
         token: isDark ? darkThemeTokens : themeTokens,
         algorithm: isDark ? darkThemeAlgorithm : lightThemeAlgorithm,
@@ -42,12 +47,30 @@ function AntdConfigProvider({ children }: ThemeProviderProps) {
   )
 }
 
+// NextThemeProvider를 별도로 export - AntdRegistry가 useTheme을 사용할 수 있도록
+export function NextThemeProviderWrapper({ children }: ThemeProviderProps) {
+  return (
+    <NextThemeProvider
+      attribute="data-theme"
+      defaultTheme="light"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
+      {children}
+    </NextThemeProvider>
+  )
+}
+
+// AntdConfigProvider만 export - layout.tsx에서 순서 조정에 사용
+export { AntdConfigProvider }
+
+// 기존 ThemeProvider - 하위 호환성 유지
 export function ThemeProvider({ children }: ThemeProviderProps) {
   return (
     <NextThemeProvider
       attribute="data-theme"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="light"
+      enableSystem={false}
       disableTransitionOnChange
     >
       <AntdConfigProvider>{children}</AntdConfigProvider>

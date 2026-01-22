@@ -5,6 +5,18 @@ import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { NotificationPanel, Notification } from '../NotificationPanel'
 
+// Mock token 값
+const mockToken = {
+  colorBgElevated: '#ffffff',
+  boxShadowSecondary: '0 6px 16px 0 rgba(0, 0, 0, 0.08)',
+  colorBorder: '#E2E8F0',
+  colorText: '#0F172A',
+  colorPrimaryBg: '#DBEAFE',
+  colorPrimary: '#2563EB',
+  colorFillSecondary: '#F8FAFC',
+  colorTextSecondary: '#475569',
+}
+
 // Ant Design 모킹
 vi.mock('antd', () => ({
   Button: ({ children, icon, onClick, type, size, block, ...props }: any) => (
@@ -41,6 +53,9 @@ vi.mock('antd', () => ({
     spinning ? <div data-testid="loading-spinner">Loading...</div> : children
   ),
   Divider: () => <hr />,
+  theme: {
+    useToken: () => ({ token: mockToken }),
+  },
 }))
 
 // Ant Design Icons 모킹

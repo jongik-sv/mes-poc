@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth'
-import { authConfig } from './auth.config'
+import { authConfigEdge } from './auth.config.edge'
 
-export default NextAuth(authConfig).auth
+// Edge Runtime 전용 설정 사용 (Node.js API 미포함)
+export default NextAuth(authConfigEdge).auth
 
 export const config = {
   matcher: [

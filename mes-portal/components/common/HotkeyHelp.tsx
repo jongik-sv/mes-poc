@@ -2,7 +2,7 @@
 // TSK-05-06: 키보드 단축키 도움말 모달 컴포넌트
 'use client'
 
-import { Modal, Typography, Divider } from 'antd'
+import { Modal, Typography, Divider, theme } from 'antd'
 import { KeyBadge } from './KeyBadge'
 import {
   HOTKEY_CATEGORIES,
@@ -40,6 +40,8 @@ export function HotkeyHelp({
   onClose,
   categories = HOTKEY_CATEGORIES,
 }: HotkeyHelpProps) {
+  const { token } = theme.useToken()
+
   // data-testid용 ID 생성 함수
   const getItemTestId = (label: string) => {
     const id = label
@@ -61,7 +63,7 @@ export function HotkeyHelp({
       footer={null}
       width={480}
       centered
-      destroyOnClose
+      destroyOnHidden
       aria-labelledby="hotkey-help-title"
       data-testid="hotkey-help-modal"
       styles={{
@@ -103,14 +105,14 @@ export function HotkeyHelp({
                 style={{
                   borderBottom:
                     itemIndex < category.items.length - 1
-                      ? '1px solid var(--color-gray-100, #f0f0f0)'
+                      ? `1px solid ${token.colorBorderSecondary}`
                       : 'none',
                 }}
               >
                 {/* 단축키 설명 */}
                 <Text
                   style={{
-                    color: 'var(--color-gray-600, #595959)',
+                    color: token.colorTextSecondary,
                     fontSize: 14,
                   }}
                 >

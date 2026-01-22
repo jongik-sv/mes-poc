@@ -5,7 +5,7 @@
  * @description TSK-02-05 MDI 컨텐츠 영역 - 메인 컨테이너
  */
 
-import { Empty } from 'antd';
+import { Empty, theme } from 'antd';
 import { FolderOpenOutlined } from '@ant-design/icons';
 import { useMDI } from '@/lib/mdi';
 import { TabPane } from './TabPane';
@@ -17,13 +17,15 @@ import { TabErrorFallback } from './TabErrorFallback';
  * 빈 상태 컴포넌트
  */
 function EmptyState() {
+  const { token } = theme.useToken();
+
   return (
     <div
       data-testid="mdi-empty-state"
       className="flex items-center justify-center h-full"
     >
       <Empty
-        image={<FolderOpenOutlined style={{ fontSize: 64, color: 'var(--color-gray-400)' }} />}
+        image={<FolderOpenOutlined style={{ fontSize: 64, color: token.colorTextQuaternary }} />}
         description={
           <div className="text-center">
             <div
@@ -52,6 +54,7 @@ function EmptyState() {
  * @description 활성 탭의 화면을 렌더링하고 비활성 탭의 상태를 유지
  */
 export function MDIContent() {
+  const { token } = theme.useToken();
   const { tabs, activeTabId, closeTab } = useMDI();
 
   // 탭이 없으면 빈 상태 표시 (BR-03)
@@ -61,7 +64,7 @@ export function MDIContent() {
         data-testid="mdi-content"
         role="main"
         className="h-full overflow-auto"
-        style={{ backgroundColor: 'var(--color-bg-container, var(--background))' }}
+        style={{ backgroundColor: token.colorBgContainer }}
       >
         <EmptyState />
       </div>
@@ -73,7 +76,7 @@ export function MDIContent() {
       data-testid="mdi-content"
       role="main"
       className="h-full overflow-auto"
-      style={{ backgroundColor: 'var(--color-bg-container, var(--background))' }}
+      style={{ backgroundColor: token.colorBgContainer }}
     >
       {tabs.map((tab) => {
         const isActive = tab.id === activeTabId;

@@ -8,7 +8,7 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { LeftOutlined, RightOutlined, DownOutlined } from '@ant-design/icons';
-import { Dropdown, type MenuProps } from 'antd';
+import { Dropdown, type MenuProps, theme } from 'antd';
 import {
   DndContext,
   closestCenter,
@@ -39,6 +39,7 @@ const SCROLL_AMOUNT = 200;
  * 탭 바 컴포넌트
  */
 export function TabBar() {
+  const { token } = theme.useToken();
   const { tabs, activeTabId, setActiveTab, closeTab, reorderTabs, getTab } = useMDI();
   const containerRef = useRef<HTMLDivElement>(null);
   const [showLeftScroll, setShowLeftScroll] = useState(false);
@@ -167,8 +168,8 @@ export function TabBar() {
         data-testid-mdi="mdi-tab-bar"
         className="flex items-center h-10 px-1"
         style={{
-          backgroundColor: 'var(--color-gray-100)',
-          borderBottom: '1px solid var(--color-gray-200)',
+          backgroundColor: token.colorFillSecondary,
+          borderBottom: `1px solid ${token.colorBorder}`,
         }}
       >
         {/* 좌측 스크롤 버튼 */}
@@ -179,9 +180,9 @@ export function TabBar() {
             onClick={() => handleScroll('left')}
             className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
             style={{
-              backgroundColor: 'var(--color-gray-100)',
-              border: '1px solid var(--color-gray-200)',
-              color: 'var(--color-text-secondary)',
+              backgroundColor: token.colorFillSecondary,
+              border: `1px solid ${token.colorBorder}`,
+              color: token.colorTextSecondary,
             }}
           >
             <LeftOutlined className="text-xs" />
@@ -226,9 +227,9 @@ export function TabBar() {
             onClick={() => handleScroll('right')}
             className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
             style={{
-              backgroundColor: 'var(--color-gray-100)',
-              border: '1px solid var(--color-gray-200)',
-              color: 'var(--color-text-secondary)',
+              backgroundColor: token.colorFillSecondary,
+              border: `1px solid ${token.colorBorder}`,
+              color: token.colorTextSecondary,
             }}
           >
             <RightOutlined className="text-xs" />
@@ -243,9 +244,9 @@ export function TabBar() {
               aria-label="모든 탭 보기"
               className="flex items-center justify-center w-6 h-8 ml-1 flex-shrink-0 rounded"
               style={{
-                backgroundColor: 'var(--color-gray-100)',
-                border: '1px solid var(--color-gray-200)',
-                color: 'var(--color-text-secondary)',
+                backgroundColor: token.colorFillSecondary,
+                border: `1px solid ${token.colorBorder}`,
+                color: token.colorTextSecondary,
               }}
             >
               <DownOutlined className="text-xs" />
@@ -259,7 +260,7 @@ export function TabBar() {
         {activeDragTab ? (
           <div
             className="shadow-lg opacity-90 rounded"
-            style={{ backgroundColor: 'var(--color-bg-container)' }}
+            style={{ backgroundColor: token.colorBgContainer }}
           >
             <TabItem
               tab={activeDragTab}

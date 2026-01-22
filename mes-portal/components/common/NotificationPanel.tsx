@@ -3,7 +3,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Button, List, Empty, Typography, Spin, Divider } from 'antd'
+import { Button, List, Empty, Typography, Spin, Divider, theme } from 'antd'
 import {
   BellOutlined,
   CheckCircleOutlined,
@@ -79,6 +79,8 @@ export function NotificationPanel({
   onMarkAllAsRead,
   onNavigate,
 }: NotificationPanelProps) {
+  const { token } = theme.useToken()
+
   // 최신순 정렬 (BR-001)
   const sortedNotifications = useMemo(() => {
     return [...notifications].sort(
@@ -116,25 +118,25 @@ export function NotificationPanel({
       aria-label="알림 목록"
       className="absolute right-0 top-full mt-2 w-80 rounded-lg z-50"
       style={{
-        backgroundColor: 'var(--color-bg-elevated)',
-        boxShadow: 'var(--shadow-lg)',
-        border: '1px solid var(--color-gray-200)',
+        backgroundColor: token.colorBgElevated,
+        boxShadow: token.boxShadowSecondary,
+        border: `1px solid ${token.colorBorder}`,
       }}
     >
       {/* 헤더 */}
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: '1px solid var(--color-gray-200)' }}
+        style={{ borderBottom: `1px solid ${token.colorBorder}` }}
       >
         <div className="flex items-center gap-2">
           <BellOutlined className="text-lg" />
-          <span className="font-semibold" style={{ color: 'var(--color-text-base)' }}>알림</span>
+          <span className="font-semibold" style={{ color: token.colorText }}>알림</span>
           {unreadCount > 0 && (
             <span
               className="px-2 py-0.5 text-xs rounded-full"
               style={{
-                backgroundColor: 'var(--color-primary-light)',
-                color: 'var(--color-primary)',
+                backgroundColor: token.colorPrimaryBg,
+                color: token.colorPrimary,
               }}
             >
               {unreadCount > 99 ? '99+' : unreadCount}
@@ -172,14 +174,14 @@ export function NotificationPanel({
                 onClick={() => handleNotificationClick(notification)}
                 className="px-4 py-3 cursor-pointer transition-colors"
                 style={{
-                  backgroundColor: !notification.isRead ? 'var(--color-primary-light)' : 'transparent',
-                  borderBottom: '1px solid var(--color-gray-200)',
+                  backgroundColor: !notification.isRead ? token.colorPrimaryBg : 'transparent',
+                  borderBottom: `1px solid ${token.colorBorder}`,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'
+                  e.currentTarget.style.backgroundColor = token.colorFillSecondary
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = !notification.isRead ? 'var(--color-primary-light)' : 'transparent'
+                  e.currentTarget.style.backgroundColor = !notification.isRead ? token.colorPrimaryBg : 'transparent'
                 }}
               >
                 <div className="flex gap-3">
@@ -195,13 +197,13 @@ export function NotificationPanel({
                         strong
                         className="block text-sm"
                         style={{
-                          color: !notification.isRead ? 'var(--color-text-base)' : 'var(--color-text-secondary)',
+                          color: !notification.isRead ? token.colorText : token.colorTextSecondary,
                         }}
                       >
                         {!notification.isRead && (
                           <span
                             className="inline-block w-2 h-2 rounded-full mr-2"
-                            style={{ backgroundColor: 'var(--color-primary)' }}
+                            style={{ backgroundColor: token.colorPrimary }}
                           />
                         )}
                         {notification.title}
@@ -234,7 +236,7 @@ export function NotificationPanel({
       {notifications.length > 0 && (
         <div
           className="px-4 py-3"
-          style={{ borderTop: '1px solid var(--color-gray-200)' }}
+          style={{ borderTop: `1px solid ${token.colorBorder}` }}
         >
           <Button
             type="text"

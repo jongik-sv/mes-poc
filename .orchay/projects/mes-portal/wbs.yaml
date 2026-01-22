@@ -1260,6 +1260,7 @@ workPackages:
             - screens/sample/QualityInspection.tsx
             - 조건부 렌더링 로직
             - Form.List로 반복 항목 처리
+        execution: start
       - id: TSK-06-13
         title: "[샘플] 조직/부서 트리"
         category: development
@@ -1294,6 +1295,7 @@ workPackages:
             - screens/sample/OrganizationTree.tsx
             - mock-data/organization.json 로드
             - Tree onDrop 핸들러 구현
+        execution: start
       - id: TSK-06-14
         title: "[샘플] 생산 계획 간트 차트"
         category: development
@@ -1330,6 +1332,7 @@ workPackages:
             - screens/sample/ProductionGantt.tsx
             - mock-data/production-plan.json 로드
             - 확대/축소 상태 관리
+        execution: start
       - id: TSK-06-15
         title: "[샘플] 재고 현황 조회"
         category: development
@@ -1369,6 +1372,7 @@ workPackages:
             - DetailTemplate 사용
             - mock-data/inventory.json 로드
             - 로딩/에러/빈 상태 처리 구현
+        execution: start
       - id: TSK-06-16
         title: "[샘플] 작업 지시 등록"
         category: development
@@ -1530,6 +1534,58 @@ workPackages:
             - FormTemplate 사용
             - 키보드 단축키 시스템 연동
             - mock-data/notification-settings.json 로드
+      - id: TSK-06-20
+        title: "[샘플] 데이터 테이블 종합"
+        category: development
+        domain: frontend
+        status: "[ ]"
+        priority: high
+        assignee: "-"
+        tags:
+          - sample
+          - table
+          - advanced
+        depends:
+          - TSK-05-04
+        requirements:
+          prdRef: PRD 4.1.1 테이블 기능 샘플
+          items:
+            - 컬럼 정렬 (단일/다중 정렬)
+            - 컬럼 필터링 (텍스트, 숫자, 날짜, 드롭다운)
+            - 페이징 (페이지 크기 선택, 전체 건수)
+            - 행 선택 (단일/다중 + 전체 선택)
+            - 컬럼 리사이즈 및 순서 변경
+            - 고정 컬럼/헤더 (sticky)
+            - 확장 행 (expandable row)
+            - 인라인 편집 (editable cell)
+            - 행 드래그 앤 드롭 정렬
+            - 가상 스크롤 (대용량 데이터 1만건+)
+            - 그룹 헤더 (2단 컬럼 헤더, 헤더 셀 병합)
+            - 셀 병합 (rowSpan, colSpan)
+          acceptance:
+            - 각 기능별 토글로 활성화/비활성화
+            - 정렬/필터 조합 동작
+            - 1만건 데이터에서 부드러운 스크롤
+            - 컬럼 드래그로 순서 변경
+            - 셀 더블클릭으로 인라인 편집
+            - 행 드래그로 순서 변경
+            - 그룹 헤더로 컬럼 분류 표시 (기본정보/실적정보 등)
+            - 동일 값 셀 자동 병합 옵션
+          uiSpec:
+            - Ant Design Table (모든 props 활용)
+            - columns.children (nested columns)
+            - "onCell: () => ({ rowSpan, colSpan })"
+            - react-resizable (컬럼 리사이즈)
+            - "@dnd-kit (행/컬럼 드래그)"
+            - Ant Design Switch (기능 토글)
+          techSpec:
+            - virtual scroll (rc-virtual-list)
+            - 컬럼 설정 localStorage 저장
+          integrationCheck:
+            - screens/sample/DataTableShowcase.tsx
+            - components/common/DataTable.tsx 모든 기능 활용
+            - mock-data/large-dataset.json (1만건)
+            - 기능별 토글 UI로 데모
   - id: WP-07
     title: 대시보드
     status: planned

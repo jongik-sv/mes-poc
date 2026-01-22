@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import { Form, Input, Button, Alert, Typography } from 'antd'
+import { Form, Input, Button, Alert, Typography, theme } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import { AUTH_MESSAGES } from '@/lib/constants/messages'
 
@@ -15,6 +15,7 @@ interface LoginFormValues {
 }
 
 export function LoginForm() {
+  const { token } = theme.useToken()
   const router = useRouter()
   const [form] = Form.useForm<LoginFormValues>()
   const [isLoading, setIsLoading] = useState(false)
@@ -86,14 +87,14 @@ export function LoginForm() {
         <Title
           level={2}
           style={{
-            color: 'var(--color-gray-900)',
+            color: token.colorText,
             marginBottom: 4,
             fontWeight: 600,
           }}
         >
           MES Portal
         </Title>
-        <Text style={{ color: 'var(--color-gray-500)' }}>
+        <Text style={{ color: token.colorTextTertiary }}>
           Manufacturing Execution System
         </Text>
       </div>
@@ -111,7 +112,7 @@ export function LoginForm() {
           role="alert"
           aria-live="assertive"
           style={{
-            borderRadius: 'var(--radius-md)',
+            borderRadius: token.borderRadius,
           }}
         />
       )}
@@ -128,7 +129,7 @@ export function LoginForm() {
         {/* 이메일 필드 */}
         <Form.Item
           label={
-            <span style={{ color: 'var(--color-gray-700)', fontWeight: 500 }}>
+            <span style={{ color: token.colorTextSecondary, fontWeight: 500 }}>
               이메일
             </span>
           }
@@ -140,13 +141,13 @@ export function LoginForm() {
         >
           <Input
             data-testid="email-input"
-            prefix={<MailOutlined style={{ color: 'var(--color-gray-400)' }} />}
+            prefix={<MailOutlined style={{ color: token.colorTextQuaternary }} />}
             placeholder="이메일을 입력하세요"
             size="large"
             aria-label="이메일"
             aria-required="true"
             style={{
-              borderRadius: 'var(--radius-md)',
+              borderRadius: token.borderRadius,
             }}
           />
         </Form.Item>
@@ -154,7 +155,7 @@ export function LoginForm() {
         {/* 비밀번호 필드 */}
         <Form.Item
           label={
-            <span style={{ color: 'var(--color-gray-700)', fontWeight: 500 }}>
+            <span style={{ color: token.colorTextSecondary, fontWeight: 500 }}>
               비밀번호
             </span>
           }
@@ -165,13 +166,13 @@ export function LoginForm() {
         >
           <Input.Password
             data-testid="password-input"
-            prefix={<LockOutlined style={{ color: 'var(--color-gray-400)' }} />}
+            prefix={<LockOutlined style={{ color: token.colorTextQuaternary }} />}
             placeholder="비밀번호를 입력하세요"
             size="large"
             aria-label="비밀번호"
             aria-required="true"
             style={{
-              borderRadius: 'var(--radius-md)',
+              borderRadius: token.borderRadius,
             }}
           />
         </Form.Item>
@@ -188,7 +189,7 @@ export function LoginForm() {
             aria-label="로그인"
             style={{
               height: 44,
-              borderRadius: 'var(--radius-md)',
+              borderRadius: token.borderRadius,
               fontWeight: 500,
               fontSize: 15,
             }}
