@@ -1104,6 +1104,7 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
+        execution: verify
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
@@ -1129,6 +1130,7 @@ workPackages:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
         test-result: pass
+        execution: verify
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development
@@ -1165,7 +1167,7 @@ workPackages:
         title: 대시보드 레이아웃
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: high
         assignee: "-"
         tags:
@@ -1189,7 +1191,6 @@ workPackages:
           integrationCheck:
             - screens/dashboard/Dashboard.tsx
             - 반응형 breakpoint 설정 (xs, sm, md, lg, xl)
-        execution: build
       - id: TSK-07-02
         title: KPI 카드 위젯
         category: development

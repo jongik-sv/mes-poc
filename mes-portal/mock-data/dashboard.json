@@ -1,0 +1,82 @@
+{
+  "kpi": {
+    "operationRate": {
+      "value": 92.5,
+      "unit": "%",
+      "change": 2.3,
+      "changeType": "increase"
+    },
+    "defectRate": {
+      "value": 1.2,
+      "unit": "%",
+      "change": -0.3,
+      "changeType": "decrease"
+    },
+    "productionVolume": {
+      "value": 12500,
+      "unit": "EA",
+      "change": 500,
+      "changeType": "increase"
+    },
+    "achievementRate": {
+      "value": 85.3,
+      "unit": "%",
+      "change": 5.2,
+      "changeType": "increase"
+    }
+  },
+  "productionTrend": [
+    { "time": "08:00", "value": 1200 },
+    { "time": "09:00", "value": 1350 },
+    { "time": "10:00", "value": 1280 },
+    { "time": "11:00", "value": 1420 },
+    { "time": "12:00", "value": 1100 },
+    { "time": "13:00", "value": 1380 },
+    { "time": "14:00", "value": 1450 },
+    { "time": "15:00", "value": 1320 }
+  ],
+  "linePerformance": [
+    { "line": "1라인", "actual": 3200, "target": 3500 },
+    { "line": "2라인", "actual": 2800, "target": 3000 },
+    { "line": "3라인", "actual": 3100, "target": 3200 },
+    { "line": "4라인", "actual": 2900, "target": 3100 },
+    { "line": "5라인", "actual": 3400, "target": 3300 }
+  ],
+  "recentActivities": [
+    {
+      "id": "act-001",
+      "time": "2026-01-21T10:30:00Z",
+      "type": "equipment",
+      "typeLabel": "설비",
+      "message": "1라인 설비 점검 완료"
+    },
+    {
+      "id": "act-002",
+      "time": "2026-01-21T10:15:00Z",
+      "type": "quality",
+      "typeLabel": "품질",
+      "message": "2라인 불량률 상승 알림"
+    },
+    {
+      "id": "act-003",
+      "time": "2026-01-21T09:45:00Z",
+      "type": "production",
+      "typeLabel": "생산",
+      "message": "3라인 작업 지시 등록"
+    },
+    {
+      "id": "act-004",
+      "time": "2026-01-21T09:30:00Z",
+      "type": "equipment",
+      "typeLabel": "설비",
+      "message": "4라인 정기 점검 시작"
+    },
+    {
+      "id": "act-005",
+      "time": "2026-01-21T09:00:00Z",
+      "type": "system",
+      "typeLabel": "시스템",
+      "message": "일일 리포트 생성"
+    }
+  ]
+}
