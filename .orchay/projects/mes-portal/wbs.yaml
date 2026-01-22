@@ -1082,8 +1082,9 @@ workPackages:
         title: "[샘플] 사용자 목록 화면"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
+        test-result: pass
         assignee: "-"
         tags:
           - sample
@@ -1104,7 +1105,6 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
-        execution: verify
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
@@ -1190,6 +1190,7 @@ workPackages:
           integrationCheck:
             - screens/dashboard/Dashboard.tsx
             - 반응형 breakpoint 설정 (xs, sm, md, lg, xl)
+        execution: verify
       - id: TSK-07-02
         title: KPI 카드 위젯
         category: development
@@ -1220,7 +1221,7 @@ workPackages:
           integrationCheck:
             - components/dashboard/KPICard.tsx
             - Statistic prefix/suffix로 아이콘/단위 표시
-        execution: apply
+        execution: build
       - id: TSK-07-03
         title: 차트 위젯
         category: development
