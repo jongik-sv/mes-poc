@@ -938,7 +938,8 @@ workPackages:
         title: 상세 화면 템플릿
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -961,7 +962,6 @@ workPackages:
             - Ant Design Tabs
           integrationCheck:
             - components/templates/DetailTemplate.tsx
-        execution: verify
       - id: TSK-06-03
         title: 입력/수정 폼 템플릿
         category: development
@@ -1104,6 +1104,7 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
+        execution: build
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
