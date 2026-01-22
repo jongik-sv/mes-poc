@@ -4,14 +4,17 @@
 'use client'
 
 import React from 'react'
-import { Row, Col, Empty } from 'antd'
+import { Row, Col } from 'antd'
 import { WidgetCard } from './WidgetCard'
+import { LineChart, BarChart } from './charts'
 import type { ProductionTrendItem, LinePerformanceItem } from './types'
 
 interface ChartSectionProps {
   productionTrend: ProductionTrendItem[]
   linePerformance: LinePerformanceItem[]
   loading?: boolean
+  error?: Error | null
+  onRetry?: () => void
 }
 
 /**
@@ -20,9 +23,6 @@ interface ChartSectionProps {
  * 2개의 차트 위젯을 반응형 그리드로 배치
  * - Desktop (lg+): 2열 (span=12)
  * - Tablet, Mobile (md-): 1열 (span=24)
- *
- * 실제 차트 구현은 TSK-07-03에서 진행
- * 현재는 플레이스홀더로 데이터 구조만 표시
  *
  * @example
  * ```tsx
@@ -36,6 +36,8 @@ export function ChartSection({
   productionTrend,
   linePerformance,
   loading = false,
+  error = null,
+  onRetry,
 }: ChartSectionProps) {
   return (
     <section data-testid="chart-section" aria-label="생산 분석 차트">
@@ -45,30 +47,18 @@ export function ChartSection({
           <WidgetCard
             title="시간별 생산량"
             loading={loading}
+            error={error}
+            onRetry={onRetry}
             minHeight={300}
             data-testid="chart-production-trend"
           >
-            {productionTrend.length > 0 ? (
-              <div className="h-64 flex items-center justify-center">
-                {/* 실제 차트 구현은 TSK-07-03에서 @ant-design/charts 사용 */}
-                <div className="text-center">
-                  <div className="text-lg font-medium mb-2">시간별 생산량 추이</div>
-                  <div className="text-sm text-gray-500">
-                    데이터 {productionTrend.length}개 포인트
-                  </div>
-                  <div className="mt-4 grid grid-cols-4 gap-2 text-xs">
-                    {productionTrend.slice(0, 8).map((item, index) => (
-                      <div key={index} className="text-center">
-                        <div className="text-gray-400">{item.time}</div>
-                        <div className="font-medium">{item.value.toLocaleString()}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <Empty description="데이터가 없습니다" />
-            )}
+            <LineChart
+              data={productionTrend}
+              loading={loading}
+              error={error}
+              onRetry={onRetry}
+              height={256}
+            />
           </WidgetCard>
         </Col>
 
@@ -77,37 +67,19 @@ export function ChartSection({
           <WidgetCard
             title="라인별 생산 실적"
             loading={loading}
+            error={error}
+            onRetry={onRetry}
             minHeight={300}
             data-testid="chart-line-performance"
           >
-            {linePerformance.length > 0 ? (
-              <div className="h-64 flex items-center justify-center">
-                {/* 실제 차트 구현은 TSK-07-03에서 @ant-design/charts 사용 */}
-                <div className="w-full px-4">
-                  <div className="text-lg font-medium mb-4 text-center">라인별 실적 비교</div>
-                  {linePerformance.map((item, index) => (
-                    <div key={index} className="mb-3">
-                      <div className="flex justify-between text-sm mb-1">
-                        <span>{item.line}</span>
-                        <span>
-                          {item.actual.toLocaleString()} / {item.target.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-4 bg-gray-100 rounded overflow-hidden">
-                        <div
-                          className="h-full bg-blue-500 rounded"
-                          style={{
-                            width: `${Math.min((item.actual / item.target) * 100, 100)}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Empty description="데이터가 없습니다" />
-            )}
+            <BarChart
+              data={linePerformance}
+              loading={loading}
+              error={error}
+              onRetry={onRetry}
+              height={256}
+              showPerformanceColor={true}
+            />
           </WidgetCard>
         </Col>
       </Row>

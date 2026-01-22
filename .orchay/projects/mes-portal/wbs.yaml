@@ -1226,8 +1226,9 @@ workPackages:
         title: 차트 위젯
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
+        test-result: pass
         assignee: "-"
         tags:
           - dashboard

@@ -42,6 +42,13 @@
     { "line": "4라인", "actual": 2900, "target": 3100 },
     { "line": "5라인", "actual": 3400, "target": 3300 }
   ],
+  "productRatio": [
+    { "product": "A제품", "value": 4375, "percentage": 35 },
+    { "product": "B제품", "value": 3750, "percentage": 30 },
+    { "product": "C제품", "value": 2500, "percentage": 20 },
+    { "product": "D제품", "value": 1250, "percentage": 10 },
+    { "product": "기타", "value": 625, "percentage": 5 }
+  ],
   "recentActivities": [
     {
       "id": "act-001",

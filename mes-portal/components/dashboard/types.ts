@@ -55,6 +55,15 @@ export interface LinePerformanceItem {
 }
 
 /**
+ * 제품별 비율 데이터
+ */
+export interface ProductRatioItem {
+  product: string
+  value: number
+  percentage: number
+}
+
+/**
  * 최근 활동 데이터
  */
 export interface ActivityItem {
@@ -72,6 +81,7 @@ export interface DashboardData {
   kpi: DashboardKPI
   productionTrend: ProductionTrendItem[]
   linePerformance: LinePerformanceItem[]
+  productRatio?: ProductRatioItem[]
   recentActivities: ActivityItem[]
 }
 
