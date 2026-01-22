@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-02: 제품 선택 팝업</title>
+  <defs>
+    <style>
+      .overlay { fill: rgba(0,0,0,0.45); }
+      .modal { fill: #ffffff; }
+      .modal-header { fill: #ffffff; }
+      .text-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #262626; }
+      .text-label { font-family: Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-small { font-family: Arial, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .btn-primary { fill: #1890ff; rx: 6; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .btn-text-white { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .table-header { fill: #fafafa; }
+      .table-row { fill: #ffffff; }
+      .table-row-hover { fill: #e6f7ff; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+      .close-btn { fill: none; stroke: #8c8c8c; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <!-- Overlay -->
+  <rect class="overlay" width="800" height="600"/>
+
+  <!-- Modal Container -->
+  <rect class="modal" x="100" y="50" width="600" height="500" rx="8"/>
+
+  <!-- Modal Header -->
+  <rect class="modal-header" x="100" y="50" width="600" height="56" rx="8"/>
+  <rect fill="#ffffff" x="100" y="98" width="600" height="8"/>
+  <text class="text-title" x="124" y="86">제품 선택</text>
+
+  <!-- Close Button -->
+  <circle cx="676" cy="78" r="12" fill="#f5f5f5"/>
+  <line class="close-btn" x1="671" y1="73" x2="681" y2="83"/>
+  <line class="close-btn" x1="681" y1="73" x2="671" y2="83"/>
+
+  <line class="divider" x1="100" y1="106" x2="700" y2="106"/>
+
+  <!-- Search Area -->
+  <text class="text-label" x="124" y="135">검색</text>
+  <rect class="input" x="124" y="145" width="400" height="36"/>
+  <text class="text-small" x="140" y="168">제품 코드 또는 제품명 입력</text>
+  <rect class="btn-primary" x="536" y="145" width="80" height="36"/>
+  <text class="btn-text-white" x="558" y="169">검색</text>
+
+  <!-- Table Header -->
+  <rect class="table-header" x="124" y="200" width="552" height="40"/>
+  <line class="table-border" x1="124" y1="200" x2="676" y2="200"/>
+  <line class="table-border" x1="124" y1="240" x2="676" y2="240"/>
+
+  <!-- Column Headers -->
+  <text class="text-label" x="140" y="226" style="font-weight: bold;">선택</text>
+  <text class="text-label" x="200" y="226" style="font-weight: bold;">제품 코드</text>
+  <text class="text-label" x="340" y="226" style="font-weight: bold;">제품명</text>
+  <text class="text-label" x="520" y="226" style="font-weight: bold;">규격</text>
+
+  <!-- Table Rows -->
+  <!-- Row 1 (Selected) -->
+  <rect class="table-row-hover" x="124" y="240" width="552" height="44"/>
+  <circle cx="156" cy="262" r="8" fill="#1890ff"/>
+  <circle cx="156" cy="262" r="3" fill="#ffffff"/>
+  <text class="text-label" x="200" y="267">PRD-001</text>
+  <text class="text-label" x="340" y="267">알루미늄 프레임 A형</text>
+  <text class="text-small" x="520" y="267">100x50x5mm</text>
+  <line class="table-border" x1="124" y1="284" x2="676" y2="284"/>
+
+  <!-- Row 2 -->
+  <rect class="table-row" x="124" y="284" width="552" height="44"/>
+  <circle cx="156" cy="306" r="8" fill="none" stroke="#d9d9d9" stroke-width="1"/>
+  <text class="text-label" x="200" y="311">PRD-002</text>
+  <text class="text-label" x="340" y="311">알루미늄 프레임 B형</text>
+  <text class="text-small" x="520" y="311">150x75x8mm</text>
+  <line class="table-border" x1="124" y1="328" x2="676" y2="328"/>
+
+  <!-- Row 3 -->
+  <rect class="table-row" x="124" y="328" width="552" height="44"/>
+  <circle cx="156" cy="350" r="8" fill="none" stroke="#d9d9d9" stroke-width="1"/>
+  <text class="text-label" x="200" y="355">PRD-003</text>
+  <text class="text-label" x="340" y="355">스테인리스 패널</text>
+  <text class="text-small" x="520" y="355">200x100x2mm</text>
+  <line class="table-border" x1="124" y1="372" x2="676" y2="372"/>
+
+  <!-- Row 4 -->
+  <rect class="table-row" x="124" y="372" width="552" height="44"/>
+  <circle cx="156" cy="394" r="8" fill="none" stroke="#d9d9d9" stroke-width="1"/>
+  <text class="text-label" x="200" y="399">PRD-004</text>
+  <text class="text-label" x="340" y="399">플라스틱 커버</text>
+  <text class="text-small" x="520" y="399">50x50x10mm</text>
+  <line class="table-border" x1="124" y1="416" x2="676" y2="416"/>
+
+  <!-- Pagination -->
+  <text class="text-small" x="124" y="445">총 24개 항목</text>
+  <rect x="500" y="430" width="24" height="24" fill="#ffffff" stroke="#d9d9d9" rx="4"/>
+  <text x="508" y="447" style="font-size: 12px; fill: #595959;">&lt;</text>
+  <rect x="528" y="430" width="24" height="24" fill="#1890ff" rx="4"/>
+  <text x="536" y="447" style="font-size: 12px; fill: #ffffff;">1</text>
+  <rect x="556" y="430" width="24" height="24" fill="#ffffff" stroke="#d9d9d9" rx="4"/>
+  <text x="564" y="447" style="font-size: 12px; fill: #595959;">2</text>
+  <rect x="584" y="430" width="24" height="24" fill="#ffffff" stroke="#d9d9d9" rx="4"/>
+  <text x="592" y="447" style="font-size: 12px; fill: #595959;">3</text>
+  <rect x="612" y="430" width="24" height="24" fill="#ffffff" stroke="#d9d9d9" rx="4"/>
+  <text x="620" y="447" style="font-size: 12px; fill: #595959;">&gt;</text>
+
+  <!-- Footer Divider -->
+  <line class="divider" x1="100" y1="470" x2="700" y2="470"/>
+
+  <!-- Footer Buttons -->
+  <rect class="btn-default" x="476" y="488" width="100" height="36"/>
+  <text class="btn-text-dark" x="506" y="512">취소</text>
+
+  <rect class="btn-primary" x="588" y="488" width="100" height="36"/>
+  <text class="btn-text-white" x="618" y="512">선택</text>
+
+  <!-- Annotations -->
+  <rect x="100" y="540" width="600" height="50" fill="#f6ffed" stroke="#b7eb8f" rx="4"/>
+  <text x="120" y="560" style="font-size: 11px; fill: #52c41a; font-weight: bold;">🏷️ data-testid:</text>
+  <text x="120" y="578" style="font-size: 10px; fill: #595959;">product-popup, product-search-input, product-search-btn, product-table, product-select-btn, product-cancel-btn</text>
+</svg>

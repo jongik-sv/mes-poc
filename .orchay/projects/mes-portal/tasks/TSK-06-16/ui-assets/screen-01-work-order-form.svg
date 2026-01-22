@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <title>SCR-01: 작업 지시 등록 폼</title>
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .header { fill: #fafafa; stroke: #e8e8e8; stroke-width: 1; }
+      .text-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #262626; }
+      .text-label { font-family: Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-placeholder { font-family: Arial, sans-serif; font-size: 14px; fill: #bfbfbf; }
+      .text-required { font-family: Arial, sans-serif; font-size: 14px; fill: #ff4d4f; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .input-focus { fill: #ffffff; stroke: #1890ff; stroke-width: 1; rx: 6; }
+      .btn-primary { fill: #1890ff; rx: 6; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .btn-text-white { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .icon { fill: #8c8c8c; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Main Card -->
+  <rect class="card" x="40" y="40" width="1120" height="720" rx="8"/>
+
+  <!-- Card Header -->
+  <rect class="header" x="40" y="40" width="1120" height="60" rx="8"/>
+  <rect class="header" x="40" y="92" width="1120" height="8"/>
+  <text class="text-title" x="72" y="78">작업 지시 등록</text>
+
+  <!-- Breadcrumb hint -->
+  <text class="text-label" x="1060" y="78" text-anchor="end" style="font-size: 12px; fill: #8c8c8c;">샘플 &gt; 작업 지시 등록</text>
+
+  <!-- Form Content Area -->
+  <!-- Row 1: 제품 정보 -->
+  <text class="text-label" x="72" y="140">제품 코드</text>
+  <text class="text-required" x="130" y="140">*</text>
+  <rect class="input" x="72" y="150" width="300" height="40"/>
+  <text class="text-placeholder" x="88" y="176">제품 코드 입력 또는 선택</text>
+  <!-- Search Icon Button -->
+  <rect class="btn-default" x="382" y="150" width="40" height="40"/>
+  <text class="icon" x="394" y="176" style="font-size: 16px;">🔍</text>
+
+  <text class="text-label" x="460" y="140">제품명</text>
+  <rect class="input" x="460" y="150" width="380" height="40" style="fill: #fafafa;"/>
+  <text class="text-placeholder" x="476" y="176" style="fill: #8c8c8c;">제품 선택 시 자동 표시</text>
+
+  <!-- Row 2: 수량 & 생산 라인 -->
+  <text class="text-label" x="72" y="230">지시 수량</text>
+  <text class="text-required" x="138" y="230">*</text>
+  <rect class="input" x="72" y="240" width="200" height="40"/>
+  <text class="text-placeholder" x="88" y="266">1 ~ 99,999</text>
+  <!-- Spin buttons -->
+  <line class="divider" x1="232" y1="240" x2="232" y2="280"/>
+  <rect x="232" y="240" width="40" height="20" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="246" y="255" style="font-size: 12px; fill: #595959;">▲</text>
+  <rect x="232" y="260" width="40" height="20" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="246" y="275" style="font-size: 12px; fill: #595959;">▼</text>
+
+  <text class="text-label" x="310" y="230">생산 라인</text>
+  <text class="text-required" x="378" y="230">*</text>
+  <rect class="input" x="310" y="240" width="250" height="40"/>
+  <text class="text-placeholder" x="326" y="266">라인 선택</text>
+  <text x="528" y="266" style="font-size: 14px; fill: #8c8c8c;">▼</text>
+
+  <!-- Row 3: 시작일 & 종료일 -->
+  <text class="text-label" x="72" y="320">시작일</text>
+  <text class="text-required" x="118" y="320">*</text>
+  <rect class="input" x="72" y="330" width="200" height="40"/>
+  <text class="text-placeholder" x="88" y="356">YYYY-MM-DD</text>
+  <text x="244" y="356" style="font-size: 14px; fill: #8c8c8c;">📅</text>
+
+  <text class="text-label" x="310" y="320">종료일</text>
+  <text class="text-required" x="356" y="320">*</text>
+  <rect class="input" x="310" y="330" width="200" height="40"/>
+  <text class="text-placeholder" x="326" y="356">YYYY-MM-DD</text>
+  <text x="482" y="356" style="font-size: 14px; fill: #8c8c8c;">📅</text>
+
+  <!-- Row 4: 비고 -->
+  <text class="text-label" x="72" y="410">비고</text>
+  <rect class="input" x="72" y="420" width="768" height="100"/>
+  <text class="text-placeholder" x="88" y="450">비고 사항을 입력하세요 (선택)</text>
+
+  <!-- Divider -->
+  <line class="divider" x1="72" y1="560" x2="1128" y2="560"/>
+
+  <!-- Action Buttons -->
+  <rect class="btn-default" x="72" y="590" width="100" height="40"/>
+  <text class="btn-text-dark" x="102" y="616">취소</text>
+
+  <rect class="btn-primary" x="740" y="590" width="100" height="40"/>
+  <text class="btn-text-white" x="770" y="616">저장</text>
+
+  <!-- Annotations -->
+  <rect x="900" y="140" width="220" height="280" fill="#fffbe6" stroke="#ffe58f" rx="4"/>
+  <text x="920" y="165" style="font-size: 13px; fill: #d48806; font-weight: bold;">💡 구현 노트</text>
+  <text x="920" y="190" style="font-size: 11px; fill: #595959;">• FormTemplate 사용</text>
+  <text x="920" y="210" style="font-size: 11px; fill: #595959;">• 제품 선택: SelectPopupTemplate</text>
+  <text x="920" y="230" style="font-size: 11px; fill: #595959;">• 수량: InputNumber (1~99999)</text>
+  <text x="920" y="250" style="font-size: 11px; fill: #595959;">• 라인: Select 컴포넌트</text>
+  <text x="920" y="270" style="font-size: 11px; fill: #595959;">• 날짜: DatePicker</text>
+  <text x="920" y="290" style="font-size: 11px; fill: #595959;">• 비고: Input.TextArea</text>
+  <text x="920" y="320" style="font-size: 11px; fill: #595959;">• enableDirtyCheck: true</text>
+  <text x="920" y="340" style="font-size: 11px; fill: #595959;">• 저장 시 Modal.confirm</text>
+  <text x="920" y="360" style="font-size: 11px; fill: #595959;">• 결과 Toast 알림</text>
+
+  <!-- data-testid annotations -->
+  <rect x="900" y="440" width="220" height="120" fill="#f6ffed" stroke="#b7eb8f" rx="4"/>
+  <text x="920" y="465" style="font-size: 13px; fill: #52c41a; font-weight: bold;">🏷️ data-testid</text>
+  <text x="920" y="490" style="font-size: 10px; fill: #595959;">work-order-form</text>
+  <text x="920" y="508" style="font-size: 10px; fill: #595959;">product-code-input</text>
+  <text x="920" y="526" style="font-size: 10px; fill: #595959;">product-search-btn</text>
+  <text x="920" y="544" style="font-size: 10px; fill: #595959;">save-btn, cancel-btn</text>
+</svg>

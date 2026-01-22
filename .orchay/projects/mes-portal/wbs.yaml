@@ -1379,7 +1379,7 @@ workPackages:
         title: "[샘플] 작업 지시 등록"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1415,12 +1415,11 @@ workPackages:
             - FormTemplate 사용
             - SelectPopupTemplate 연동
             - confirmDelete, showSuccess 유틸 사용
-        execution: start
       - id: TSK-06-17
         title: "[샘플] 자재 입출고 내역"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
