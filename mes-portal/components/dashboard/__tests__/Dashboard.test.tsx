@@ -7,6 +7,25 @@ import { Dashboard } from '../Dashboard'
 import { ConfigProvider } from 'antd'
 import type { DashboardData } from '../types'
 
+// @ant-design/charts 모킹 (Canvas 렌더링 문제 해결)
+vi.mock('@ant-design/charts', () => ({
+  Line: vi.fn(({ data }) => (
+    <div data-testid="mocked-line-chart" data-count={data?.length || 0}>
+      Mocked Line Chart
+    </div>
+  )),
+  Column: vi.fn(({ data }) => (
+    <div data-testid="mocked-bar-chart" data-count={data?.length || 0}>
+      Mocked Bar Chart
+    </div>
+  )),
+  Pie: vi.fn(({ data }) => (
+    <div data-testid="mocked-pie-chart" data-count={data?.length || 0}>
+      Mocked Pie Chart
+    </div>
+  )),
+}))
+
 // Mock 데이터
 const mockDashboardData: DashboardData = {
   kpi: {

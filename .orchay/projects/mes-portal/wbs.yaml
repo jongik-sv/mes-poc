@@ -1227,6 +1227,7 @@ workPackages:
           integrationCheck:
             - screens/sample/WorkCalendar.tsx
             - mock-data/schedule.json 로드
+        execution: start
       - id: TSK-06-12
         title: "[샘플] 품질 검사 입력 폼"
         category: development
@@ -1401,7 +1402,7 @@ workPackages:
         title: 차트 위젯
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
         test-result: pass
         assignee: "-"
@@ -1428,4 +1429,3 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
-        execution: verify
