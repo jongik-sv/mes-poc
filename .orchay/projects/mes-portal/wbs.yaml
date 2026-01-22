@@ -783,7 +783,7 @@ workPackages:
         title: Toast 알림
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
         assignee: "-"
         tags:
@@ -807,7 +807,6 @@ workPackages:
           integrationCheck:
             - lib/utils/toast.ts 유틸리티 함수
             - showSuccess, showError, showWarning 함수
-        execution: verify
       - id: TSK-05-04
         title: 테이블 공통 기능
         category: development
@@ -869,6 +868,7 @@ workPackages:
           integrationCheck:
             - dayjs locale 설정 (ko)
             - "DatePicker 기본 포맷: YYYY-MM-DD"
+        execution: verify
       - id: TSK-05-06
         title: 키보드 단축키 시스템
         category: development
