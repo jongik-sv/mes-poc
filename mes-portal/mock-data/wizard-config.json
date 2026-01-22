@@ -1,0 +1,45 @@
+{
+  "defaults": {
+    "basicInfo": {
+      "companyName": "",
+      "factoryName": "",
+      "adminEmail": ""
+    },
+    "detailSettings": {
+      "serverAddress": "192.168.1.100",
+      "port": 8080,
+      "timeout": 30,
+      "autoReconnect": true,
+      "debugMode": false,
+      "useSSL": false
+    }
+  },
+  "validation": {
+    "companyName": {
+      "minLength": 2,
+      "maxLength": 50
+    },
+    "factoryName": {
+      "minLength": 2,
+      "maxLength": 50
+    },
+    "adminEmail": {
+      "maxLength": 254
+    },
+    "serverAddress": {
+      "maxLength": 253
+    },
+    "port": {
+      "min": 1,
+      "max": 65535
+    },
+    "timeout": {
+      "min": 1,
+      "max": 300
+    }
+  },
+  "messages": {
+    "success": "설정이 완료되었습니다!",
+    "successDescription": "시스템 설정이 성공적으로 저장되었습니다. 이제 대시보드로 이동하여 사용할 수 있습니다."
+  }
+}
