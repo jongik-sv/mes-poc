@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: white; stroke: #e8e8e8; stroke-width: 1; rx: 6; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 18px; font-weight: 600; fill: #1f1f1f; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; fill: #595959; }
+      .value { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; fill: #1f1f1f; }
+      .input-filled { fill: #fafafa; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .skeleton { fill: #f2f2f2; rx: 4; }
+      .skeleton-dark { fill: #e8e8e8; rx: 4; }
+    </style>
+
+    <!-- Skeleton animation -->
+    <linearGradient id="skeleton-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f2f2f2">
+        <animate attributeName="offset" values="-2;1" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#e8e8e8">
+        <animate attributeName="offset" values="-1;2" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#f2f2f2">
+        <animate attributeName="offset" values="0;3" dur="1.5s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Page Title -->
+  <text class="title" x="24" y="32">📦 재고 현황 조회</text>
+
+  <!-- Item Select Card -->
+  <rect class="card" x="24" y="50" width="752" height="56"/>
+  <text class="label" x="40" y="70">품목 선택</text>
+  <rect class="input-filled" x="40" y="78" width="400" height="24"/>
+  <text class="value" x="52" y="95">RAW-A-001 - 알루미늄 판재 6mm</text>
+
+  <!-- Loading Spinner indicator -->
+  <g transform="translate(430, 85)">
+    <circle cx="8" cy="8" r="7" fill="none" stroke="#1890ff" stroke-width="2" stroke-dasharray="30,10">
+      <animateTransform attributeName="transform" type="rotate" from="0 8 8" to="360 8 8" dur="1s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Detail Descriptions Skeleton -->
+  <rect class="card" x="24" y="120" width="752" height="180"/>
+
+  <!-- Title skeleton -->
+  <rect fill="url(#skeleton-gradient)" x="40" y="135" width="120" height="18" rx="4"/>
+
+  <!-- Descriptions skeleton grid -->
+  <g transform="translate(40, 165)">
+    <!-- Row 1 -->
+    <rect class="skeleton-dark" x="0" y="0" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="100" y="5" width="140" height="18" rx="4"/>
+    <rect class="skeleton-dark" x="270" y="0" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="370" y="5" width="180" height="18" rx="4"/>
+
+    <!-- Row 2 -->
+    <rect class="skeleton-dark" x="0" y="32" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="100" y="37" width="100" height="18" rx="4"/>
+    <rect class="skeleton-dark" x="270" y="32" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="370" y="37" width="160" height="18" rx="4"/>
+
+    <!-- Row 3 -->
+    <rect class="skeleton-dark" x="0" y="64" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="100" y="69" width="80" height="18" rx="4"/>
+    <rect class="skeleton-dark" x="270" y="64" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="370" y="69" width="80" height="18" rx="4"/>
+
+    <!-- Row 4 -->
+    <rect class="skeleton-dark" x="0" y="96" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="100" y="101" width="60" height="18" rx="4"/>
+    <rect class="skeleton-dark" x="270" y="96" width="90" height="28"/>
+    <rect fill="url(#skeleton-gradient)" x="370" y="101" width="120" height="18" rx="4"/>
+  </g>
+
+  <!-- Tabs Skeleton -->
+  <rect class="card" x="24" y="310" width="752" height="260"/>
+
+  <!-- Tab buttons skeleton -->
+  <g transform="translate(40, 325)">
+    <rect fill="url(#skeleton-gradient)" x="0" y="0" width="100" height="28" rx="4"/>
+    <rect fill="url(#skeleton-gradient)" x="110" y="0" width="90" height="28" rx="4"/>
+  </g>
+
+  <!-- Tab content skeleton (table) -->
+  <g transform="translate(40, 365)">
+    <!-- Header row -->
+    <rect class="skeleton-dark" x="0" y="0" width="720" height="30"/>
+
+    <!-- Data rows -->
+    <rect fill="url(#skeleton-gradient)" x="10" y="40" width="30" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="60" y="40" width="100" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="180" y="40" width="50" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="250" y="40" width="60" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="330" y="40" width="80" height="14" rx="3"/>
+
+    <rect fill="url(#skeleton-gradient)" x="10" y="65" width="30" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="60" y="65" width="100" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="180" y="65" width="50" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="250" y="65" width="60" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="330" y="65" width="80" height="14" rx="3"/>
+
+    <rect fill="url(#skeleton-gradient)" x="10" y="90" width="30" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="60" y="90" width="100" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="180" y="90" width="50" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="250" y="90" width="60" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="330" y="90" width="80" height="14" rx="3"/>
+
+    <rect fill="url(#skeleton-gradient)" x="10" y="115" width="30" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="60" y="115" width="100" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="180" y="115" width="50" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="250" y="115" width="60" height="14" rx="3"/>
+    <rect fill="url(#skeleton-gradient)" x="330" y="115" width="80" height="14" rx="3"/>
+
+    <!-- Pagination skeleton -->
+    <g transform="translate(280, 150)">
+      <rect fill="url(#skeleton-gradient)" x="0" y="0" width="160" height="20" rx="4"/>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g transform="translate(640, 200)">
+    <rect x="0" y="0" width="100" height="20" rx="3" fill="#e6f7ff" stroke="#91d5ff"/>
+    <text x="50" y="14" text-anchor="middle" font-size="10" fill="#1890ff">Skeleton (active)</text>
+  </g>
+
+  <g transform="translate(640, 420)">
+    <rect x="0" y="0" width="100" height="20" rx="3" fill="#e6f7ff" stroke="#91d5ff"/>
+    <text x="50" y="14" text-anchor="middle" font-size="10" fill="#1890ff">Skeleton.Button</text>
+  </g>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: white; stroke: #e8e8e8; stroke-width: 1; rx: 6; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 18px; font-weight: 600; fill: #1f1f1f; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; fill: #595959; }
+      .placeholder { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; fill: #bfbfbf; }
+      .empty-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; fill: #8c8c8c; text-anchor: middle; }
+      .empty-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; fill: #595959; text-anchor: middle; font-weight: 500; }
+      .input-bg { fill: white; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .icon { fill: #8c8c8c; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="600"/>
+
+  <!-- Page Title -->
+  <g transform="translate(24, 24)">
+    <rect class="icon" x="0" y="2" width="20" height="20" rx="3" opacity="0.3"/>
+    <text class="title" x="28" y="18">📦 재고 현황 조회</text>
+  </g>
+
+  <!-- Item Select Card -->
+  <rect class="card" x="24" y="60" width="752" height="80"/>
+  <text class="label" x="40" y="88">품목 선택</text>
+
+  <!-- AutoComplete Input -->
+  <rect class="input-bg" x="40" y="100" width="400" height="32"/>
+  <text class="placeholder" x="52" y="121">🔍 품목코드 또는 품목명을 입력하세요</text>
+  <path d="M420 110 L428 118 L420 126" stroke="#bfbfbf" stroke-width="2" fill="none"/>
+
+  <!-- Empty State Card -->
+  <rect class="card" x="24" y="160" width="752" height="400"/>
+
+  <!-- Empty Icon -->
+  <g transform="translate(400, 280)">
+    <rect x="-30" y="-40" width="60" height="50" rx="4" fill="none" stroke="#d9d9d9" stroke-width="2"/>
+    <path d="M-20 -30 L20 -30 M-15 -20 L15 -20 M-10 -10 L10 -10" stroke="#d9d9d9" stroke-width="2"/>
+    <rect x="-25" y="-10" width="50" height="35" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="2" rx="2"/>
+    <path d="M-15 5 L0 -5 L15 5 L15 20 L-15 20 Z" fill="#e8e8e8" stroke="#d9d9d9" stroke-width="1"/>
+  </g>
+
+  <!-- Empty Text -->
+  <text class="empty-title" x="400" y="360">품목을 선택해주세요</text>
+  <text class="empty-text" x="400" y="390">조회할 품목을 검색하여 선택하면</text>
+  <text class="empty-text" x="400" y="410">상세 정보를 확인할 수 있습니다.</text>
+
+  <!-- Annotation -->
+  <g transform="translate(640, 90)">
+    <rect x="0" y="0" width="120" height="24" rx="4" fill="#e6f7ff" stroke="#91d5ff"/>
+    <text x="60" y="16" text-anchor="middle" font-size="11" fill="#1890ff">AutoComplete</text>
+  </g>
+
+  <g transform="translate(640, 340)">
+    <rect x="0" y="0" width="80" height="24" rx="4" fill="#fff7e6" stroke="#ffd591"/>
+    <text x="40" y="16" text-anchor="middle" font-size="11" fill="#fa8c16">Empty</text>
+  </g>
+</svg>

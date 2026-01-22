@@ -1265,7 +1265,7 @@ workPackages:
         title: "[샘플] 조직/부서 트리"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1295,11 +1295,12 @@ workPackages:
             - screens/sample/OrganizationTree.tsx
             - mock-data/organization.json 로드
             - Tree onDrop 핸들러 구현
+        execution: build
       - id: TSK-06-14
         title: "[샘플] 생산 계획 간트 차트"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: low
         assignee: "-"
         tags:
@@ -1331,11 +1332,12 @@ workPackages:
             - screens/sample/ProductionGantt.tsx
             - mock-data/production-plan.json 로드
             - 확대/축소 상태 관리
+        execution: build
       - id: TSK-06-15
         title: "[샘플] 재고 현황 조회"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1370,7 +1372,6 @@ workPackages:
             - DetailTemplate 사용
             - mock-data/inventory.json 로드
             - 로딩/에러/빈 상태 처리 구현
-        execution: start
       - id: TSK-06-16
         title: "[샘플] 작업 지시 등록"
         category: development

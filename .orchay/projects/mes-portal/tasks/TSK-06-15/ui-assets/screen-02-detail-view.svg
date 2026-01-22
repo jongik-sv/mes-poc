@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: white; stroke: #e8e8e8; stroke-width: 1; rx: 6; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 18px; font-weight: 600; fill: #1f1f1f; }
+      .card-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; fill: #1f1f1f; }
+      .label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; fill: #595959; }
+      .value { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; fill: #1f1f1f; }
+      .input-bg { fill: white; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .input-filled { fill: #fafafa; stroke: #d9d9d9; stroke-width: 1; rx: 4; }
+      .table-header { fill: #fafafa; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .tab-active { fill: #1890ff; }
+      .tab-inactive { fill: #8c8c8c; }
+      .tag-green { fill: #f6ffed; stroke: #b7eb8f; rx: 2; }
+      .tag-green-text { fill: #52c41a; font-size: 11px; }
+      .tag-blue { fill: #e6f7ff; stroke: #91d5ff; rx: 2; }
+      .tag-blue-text { fill: #1890ff; font-size: 11px; }
+      .tag-red { fill: #fff2f0; stroke: #ffccc7; rx: 2; }
+      .tag-red-text { fill: #ff4d4f; font-size: 11px; }
+      .btn-primary { fill: #1890ff; rx: 4; }
+      .btn-text { fill: white; font-size: 12px; }
+      .desc-label-bg { fill: #fafafa; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="800" height="700"/>
+
+  <!-- Page Title -->
+  <text class="title" x="24" y="32">📦 재고 현황 조회</text>
+
+  <!-- Item Select Card -->
+  <rect class="card" x="24" y="50" width="752" height="56"/>
+  <text class="label" x="40" y="70">품목 선택</text>
+  <rect class="input-filled" x="40" y="78" width="400" height="24"/>
+  <text class="value" x="52" y="95">RAW-A-001 - 알루미늄 판재 6mm</text>
+
+  <!-- Detail Descriptions Card -->
+  <rect class="card" x="24" y="120" width="752" height="180"/>
+  <text class="card-title" x="40" y="145">재고 상세 정보</text>
+
+  <!-- Descriptions Grid -->
+  <g transform="translate(40, 155)">
+    <!-- Row 1 -->
+    <rect class="desc-label-bg" x="0" y="0" width="90" height="28"/>
+    <line class="table-border" x1="0" y1="0" x2="720" y2="0"/>
+    <line class="table-border" x1="0" y1="28" x2="720" y2="28"/>
+    <line class="table-border" x1="90" y1="0" x2="90" y2="28"/>
+    <line class="table-border" x1="270" y1="0" x2="270" y2="28"/>
+    <line class="table-border" x1="360" y1="0" x2="360" y2="28"/>
+    <text class="label" x="10" y="18">품목코드</text>
+    <text class="value" x="100" y="18">RAW-A-001</text>
+    <rect class="desc-label-bg" x="270" y="0" width="90" height="28"/>
+    <text class="label" x="280" y="18">품목명</text>
+    <text class="value" x="370" y="18">알루미늄 판재 6mm</text>
+
+    <!-- Row 2 -->
+    <rect class="desc-label-bg" x="0" y="28" width="90" height="28"/>
+    <line class="table-border" x1="0" y1="56" x2="720" y2="56"/>
+    <line class="table-border" x1="90" y1="28" x2="90" y2="56"/>
+    <line class="table-border" x1="270" y1="28" x2="270" y2="56"/>
+    <line class="table-border" x1="360" y1="28" x2="360" y2="56"/>
+    <text class="label" x="10" y="46">카테고리</text>
+    <text class="value" x="100" y="46">원자재</text>
+    <rect class="desc-label-bg" x="270" y="28" width="90" height="28"/>
+    <text class="label" x="280" y="46">규격</text>
+    <text class="value" x="370" y="46">1000x2000x6mm</text>
+
+    <!-- Row 3 -->
+    <rect class="desc-label-bg" x="0" y="56" width="90" height="28"/>
+    <line class="table-border" x1="0" y1="84" x2="720" y2="84"/>
+    <line class="table-border" x1="90" y1="56" x2="90" y2="84"/>
+    <line class="table-border" x1="270" y1="56" x2="270" y2="84"/>
+    <line class="table-border" x1="360" y1="56" x2="360" y2="84"/>
+    <text class="label" x="10" y="74">현재 재고</text>
+    <text class="value" x="100" y="74" font-weight="600">1,500 EA</text>
+    <rect class="desc-label-bg" x="270" y="56" width="90" height="28"/>
+    <text class="label" x="280" y="74">안전 재고</text>
+    <text class="value" x="370" y="74">500 EA</text>
+
+    <!-- Row 4 -->
+    <rect class="desc-label-bg" x="0" y="84" width="90" height="28"/>
+    <line class="table-border" x1="0" y1="112" x2="720" y2="112"/>
+    <line class="table-border" x1="90" y1="84" x2="90" y2="112"/>
+    <line class="table-border" x1="270" y1="84" x2="270" y2="112"/>
+    <line class="table-border" x1="360" y1="84" x2="360" y2="112"/>
+    <text class="label" x="10" y="102">재고 상태</text>
+    <rect class="tag-green" x="100" y="90" width="44" height="18"/>
+    <text class="tag-green-text" x="108" y="103">✓ 충분</text>
+    <rect class="desc-label-bg" x="270" y="84" width="90" height="28"/>
+    <text class="label" x="280" y="102">창고</text>
+    <text class="value" x="370" y="102">A창고-1구역</text>
+  </g>
+
+  <!-- Tabs Card -->
+  <rect class="card" x="24" y="310" width="752" height="360"/>
+
+  <!-- Tab Headers -->
+  <g transform="translate(40, 325)">
+    <rect fill="#e6f7ff" x="0" y="0" width="100" height="32" rx="4"/>
+    <text class="tab-active" x="15" y="21" font-size="13">📋 입출고 이력</text>
+    <rect fill="transparent" x="110" y="0" width="90" height="32" rx="4"/>
+    <text class="tab-inactive" x="125" y="21" font-size="13">📈 재고 추이</text>
+    <line x1="0" y1="35" x2="720" y2="35" stroke="#f0f0f0" stroke-width="2"/>
+  </g>
+
+  <!-- Filter Bar -->
+  <g transform="translate(40, 375)">
+    <text class="label" x="0" y="14">기간:</text>
+    <rect class="input-bg" x="35" y="0" width="200" height="24"/>
+    <text class="value" x="45" y="16">2026-01-01 ~ 2026-01-22</text>
+    <rect class="btn-primary" x="245" y="0" width="50" height="24"/>
+    <text class="btn-text" x="258" y="16">검색</text>
+  </g>
+
+  <!-- Transaction Table -->
+  <g transform="translate(40, 410)">
+    <!-- Header -->
+    <rect class="table-header" x="0" y="0" width="720" height="30"/>
+    <line class="table-border" x1="0" y1="0" x2="720" y2="0"/>
+    <line class="table-border" x1="0" y1="30" x2="720" y2="30"/>
+    <text class="label" x="10" y="20">No</text>
+    <text class="label" x="50" y="20">일시</text>
+    <text class="label" x="170" y="20">유형</text>
+    <text class="label" x="250" y="20">수량</text>
+    <text class="label" x="350" y="20">담당자</text>
+    <text class="label" x="450" y="20">참조</text>
+
+    <!-- Row 1 -->
+    <line class="table-border" x1="0" y1="60" x2="720" y2="60"/>
+    <text class="value" x="10" y="50">1</text>
+    <text class="value" x="50" y="50">01-21 14:30</text>
+    <rect class="tag-red" x="170" y="38" width="36" height="18"/>
+    <text class="tag-red-text" x="178" y="51">출고</text>
+    <text class="tag-red-text" x="250" y="50">-200</text>
+    <text class="value" x="350" y="50">김생산</text>
+    <text class="value" x="450" y="50">WO-2026-0015</text>
+
+    <!-- Row 2 -->
+    <line class="table-border" x1="0" y1="90" x2="720" y2="90"/>
+    <text class="value" x="10" y="80">2</text>
+    <text class="value" x="50" y="80">01-20 10:00</text>
+    <rect class="tag-blue" x="170" y="68" width="36" height="18"/>
+    <text class="tag-blue-text" x="178" y="81">입고</text>
+    <text class="tag-blue-text" x="250" y="80">+500</text>
+    <text class="value" x="350" y="80">이자재</text>
+    <text class="value" x="450" y="80">PO-2026-0042</text>
+
+    <!-- Row 3 -->
+    <line class="table-border" x1="0" y1="120" x2="720" y2="120"/>
+    <text class="value" x="10" y="110">3</text>
+    <text class="value" x="50" y="110">01-19 16:45</text>
+    <rect class="tag-red" x="170" y="98" width="36" height="18"/>
+    <text class="tag-red-text" x="178" y="111">출고</text>
+    <text class="tag-red-text" x="250" y="110">-100</text>
+    <text class="value" x="350" y="110">박생산</text>
+    <text class="value" x="450" y="110">WO-2026-0014</text>
+
+    <!-- Row 4 -->
+    <line class="table-border" x1="0" y1="150" x2="720" y2="150"/>
+    <text class="value" x="10" y="140">4</text>
+    <text class="value" x="50" y="140">01-18 09:20</text>
+    <rect class="tag-blue" x="170" y="128" width="36" height="18"/>
+    <text class="tag-blue-text" x="178" y="141">입고</text>
+    <text class="tag-blue-text" x="250" y="140">+300</text>
+    <text class="value" x="350" y="140">이자재</text>
+    <text class="value" x="450" y="140">PO-2026-0041</text>
+
+    <!-- Pagination -->
+    <g transform="translate(280, 170)">
+      <text class="label" x="0" y="14">&lt;</text>
+      <rect fill="#1890ff" x="20" y="0" width="24" height="24" rx="4"/>
+      <text fill="white" x="28" y="16" font-size="12">1</text>
+      <text class="label" x="55" y="16">2</text>
+      <text class="label" x="75" y="16">3</text>
+      <text class="label" x="95" y="16">...</text>
+      <text class="label" x="115" y="16">10</text>
+      <text class="label" x="145" y="14">&gt;</text>
+    </g>
+  </g>
+
+  <!-- Annotations -->
+  <g transform="translate(680, 140)">
+    <rect x="0" y="0" width="90" height="20" rx="3" fill="#f6ffed" stroke="#b7eb8f"/>
+    <text x="45" y="14" text-anchor="middle" font-size="10" fill="#52c41a">Descriptions</text>
+  </g>
+
+  <g transform="translate(150, 330)">
+    <rect x="0" y="0" width="50" height="20" rx="3" fill="#e6f7ff" stroke="#91d5ff"/>
+    <text x="25" y="14" text-anchor="middle" font-size="10" fill="#1890ff">Tabs</text>
+  </g>
+
+  <g transform="translate(680, 440)">
+    <rect x="0" y="0" width="50" height="20" rx="3" fill="#fff7e6" stroke="#ffd591"/>
+    <text x="25" y="14" text-anchor="middle" font-size="10" fill="#fa8c16">Table</text>
+  </g>
+</svg>
