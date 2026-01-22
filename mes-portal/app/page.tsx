@@ -4,12 +4,17 @@ import { Button, Input, Space, Typography, Card, Switch } from 'antd'
 import { SunOutlined, MoonOutlined } from '@ant-design/icons'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
+import DatePickerField from '@/components/common/DatePickerField'
+import RangePickerField from '@/components/common/RangePickerField'
+import dayjs, { Dayjs } from '@/lib/dayjs'
 
 const { Title, Text } = Typography
 
 export default function Home() {
   const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null)
+  const [dateRange, setDateRange] = useState<[Dayjs, Dayjs] | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -18,6 +23,16 @@ export default function Home() {
   const toggleTheme = () => {
     setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
   }
+
+  const datePresets = [
+    { label: '오늘', value: dayjs() },
+    { label: '어제', value: dayjs().subtract(1, 'day') },
+  ]
+
+  const rangePresets = [
+    { label: '최근 7일', value: [dayjs().subtract(6, 'day'), dayjs()] as [Dayjs, Dayjs] },
+    { label: '이번 달', value: [dayjs().startOf('month'), dayjs()] as [Dayjs, Dayjs] },
+  ]
 
   return (
     <main className="min-h-screen p-8">
@@ -56,6 +71,55 @@ export default function Home() {
               <Button danger>Danger Button</Button>
             </Space>
             <Input placeholder="Input 컴포넌트 테스트" className="max-w-md" />
+          </Space>
+        </Card>
+
+        {/* 날짜 선택기 테스트 (TSK-05-05) */}
+        <Card title="날짜 선택기 (DatePicker)" className="mb-6">
+          <Space direction="vertical" className="w-full" size="middle">
+            <div>
+              <Text strong>단일 날짜 선택</Text>
+              <div className="mt-2">
+                <DatePickerField
+                  value={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  placeholder="날짜를 선택하세요"
+                  presets={datePresets}
+                  data-testid="date-picker"
+                />
+              </div>
+              {selectedDate && (
+                <Text className="mt-2 block" type="success">
+                  선택된 날짜: {selectedDate.format('YYYY-MM-DD')}
+                </Text>
+              )}
+            </div>
+            <div>
+              <Text strong>날짜 범위 선택</Text>
+              <div className="mt-2">
+                <RangePickerField
+                  value={dateRange}
+                  onChange={(dates) => setDateRange(dates)}
+                  presets={rangePresets}
+                  data-testid="range-picker"
+                />
+              </div>
+              {dateRange && (
+                <Text className="mt-2 block" type="success">
+                  선택된 기간: {dateRange[0].format('YYYY-MM-DD')} ~ {dateRange[1].format('YYYY-MM-DD')}
+                </Text>
+              )}
+            </div>
+            <div>
+              <Text strong>비활성 날짜 (과거 날짜 선택 불가)</Text>
+              <div className="mt-2">
+                <DatePickerField
+                  disabledDate={(date) => date.isBefore(dayjs(), 'day')}
+                  placeholder="미래 날짜만 선택 가능"
+                  data-testid="date-picker-with-disabled"
+                />
+              </div>
+            </div>
           </Space>
         </Card>
 

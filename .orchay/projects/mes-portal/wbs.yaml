@@ -844,7 +844,8 @@ workPackages:
         title: 날짜 선택기
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -868,7 +869,6 @@ workPackages:
           integrationCheck:
             - dayjs locale 설정 (ko)
             - "DatePicker 기본 포맷: YYYY-MM-DD"
-        execution: verify
       - id: TSK-05-06
         title: 키보드 단축키 시스템
         category: development
@@ -962,6 +962,7 @@ workPackages:
             - Ant Design Tabs
           integrationCheck:
             - components/templates/DetailTemplate.tsx
+        execution: build
       - id: TSK-06-03
         title: 입력/수정 폼 템플릿
         category: development
