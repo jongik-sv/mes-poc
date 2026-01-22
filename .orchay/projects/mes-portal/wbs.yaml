@@ -1302,7 +1302,8 @@ workPackages:
         title: "[샘플] 생산 계획 간트 차트"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: low
         assignee: "-"
         tags:
@@ -1334,7 +1335,6 @@ workPackages:
             - screens/sample/ProductionGantt.tsx
             - mock-data/production-plan.json 로드
             - 확대/축소 상태 관리
-        execution: verify
       - id: TSK-06-15
         title: "[샘플] 재고 현황 조회"
         category: development
