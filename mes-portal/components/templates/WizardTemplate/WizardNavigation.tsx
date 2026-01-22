@@ -69,7 +69,6 @@ export function WizardNavigation({
             data-testid="wizard-cancel-btn"
             onClick={onCancel}
             disabled={isProcessing}
-            type="button"
           >
             {cancelButtonText}
           </Button>
@@ -87,7 +86,6 @@ export function WizardNavigation({
             data-testid="wizard-prev-btn"
             onClick={onPrev}
             disabled={isProcessing}
-            type="button"
           >
             {prevButtonText}
           </Button>

@@ -191,7 +191,11 @@ export function WizardProvider<T extends Record<string, unknown> = Record<string
     ]
   )
 
-  return <WizardContext.Provider value={value}>{children}</WizardContext.Provider>
+  return (
+    <WizardContext.Provider value={value as WizardContextValue<Record<string, unknown>>}>
+      {children}
+    </WizardContext.Provider>
+  )
 }
 
 export function useWizardContext<T extends Record<string, unknown> = Record<string, unknown>>() {

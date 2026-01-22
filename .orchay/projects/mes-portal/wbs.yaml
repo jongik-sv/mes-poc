@@ -1053,6 +1053,7 @@ workPackages:
         category: development
         domain: frontend
         status: "[vf]"
+        test-result: pass
         priority: low
         assignee: "-"
         tags:
@@ -1128,6 +1129,7 @@ workPackages:
           integrationCheck:
             - screens/sample/CategoryProduct.tsx
             - MasterDetailTemplate 사용
+        execution: build
       - id: TSK-06-09
         title: "[샘플] 설정 마법사"
         category: development

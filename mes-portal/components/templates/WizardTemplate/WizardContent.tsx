@@ -34,7 +34,9 @@ export function WizardContent<T extends Record<string, unknown> = Record<string,
 
   // content가 함수인 경우 context를 전달하여 호출
   const content: ReactNode =
-    typeof step.content === 'function' ? step.content(context) : step.content
+    typeof step.content === 'function'
+      ? step.content(context as WizardContextValue<Record<string, unknown>>)
+      : step.content
 
   return (
     <div data-testid="wizard-content" className={className}>
