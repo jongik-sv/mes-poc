@@ -807,11 +807,12 @@ workPackages:
           integrationCheck:
             - lib/utils/toast.ts 유틸리티 함수
             - showSuccess, showError, showWarning 함수
+        execution: verify
       - id: TSK-05-04
         title: 테이블 공통 기능
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: high
         assignee: "-"
         tags:
@@ -839,7 +840,6 @@ workPackages:
           integrationCheck:
             - components/common/DataTable.tsx 래퍼 컴포넌트
             - 공통 테이블 설정 (페이지 크기 옵션 등)
-        execution: build
       - id: TSK-05-05
         title: 날짜 선택기
         category: development
