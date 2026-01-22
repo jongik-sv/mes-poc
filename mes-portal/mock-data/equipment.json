@@ -1,0 +1,472 @@
+{
+  "lines": [
+    { "id": "LINE-A", "name": "A 라인" },
+    { "id": "LINE-B", "name": "B 라인" },
+    { "id": "LINE-C", "name": "C 라인" },
+    { "id": "LINE-D", "name": "D 라인" }
+  ],
+  "equipment": [
+    {
+      "id": "eq-001",
+      "code": "CNC-001",
+      "name": "CNC 선반 1호기",
+      "type": "CNC",
+      "typeLabel": "CNC 가공기",
+      "lineId": "LINE-A",
+      "lineName": "A 라인",
+      "location": "A동 1층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T08:30:00Z",
+      "manufacturer": "DMG MORI",
+      "installedAt": "2024-06-15",
+      "metrics": {
+        "efficiency": 85,
+        "todayProduction": 1250,
+        "targetProduction": 1500,
+        "defectCount": 3
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-15",
+        "nextMaintenanceAt": "2026-02-15",
+        "maintenanceManager": "김정비"
+      },
+      "operator": "홍길동",
+      "history": [
+        {
+          "timestamp": "2026-01-22T08:30:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        },
+        {
+          "timestamp": "2026-01-22T07:00:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "STOPPED",
+          "reason": "휴식 시간"
+        },
+        {
+          "timestamp": "2026-01-21T18:00:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "STOPPED",
+          "reason": "일과 종료"
+        },
+        {
+          "timestamp": "2026-01-21T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        },
+        {
+          "timestamp": "2026-01-20T18:00:00Z",
+          "previousStatus": "MAINTENANCE",
+          "newStatus": "STOPPED",
+          "reason": "점검 완료"
+        }
+      ]
+    },
+    {
+      "id": "eq-002",
+      "code": "CNC-002",
+      "name": "CNC 선반 2호기",
+      "type": "CNC",
+      "typeLabel": "CNC 가공기",
+      "lineId": "LINE-A",
+      "lineName": "A 라인",
+      "location": "A동 1층",
+      "status": "STOPPED",
+      "statusLabel": "정지",
+      "statusChangedAt": "2026-01-22T09:00:00Z",
+      "manufacturer": "DMG MORI",
+      "installedAt": "2024-07-20",
+      "metrics": {
+        "efficiency": 0,
+        "todayProduction": 480,
+        "targetProduction": 1500,
+        "defectCount": 1
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-10",
+        "nextMaintenanceAt": "2026-02-10",
+        "maintenanceManager": "김정비"
+      },
+      "history": [
+        {
+          "timestamp": "2026-01-22T09:00:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "STOPPED",
+          "reason": "재료 부족"
+        },
+        {
+          "timestamp": "2026-01-22T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-003",
+      "code": "PRESS-001",
+      "name": "프레스기 1호기",
+      "type": "PRESS",
+      "typeLabel": "프레스기",
+      "lineId": "LINE-B",
+      "lineName": "B 라인",
+      "location": "B동 1층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T07:30:00Z",
+      "manufacturer": "AIDA",
+      "installedAt": "2023-11-10",
+      "metrics": {
+        "efficiency": 92,
+        "todayProduction": 2100,
+        "targetProduction": 2200,
+        "defectCount": 5
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-05",
+        "nextMaintenanceAt": "2026-02-05",
+        "maintenanceManager": "이정비"
+      },
+      "operator": "김영희",
+      "history": [
+        {
+          "timestamp": "2026-01-22T07:30:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-004",
+      "code": "PRESS-002",
+      "name": "프레스기 2호기",
+      "type": "PRESS",
+      "typeLabel": "프레스기",
+      "lineId": "LINE-B",
+      "lineName": "B 라인",
+      "location": "B동 1층",
+      "status": "FAULT",
+      "statusLabel": "고장",
+      "statusChangedAt": "2026-01-22T10:15:00Z",
+      "manufacturer": "AIDA",
+      "installedAt": "2023-11-15",
+      "metrics": {
+        "efficiency": 0,
+        "todayProduction": 850,
+        "targetProduction": 2200,
+        "defectCount": 12
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-08",
+        "nextMaintenanceAt": "2026-02-08",
+        "maintenanceManager": "이정비"
+      },
+      "errorCode": "E-0045",
+      "errorMessage": "센서 이상",
+      "history": [
+        {
+          "timestamp": "2026-01-22T10:15:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "FAULT",
+          "reason": "센서 이상 감지"
+        },
+        {
+          "timestamp": "2026-01-22T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-005",
+      "code": "ROBOT-001",
+      "name": "용접로봇 1호기",
+      "type": "ROBOT",
+      "typeLabel": "용접로봇",
+      "lineId": "LINE-C",
+      "lineName": "C 라인",
+      "location": "C동 1층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T08:00:00Z",
+      "manufacturer": "FANUC",
+      "installedAt": "2024-03-01",
+      "metrics": {
+        "efficiency": 78,
+        "todayProduction": 680,
+        "targetProduction": 900,
+        "defectCount": 2
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-12",
+        "nextMaintenanceAt": "2026-02-12",
+        "maintenanceManager": "박정비"
+      },
+      "operator": "이철수",
+      "history": [
+        {
+          "timestamp": "2026-01-22T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-006",
+      "code": "ROBOT-002",
+      "name": "용접로봇 2호기",
+      "type": "ROBOT",
+      "typeLabel": "용접로봇",
+      "lineId": "LINE-C",
+      "lineName": "C 라인",
+      "location": "C동 1층",
+      "status": "MAINTENANCE",
+      "statusLabel": "점검",
+      "statusChangedAt": "2026-01-22T09:00:00Z",
+      "manufacturer": "FANUC",
+      "installedAt": "2024-03-15",
+      "metrics": {
+        "efficiency": 0,
+        "todayProduction": 200,
+        "targetProduction": 900,
+        "defectCount": 0
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-22",
+        "nextMaintenanceAt": "2026-02-22",
+        "maintenanceManager": "박정비"
+      },
+      "maintenanceNote": "정기 점검 진행 중",
+      "history": [
+        {
+          "timestamp": "2026-01-22T09:00:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "MAINTENANCE",
+          "reason": "정기 점검"
+        },
+        {
+          "timestamp": "2026-01-22T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-007",
+      "code": "INSP-001",
+      "name": "검사기 1호기",
+      "type": "INSPECTION",
+      "typeLabel": "검사장비",
+      "lineId": "LINE-D",
+      "lineName": "D 라인",
+      "location": "D동 1층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T07:00:00Z",
+      "manufacturer": "KEYENCE",
+      "installedAt": "2024-01-20",
+      "metrics": {
+        "efficiency": 95,
+        "todayProduction": 3200,
+        "targetProduction": 3500,
+        "defectCount": 0
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-18",
+        "nextMaintenanceAt": "2026-02-18",
+        "maintenanceManager": "최정비"
+      },
+      "operator": "박민수",
+      "history": [
+        {
+          "timestamp": "2026-01-22T07:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-008",
+      "code": "INSP-002",
+      "name": "검사기 2호기",
+      "type": "INSPECTION",
+      "typeLabel": "검사장비",
+      "lineId": "LINE-D",
+      "lineName": "D 라인",
+      "location": "D동 1층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T08:30:00Z",
+      "manufacturer": "KEYENCE",
+      "installedAt": "2024-02-10",
+      "metrics": {
+        "efficiency": 88,
+        "todayProduction": 2800,
+        "targetProduction": 3500,
+        "defectCount": 1
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-16",
+        "nextMaintenanceAt": "2026-02-16",
+        "maintenanceManager": "최정비"
+      },
+      "operator": "정지영",
+      "history": [
+        {
+          "timestamp": "2026-01-22T08:30:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-009",
+      "code": "ASSY-001",
+      "name": "조립라인 1호기",
+      "type": "ASSEMBLY",
+      "typeLabel": "조립설비",
+      "lineId": "LINE-A",
+      "lineName": "A 라인",
+      "location": "A동 2층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T08:00:00Z",
+      "manufacturer": "DENSO",
+      "installedAt": "2024-04-01",
+      "metrics": {
+        "efficiency": 91,
+        "todayProduction": 1820,
+        "targetProduction": 2000,
+        "defectCount": 4
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-14",
+        "nextMaintenanceAt": "2026-02-14",
+        "maintenanceManager": "김정비"
+      },
+      "operator": "최수진",
+      "history": [
+        {
+          "timestamp": "2026-01-22T08:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-010",
+      "code": "ASSY-002",
+      "name": "조립라인 2호기",
+      "type": "ASSEMBLY",
+      "typeLabel": "조립설비",
+      "lineId": "LINE-B",
+      "lineName": "B 라인",
+      "location": "B동 2층",
+      "status": "RUNNING",
+      "statusLabel": "가동",
+      "statusChangedAt": "2026-01-22T07:30:00Z",
+      "manufacturer": "DENSO",
+      "installedAt": "2024-05-15",
+      "metrics": {
+        "efficiency": 82,
+        "todayProduction": 1640,
+        "targetProduction": 2000,
+        "defectCount": 6
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-11",
+        "nextMaintenanceAt": "2026-02-11",
+        "maintenanceManager": "이정비"
+      },
+      "operator": "강동원",
+      "history": [
+        {
+          "timestamp": "2026-01-22T07:30:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "RUNNING",
+          "reason": "작업 시작"
+        }
+      ]
+    },
+    {
+      "id": "eq-011",
+      "code": "PACK-001",
+      "name": "포장기 1호기",
+      "type": "PACKAGING",
+      "typeLabel": "포장설비",
+      "lineId": "LINE-C",
+      "lineName": "C 라인",
+      "location": "C동 2층",
+      "status": "STOPPED",
+      "statusLabel": "정지",
+      "statusChangedAt": "2026-01-22T06:00:00Z",
+      "manufacturer": "BOSCH",
+      "installedAt": "2024-08-01",
+      "metrics": {
+        "efficiency": 0,
+        "todayProduction": 0,
+        "targetProduction": 5000,
+        "defectCount": 0
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-17",
+        "nextMaintenanceAt": "2026-02-17",
+        "maintenanceManager": "박정비"
+      },
+      "history": [
+        {
+          "timestamp": "2026-01-22T06:00:00Z",
+          "previousStatus": "RUNNING",
+          "newStatus": "STOPPED",
+          "reason": "작업 종료"
+        }
+      ]
+    },
+    {
+      "id": "eq-012",
+      "code": "PACK-002",
+      "name": "포장기 2호기",
+      "type": "PACKAGING",
+      "typeLabel": "포장설비",
+      "lineId": "LINE-D",
+      "lineName": "D 라인",
+      "location": "D동 2층",
+      "status": "MAINTENANCE",
+      "statusLabel": "점검",
+      "statusChangedAt": "2026-01-22T07:00:00Z",
+      "manufacturer": "BOSCH",
+      "installedAt": "2024-09-10",
+      "metrics": {
+        "efficiency": 0,
+        "todayProduction": 0,
+        "targetProduction": 5000,
+        "defectCount": 0
+      },
+      "maintenance": {
+        "lastMaintenanceAt": "2026-01-22",
+        "nextMaintenanceAt": "2026-02-22",
+        "maintenanceManager": "최정비"
+      },
+      "maintenanceNote": "일일 점검",
+      "history": [
+        {
+          "timestamp": "2026-01-22T07:00:00Z",
+          "previousStatus": "STOPPED",
+          "newStatus": "MAINTENANCE",
+          "reason": "일일 점검"
+        }
+      ]
+    }
+  ],
+  "total": 12
+}
