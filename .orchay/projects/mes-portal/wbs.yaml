@@ -1023,7 +1023,8 @@ workPackages:
         title: 팝업(모달) 화면 템플릿
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
