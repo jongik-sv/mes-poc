@@ -1082,7 +1082,7 @@ workPackages:
         title: "[샘플] 사용자 목록 화면"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -1104,7 +1104,6 @@ workPackages:
             - screens/sample/UserList.tsx
             - ListTemplate 사용
             - mock-data/users.json 로드
-        execution: build
       - id: TSK-06-08
         title: "[샘플] 카테고리-제품 마스터-디테일"
         category: development
