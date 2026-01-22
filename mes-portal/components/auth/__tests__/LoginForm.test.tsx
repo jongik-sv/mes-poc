@@ -4,17 +4,17 @@ import { LoginForm } from '../LoginForm'
 import { AUTH_MESSAGES } from '@/lib/constants/messages'
 
 // next-auth/react signIn mock
-const mockSignIn = jest.fn()
-jest.mock('next-auth/react', () => ({
+const mockSignIn = vi.fn()
+vi.mock('next-auth/react', () => ({
   signIn: (...args: unknown[]) => mockSignIn(...args),
 }))
 
 // next/navigation mock
-const mockPush = jest.fn()
-jest.mock('next/navigation', () => ({
+const mockPush = vi.fn()
+vi.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,
-    refresh: jest.fn(),
+    refresh: vi.fn(),
   }),
 }))
 
@@ -28,7 +28,7 @@ function renderWithUser(ui: React.ReactElement) {
 
 describe('LoginForm', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     mockSignIn.mockReset()
   })
 
@@ -247,7 +247,7 @@ describe('LoginForm', () => {
   })
 
   describe('리다이렉트', () => {
-    it('redirects to portal on successful login', async () => {
+    it('redirects to dashboard on successful login', async () => {
       mockSignIn.mockResolvedValue({ ok: true })
 
       const { user } = renderWithUser(<LoginForm />)
@@ -260,7 +260,7 @@ describe('LoginForm', () => {
       await user.click(screen.getByRole('button', { name: /로그인/i }))
 
       await waitFor(() => {
-        expect(mockPush).toHaveBeenCalledWith('/portal/dashboard')
+        expect(mockPush).toHaveBeenCalledWith('/dashboard')
       })
     })
   })

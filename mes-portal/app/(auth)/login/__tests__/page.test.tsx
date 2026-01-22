@@ -2,36 +2,36 @@ import { render, screen } from '@testing-library/react'
 import { LoginPageClient } from '../LoginPageClient'
 
 // Mock 함수 선언
-const mockPush = jest.fn()
-const mockAuth = jest.fn()
+const mockPush = vi.fn()
+const mockAuth = vi.fn()
 
 // next-auth mock
-jest.mock('next-auth', () => ({
-  default: jest.fn(),
+vi.mock('next-auth', () => ({
+  default: vi.fn(),
 }))
 
 // next-auth/react mock
-jest.mock('next-auth/react', () => ({
-  signIn: jest.fn(),
+vi.mock('next-auth/react', () => ({
+  signIn: vi.fn(),
 }))
 
 // next/navigation mock
-jest.mock('next/navigation', () => ({
-  redirect: jest.fn(),
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
   useRouter: () => ({
     push: mockPush,
-    refresh: jest.fn(),
+    refresh: vi.fn(),
   }),
 }))
 
 // auth mock (세션 확인용)
-jest.mock('@/auth', () => ({
+vi.mock('@/auth', () => ({
   auth: () => mockAuth(),
 }))
 
 describe('LoginPage', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     mockAuth.mockReset()
   })
 

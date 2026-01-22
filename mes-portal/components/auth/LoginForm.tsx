@@ -14,19 +14,12 @@ interface LoginFormValues {
   password: string
 }
 
-/**
- * 로그인 폼 컴포넌트
- * Auth.js credentials provider를 사용하여 인증 처리
- */
 export function LoginForm() {
   const router = useRouter()
   const [form] = Form.useForm<LoginFormValues>()
   const [isLoading, setIsLoading] = useState(false)
   const [authError, setAuthError] = useState<string | null>(null)
 
-  /**
-   * 에러 코드에 따른 메시지 반환
-   */
   const getErrorMessage = (error: string): string => {
     switch (error) {
       case 'CredentialsSignin':
@@ -42,9 +35,6 @@ export function LoginForm() {
     }
   }
 
-  /**
-   * 폼 제출 핸들러
-   */
   const handleSubmit = async (values: LoginFormValues) => {
     setIsLoading(true)
     setAuthError(null)
@@ -57,7 +47,7 @@ export function LoginForm() {
       })
 
       if (result?.ok) {
-        router.push('/portal/dashboard')
+        router.push('/dashboard')
       } else if (result?.error) {
         setAuthError(getErrorMessage(result.error))
       }
@@ -77,17 +67,42 @@ export function LoginForm() {
     >
       {/* 로고/타이틀 */}
       <div className="text-center mb-8" data-testid="login-logo">
-        <Title level={2} style={{ color: '#1677FF', marginBottom: 4 }}>
+        <div className="flex justify-center mb-4">
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="6" fill="var(--color-primary)" />
+            <path
+              d="M8 10h4v12H8V10zm6 4h4v8h-4v-8zm6-2h4v10h-4V12z"
+              fill="white"
+            />
+          </svg>
+        </div>
+        <Title
+          level={2}
+          style={{
+            color: 'var(--color-gray-900)',
+            marginBottom: 4,
+            fontWeight: 600,
+          }}
+        >
           MES Portal
         </Title>
-        <Text type="secondary">Manufacturing Execution System</Text>
+        <Text style={{ color: 'var(--color-gray-500)' }}>
+          Manufacturing Execution System
+        </Text>
       </div>
 
       {/* 에러 Alert */}
       {authError && (
         <Alert
           data-testid="login-error-alert"
-          title={authError}
+          message={authError}
           type="error"
           showIcon
           closable
@@ -95,6 +110,9 @@ export function LoginForm() {
           className="mb-6"
           role="alert"
           aria-live="assertive"
+          style={{
+            borderRadius: 'var(--radius-md)',
+          }}
         />
       )}
 
@@ -105,10 +123,15 @@ export function LoginForm() {
         onFinish={handleSubmit}
         autoComplete="off"
         disabled={isLoading}
+        requiredMark={false}
       >
         {/* 이메일 필드 */}
         <Form.Item
-          label="이메일"
+          label={
+            <span style={{ color: 'var(--color-gray-700)', fontWeight: 500 }}>
+              이메일
+            </span>
+          }
           name="email"
           rules={[
             { required: true, message: AUTH_MESSAGES.REQUIRED_EMAIL },
@@ -117,17 +140,24 @@ export function LoginForm() {
         >
           <Input
             data-testid="email-input"
-            prefix={<MailOutlined />}
+            prefix={<MailOutlined style={{ color: 'var(--color-gray-400)' }} />}
             placeholder="이메일을 입력하세요"
             size="large"
             aria-label="이메일"
             aria-required="true"
+            style={{
+              borderRadius: 'var(--radius-md)',
+            }}
           />
         </Form.Item>
 
         {/* 비밀번호 필드 */}
         <Form.Item
-          label="비밀번호"
+          label={
+            <span style={{ color: 'var(--color-gray-700)', fontWeight: 500 }}>
+              비밀번호
+            </span>
+          }
           name="password"
           rules={[
             { required: true, message: AUTH_MESSAGES.REQUIRED_PASSWORD },
@@ -135,16 +165,19 @@ export function LoginForm() {
         >
           <Input.Password
             data-testid="password-input"
-            prefix={<LockOutlined />}
+            prefix={<LockOutlined style={{ color: 'var(--color-gray-400)' }} />}
             placeholder="비밀번호를 입력하세요"
             size="large"
             aria-label="비밀번호"
             aria-required="true"
+            style={{
+              borderRadius: 'var(--radius-md)',
+            }}
           />
         </Form.Item>
 
         {/* 로그인 버튼 */}
-        <Form.Item className="mb-0 mt-6">
+        <Form.Item className="mb-0 mt-8">
           <Button
             data-testid="login-button"
             type="primary"
@@ -153,6 +186,12 @@ export function LoginForm() {
             block
             loading={isLoading}
             aria-label="로그인"
+            style={{
+              height: 44,
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 500,
+              fontSize: 15,
+            }}
           >
             로그인
           </Button>

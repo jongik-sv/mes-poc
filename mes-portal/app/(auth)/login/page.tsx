@@ -13,10 +13,10 @@ export const metadata: Metadata = {
  * 세션 확인 후 이미 로그인된 경우 /portal로 리다이렉트
  */
 export default async function LoginPage() {
-  // 세션 확인
+  // 세션 확인 - 이미 로그인된 사용자는 대시보드로 리다이렉트
   const session = await auth()
   if (session) {
-    redirect('/portal/dashboard')
+    redirect('/dashboard')
   }
 
   return <LoginPageClient />
