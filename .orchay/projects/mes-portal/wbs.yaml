@@ -682,7 +682,7 @@ workPackages:
         title: 로그인 페이지
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         test-result: pass
         priority: critical
         assignee: "-"
@@ -713,7 +713,6 @@ workPackages:
             - app/(auth)/login/page.tsx 파일 존재
             - signIn 함수 사용 (Auth.js)
             - Form rules로 유효성 검사
-        execution: verify
   - id: WP-05
     title: 공통 컴포넌트
     status: planned
