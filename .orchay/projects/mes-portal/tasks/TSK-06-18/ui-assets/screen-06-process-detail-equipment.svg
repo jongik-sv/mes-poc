@@ -1,0 +1,141 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="750" fill="#f5f5f5"/>
+
+  <!-- Title -->
+  <text x="40" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#262626">SCR-06: 공정 상세 (설비연결 탭)</text>
+
+  <!-- Header Card -->
+  <rect x="40" y="60" width="1120" height="60" rx="8" fill="white" stroke="#d9d9d9"/>
+  <text x="60" y="98" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#262626">공정 상세: PRC001 - 조립</text>
+
+  <!-- Action Buttons -->
+  <rect x="980" y="78" width="60" height="28" rx="4" fill="#1890ff"/>
+  <text x="995" y="97" font-family="Arial, sans-serif" font-size="12" fill="white">수정</text>
+
+  <rect x="1050" y="78" width="60" height="28" rx="4" fill="white" stroke="#ff4d4f"/>
+  <text x="1065" y="97" font-family="Arial, sans-serif" font-size="12" fill="#ff4d4f">삭제</text>
+
+  <!-- Basic Info Card (Collapsed) -->
+  <rect x="40" y="140" width="1120" height="180" rx="8" fill="white" stroke="#d9d9d9"/>
+  <text x="60" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#262626">기본 정보</text>
+
+  <!-- Descriptions Table -->
+  <rect x="60" y="185" width="1080" height="120" rx="4" fill="white" stroke="#d9d9d9"/>
+
+  <!-- Row 1 -->
+  <rect x="60" y="185" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="120" y="210" font-family="Arial, sans-serif" font-size="12" fill="#595959">공정코드</text>
+  <rect x="240" y="185" width="300" height="40" fill="white" stroke="#d9d9d9"/>
+  <text x="260" y="210" font-family="Arial, sans-serif" font-size="12" fill="#262626">PRC001</text>
+
+  <rect x="540" y="185" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="605" y="210" font-family="Arial, sans-serif" font-size="12" fill="#595959">공정명</text>
+  <rect x="720" y="185" width="420" height="40" fill="white" stroke="#d9d9d9"/>
+  <text x="740" y="210" font-family="Arial, sans-serif" font-size="12" fill="#262626">조립</text>
+
+  <!-- Row 2 -->
+  <rect x="60" y="225" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="130" y="250" font-family="Arial, sans-serif" font-size="12" fill="#595959">상태</text>
+  <rect x="240" y="225" width="300" height="40" fill="white" stroke="#d9d9d9"/>
+  <rect x="260" y="235" width="40" height="20" rx="4" fill="#f6ffed" stroke="#b7eb8f"/>
+  <text x="268" y="249" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">활성</text>
+
+  <rect x="540" y="225" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="610" y="250" font-family="Arial, sans-serif" font-size="12" fill="#595959">순서</text>
+  <rect x="720" y="225" width="420" height="40" fill="white" stroke="#d9d9d9"/>
+  <text x="740" y="250" font-family="Arial, sans-serif" font-size="12" fill="#262626">1</text>
+
+  <!-- Row 3 -->
+  <rect x="60" y="265" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="110" y="290" font-family="Arial, sans-serif" font-size="12" fill="#595959">연결 설비</text>
+  <rect x="240" y="265" width="300" height="40" fill="white" stroke="#d9d9d9"/>
+  <text x="260" y="290" font-family="Arial, sans-serif" font-size="12" fill="#1890ff">5대</text>
+
+  <rect x="540" y="265" width="180" height="40" fill="#fafafa" stroke="#d9d9d9"/>
+  <text x="600" y="290" font-family="Arial, sans-serif" font-size="12" fill="#595959">생성일</text>
+  <rect x="720" y="265" width="420" height="40" fill="white" stroke="#d9d9d9"/>
+  <text x="740" y="290" font-family="Arial, sans-serif" font-size="12" fill="#595959">2026-01-15</text>
+
+  <!-- Tabs Card -->
+  <rect x="40" y="340" width="1120" height="350" rx="8" fill="white" stroke="#d9d9d9"/>
+
+  <!-- Tab Headers -->
+  <rect x="40" y="340" width="1120" height="48" fill="#fafafa" rx="8"/>
+  <rect x="40" y="364" width="1120" height="24" fill="#fafafa"/>
+
+  <rect x="60" y="350" width="80" height="32" fill="#fafafa"/>
+  <text x="75" y="371" font-family="Arial, sans-serif" font-size="13" fill="#595959">기본정보</text>
+
+  <rect x="160" y="350" width="80" height="32" fill="white"/>
+  <text x="175" y="371" font-family="Arial, sans-serif" font-size="13" fill="#1890ff" font-weight="bold">설비연결</text>
+  <rect x="160" y="380" width="80" height="2" fill="#1890ff"/>
+
+  <rect x="260" y="350" width="60" height="32" fill="#fafafa"/>
+  <text x="275" y="371" font-family="Arial, sans-serif" font-size="13" fill="#595959">이력</text>
+
+  <!-- Tab Content - Equipment List -->
+  <rect x="60" y="400" width="1080" height="270" fill="white"/>
+  <text x="80" y="430" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#262626">연결된 설비 목록 (5건)</text>
+
+  <!-- Equipment Table Header -->
+  <rect x="80" y="445" width="1040" height="32" fill="#fafafa"/>
+  <line x1="80" y1="477" x2="1120" y2="477" stroke="#d9d9d9"/>
+  <text x="100" y="466" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#262626">설비코드</text>
+  <text x="250" y="466" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#262626">설비명</text>
+  <text x="450" y="466" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#262626">상태</text>
+  <text x="600" y="466" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#262626">비고</text>
+
+  <!-- Equipment Row 1 -->
+  <rect x="80" y="477" width="1040" height="36" fill="white"/>
+  <line x1="80" y1="513" x2="1120" y2="513" stroke="#f0f0f0"/>
+  <text x="100" y="501" font-family="Arial, sans-serif" font-size="12" fill="#262626">EQP001</text>
+  <text x="250" y="501" font-family="Arial, sans-serif" font-size="12" fill="#262626">조립기 #1</text>
+  <rect x="450" y="488" width="50" height="20" rx="4" fill="#f6ffed" stroke="#b7eb8f"/>
+  <text x="456" y="502" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">가동중</text>
+  <text x="600" y="501" font-family="Arial, sans-serif" font-size="12" fill="#595959">자동화 라인</text>
+
+  <!-- Equipment Row 2 -->
+  <rect x="80" y="513" width="1040" height="36" fill="#fafafa"/>
+  <line x1="80" y1="549" x2="1120" y2="549" stroke="#f0f0f0"/>
+  <text x="100" y="537" font-family="Arial, sans-serif" font-size="12" fill="#262626">EQP002</text>
+  <text x="250" y="537" font-family="Arial, sans-serif" font-size="12" fill="#262626">조립기 #2</text>
+  <rect x="450" y="524" width="50" height="20" rx="4" fill="#f6ffed" stroke="#b7eb8f"/>
+  <text x="456" y="538" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">가동중</text>
+  <text x="600" y="537" font-family="Arial, sans-serif" font-size="12" fill="#595959">자동화 라인</text>
+
+  <!-- Equipment Row 3 -->
+  <rect x="80" y="549" width="1040" height="36" fill="white"/>
+  <line x1="80" y1="585" x2="1120" y2="585" stroke="#f0f0f0"/>
+  <text x="100" y="573" font-family="Arial, sans-serif" font-size="12" fill="#262626">EQP003</text>
+  <text x="250" y="573" font-family="Arial, sans-serif" font-size="12" fill="#262626">용접기 #1</text>
+  <rect x="450" y="560" width="40" height="20" rx="4" fill="#fffbe6" stroke="#ffe58f"/>
+  <text x="458" y="574" font-family="Arial, sans-serif" font-size="11" fill="#faad14">정지</text>
+  <text x="600" y="573" font-family="Arial, sans-serif" font-size="12" fill="#595959">점검 예정</text>
+
+  <!-- Equipment Row 4 -->
+  <rect x="80" y="585" width="1040" height="36" fill="#fafafa"/>
+  <line x1="80" y1="621" x2="1120" y2="621" stroke="#f0f0f0"/>
+  <text x="100" y="609" font-family="Arial, sans-serif" font-size="12" fill="#262626">EQP004</text>
+  <text x="250" y="609" font-family="Arial, sans-serif" font-size="12" fill="#262626">이송장치</text>
+  <rect x="450" y="596" width="50" height="20" rx="4" fill="#f6ffed" stroke="#b7eb8f"/>
+  <text x="456" y="610" font-family="Arial, sans-serif" font-size="11" fill="#52c41a">가동중</text>
+  <text x="600" y="609" font-family="Arial, sans-serif" font-size="12" fill="#595959">컨베이어</text>
+
+  <!-- Equipment Row 5 -->
+  <rect x="80" y="621" width="1040" height="36" fill="white"/>
+  <line x1="80" y1="657" x2="1120" y2="657" stroke="#f0f0f0"/>
+  <text x="100" y="645" font-family="Arial, sans-serif" font-size="12" fill="#262626">EQP005</text>
+  <text x="250" y="645" font-family="Arial, sans-serif" font-size="12" fill="#262626">검수대</text>
+  <rect x="450" y="632" width="40" height="20" rx="4" fill="#fff1f0" stroke="#ffa39e"/>
+  <text x="458" y="646" font-family="Arial, sans-serif" font-size="11" fill="#ff4d4f">에러</text>
+  <text x="600" y="645" font-family="Arial, sans-serif" font-size="12" fill="#595959">센서 교체 필요</text>
+
+  <!-- Back Button -->
+  <rect x="1020" y="700" width="100" height="36" rx="4" fill="white" stroke="#d9d9d9"/>
+  <text x="1045" y="723" font-family="Arial, sans-serif" font-size="12" fill="#595959">목록으로</text>
+
+  <!-- Legend -->
+  <rect x="40" y="720" width="960" height="24" fill="#f5f5f5"/>
+  <text x="60" y="736" font-family="Arial, sans-serif" font-size="10" fill="#8c8c8c">data-testid: tab-equipment, equipment-table | 상태: 가동중(green), 정지(orange), 에러(red), 점검중(blue)</text>
+</svg>
