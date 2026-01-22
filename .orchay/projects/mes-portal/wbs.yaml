@@ -1195,7 +1195,8 @@ workPackages:
         title: KPI 카드 위젯
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: high
         assignee: "-"
         tags:
@@ -1221,7 +1222,6 @@ workPackages:
           integrationCheck:
             - components/dashboard/KPICard.tsx
             - Statistic prefix/suffix로 아이콘/단위 표시
-        execution: verify
       - id: TSK-07-03
         title: 차트 위젯
         category: development
