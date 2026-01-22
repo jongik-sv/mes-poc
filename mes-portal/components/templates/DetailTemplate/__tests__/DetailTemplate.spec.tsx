@@ -2,7 +2,7 @@
 // 상세 화면 템플릿 단위 테스트 (TSK-06-02)
 
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { App, ConfigProvider } from 'antd'
 import koKR from 'antd/locale/ko_KR'
@@ -45,6 +45,16 @@ const mockTabs: DetailTabItem[] = [
 ]
 
 describe('DetailTemplate', () => {
+  // 각 테스트 후 모달 정리
+  afterEach(async () => {
+    // 열린 모달 정리 (닫기 애니메이션을 기다림)
+    const modals = document.querySelectorAll('.ant-modal-root')
+    if (modals.length > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 100))
+    }
+    cleanup()
+  })
+
   describe('rendering', () => {
     it('should render title and descriptions correctly (UT-001)', () => {
       render(
@@ -100,7 +110,7 @@ describe('DetailTemplate', () => {
     it('should display 404 error message (UT-003)', () => {
       const error: DetailErrorState = {
         status: 404,
-        message: '항목을 찾을 수 없습니다',
+        message: '사용자 정보를 찾을 수 없습니다',
       }
 
       render(
@@ -110,7 +120,8 @@ describe('DetailTemplate', () => {
       )
 
       expect(screen.getByTestId('detail-error')).toBeInTheDocument()
-      expect(screen.getByText(/찾을 수 없습니다/)).toBeInTheDocument()
+      // 커스텀 메시지가 에러 영역에 표시됨
+      expect(screen.getByText('사용자 정보를 찾을 수 없습니다')).toBeInTheDocument()
     })
 
     it('should display 403 error message', () => {
@@ -288,7 +299,7 @@ describe('DetailTemplate', () => {
         expect(screen.getByText(/정말 삭제하시겠습니까/)).toBeInTheDocument()
       })
 
-      // 모달 내부의 취소 버튼 클릭
+      // 모달 내부의 취소 버튼 찾기
       const modal = document.querySelector('.ant-modal-confirm')
       const cancelButton = modal?.querySelector('.ant-btn:not(.ant-btn-dangerous)') as HTMLElement
       fireEvent.click(cancelButton)
@@ -312,13 +323,16 @@ describe('DetailTemplate', () => {
 
       fireEvent.click(screen.getByTestId('detail-delete-btn'))
 
+      // 커스텀 메시지가 표시되어야 함
       await waitFor(() => {
         expect(screen.getByText('홍길동 사용자를 삭제하시겠습니까?')).toBeInTheDocument()
       })
 
-      // Modal.confirm의 title은 ant-modal-confirm-title 클래스 내부에 렌더링됨
-      const titleElement = document.querySelector('.ant-modal-confirm-title')
-      expect(titleElement?.textContent).toBe('사용자 삭제')
+      // 커스텀 제목이 모달 타이틀에 표시되어야 함
+      await waitFor(() => {
+        const modalTitle = document.querySelector('.ant-modal-confirm-title')
+        expect(modalTitle?.textContent).toBe('사용자 삭제')
+      })
     })
 
     it('should call onBack when back button clicked (UT-007)', () => {
