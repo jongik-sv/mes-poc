@@ -909,7 +909,7 @@ workPackages:
         title: 목록(조회) 화면 템플릿
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: high
         assignee: "-"
         tags:
@@ -934,7 +934,6 @@ workPackages:
           integrationCheck:
             - components/templates/ListTemplate.tsx
             - 검색 조건 → API 파라미터 변환 로직
-        execution: build
       - id: TSK-06-02
         title: 상세 화면 템플릿
         category: development
@@ -993,6 +992,7 @@ workPackages:
           integrationCheck:
             - components/templates/FormTemplate.tsx
             - useForm 훅 활용
+        execution: build
       - id: TSK-06-04
         title: 마스터-디테일 화면 템플릿
         category: development
