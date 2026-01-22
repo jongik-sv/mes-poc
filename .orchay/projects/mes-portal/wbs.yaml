@@ -996,7 +996,8 @@ workPackages:
         title: 마스터-디테일 화면 템플릿
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:

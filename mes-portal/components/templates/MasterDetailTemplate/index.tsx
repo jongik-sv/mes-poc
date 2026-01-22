@@ -14,7 +14,7 @@ export * from './types'
 const { Text } = Typography
 
 // 디바운스 훅
-function useDebouncedCallback<T extends (...args: unknown[]) => void>(
+function useDebouncedCallback<T extends (...args: never[]) => void>(
   callback: T,
   delay: number
 ): T {
