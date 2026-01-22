@@ -1196,7 +1196,7 @@ workPackages:
         title: "[샘플] 작업 일정 캘린더"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -1227,7 +1227,6 @@ workPackages:
           integrationCheck:
             - screens/sample/WorkCalendar.tsx
             - mock-data/schedule.json 로드
-        execution: build
       - id: TSK-06-12
         title: "[샘플] 품질 검사 입력 폼"
         category: development

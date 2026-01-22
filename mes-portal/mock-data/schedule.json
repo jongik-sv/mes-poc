@@ -1,0 +1,221 @@
+{
+  "scheduleTypes": [
+    {
+      "code": "WORK",
+      "name": "작업일정",
+      "color": "#52C41A"
+    },
+    {
+      "code": "MAINTENANCE",
+      "name": "정기점검",
+      "color": "#FA8C16"
+    },
+    {
+      "code": "URGENT",
+      "name": "긴급작업",
+      "color": "#FF4D4F"
+    },
+    {
+      "code": "MEETING",
+      "name": "회의",
+      "color": "#1677FF"
+    },
+    {
+      "code": "TRAINING",
+      "name": "교육",
+      "color": "#722ED1"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "SCH-001",
+      "title": "A라인 생산 작업",
+      "type": "WORK",
+      "start": "2026-01-20T09:00:00",
+      "end": "2026-01-20T17:00:00",
+      "description": "A라인 정규 생산 작업",
+      "assignee": "김생산",
+      "allDay": false
+    },
+    {
+      "id": "SCH-002",
+      "title": "B라인 정기점검",
+      "type": "MAINTENANCE",
+      "start": "2026-01-22T09:00:00",
+      "end": "2026-01-22T12:00:00",
+      "description": "월간 정기 점검",
+      "assignee": "박정비",
+      "allDay": false
+    },
+    {
+      "id": "SCH-003",
+      "title": "긴급 설비 수리",
+      "type": "URGENT",
+      "start": "2026-01-23T14:00:00",
+      "end": "2026-01-23T16:00:00",
+      "description": "C라인 컨베이어 긴급 수리",
+      "assignee": "이수리",
+      "allDay": false
+    },
+    {
+      "id": "SCH-004",
+      "title": "생산 계획 회의",
+      "type": "MEETING",
+      "start": "2026-01-24T10:00:00",
+      "end": "2026-01-24T11:30:00",
+      "description": "2월 생산 계획 논의",
+      "assignee": "팀장",
+      "allDay": false
+    },
+    {
+      "id": "SCH-005",
+      "title": "설비 대점검",
+      "type": "MAINTENANCE",
+      "start": "2026-01-27T00:00:00",
+      "end": "2026-01-27T23:59:59",
+      "description": "전체 설비 대점검 (종일)",
+      "assignee": "정비팀",
+      "allDay": true
+    },
+    {
+      "id": "SCH-006",
+      "title": "A라인 야간 작업",
+      "type": "WORK",
+      "start": "2026-01-28T22:00:00",
+      "end": "2026-01-29T06:00:00",
+      "description": "긴급 납기 대응 야간 작업",
+      "assignee": "야간조",
+      "allDay": false
+    },
+    {
+      "id": "SCH-007",
+      "title": "분기 실적 회의",
+      "type": "MEETING",
+      "start": "2026-01-30T14:00:00",
+      "end": "2026-01-30T16:00:00",
+      "description": "1분기 생산 실적 검토",
+      "assignee": "경영팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-008",
+      "title": "신규 설비 설치",
+      "type": "WORK",
+      "start": "2026-02-03T08:00:00",
+      "end": "2026-02-05T18:00:00",
+      "description": "D라인 신규 설비 설치 및 테스트",
+      "assignee": "설비팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-009",
+      "title": "안전 교육",
+      "type": "TRAINING",
+      "start": "2026-01-06T09:00:00",
+      "end": "2026-01-06T12:00:00",
+      "description": "신입 사원 안전 교육",
+      "assignee": "안전팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-010",
+      "title": "기술 교육",
+      "type": "TRAINING",
+      "start": "2026-01-18T13:00:00",
+      "end": "2026-01-18T17:00:00",
+      "description": "새 설비 운영 기술 교육",
+      "assignee": "기술팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-011",
+      "title": "주간 생산 회의",
+      "type": "MEETING",
+      "start": "2026-01-08T10:00:00",
+      "end": "2026-01-08T11:00:00",
+      "description": "주간 생산 현황 점검",
+      "assignee": "생산팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-012",
+      "title": "A라인 생산",
+      "type": "WORK",
+      "start": "2026-01-08T09:00:00",
+      "end": "2026-01-08T18:00:00",
+      "description": "A라인 정규 생산",
+      "assignee": "김생산",
+      "allDay": false
+    },
+    {
+      "id": "SCH-013",
+      "title": "설비 점검",
+      "type": "MAINTENANCE",
+      "start": "2026-01-04T08:00:00",
+      "end": "2026-01-04T12:00:00",
+      "description": "정기 설비 점검",
+      "assignee": "박정비",
+      "allDay": false
+    },
+    {
+      "id": "SCH-014",
+      "title": "B라인 생산",
+      "type": "WORK",
+      "start": "2026-01-12T09:00:00",
+      "end": "2026-01-12T17:00:00",
+      "description": "B라인 정규 생산 작업",
+      "assignee": "이생산",
+      "allDay": false
+    },
+    {
+      "id": "SCH-015",
+      "title": "설비 정비",
+      "type": "MAINTENANCE",
+      "start": "2026-01-14T09:00:00",
+      "end": "2026-01-14T12:00:00",
+      "description": "설비 정기 정비",
+      "assignee": "정비팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-016",
+      "title": "계획 회의",
+      "type": "MEETING",
+      "start": "2026-01-16T14:00:00",
+      "end": "2026-01-16T15:30:00",
+      "description": "생산 계획 수립 회의",
+      "assignee": "기획팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-017",
+      "title": "C라인 생산",
+      "type": "WORK",
+      "start": "2026-01-21T09:00:00",
+      "end": "2026-01-21T17:00:00",
+      "description": "C라인 생산 작업",
+      "assignee": "최생산",
+      "allDay": false
+    },
+    {
+      "id": "SCH-018",
+      "title": "월간 점검",
+      "type": "MAINTENANCE",
+      "start": "2026-01-26T09:00:00",
+      "end": "2026-01-26T17:00:00",
+      "description": "월간 정기 점검",
+      "assignee": "정비팀",
+      "allDay": false
+    },
+    {
+      "id": "SCH-019",
+      "title": "신년 생산 작업",
+      "type": "WORK",
+      "start": "2026-01-01T09:00:00",
+      "end": "2026-01-01T17:00:00",
+      "description": "신년 특별 생산",
+      "assignee": "생산팀",
+      "allDay": false
+    }
+  ]
+}
