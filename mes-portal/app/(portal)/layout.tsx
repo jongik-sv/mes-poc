@@ -2,7 +2,7 @@
 // 포털 라우트 그룹 레이아웃 - PortalLayout 적용
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { message } from 'antd'
 import { PortalLayout, Header, Footer, Sidebar } from '@/components/layout'
@@ -12,6 +12,8 @@ import type { Notification, SearchableMenuItem } from '@/components/common'
 import { GlobalSearch } from '@/components/common'
 import { MDIProvider, useMDI, type Tab } from '@/lib/mdi'
 import { TabBar, MDIContent } from '@/components/mdi'
+import { useFavorites } from '@/lib/hooks/useFavorites'
+import type { FavoriteMenuItem } from '@/lib/types/favorites'
 import menuData from '@/mock-data/menus.json'
 import notificationData from '@/mock-data/notifications.json'
 
@@ -46,6 +48,39 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
 
   // 메뉴 데이터
   const menus = menuData.menus as MenuItem[]
+
+  // useFavorites에 필요한 MenuItem 형식으로 변환
+  const allMenusForFavorites = useMemo(() => {
+    const convertMenu = (menu: MenuItem): { id: number; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ReturnType<typeof convertMenu>[] } => ({
+      id: parseInt(menu.id, 10),
+      code: menu.code,
+      name: menu.name,
+      path: menu.path ?? null,
+      icon: menu.icon ?? null,
+      sortOrder: menu.sortOrder,
+      children: menu.children?.map(convertMenu),
+    })
+    return menus.map(convertMenu)
+  }, [menus])
+
+  // 즐겨찾기 훅 (TSK-03-04)
+  const {
+    favoriteMenus,
+    isFavorite,
+    toggleFavorite,
+    canAddFavorite,
+    isLoading: isFavoriteLoading,
+  } = useFavorites({
+    userId: 1, // MVP: 하드코딩된 사용자 ID
+    allMenus: allMenusForFavorites,
+  })
+
+  // 즐겨찾기 옵션 (Sidebar용)
+  const favoriteOptions = useMemo(() => ({
+    isFavorite,
+    toggleFavorite,
+    canAddFavorite,
+  }), [isFavorite, toggleFavorite, canAddFavorite])
 
   // 알림 데이터
   const notifications = notificationData.notifications as Notification[]
@@ -102,8 +137,8 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     setOpenKeys(keys)
   }, [])
 
-  // 사이드바 토글 핸들러
-  const handleSidebarToggle = useCallback((value: boolean) => {
+  // 사이드바 상태 동기화 핸들러 (PortalLayout에서 호출)
+  const handleCollapsedChange = useCallback((value: boolean) => {
     setCollapsed(value)
   }, [])
 
@@ -136,6 +171,25 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     [openTab]
   )
 
+  // 즐겨찾기 메뉴 클릭 핸들러 (TSK-03-04)
+  const handleFavoriteMenuClick = useCallback(
+    (menu: FavoriteMenuItem) => {
+      const menuId = String(menu.id)
+      setSelectedKeys([menuId])
+
+      // 탭으로 열기
+      const tab: Tab = {
+        id: menuId,
+        title: menu.name,
+        path: menu.path,
+        icon: menu.icon ?? undefined,
+        closable: true,
+      }
+      openTab(tab)
+    },
+    [openTab]
+  )
+
   // menus를 SearchableMenuItem 타입으로 변환
   const searchableMenus: SearchableMenuItem[] = menus.map((menu) => ({
     ...menu,
@@ -150,6 +204,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <PortalLayout
+      onCollapsedChange={handleCollapsedChange}
       header={
         <Header
           user={mockUser}
@@ -158,6 +213,9 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           onSearchOpen={() => setIsSearchOpen(true)}
           onNotificationNavigate={handleNotificationNavigate}
           onLogout={() => {}}
+          favoriteMenus={favoriteMenus}
+          onFavoriteMenuClick={handleFavoriteMenuClick}
+          isFavoriteLoading={isFavoriteLoading}
         />
       }
       sidebar={
@@ -168,6 +226,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           openKeys={openKeys}
           onMenuClick={handleMenuClick}
           onOpenChange={handleOpenChange}
+          favoriteOptions={favoriteOptions}
         />
       }
       tabBar={tabs.length > 0 ? <TabBar /> : undefined}
