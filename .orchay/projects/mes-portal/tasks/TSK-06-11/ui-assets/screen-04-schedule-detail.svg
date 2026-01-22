@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500">
+  <defs>
+    <style>
+      .bg { fill: rgba(0, 0, 0, 0.45); }
+      .modal-bg { fill: #FFFFFF; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.08)); }
+      .text-title { font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: 600; fill: #0F172A; }
+      .text-label { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #8C8C8C; }
+      .text-value { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #0F172A; }
+      .text-desc { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #475569; }
+      .btn-primary { fill: #1677FF; }
+      .btn-danger { fill: #FFFFFF; stroke: #FF4D4F; stroke-width: 1; }
+      .btn-default { fill: #FFFFFF; stroke: #D9D9D9; stroke-width: 1; }
+      .btn-text { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #FFFFFF; }
+      .btn-text-danger { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #FF4D4F; }
+      .btn-text-default { font-family: Arial, Helvetica, sans-serif; font-size: 13px; fill: #475569; }
+      .tag-production { fill: #F6FFED; stroke: #B7EB8F; stroke-width: 1; }
+      .tag-production-text { font-family: Arial, Helvetica, sans-serif; font-size: 12px; fill: #52C41A; }
+      .divider { stroke: #F0F0F0; stroke-width: 1; }
+      .close-icon { fill: #8C8C8C; }
+      .desc-border { fill: #FAFAFA; stroke: #F0F0F0; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Overlay Background -->
+  <rect class="bg" width="600" height="500"/>
+
+  <!-- Modal Container -->
+  <rect x="60" y="40" width="480" height="420" rx="8" class="modal-bg"/>
+
+  <!-- Modal Header -->
+  <rect x="68" y="48" width="40" height="24" rx="4" class="tag-production"/>
+  <text x="88" y="64" class="tag-production-text" text-anchor="middle">Production</text>
+
+  <text x="118" y="66" class="text-title">Line A Production Work</text>
+
+  <!-- Close Button -->
+  <g transform="translate(512, 52)" style="cursor: pointer;">
+    <rect x="-8" y="-8" width="20" height="20" fill="transparent"/>
+    <path d="M0 0 L8 8 M8 0 L0 8" stroke="#8C8C8C" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Divider -->
+  <line x1="60" y1="88" x2="540" y2="88" class="divider"/>
+
+  <!-- Content Area -->
+  <!-- Type Row -->
+  <text x="80" y="118" class="text-label">Type</text>
+  <rect x="180" y="102" width="72" height="24" rx="4" class="tag-production"/>
+  <text x="216" y="118" class="tag-production-text" text-anchor="middle">Production</text>
+
+  <!-- Period Row -->
+  <text x="80" y="158" class="text-label">Period</text>
+  <text x="180" y="148" class="text-value">2026-01-08 09:00</text>
+  <text x="180" y="168" class="text-value">~ 2026-01-08 18:00</text>
+
+  <!-- Assignee Row -->
+  <text x="80" y="208" class="text-label">Assignee</text>
+  <text x="180" y="208" class="text-value">Kim Production</text>
+
+  <!-- Location Row -->
+  <text x="80" y="248" class="text-label">Location</text>
+  <text x="180" y="248" class="text-value">Building A Production Line</text>
+
+  <!-- Description Row -->
+  <text x="80" y="288" class="text-label">Description</text>
+  <rect x="180" y="272" width="340" height="80" rx="4" class="desc-border"/>
+  <text x="192" y="294" class="text-desc">Week 2 January Regular Production Work</text>
+  <text x="192" y="314" class="text-desc">Target Production: 1,000 units</text>
+  <text x="192" y="334" class="text-desc">Quality Standard: 99.5% pass rate</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="380" x2="540" y2="380" class="divider"/>
+
+  <!-- Footer Buttons -->
+  <!-- Edit Button -->
+  <rect x="200" y="400" width="80" height="36" rx="4" class="btn-primary"/>
+  <text x="240" y="423" class="btn-text" text-anchor="middle">Edit</text>
+
+  <!-- Delete Button -->
+  <rect x="296" y="400" width="80" height="36" rx="4" class="btn-danger"/>
+  <text x="336" y="423" class="btn-text-danger" text-anchor="middle">Delete</text>
+
+  <!-- Close Button -->
+  <rect x="392" y="400" width="80" height="36" rx="4" class="btn-default"/>
+  <text x="432" y="423" class="btn-text-default" text-anchor="middle">Close</text>
+</svg>
