@@ -4,6 +4,9 @@ import { DatePicker } from 'antd'
 import type { DatePickerProps } from 'antd'
 import dayjs, { Dayjs } from '@/lib/dayjs'
 
+type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade'
+type DisabledDateInfo = { type: PanelMode; from?: Dayjs }
+
 const DEFAULT_FORMAT = 'YYYY-MM-DD'
 const DEFAULT_PLACEHOLDER = '날짜 선택'
 
@@ -24,8 +27,8 @@ export default function DatePickerField({
   'data-testid': dataTestId,
   ...props
 }: DatePickerFieldProps) {
-  const handleDisabledDate = (current: Dayjs): boolean => {
-    if (disabledDate?.(current)) {
+  const handleDisabledDate = (current: Dayjs, info: DisabledDateInfo): boolean => {
+    if (disabledDate?.(current, info)) {
       return true
     }
 

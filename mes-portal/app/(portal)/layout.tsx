@@ -9,10 +9,10 @@ import { PortalLayout, Header, Footer, Sidebar } from '@/components/layout'
 import type { MenuItem } from '@/components/layout'
 import { findMenuByPath, findParentKeys } from '@/components/layout/Sidebar'
 import type { Notification, SearchableMenuItem } from '@/components/common'
-import { GlobalSearch } from '@/components/common'
+import { GlobalSearch, HotkeyHelp } from '@/components/common'
 import { MDIProvider, useMDI, type Tab } from '@/lib/mdi'
 import { TabBar, MDIContent } from '@/components/mdi'
-import { useFavorites } from '@/lib/hooks/useFavorites'
+import { useFavorites, useGlobalHotkeys } from '@/lib/hooks'
 import type { FavoriteMenuItem } from '@/lib/types/favorites'
 import menuData from '@/mock-data/menus.json'
 import notificationData from '@/mock-data/notifications.json'
@@ -40,8 +40,9 @@ export default function PortalGroupLayout({
 function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { openTab, tabs } = useMDI()
+  const { openTab, closeTab, tabs, activeTabId, setActiveTab } = useMDI()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isHelpOpen, setIsHelpOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const [openKeys, setOpenKeys] = useState<string[]>([])
@@ -50,8 +51,9 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const menus = menuData.menus as MenuItem[]
 
   // useFavorites에 필요한 MenuItem 형식으로 변환
+  type ConvertedMenu = { id: number; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ConvertedMenu[] }
   const allMenusForFavorites = useMemo(() => {
-    const convertMenu = (menu: MenuItem): { id: number; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ReturnType<typeof convertMenu>[] } => ({
+    const convertMenu = (menu: MenuItem): ConvertedMenu => ({
       id: parseInt(menu.id, 10),
       code: menu.code,
       name: menu.name,
@@ -190,6 +192,31 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     [openTab]
   )
 
+  // 전역 단축키 훅 (TSK-05-06)
+  useGlobalHotkeys({
+    onSearch: useCallback(() => setIsSearchOpen(true), []),
+    onHelp: useCallback(() => setIsHelpOpen(true), []),
+    onCloseTab: useCallback(() => {
+      if (activeTabId && activeTabId !== 'dashboard') {
+        closeTab(activeTabId)
+      }
+    }, [activeTabId, closeTab]),
+    onNextTab: useCallback(() => {
+      if (tabs.length > 1 && activeTabId) {
+        const currentIndex = tabs.findIndex((t) => t.id === activeTabId)
+        const nextIndex = (currentIndex + 1) % tabs.length
+        setActiveTab(tabs[nextIndex].id)
+      }
+    }, [tabs, activeTabId, setActiveTab]),
+    onPrevTab: useCallback(() => {
+      if (tabs.length > 1 && activeTabId) {
+        const currentIndex = tabs.findIndex((t) => t.id === activeTabId)
+        const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length
+        setActiveTab(tabs[prevIndex].id)
+      }
+    }, [tabs, activeTabId, setActiveTab]),
+  })
+
   // menus를 SearchableMenuItem 타입으로 변환
   const searchableMenus: SearchableMenuItem[] = menus.map((menu) => ({
     ...menu,
@@ -242,6 +269,9 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
         menus={searchableMenus}
         onSelect={handleSearchSelect}
       />
+
+      {/* 키보드 단축키 도움말 모달 (TSK-05-06) */}
+      <HotkeyHelp open={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </PortalLayout>
   )
 }

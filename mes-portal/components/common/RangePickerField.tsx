@@ -7,6 +7,8 @@ import dayjs, { Dayjs } from '@/lib/dayjs'
 const { RangePicker } = DatePicker
 
 type RangePickerProps = GetProps<typeof RangePicker>
+type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade'
+type DisabledDateInfo = { type: PanelMode; from?: Dayjs }
 
 const DEFAULT_FORMAT = 'YYYY-MM-DD'
 const DEFAULT_PLACEHOLDER: [string, string] = ['시작일', '종료일']
@@ -28,8 +30,8 @@ export default function RangePickerField({
   'data-testid': dataTestId,
   ...props
 }: RangePickerFieldProps) {
-  const handleDisabledDate = (current: Dayjs): boolean => {
-    if (disabledDate?.(current)) {
+  const handleDisabledDate = (current: Dayjs, info: DisabledDateInfo): boolean => {
+    if (disabledDate?.(current, info)) {
       return true
     }
 

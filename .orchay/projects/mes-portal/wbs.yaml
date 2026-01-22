@@ -811,7 +811,8 @@ workPackages:
         title: 테이블 공통 기능
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: high
         assignee: "-"
         tags:
@@ -839,7 +840,6 @@ workPackages:
           integrationCheck:
             - components/common/DataTable.tsx 래퍼 컴포넌트
             - 공통 테이블 설정 (페이지 크기 옵션 등)
-        execution: verify
       - id: TSK-05-05
         title: 날짜 선택기
         category: development
@@ -873,7 +873,7 @@ workPackages:
         title: 키보드 단축키 시스템
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -934,6 +934,7 @@ workPackages:
           integrationCheck:
             - components/templates/ListTemplate.tsx
             - 검색 조건 → API 파라미터 변환 로직
+        execution: build
       - id: TSK-06-02
         title: 상세 화면 템플릿
         category: development
