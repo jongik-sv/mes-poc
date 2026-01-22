@@ -1,6 +1,4 @@
 {
-  "pausedWorkers": [
-    1
-  ],
+  "pausedWorkers": [],
   "schedulerState": "paused"
 }

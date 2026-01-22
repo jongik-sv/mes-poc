@@ -114,15 +114,29 @@ export function NotificationPanel({
       data-testid="notification-panel"
       role="dialog"
       aria-label="알림 목록"
-      className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50"
+      className="absolute right-0 top-full mt-2 w-80 rounded-lg z-50"
+      style={{
+        backgroundColor: 'var(--color-bg-elevated)',
+        boxShadow: 'var(--shadow-lg)',
+        border: '1px solid var(--color-gray-200)',
+      }}
     >
       {/* 헤더 */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{ borderBottom: '1px solid var(--color-gray-200)' }}
+      >
         <div className="flex items-center gap-2">
           <BellOutlined className="text-lg" />
-          <span className="font-semibold">알림</span>
+          <span className="font-semibold" style={{ color: 'var(--color-text-base)' }}>알림</span>
           {unreadCount > 0 && (
-            <span className="px-2 py-0.5 text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full">
+            <span
+              className="px-2 py-0.5 text-xs rounded-full"
+              style={{
+                backgroundColor: 'var(--color-primary-light)',
+                color: 'var(--color-primary)',
+              }}
+            >
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
@@ -156,12 +170,17 @@ export function NotificationPanel({
                 data-testid={`notification-item-${notification.id}`}
                 data-unread={String(!notification.isRead)}
                 onClick={() => handleNotificationClick(notification)}
-                className={`
-                  px-4 py-3 cursor-pointer transition-colors
-                  hover:bg-gray-50 dark:hover:bg-gray-700
-                  ${!notification.isRead ? 'bg-blue-50 dark:bg-blue-900/20' : ''}
-                  border-b border-gray-100 dark:border-gray-700 last:border-b-0
-                `}
+                className="px-4 py-3 cursor-pointer transition-colors"
+                style={{
+                  backgroundColor: !notification.isRead ? 'var(--color-primary-light)' : 'transparent',
+                  borderBottom: '1px solid var(--color-gray-200)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = !notification.isRead ? 'var(--color-primary-light)' : 'transparent'
+                }}
               >
                 <div className="flex gap-3">
                   {/* 아이콘 */}
@@ -174,13 +193,16 @@ export function NotificationPanel({
                     <div className="flex items-start justify-between gap-2">
                       <Text
                         strong
-                        className={`
-                          block text-sm
-                          ${!notification.isRead ? 'text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400'}
-                        `}
+                        className="block text-sm"
+                        style={{
+                          color: !notification.isRead ? 'var(--color-text-base)' : 'var(--color-text-secondary)',
+                        }}
                       >
                         {!notification.isRead && (
-                          <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2" />
+                          <span
+                            className="inline-block w-2 h-2 rounded-full mr-2"
+                            style={{ backgroundColor: 'var(--color-primary)' }}
+                          />
                         )}
                         {notification.title}
                       </Text>
@@ -210,7 +232,10 @@ export function NotificationPanel({
 
       {/* 푸터 */}
       {notifications.length > 0 && (
-        <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
+        <div
+          className="px-4 py-3"
+          style={{ borderTop: '1px solid var(--color-gray-200)' }}
+        >
           <Button
             type="text"
             block

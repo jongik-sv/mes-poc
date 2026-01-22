@@ -1,23 +1,25 @@
-// Jest mock 설정 - jest.fn()을 팩토리 내부에서 직접 사용
-jest.mock('bcrypt', () => ({
+import type { Mock } from 'vitest'
+
+// Mock 설정 - vi.fn()을 팩토리 내부에서 직접 사용
+vi.mock('bcrypt', () => ({
   __esModule: true,
   default: {
-    compare: jest.fn(),
-    hash: jest.fn(),
+    compare: vi.fn(),
+    hash: vi.fn(),
   },
-  compare: jest.fn(),
-  hash: jest.fn(),
+  compare: vi.fn(),
+  hash: vi.fn(),
 }))
 
-jest.mock('@/lib/prisma', () => ({
+vi.mock('@/lib/prisma', () => ({
   prisma: {
     user: {
-      findUnique: jest.fn(),
+      findUnique: vi.fn(),
     },
   },
   default: {
     user: {
-      findUnique: jest.fn(),
+      findUnique: vi.fn(),
     },
   },
 }))
@@ -28,9 +30,9 @@ import { prisma } from '@/lib/prisma'
 import { authorizeCredentials, jwtCallback, sessionCallback } from '../auth.config'
 
 // Mock 함수 참조 (import 이후에 가져옴)
-const mockBcryptCompare = bcrypt.compare as jest.Mock
-const mockBcryptHash = bcrypt.hash as jest.Mock
-const mockUserFindUnique = prisma.user.findUnique as jest.Mock
+const mockBcryptCompare = bcrypt.compare as Mock
+const mockBcryptHash = bcrypt.hash as Mock
+const mockUserFindUnique = prisma.user.findUnique as Mock
 
 // Mock 데이터
 const mockAdminRole = {
@@ -73,7 +75,7 @@ const mockInactiveUser = {
 
 describe('authorizeCredentials', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   // UT-001: 정상 로그인

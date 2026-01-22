@@ -3,6 +3,7 @@
  * @description TSK-02-04 탭 컨텍스트 메뉴 - 테스트 명세 (026-test-specification.md 기반)
  */
 
+import { vi } from 'vitest';
 import {
   render,
   screen,
@@ -99,11 +100,11 @@ function TestWrapper({
 
 describe('TabContextMenu', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('UT-001: 탭 우클릭 시 컨텍스트 메뉴 표시', () => {

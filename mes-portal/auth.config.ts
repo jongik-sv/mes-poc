@@ -80,7 +80,12 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
-      const isOnPortal = nextUrl.pathname.startsWith('/portal')
+      const isOnPortal = nextUrl.pathname.startsWith('/dashboard') ||
+        nextUrl.pathname.startsWith('/production') ||
+        nextUrl.pathname.startsWith('/quality') ||
+        nextUrl.pathname.startsWith('/equipment') ||
+        nextUrl.pathname.startsWith('/settings') ||
+        nextUrl.pathname.startsWith('/sample')
       const isOnLogin = nextUrl.pathname === '/login'
       const isOnAuthApi = nextUrl.pathname.startsWith('/api/auth')
 
@@ -95,9 +100,9 @@ export const authConfig: NextAuthConfig = {
         return false // Redirect to /login
       }
 
-      // 이미 로그인한 사용자가 /login 접근 시 포털로 리다이렉트
+      // 이미 로그인한 사용자가 /login 접근 시 대시보드로 리다이렉트
       if (isOnLogin && isLoggedIn) {
-        return Response.redirect(new URL('/portal', nextUrl))
+        return Response.redirect(new URL('/dashboard', nextUrl))
       }
 
       return true

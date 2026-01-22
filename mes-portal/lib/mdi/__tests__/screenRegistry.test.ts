@@ -4,9 +4,11 @@
  */
 
 
+import { vi } from 'vitest';
+
 describe('screenRegistry', () => {
   beforeEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   describe('TC-BR-04: 경로 매핑', () => {

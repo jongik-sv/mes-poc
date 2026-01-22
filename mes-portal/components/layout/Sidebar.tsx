@@ -1,5 +1,5 @@
 // components/layout/Sidebar.tsx
-// MES Portal 사이드바 메뉴 컴포넌트
+// MES Portal 사이드바 메뉴 컴포넌트 - Enterprise Design
 'use client'
 
 import { useMemo } from 'react'
@@ -28,7 +28,6 @@ import {
 import type { ReactNode } from 'react'
 import { FavoriteButton } from '@/components/common/FavoriteButton'
 
-// 아이콘 매핑
 const iconMap: Record<string, ReactNode> = {
   DashboardOutlined: <DashboardOutlined />,
   BuildOutlined: <BuildOutlined />,
@@ -49,7 +48,6 @@ const iconMap: Record<string, ReactNode> = {
   DatabaseOutlined: <DatabaseOutlined />,
 }
 
-// 메뉴 아이템 인터페이스
 export interface MenuItem {
   id: string
   code: string
@@ -61,17 +59,12 @@ export interface MenuItem {
   isActive: boolean
 }
 
-// 즐겨찾기 기능 props
 export interface FavoriteOptions {
-  /** 즐겨찾기 여부 확인 함수 */
   isFavorite: (menuId: number) => boolean
-  /** 즐겨찾기 토글 함수 */
   toggleFavorite: (menuId: number) => void
-  /** 즐겨찾기 추가 가능 여부 */
   canAddFavorite: () => boolean
 }
 
-// Sidebar Props 인터페이스
 export interface SidebarProps {
   menus: MenuItem[]
   collapsed: boolean
@@ -79,17 +72,14 @@ export interface SidebarProps {
   openKeys?: string[]
   onMenuClick?: (menu: MenuItem) => void
   onOpenChange?: (openKeys: string[]) => void
-  /** 즐겨찾기 기능 (선택) */
   favoriteOptions?: FavoriteOptions
 }
 
-// 아이콘 가져오기 헬퍼 함수
 const getIcon = (iconName?: string): ReactNode => {
   if (!iconName) return <AppstoreOutlined />
   return iconMap[iconName] || <AppstoreOutlined />
 }
 
-// 메뉴 데이터를 Ant Design Menu 아이템으로 변환 (최대 3단계)
 const convertToMenuItems = (
   menus: MenuItem[],
   collapsed: boolean,
@@ -108,13 +98,11 @@ const convertToMenuItems = (
       const isLeaf = menu.path !== undefined && menu.path !== null
       const menuIdNum = parseInt(menu.id, 10)
 
-      // leaf 메뉴 또는 최대 레벨 도달
       if (!hasChildren || level >= maxLevel) {
-        // 즐겨찾기 버튼을 포함한 레이블
         const labelWithFavorite =
           favoriteOptions && isLeaf && !collapsed ? (
             <div className="flex items-center justify-between w-full group">
-              <span>{menu.name}</span>
+              <span className="truncate">{menu.name}</span>
               <FavoriteButton
                 isFavorite={favoriteOptions.isFavorite(menuIdNum)}
                 onToggle={() => favoriteOptions.toggleFavorite(menuIdNum)}
@@ -122,12 +110,12 @@ const convertToMenuItems = (
                   !favoriteOptions.isFavorite(menuIdNum) &&
                   !favoriteOptions.canAddFavorite()
                 }
-                className="opacity-0 group-hover:opacity-100 transition-opacity ml-2"
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
                 showTooltip={true}
               />
             </div>
           ) : (
-            menu.name
+            <span className="truncate">{menu.name}</span>
           )
 
         const menuItem: NonNullable<MenuProps['items']>[number] = {
@@ -139,11 +127,10 @@ const convertToMenuItems = (
         return menuItem
       }
 
-      // 서브메뉴가 있는 경우
       const subMenuItem: NonNullable<MenuProps['items']>[number] = {
         key: menu.id,
         icon: level === 1 ? icon : null,
-        label: menu.name,
+        label: <span className="truncate">{menu.name}</span>,
         children: convertToMenuItems(
           menu.children || [],
           collapsed,
@@ -157,7 +144,6 @@ const convertToMenuItems = (
     })
 }
 
-// 경로로 메뉴 찾기
 export const findMenuByPath = (
   menus: MenuItem[],
   path: string
@@ -172,7 +158,6 @@ export const findMenuByPath = (
   return null
 }
 
-// ID로 메뉴 찾기
 export const findMenuById = (
   menus: MenuItem[],
   id: string
@@ -187,7 +172,6 @@ export const findMenuById = (
   return null
 }
 
-// 메뉴의 상위 키 경로 찾기
 export const findParentKeys = (
   menus: MenuItem[],
   targetId: string,
@@ -217,13 +201,11 @@ export function Sidebar({
   onOpenChange,
   favoriteOptions,
 }: SidebarProps) {
-  // Ant Design Menu 아이템으로 변환
   const menuItems = useMemo(
     () => convertToMenuItems(menus, collapsed, favoriteOptions),
     [menus, collapsed, favoriteOptions]
   )
 
-  // 메뉴 클릭 핸들러
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     const menu = findMenuById(menus, key)
     if (menu && onMenuClick) {
@@ -231,7 +213,6 @@ export function Sidebar({
     }
   }
 
-  // 서브메뉴 열기/닫기 핸들러
   const handleOpenChange = (keys: string[]) => {
     if (onOpenChange) {
       onOpenChange(keys)
@@ -246,10 +227,9 @@ export function Sidebar({
       aria-label="메인 메뉴"
     >
       {/* 메뉴 영역 */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2">
         <Menu
           mode="inline"
-          theme="light"
           inlineCollapsed={collapsed}
           items={menuItems}
           selectedKeys={selectedKeys}
@@ -258,8 +238,28 @@ export function Sidebar({
           onOpenChange={handleOpenChange}
           className="border-none"
           data-testid="sidebar-menu"
+          style={{
+            background: 'transparent',
+          }}
         />
       </div>
+
+      {/* 사이드바 하단 정보 */}
+      {!collapsed && (
+        <div
+          className="px-4 py-3 border-t"
+          style={{
+            borderColor: 'var(--color-gray-200)',
+          }}
+        >
+          <div
+            className="text-xs"
+            style={{ color: 'var(--color-gray-400)' }}
+          >
+            MES Portal v0.1.0
+          </div>
+        </div>
+      )}
     </div>
   )
 }

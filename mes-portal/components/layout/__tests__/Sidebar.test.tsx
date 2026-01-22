@@ -113,7 +113,7 @@ const mockMenus3Level: MenuItem[] = [
 
 describe('Sidebar', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   // UT-001: 초기 렌더링 (펼침 상태)
@@ -218,7 +218,7 @@ describe('Sidebar', () => {
 
   // UT-006: 메뉴 클릭 핸들러 호출
   it('calls onMenuClick when leaf menu clicked', async () => {
-    const onMenuClick = jest.fn()
+    const onMenuClick = vi.fn()
 
     render(
       <Sidebar
@@ -247,7 +247,7 @@ describe('Sidebar', () => {
 
   // UT-007: 서브메뉴 펼침/접힘 핸들러
   it('calls onOpenChange when submenu expanded/collapsed', async () => {
-    const onOpenChange = jest.fn()
+    const onOpenChange = vi.fn()
 
     render(
       <Sidebar

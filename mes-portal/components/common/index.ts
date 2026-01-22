@@ -34,3 +34,9 @@ export { QuickMenu } from './QuickMenu'
 // TSK-05-04: 테이블 공통 기능
 export { DataTable } from './DataTable'
 export type { DataTableProps, DataTableColumn } from './DataTable'
+
+// TSK-05-06: 키보드 단축키 컴포넌트
+export { HotkeyHelp } from './HotkeyHelp'
+export type { HotkeyHelpProps } from './HotkeyHelp'
+export { KeyBadge } from './KeyBadge'
+export type { KeyBadgeProps } from './KeyBadge'

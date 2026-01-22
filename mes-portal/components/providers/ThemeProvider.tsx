@@ -2,11 +2,12 @@
 // 테마 프로바이더 - next-themes + Ant Design ConfigProvider 통합
 'use client'
 
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider } from 'antd'
 import { ThemeProvider as NextThemeProvider, useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import {
   themeTokens,
+  darkThemeTokens,
   componentTokens,
   darkComponentTokens,
   lightThemeAlgorithm,
@@ -31,7 +32,7 @@ function AntdConfigProvider({ children }: ThemeProviderProps) {
   return (
     <ConfigProvider
       theme={{
-        token: themeTokens,
+        token: isDark ? darkThemeTokens : themeTokens,
         algorithm: isDark ? darkThemeAlgorithm : lightThemeAlgorithm,
         components: isDark ? darkComponentTokens : componentTokens,
       }}

@@ -57,3 +57,5 @@ nul
 .orchay/logs/orchay.log
 .orchay/logs/launcher.log
 .orchay/logs/orchay-active.json
+
+.playwright-mcp

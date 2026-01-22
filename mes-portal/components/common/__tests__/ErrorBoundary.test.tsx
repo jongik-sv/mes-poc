@@ -26,12 +26,12 @@ describe('ErrorBoundary', () => {
   const originalConsoleError = console.error
 
   beforeEach(() => {
-    console.error = jest.fn()
+    console.error = vi.fn()
   })
 
   afterEach(() => {
     console.error = originalConsoleError
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   // UT-014: ErrorBoundary 에러 캐치
@@ -61,7 +61,7 @@ describe('ErrorBoundary', () => {
   // UT-015: ErrorBoundary 에러 콜백 호출
   describe('UT-015: 에러 콜백 호출', () => {
     it('calls onError callback with error info', () => {
-      const onError = jest.fn()
+      const onError = vi.fn()
 
       render(
         <ErrorBoundary onError={onError}>
@@ -77,7 +77,7 @@ describe('ErrorBoundary', () => {
     })
 
     it('filters sensitive information from error logs', () => {
-      const onError = jest.fn()
+      const onError = vi.fn()
       const errorWithSensitiveInfo = () => {
         const error = new Error('Error with password=secret123')
         throw error
@@ -139,7 +139,7 @@ describe('ErrorBoundary', () => {
     })
 
     it('renders fallbackRender function with error and reset', () => {
-      const fallbackRender = jest.fn(({ error, resetError }) => (
+      const fallbackRender = vi.fn(({ error, resetError }) => (
         <div data-testid="fallback-render">
           <span>{error.message}</span>
           <button onClick={resetError} data-testid="reset-btn">Reset</button>

@@ -20,12 +20,12 @@ describe('TabItem', () => {
   const defaultProps = {
     tab: defaultTab,
     isActive: false,
-    onClick: jest.fn(),
-    onClose: jest.fn(),
+    onClick: vi.fn(),
+    onClose: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('렌더링', () => {

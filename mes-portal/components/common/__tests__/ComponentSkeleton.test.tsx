@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { ComponentSkeleton } from '../ComponentSkeleton'
 
 // Ant Design 모킹
-jest.mock('antd', () => ({
+vi.mock('antd', () => ({
   Skeleton: {
     Input: ({ active, style, size, ...props }: any) => (
       <div

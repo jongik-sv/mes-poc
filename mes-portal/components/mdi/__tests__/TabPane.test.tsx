@@ -14,7 +14,7 @@ describe('TabPane', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('TC-02-01: 비활성 탭 display:none', () => {

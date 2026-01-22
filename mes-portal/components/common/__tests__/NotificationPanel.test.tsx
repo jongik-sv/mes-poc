@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 import { NotificationPanel, Notification } from '../NotificationPanel'
 
 // Ant Design 모킹
-jest.mock('antd', () => ({
+vi.mock('antd', () => ({
   Button: ({ children, icon, onClick, type, size, block, ...props }: any) => (
     <button onClick={onClick} data-type={type} data-size={size} data-block={block} {...props}>
       {icon}
@@ -44,7 +44,7 @@ jest.mock('antd', () => ({
 }))
 
 // Ant Design Icons 모킹
-jest.mock('@ant-design/icons', () => ({
+vi.mock('@ant-design/icons', () => ({
   BellOutlined: () => <span data-testid="bell-icon">bell</span>,
   CheckCircleOutlined: () => <span data-testid="check-icon">check</span>,
   ExclamationCircleOutlined: () => <span data-testid="exclamation-icon">exclamation</span>,
@@ -87,7 +87,7 @@ const mockNotifications: Notification[] = [
 
 describe('NotificationPanel', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   // UT-001: 알림 아이콘 렌더링
@@ -97,7 +97,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
       expect(screen.getByTestId('notification-panel')).toBeInTheDocument()
@@ -108,7 +108,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={false}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
       expect(screen.queryByTestId('notification-panel')).not.toBeInTheDocument()
@@ -118,12 +118,12 @@ describe('NotificationPanel', () => {
   // UT-002: 뱃지 - 읽지 않은 알림 개수 표시
   describe('UT-002: 읽지 않은 알림 개수', () => {
     it('읽지 않은 알림 개수가 계산되어야 함', () => {
-      const onMarkAsRead = jest.fn()
+      const onMarkAsRead = vi.fn()
       render(
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onMarkAsRead={onMarkAsRead}
         />
       )
@@ -136,7 +136,7 @@ describe('NotificationPanel', () => {
   // UT-003: 패널 열기
   describe('UT-003: 패널 열기/닫기', () => {
     it('닫기 버튼 클릭 시 onClose 콜백이 호출되어야 함', () => {
-      const onClose = jest.fn()
+      const onClose = vi.fn()
       render(
         <NotificationPanel
           open={true}
@@ -159,7 +159,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -173,7 +173,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -185,12 +185,12 @@ describe('NotificationPanel', () => {
   // UT-005: 알림 읽음 처리
   describe('UT-005: 알림 읽음 처리', () => {
     it('알림 클릭 시 onMarkAsRead 콜백이 호출되어야 함', () => {
-      const onMarkAsRead = jest.fn()
+      const onMarkAsRead = vi.fn()
       render(
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onMarkAsRead={onMarkAsRead}
         />
       )
@@ -205,12 +205,12 @@ describe('NotificationPanel', () => {
   // UT-006: 화면 이동 (MDI 탭 열기)
   describe('UT-006: 화면 이동', () => {
     it('link가 있는 알림 클릭 시 onNavigate 콜백이 호출되어야 함', () => {
-      const onNavigate = jest.fn()
+      const onNavigate = vi.fn()
       render(
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onNavigate={onNavigate}
         />
       )
@@ -222,12 +222,12 @@ describe('NotificationPanel', () => {
     })
 
     it('link가 없는 알림 클릭 시 onNavigate가 호출되지 않아야 함', () => {
-      const onNavigate = jest.fn()
+      const onNavigate = vi.fn()
       render(
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onNavigate={onNavigate}
         />
       )
@@ -242,12 +242,12 @@ describe('NotificationPanel', () => {
   // UT-007: 모두 읽음 처리
   describe('UT-007: 모두 읽음 처리', () => {
     it('모두 읽음 버튼 클릭 시 onMarkAllAsRead 콜백이 호출되어야 함', () => {
-      const onMarkAllAsRead = jest.fn()
+      const onMarkAllAsRead = vi.fn()
       render(
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           onMarkAllAsRead={onMarkAllAsRead}
         />
       )
@@ -266,7 +266,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -289,7 +289,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -302,7 +302,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -337,7 +337,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={[]}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -352,7 +352,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={[]}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           loading={true}
         />
       )
@@ -377,7 +377,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={errorNotification}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -398,7 +398,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={warningNotification}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -419,7 +419,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={successNotification}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -440,7 +440,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={infoNotification}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -455,7 +455,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -468,7 +468,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -481,7 +481,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 
@@ -497,7 +497,7 @@ describe('NotificationPanel', () => {
         <NotificationPanel
           open={true}
           notifications={mockNotifications}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
         />
       )
 

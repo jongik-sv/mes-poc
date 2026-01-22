@@ -60,7 +60,8 @@ export function MDIContent() {
       <div
         data-testid="mdi-content"
         role="main"
-        className="h-full overflow-auto bg-white"
+        className="h-full overflow-auto"
+        style={{ backgroundColor: 'var(--color-bg-container, var(--background))' }}
       >
         <EmptyState />
       </div>
@@ -71,7 +72,8 @@ export function MDIContent() {
     <div
       data-testid="mdi-content"
       role="main"
-      className="h-full overflow-auto bg-white"
+      className="h-full overflow-auto"
+      style={{ backgroundColor: 'var(--color-bg-container, var(--background))' }}
     >
       {tabs.map((tab) => {
         const isActive = tab.id === activeTabId;

@@ -1,5 +1,5 @@
 // components/layout/Footer.tsx
-// MES Portal 푸터 컴포넌트
+// MES Portal 푸터 컴포넌트 - Enterprise Design
 'use client'
 
 import { Layout } from 'antd'
@@ -10,23 +10,46 @@ interface FooterProps {
   className?: string
 }
 
-// 버전 정보 (환경변수 우선, package.json fallback)
 const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION || '0.1.0'
-
-// 저작권 연도
 const COPYRIGHT_YEAR = new Date().getFullYear()
 
 export function Footer({ className }: FooterProps) {
   return (
     <AntFooter
-      className={`flex justify-between items-center px-4 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 ${className || ''}`}
-      style={{ height: 'var(--footer-height)', padding: '0 16px' }}
+      className={`flex justify-between items-center px-6 ${className || ''}`}
+      style={{
+        height: 'var(--footer-height)',
+        padding: '0 24px',
+        backgroundColor: 'var(--color-gray-50)',
+        borderTop: '1px solid var(--color-gray-200)',
+      }}
       data-testid="footer-component"
     >
-      <span data-testid="footer-copyright">
+      <span
+        className="text-xs"
+        style={{ color: 'var(--color-gray-500)' }}
+        data-testid="footer-copyright"
+      >
         Copyright &copy; {COPYRIGHT_YEAR} Company. All rights reserved.
       </span>
-      <span data-testid="footer-version">v{APP_VERSION}</span>
+      <div className="flex items-center gap-4">
+        <span
+          className="text-xs"
+          style={{ color: 'var(--color-gray-400)' }}
+        >
+          MES Portal
+        </span>
+        <span
+          className="text-xs font-medium px-2 py-0.5 rounded"
+          style={{
+            color: 'var(--color-primary)',
+            backgroundColor: 'var(--color-primary-light)',
+          }}
+          data-testid="footer-version"
+        >
+          v{APP_VERSION}
+        </span>
+      </div>
     </AntFooter>
   )
 }

@@ -5,7 +5,7 @@ import { render, screen, act, waitFor } from '@testing-library/react'
 import { PageLoading } from '../PageLoading'
 
 // Ant Design 모킹
-jest.mock('antd', () => ({
+vi.mock('antd', () => ({
   Spin: ({ spinning, tip, size, children, ...props }: any) => (
     spinning !== false ? (
       <div
@@ -23,12 +23,12 @@ jest.mock('antd', () => ({
 
 describe('PageLoading', () => {
   beforeEach(() => {
-    jest.useFakeTimers()
+    vi.useFakeTimers()
   })
 
   afterEach(() => {
-    jest.useRealTimers()
-    jest.clearAllMocks()
+    vi.useRealTimers()
+    vi.clearAllMocks()
   })
 
   // UT-001: PageLoading 로딩 표시
@@ -38,7 +38,7 @@ describe('PageLoading', () => {
 
       // 기본 delay(200ms)를 건너뛰기 위해 타이머 진행
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -61,7 +61,7 @@ describe('PageLoading', () => {
       render(<PageLoading tip="데이터 처리 중..." />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('spin-tip')).toHaveTextContent('데이터 처리 중...')
@@ -71,7 +71,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       expect(screen.getByTestId('spin-tip')).toHaveTextContent('로딩 중입니다...')
@@ -84,7 +84,7 @@ describe('PageLoading', () => {
       render(<PageLoading fullScreen />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -95,7 +95,7 @@ describe('PageLoading', () => {
       render(<PageLoading fullScreen={false} />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -111,7 +111,7 @@ describe('PageLoading', () => {
         render(<PageLoading size={size} />)
 
         await act(async () => {
-          jest.advanceTimersByTime(200)
+          vi.advanceTimersByTime(200)
         })
 
         const spinner = screen.getByTestId('spin-component')
@@ -127,14 +127,14 @@ describe('PageLoading', () => {
 
       // 100ms 시점에서는 스피너 미표시
       await act(async () => {
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
       })
 
       expect(screen.queryByTestId('page-loading')).not.toBeInTheDocument()
 
       // 200ms 이후 스피너 표시
       await act(async () => {
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -144,13 +144,13 @@ describe('PageLoading', () => {
       render(<PageLoading delay={500} />)
 
       await act(async () => {
-        jest.advanceTimersByTime(400)
+        vi.advanceTimersByTime(400)
       })
 
       expect(screen.queryByTestId('page-loading')).not.toBeInTheDocument()
 
       await act(async () => {
-        jest.advanceTimersByTime(100)
+        vi.advanceTimersByTime(100)
       })
 
       expect(screen.getByTestId('page-loading')).toBeInTheDocument()
@@ -163,7 +163,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -174,7 +174,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')
@@ -185,7 +185,7 @@ describe('PageLoading', () => {
       render(<PageLoading />)
 
       await act(async () => {
-        jest.advanceTimersByTime(200)
+        vi.advanceTimersByTime(200)
       })
 
       const container = screen.getByTestId('page-loading')

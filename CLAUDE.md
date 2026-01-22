@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - 한국어로 대답해.
 - PRD, TRD, WBS를 만들때 AskUserQuestion 도구로 애매한 것이 있을 때 즉시 유저에게 질문을 할 것
-- 화면 작업에는 vercel-react-best-practices, web-design-guidelines 스킬 사용
+<!-- - 화면 작업에는 vercel-react-best-practices, web-design-guidelines 스킬 사용 -->
+- UI 작업은 ui-ux-pro-max 스킬(Claude Code) 사용, 스킬이 없으면 ui-ux-pro-max 명령어를 사용한다.
 - 코드 작업은 context7 mcp 확인하고 작업한다.
 
 ## 프로젝트 구조
@@ -129,3 +130,20 @@ Task 작업 시 `/wf:*` 명령어를 사용하여 표준화된 개발 프로세�
 - `any` 타입 사용 금지
 - `console.log` 프로덕션 코드 포함 금지
 - 하드코딩된 문자열/숫자 금지
+
+## 테스트 트러블슈팅
+
+### React 19 테스트 프로세스 미종료 문제
+
+**원인:** Jest의 jsdom에 `setImmediate`가 없어서 React scheduler가 `MessageChannel` 사용 → 프로세스 미종료
+
+**해결:** Vitest 사용 + setup 파일 최상단에 폴리필 추가
+
+```typescript
+// vitest.setup.ts (반드시 최상단)
+import { setImmediate, clearImmediate } from "timers";
+globalThis.setImmediate = setImmediate;
+globalThis.clearImmediate = clearImmediate;
+```
+
+참고: [React #26608](https://github.com/facebook/react/issues/26608)

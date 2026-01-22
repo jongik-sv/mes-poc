@@ -10,7 +10,7 @@ import type { Tab } from '@/lib/mdi/types';
 import { MDIContent } from '../MDIContent';
 
 // Mock screenRegistry
-jest.mock('@/lib/mdi/screenRegistry', () => ({
+vi.mock('@/lib/mdi/screenRegistry', () => ({
   screenRegistry: {
     '/dashboard': () =>
       Promise.resolve({
@@ -88,7 +88,7 @@ describe('MDIContent', () => {
   ];
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('TC-01-02: 빈 상태 표시', () => {

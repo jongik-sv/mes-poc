@@ -6,8 +6,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { Suspense } from 'react';
 
-// jest.mock은 파일 최상단에서 호출되어야 함
-jest.mock('@/lib/mdi/screenRegistry', () => ({
+// vi.mock은 파일 최상단에서 호출되어야 함
+vi.mock('@/lib/mdi/screenRegistry', () => ({
   screenRegistry: {
     '/dashboard': () =>
       Promise.resolve({
@@ -47,7 +47,7 @@ import { ScreenLoader } from '../ScreenLoader';
 
 describe('ScreenLoader', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('TC-03-01: 동적 로딩', () => {

@@ -1,7 +1,7 @@
-// Mock auth 함수 - 호이스팅을 위해 jest.fn() 직접 사용
-const mockAuth = jest.fn()
+// Mock auth 함수 - 호이스팅을 위해 vi.fn() 직접 사용
+const mockAuth = vi.fn()
 
-jest.mock('@/auth', () => ({
+vi.mock('@/auth', () => ({
   auth: () => mockAuth(),
 }))
 
@@ -9,7 +9,7 @@ import { GET } from '../route'
 
 describe('GET /api/auth/me', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   it('should return user info when authenticated', async () => {

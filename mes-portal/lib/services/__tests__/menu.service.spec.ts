@@ -4,20 +4,22 @@
  * 테스트 명세서(026-test-specification.md) 기반
  */
 
-// Jest mock 설정 - jest.fn()을 팩토리 내부에서 직접 사용
-jest.mock('@/lib/prisma', () => ({
+import type { Mock } from 'vitest'
+
+// Mock 설정 - vi.fn()을 팩토리 내부에서 직접 사용
+vi.mock('@/lib/prisma', () => ({
   __esModule: true,
   default: {
     menu: {
-      findMany: jest.fn(),
-      findUnique: jest.fn(),
-      create: jest.fn(),
-      update: jest.fn(),
-      delete: jest.fn(),
-      count: jest.fn(),
+      findMany: vi.fn(),
+      findUnique: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+      count: vi.fn(),
     },
     roleMenu: {
-      findMany: jest.fn(),
+      findMany: vi.fn(),
     },
   },
 }))
@@ -30,15 +32,15 @@ import prisma from '@/lib/prisma'
 // Mock 함수 참조 (import 이후에 가져옴)
 const mockPrisma = {
   menu: {
-    findMany: prisma.menu.findMany as jest.Mock,
-    findUnique: prisma.menu.findUnique as jest.Mock,
-    create: prisma.menu.create as jest.Mock,
-    update: prisma.menu.update as jest.Mock,
-    delete: prisma.menu.delete as jest.Mock,
-    count: prisma.menu.count as jest.Mock,
+    findMany: prisma.menu.findMany as Mock,
+    findUnique: prisma.menu.findUnique as Mock,
+    create: prisma.menu.create as Mock,
+    update: prisma.menu.update as Mock,
+    delete: prisma.menu.delete as Mock,
+    count: prisma.menu.count as Mock,
   },
   roleMenu: {
-    findMany: prisma.roleMenu.findMany as jest.Mock,
+    findMany: prisma.roleMenu.findMany as Mock,
   },
 }
 
@@ -47,11 +49,11 @@ describe('MenuService', () => {
 
   beforeEach(() => {
     menuService = new MenuService()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('findAll', () => {

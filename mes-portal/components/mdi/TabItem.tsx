@@ -56,8 +56,8 @@ export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
         transition-colors duration-200
         ${
           isActive
-            ? 'bg-white text-gray-900 font-medium border-b-2 border-primary'
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 font-medium border-b-2 border-primary'
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
         }
       `}
     >

@@ -1,9 +1,9 @@
 // components/layout/Header.tsx
-// MES Portal 헤더 컴포넌트
+// MES Portal 헤더 컴포넌트 - Enterprise Design
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Button, Dropdown, Avatar, Badge, Breadcrumb } from 'antd'
+import { Button, Dropdown, Avatar, Badge, Breadcrumb, Tooltip } from 'antd'
 import type { MenuProps } from 'antd'
 import {
   SearchOutlined,
@@ -38,11 +38,8 @@ interface HeaderProps {
   onSearchOpen?: () => void
   onNotificationNavigate?: (link: string, title: string) => void
   onLogout?: () => void
-  /** 즐겨찾기 메뉴 목록 (TSK-03-04) */
   favoriteMenus?: FavoriteMenuItem[]
-  /** 즐겨찾기 메뉴 클릭 콜백 (TSK-03-04) */
   onFavoriteMenuClick?: (menu: FavoriteMenuItem) => void
-  /** 즐겨찾기 로딩 상태 (TSK-03-04) */
   isFavoriteLoading?: boolean
 }
 
@@ -65,20 +62,16 @@ export function Header({
     useState<Notification[]>(notifications)
   const notificationRef = useRef<HTMLDivElement>(null)
 
-  // notifications prop이 변경되면 로컬 상태 업데이트
   useEffect(() => {
     setLocalNotifications(notifications)
   }, [notifications])
 
-  // 읽지 않은 알림 개수 계산
   const unreadNotifications = localNotifications.filter((n) => !n.isRead).length
 
-  // 마운트 상태 확인 (SSR 호환)
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  // 시계 갱신 (1초마다)
   useEffect(() => {
     const updateTime = () => {
       const now = new Date()
@@ -96,7 +89,6 @@ export function Header({
     return () => clearInterval(timer)
   }, [])
 
-  // 알림 패널 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -116,7 +108,6 @@ export function Header({
     }
   }, [notificationPanelOpen])
 
-  // ESC 키로 알림 패널 닫기
   useHotkeys(
     'escape',
     () => {
@@ -127,7 +118,6 @@ export function Header({
     { enableOnFormTags: true }
   )
 
-  // Ctrl+K 단축키
   useHotkeys(
     'ctrl+k, meta+k',
     (e) => {
@@ -137,33 +127,27 @@ export function Header({
     { enableOnFormTags: false }
   )
 
-  // 테마 토글
   const toggleTheme = () => {
     const currentTheme = resolvedTheme || theme
     setTheme(currentTheme === 'dark' ? 'light' : 'dark')
   }
 
-  // 현재 테마 (SSR 호환)
   const isDark = mounted && (resolvedTheme || theme) === 'dark'
 
-  // 알림 패널 토글
   const handleNotificationToggle = useCallback(() => {
     setNotificationPanelOpen((prev) => !prev)
   }, [])
 
-  // 알림 읽음 처리
   const handleMarkAsRead = useCallback((id: string) => {
     setLocalNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     )
   }, [])
 
-  // 모든 알림 읽음 처리
   const handleMarkAllAsRead = useCallback(() => {
     setLocalNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
   }, [])
 
-  // 알림 클릭 시 화면 이동
   const handleNotificationNavigate = useCallback(
     (link: string, title: string) => {
       onNotificationNavigate?.(link, title)
@@ -172,7 +156,6 @@ export function Header({
     [onNotificationNavigate]
   )
 
-  // 즐겨찾기 메뉴 클릭 핸들러
   const handleFavoriteMenuClick = useCallback(
     (menu: FavoriteMenuItem) => {
       onFavoriteMenuClick?.(menu)
@@ -180,7 +163,6 @@ export function Header({
     [onFavoriteMenuClick]
   )
 
-  // 프로필 드롭다운 메뉴
   const profileMenuItems: MenuProps['items'] = [
     {
       key: 'info',
@@ -204,7 +186,6 @@ export function Header({
     },
   ]
 
-  // 브레드크럼 아이템 변환
   const breadcrumbAntdItems = breadcrumbItems.map((item) => ({
     title: item.path ? <Link href={item.path}>{item.title}</Link> : item.title,
   }))
@@ -212,17 +193,32 @@ export function Header({
   return (
     <div className="flex items-center justify-between w-full h-full">
       {/* 좌측 영역 */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         {/* 로고 */}
         <Link
           href="/"
           data-testid="header-logo"
-          className="flex items-center text-xl font-bold text-blue-500 hover:text-blue-600 transition-colors"
+          className="flex items-center gap-2 text-lg font-semibold transition-colors duration-200"
+          style={{ color: 'var(--color-primary)' }}
         >
-          MES Portal
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect width="32" height="32" rx="6" fill="currentColor" />
+            <path
+              d="M8 10h4v12H8V10zm6 4h4v8h-4v-8zm6-2h4v10h-4V12z"
+              fill="white"
+            />
+          </svg>
+          <span className="hidden sm:inline">MES Portal</span>
         </Link>
 
-        {/* 빠른 메뉴 (즐겨찾기) - TSK-03-04 */}
+        {/* 빠른 메뉴 (즐겨찾기) */}
         <QuickMenu
           favoriteMenus={favoriteMenus}
           onMenuClick={handleFavoriteMenuClick}
@@ -230,7 +226,10 @@ export function Header({
         />
 
         {/* 구분선 */}
-        <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
+        <div
+          className="hidden md:block h-5 w-px"
+          style={{ backgroundColor: 'var(--color-gray-200)' }}
+        />
 
         {/* 브레드크럼 */}
         <div data-testid="header-breadcrumb" className="hidden md:flex">
@@ -239,39 +238,61 @@ export function Header({
       </div>
 
       {/* 우측 영역 */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         {/* 시계 */}
-        <span
-          className="hidden sm:block text-sm tabular-nums text-gray-600 dark:text-gray-400"
-          data-testid="header-clock"
+        <div
+          className="hidden sm:flex items-center px-3 py-1.5 rounded-md mr-2"
+          style={{ backgroundColor: 'var(--color-gray-100)' }}
         >
-          {currentTime}
-        </span>
-
-        {/* 구분선 */}
-        <div className="hidden sm:block h-5 w-px bg-gray-200 dark:bg-gray-700" />
+          <span
+            className="text-sm tabular-nums font-medium"
+            style={{ color: 'var(--color-gray-600)' }}
+            data-testid="header-clock"
+          >
+            {currentTime}
+          </span>
+        </div>
 
         {/* 검색 */}
-        <Button
-          type="text"
-          icon={<SearchOutlined />}
-          onClick={onSearchOpen}
-          title="검색 (Ctrl+K)"
-          aria-label="전역 검색 (Ctrl+K)"
-          data-testid="search-button"
-        />
+        <Tooltip title="검색 (Ctrl+K)">
+          <Button
+            type="text"
+            icon={<SearchOutlined style={{ fontSize: 16 }} />}
+            onClick={onSearchOpen}
+            aria-label="전역 검색 (Ctrl+K)"
+            data-testid="search-button"
+            className="cursor-pointer"
+            style={{
+              width: 36,
+              height: 36,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          />
+        </Tooltip>
 
         {/* 알림 */}
         <div ref={notificationRef} className="relative">
-          <Badge count={unreadNotifications} size="small" overflowCount={99}>
-            <Button
-              type="text"
-              icon={<BellOutlined />}
-              onClick={handleNotificationToggle}
-              aria-label={`알림 ${unreadNotifications}개`}
-              data-testid="notification-button"
-            />
-          </Badge>
+          <Tooltip title={`알림 ${unreadNotifications}개`}>
+            <Badge count={unreadNotifications} size="small" overflowCount={99}>
+              <Button
+                type="text"
+                icon={<BellOutlined style={{ fontSize: 16 }} />}
+                onClick={handleNotificationToggle}
+                aria-label={`알림 ${unreadNotifications}개`}
+                data-testid="notification-button"
+                className="cursor-pointer"
+                style={{
+                  width: 36,
+                  height: 36,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
+            </Badge>
+          </Tooltip>
           <NotificationPanel
             open={notificationPanelOpen}
             notifications={localNotifications}
@@ -283,13 +304,28 @@ export function Header({
         </div>
 
         {/* 테마 전환 */}
-        <Button
-          type="text"
-          icon={isDark ? <SunOutlined /> : <MoonOutlined />}
-          onClick={toggleTheme}
-          title={isDark ? '라이트 모드' : '다크 모드'}
-          aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
-          data-testid="theme-toggle"
+        <Tooltip title={isDark ? '라이트 모드' : '다크 모드'}>
+          <Button
+            type="text"
+            icon={isDark ? <SunOutlined style={{ fontSize: 16 }} /> : <MoonOutlined style={{ fontSize: 16 }} />}
+            onClick={toggleTheme}
+            aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
+            data-testid="theme-toggle"
+            className="cursor-pointer"
+            style={{
+              width: 36,
+              height: 36,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          />
+        </Tooltip>
+
+        {/* 구분선 */}
+        <div
+          className="h-5 w-px mx-2"
+          style={{ backgroundColor: 'var(--color-gray-200)' }}
         />
 
         {/* 프로필 */}
@@ -299,17 +335,41 @@ export function Header({
           data-testid="profile-dropdown"
         >
           <div
-            className="flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2 cursor-pointer px-2 py-1.5 rounded-md transition-colors duration-200"
             data-testid="profile-dropdown"
+            style={{
+              backgroundColor: 'transparent',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'var(--color-gray-100)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent'
+            }}
           >
             <Avatar
               src={user?.avatar}
               icon={!user?.avatar && <UserOutlined />}
-              size="small"
+              size={32}
+              style={{
+                backgroundColor: 'var(--color-primary)',
+                flexShrink: 0,
+              }}
             />
-            <span className="hidden md:inline text-sm text-gray-700 dark:text-gray-300">
-              {user?.name}
-            </span>
+            <div className="hidden md:flex flex-col items-start">
+              <span
+                className="text-sm font-medium leading-tight"
+                style={{ color: 'var(--color-gray-900)' }}
+              >
+                {user?.name}
+              </span>
+              <span
+                className="text-xs leading-tight"
+                style={{ color: 'var(--color-gray-500)' }}
+              >
+                관리자
+              </span>
+            </div>
           </div>
         </Dropdown>
       </div>

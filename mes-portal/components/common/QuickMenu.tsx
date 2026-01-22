@@ -32,15 +32,24 @@ export function QuickMenu({
   // 빈 상태 컨텐츠
   const emptyContent = (
     <div
-      className="p-4 text-center min-w-[200px]"
+      className="p-4 text-center min-w-[200px] rounded-lg"
+      style={{
+        backgroundColor: 'var(--color-bg-elevated)',
+        boxShadow: 'var(--shadow-lg)',
+        border: '1px solid var(--color-gray-200)',
+      }}
       data-testid="quick-menu-empty"
     >
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description="즐겨찾기한 메뉴가 없습니다"
+        description={
+          <span style={{ color: 'var(--color-text-secondary)' }}>
+            즐겨찾기한 메뉴가 없습니다
+          </span>
+        }
       />
       <div className="mt-2 flex items-center justify-center gap-1">
-        <InfoCircleOutlined className="text-gray-400" />
+        <InfoCircleOutlined style={{ color: 'var(--color-gray-400)' }} />
         <Text type="secondary" className="text-xs">
           사이드바 메뉴에서 별을 클릭하여 추가하세요
         </Text>
@@ -67,7 +76,7 @@ export function QuickMenu({
           },
           ...favoriteMenus.map((menu) => ({
             key: menu.id.toString(),
-            icon: <MenuIcon iconName={menu.icon} />,
+            icon: <MenuIcon iconName={menu.icon ?? undefined} />,
             label: menu.name,
             onClick: () => onMenuClick(menu),
             'data-testid': 'favorite-menu-item',

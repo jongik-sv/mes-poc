@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react'
 import { Footer } from '../Footer'
 
 // Ant Design 모킹
-jest.mock('antd', () => ({
+vi.mock('antd', () => ({
   Layout: {
     Footer: ({ children, className, style, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <footer className={className} style={style} {...props}>{children}</footer>
@@ -15,7 +15,7 @@ jest.mock('antd', () => ({
 
 describe('Footer', () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   // UT-01: Footer 컴포넌트 렌더링

@@ -238,7 +238,7 @@ export function TabBar() {
       {/* 드래그 오버레이 (마우스를 따라다니는 탭) */}
       <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
         {activeDragTab ? (
-          <div className="shadow-lg opacity-90 rounded bg-white">
+          <div className="shadow-lg opacity-90 rounded bg-white dark:bg-gray-700">
             <TabItem
               tab={activeDragTab}
               isActive={activeDragTab.id === activeTabId}

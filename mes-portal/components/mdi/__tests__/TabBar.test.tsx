@@ -77,7 +77,7 @@ function TabLoader({ tabs, activeTabId }: { tabs: Tab[]; activeTabId: string }) 
 
 describe('TabBar', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('렌더링', () => {
