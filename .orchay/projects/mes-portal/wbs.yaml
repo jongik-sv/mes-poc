@@ -873,8 +873,9 @@ workPackages:
         title: 키보드 단축키 시스템
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
+        test-result: pass
         assignee: "-"
         tags:
           - common
@@ -898,7 +899,6 @@ workPackages:
           integrationCheck:
             - lib/hooks/useHotkeys.ts 커스텀 훅
             - components/common/HotkeyHelp.tsx 도움말 모달
-        execution: verify
   - id: WP-06
     title: 화면 템플릿
     status: planned
@@ -1052,7 +1052,7 @@ workPackages:
         title: 마법사(Wizard) 화면 템플릿
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: low
         assignee: "-"
         tags:
@@ -1077,7 +1077,6 @@ workPackages:
             - Ant Design Steps
           integrationCheck:
             - components/templates/WizardTemplate.tsx
-        execution: verify
       - id: TSK-06-07
         title: "[샘플] 사용자 목록 화면"
         category: development
