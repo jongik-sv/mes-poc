@@ -966,7 +966,7 @@ workPackages:
         title: 입력/수정 폼 템플릿
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: high
         assignee: "-"
         tags:
@@ -992,7 +992,6 @@ workPackages:
           integrationCheck:
             - components/templates/FormTemplate.tsx
             - useForm 훅 활용
-        execution: build
       - id: TSK-06-04
         title: 마스터-디테일 화면 템플릿
         category: development
