@@ -2,13 +2,29 @@
 // 대시보드 관련 타입 정의 (010-design.md 섹션 7.3 기준)
 
 /**
+ * KPI 변화 유형
+ * - increase: 값 증가
+ * - decrease: 값 감소
+ * - neutral: 변동 없음
+ * - unchanged: 변동 없음 (legacy 호환)
+ */
+export type KPIChangeType = 'increase' | 'decrease' | 'neutral' | 'unchanged'
+
+/**
+ * KPI 유형 (긍정/부정 판단용)
+ * - positive: 값 증가가 좋은 KPI (생산량, 가동률, 작업지시)
+ * - negative: 값 감소가 좋은 KPI (불량률)
+ */
+export type KPIValueType = 'positive' | 'negative'
+
+/**
  * KPI 데이터 타입
  */
 export interface KPIData {
   value: number
   unit: string
   change: number
-  changeType: 'increase' | 'decrease' | 'unchanged'
+  changeType: KPIChangeType
 }
 
 /**
@@ -80,6 +96,17 @@ export interface WidgetCardProps {
 export interface KPICardProps {
   title: string
   data: KPIData
-  invertTrend?: boolean // 불량률처럼 감소가 긍정인 경우
+  /**
+   * @deprecated invertTrend 대신 valueType 사용 권장
+   * 불량률처럼 감소가 긍정인 경우 invertTrend=true 또는 valueType='negative'
+   */
+  invertTrend?: boolean
+  /**
+   * KPI 유형 (기본값: 'positive')
+   * - positive: 증가가 좋음 (녹색), 감소가 나쁨 (빨간색)
+   * - negative: 감소가 좋음 (녹색), 증가가 나쁨 (빨간색)
+   */
+  valueType?: KPIValueType
+  loading?: boolean
   'data-testid'?: string
 }
