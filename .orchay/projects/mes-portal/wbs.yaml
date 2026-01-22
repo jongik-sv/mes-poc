@@ -1166,7 +1166,8 @@ workPackages:
         title: 대시보드 레이아웃
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: high
         assignee: "-"
         tags:
@@ -1190,7 +1191,6 @@ workPackages:
           integrationCheck:
             - screens/dashboard/Dashboard.tsx
             - 반응형 breakpoint 설정 (xs, sm, md, lg, xl)
-        execution: verify
       - id: TSK-07-02
         title: KPI 카드 위젯
         category: development
@@ -1252,3 +1252,4 @@ workPackages:
             - components/dashboard/BarChart.tsx
             - components/dashboard/PieChart.tsx
             - "@ant-design/charts 의존성 설치"
+        execution: build
