@@ -1,0 +1,86 @@
+{
+  "plans": [
+    {
+      "id": "PP-001",
+      "name": "제품A 생산",
+      "productCode": "PRD-001",
+      "productName": "제품A",
+      "quantity": 1000,
+      "unit": "EA",
+      "startDate": "2026-01-20",
+      "endDate": "2026-01-24",
+      "progress": 70,
+      "status": "in_progress",
+      "line": "Line-01",
+      "priority": "high",
+      "color": "#1677ff"
+    },
+    {
+      "id": "PP-002",
+      "name": "제품B 생산",
+      "productCode": "PRD-002",
+      "productName": "제품B",
+      "quantity": 500,
+      "unit": "EA",
+      "startDate": "2026-01-21",
+      "endDate": "2026-01-25",
+      "progress": 100,
+      "status": "completed",
+      "line": "Line-02",
+      "priority": "medium",
+      "color": "#52c41a"
+    },
+    {
+      "id": "PP-003",
+      "name": "제품C 생산",
+      "productCode": "PRD-003",
+      "productName": "제품C",
+      "quantity": 800,
+      "unit": "EA",
+      "startDate": "2026-01-22",
+      "endDate": "2026-01-27",
+      "progress": 80,
+      "status": "in_progress",
+      "line": "Line-01",
+      "priority": "high",
+      "color": "#1677ff"
+    },
+    {
+      "id": "PP-004",
+      "name": "설비 점검",
+      "productCode": "MNT-001",
+      "productName": "정기 점검",
+      "quantity": 1,
+      "unit": "회",
+      "startDate": "2026-01-23",
+      "endDate": "2026-01-23",
+      "progress": 100,
+      "status": "completed",
+      "line": "Line-03",
+      "priority": "low",
+      "color": "#52c41a"
+    },
+    {
+      "id": "PP-005",
+      "name": "제품D 생산",
+      "productCode": "PRD-004",
+      "productName": "제품D",
+      "quantity": 1200,
+      "unit": "EA",
+      "startDate": "2026-01-24",
+      "endDate": "2026-01-28",
+      "progress": 50,
+      "status": "delayed",
+      "line": "Line-02",
+      "priority": "high",
+      "color": "#ff4d4f"
+    }
+  ],
+  "meta": {
+    "totalCount": 5,
+    "dateRange": {
+      "start": "2026-01-01",
+      "end": "2026-01-31"
+    }
+  }
+}

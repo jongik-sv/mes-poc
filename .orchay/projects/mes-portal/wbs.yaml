@@ -1230,7 +1230,7 @@ workPackages:
         title: "[샘플] 품질 검사 입력 폼"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1260,6 +1260,7 @@ workPackages:
             - screens/sample/QualityInspection.tsx
             - 조건부 렌더링 로직
             - Form.List로 반복 항목 처리
+        execution: build
       - id: TSK-06-13
         title: "[샘플] 조직/부서 트리"
         category: development
@@ -1299,7 +1300,7 @@ workPackages:
         title: "[샘플] 생산 계획 간트 차트"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: low
         assignee: "-"
         tags:
@@ -1331,7 +1332,6 @@ workPackages:
             - screens/sample/ProductionGantt.tsx
             - mock-data/production-plan.json 로드
             - 확대/축소 상태 관리
-        execution: build
       - id: TSK-06-15
         title: "[샘플] 재고 현황 조회"
         category: development
