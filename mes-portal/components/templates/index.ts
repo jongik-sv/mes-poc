@@ -20,3 +20,7 @@ export { MasterDetailTemplate } from './MasterDetailTemplate'
 // 팝업(모달) 화면 템플릿 (TSK-06-05)
 export * from './SelectPopupTemplate'
 export { SelectPopupTemplate } from './SelectPopupTemplate'
+
+// 마법사(Wizard) 화면 템플릿 (TSK-06-06)
+export * from './WizardTemplate'
+export { WizardTemplate } from './WizardTemplate'
