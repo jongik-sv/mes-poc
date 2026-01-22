@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; fill: #333; }
+      .text-sm { font-size: 12px; }
+      .text-md { font-size: 14px; }
+      .text-lg { font-size: 16px; }
+      .text-muted { fill: #999; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-primary { fill: #1890ff; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-danger { fill: #ff4d4f; }
+      .btn-text { fill: #ffffff; font-size: 14px; }
+      .table-header { fill: #fafafa; }
+      .table-row { fill: #ffffff; }
+      .table-row-alt { fill: #fafafa; }
+      .table-border { stroke: #f0f0f0; stroke-width: 1; }
+      .checkbox { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .tag-in { fill: #52c41a; }
+      .tag-out { fill: #1890ff; }
+      .tag-text { fill: #ffffff; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Title -->
+  <text class="text text-lg" x="20" y="30" font-weight="600">자재 입출고 내역 - 기본 화면</text>
+
+  <!-- Search Card -->
+  <rect class="card" x="20" y="50" width="1160" height="110" rx="4"/>
+  <text class="text text-md" x="40" y="75" font-weight="500">검색 조건</text>
+
+  <!-- Search Fields Row -->
+  <!-- 자재명 -->
+  <text class="text text-sm" x="40" y="100">자재명</text>
+  <rect class="input" x="40" y="108" width="280" height="32" rx="4"/>
+  <text class="text text-sm text-muted" x="52" y="128">자재명 검색...</text>
+
+  <!-- 입출고유형 -->
+  <text class="text text-sm" x="340" y="100">입출고유형</text>
+  <rect class="input" x="340" y="108" width="180" height="32" rx="4"/>
+  <text class="text text-sm" x="352" y="128">전체</text>
+  <polygon points="500,120 508,120 504,128" fill="#999"/>
+
+  <!-- 기간 -->
+  <text class="text text-sm" x="540" y="100">기간</text>
+  <rect class="input" x="540" y="108" width="280" height="32" rx="4"/>
+  <text class="text text-sm" x="552" y="128">2026-01-01</text>
+  <text class="text text-sm" x="660" y="128">~</text>
+  <text class="text text-sm" x="690" y="128">2026-01-22</text>
+
+  <!-- Buttons -->
+  <rect class="btn-default" x="960" y="108" width="80" height="32" rx="4"/>
+  <text class="text text-md" x="985" y="128">초기화</text>
+
+  <rect class="btn-primary" x="1050" y="108" width="80" height="32" rx="4"/>
+  <text class="btn-text" x="1078" y="128">조회</text>
+
+  <!-- Toolbar -->
+  <rect class="card" x="20" y="175" width="1160" height="45" rx="4"/>
+  <text class="text text-sm" x="40" y="203">총 30건</text>
+  <line x1="90" y1="188" x2="90" y2="208" stroke="#e8e8e8" stroke-width="1"/>
+  <text class="text text-sm" x="100" y="203">선택: 0건</text>
+
+  <!-- Action Buttons -->
+  <rect class="btn-danger" x="1000" y="185" width="70" height="28" rx="4" opacity="0.5"/>
+  <text class="btn-text" x="1022" y="203" opacity="0.5">삭제</text>
+
+  <rect class="btn-default" x="1080" y="185" width="80" height="28" rx="4"/>
+  <text class="text text-md" x="1098" y="203">내보내기</text>
+
+  <!-- Table -->
+  <rect class="card" x="20" y="235" width="1160" height="400" rx="4"/>
+
+  <!-- Table Header -->
+  <rect class="table-header" x="21" y="236" width="1158" height="40" rx="4"/>
+  <line class="table-border" x1="21" y1="276" x2="1179" y2="276"/>
+
+  <!-- Header Cells -->
+  <rect class="checkbox" x="35" y="248" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="260" font-weight="500">자재명</text>
+  <text class="text text-sm" x="200" y="260" font-weight="500">자재코드</text>
+  <text class="text text-sm" x="320" y="260" font-weight="500">유형</text>
+  <text class="text text-sm" x="400" y="260" font-weight="500">수량</text>
+  <text class="text text-sm" x="490" y="260" font-weight="500">단위</text>
+  <text class="text text-sm" x="560" y="260" font-weight="500">창고</text>
+  <text class="text text-sm" x="680" y="260" font-weight="500">일자</text>
+  <text class="text text-sm" x="800" y="260" font-weight="500">담당자</text>
+  <text class="text text-sm" x="900" y="260" font-weight="500">비고</text>
+
+  <!-- Table Row 1 -->
+  <rect class="table-row" x="21" y="277" width="1158" height="40"/>
+  <line class="table-border" x1="21" y1="317" x2="1179" y2="317"/>
+  <rect class="checkbox" x="35" y="289" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="302">원자재A</text>
+  <text class="text text-sm" x="200" y="302">MAT-001</text>
+  <rect class="tag-in" x="320" y="288" width="40" height="20" rx="4"/>
+  <text class="tag-text" x="330" y="302">입고</text>
+  <text class="text text-sm" x="400" y="302">100</text>
+  <text class="text text-sm" x="490" y="302">EA</text>
+  <text class="text text-sm" x="560" y="302">A창고</text>
+  <text class="text text-sm" x="680" y="302">2026-01-20</text>
+  <text class="text text-sm" x="800" y="302">김자재</text>
+  <text class="text text-sm" x="900" y="302">정기 입고</text>
+
+  <!-- Table Row 2 -->
+  <rect class="table-row-alt" x="21" y="318" width="1158" height="40"/>
+  <line class="table-border" x1="21" y1="358" x2="1179" y2="358"/>
+  <rect class="checkbox" x="35" y="330" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="343">원자재B</text>
+  <text class="text text-sm" x="200" y="343">MAT-002</text>
+  <rect class="tag-out" x="320" y="329" width="40" height="20" rx="4"/>
+  <text class="tag-text" x="330" y="343">출고</text>
+  <text class="text text-sm" x="400" y="343">50</text>
+  <text class="text text-sm" x="490" y="343">KG</text>
+  <text class="text text-sm" x="560" y="343">B창고</text>
+  <text class="text text-sm" x="680" y="343">2026-01-19</text>
+  <text class="text text-sm" x="800" y="343">이생산</text>
+  <text class="text text-sm" x="900" y="343">생산 투입</text>
+
+  <!-- Table Row 3 -->
+  <rect class="table-row" x="21" y="359" width="1158" height="40"/>
+  <line class="table-border" x1="21" y1="399" x2="1179" y2="399"/>
+  <rect class="checkbox" x="35" y="371" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="384">부자재C</text>
+  <text class="text text-sm" x="200" y="384">MAT-003</text>
+  <rect class="tag-in" x="320" y="370" width="40" height="20" rx="4"/>
+  <text class="tag-text" x="330" y="384">입고</text>
+  <text class="text text-sm" x="400" y="384">200</text>
+  <text class="text text-sm" x="490" y="384">M</text>
+  <text class="text text-sm" x="560" y="384">A창고</text>
+  <text class="text text-sm" x="680" y="384">2026-01-18</text>
+  <text class="text text-sm" x="800" y="384">김자재</text>
+  <text class="text text-sm" x="900" y="384">-</text>
+
+  <!-- Table Row 4 -->
+  <rect class="table-row-alt" x="21" y="400" width="1158" height="40"/>
+  <line class="table-border" x1="21" y1="440" x2="1179" y2="440"/>
+  <rect class="checkbox" x="35" y="412" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="425">원자재D</text>
+  <text class="text text-sm" x="200" y="425">MAT-004</text>
+  <rect class="tag-out" x="320" y="411" width="40" height="20" rx="4"/>
+  <text class="tag-text" x="330" y="425">출고</text>
+  <text class="text text-sm" x="400" y="425">30</text>
+  <text class="text text-sm" x="490" y="425">EA</text>
+  <text class="text text-sm" x="560" y="425">C창고</text>
+  <text class="text text-sm" x="680" y="425">2026-01-17</text>
+  <text class="text text-sm" x="800" y="425">박품질</text>
+  <text class="text text-sm" x="900" y="425">품질 검사</text>
+
+  <!-- Table Row 5 -->
+  <rect class="table-row" x="21" y="441" width="1158" height="40"/>
+  <line class="table-border" x1="21" y1="481" x2="1179" y2="481"/>
+  <rect class="checkbox" x="35" y="453" width="16" height="16" rx="2"/>
+  <text class="text text-sm" x="75" y="466">포장재E</text>
+  <text class="text text-sm" x="200" y="466">MAT-005</text>
+  <rect class="tag-in" x="320" y="452" width="40" height="20" rx="4"/>
+  <text class="tag-text" x="330" y="466">입고</text>
+  <text class="text text-sm" x="400" y="466">500</text>
+  <text class="text text-sm" x="490" y="466">EA</text>
+  <text class="text text-sm" x="560" y="466">B창고</text>
+  <text class="text text-sm" x="680" y="466">2026-01-16</text>
+  <text class="text text-sm" x="800" y="466">김자재</text>
+  <text class="text text-sm" x="900" y="466">긴급 입고</text>
+
+  <!-- Pagination -->
+  <rect x="21" y="590" width="1158" height="44" fill="#fafafa" rx="4"/>
+  <text class="text text-sm" x="40" y="617">총 30건 중 1-10</text>
+
+  <!-- Page Numbers -->
+  <rect x="520" y="600" width="28" height="28" fill="#1890ff" rx="4"/>
+  <text class="btn-text" x="530" y="618">1</text>
+  <rect class="btn-default" x="555" y="600" width="28" height="28" rx="4"/>
+  <text class="text text-sm" x="565" y="618">2</text>
+  <rect class="btn-default" x="590" y="600" width="28" height="28" rx="4"/>
+  <text class="text text-sm" x="600" y="618">3</text>
+
+  <!-- Page Size -->
+  <rect class="input" x="1050" y="600" width="110" height="28" rx="4"/>
+  <text class="text text-sm" x="1065" y="618">10건/페이지</text>
+  <polygon points="1140,612 1148,612 1144,620" fill="#999"/>
+
+  <!-- Column Resize Handle Indicator -->
+  <line x1="185" y1="240" x2="185" y2="580" stroke="#1890ff" stroke-width="2" stroke-dasharray="4,4" opacity="0.5"/>
+  <text class="text text-sm" x="170" y="668" fill="#1890ff">컬럼 리사이즈</text>
+</svg>

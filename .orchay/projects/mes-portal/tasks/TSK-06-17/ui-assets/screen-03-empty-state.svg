@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #e8e8e8; stroke-width: 1; }
+      .text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; fill: #333; }
+      .text-sm { font-size: 12px; }
+      .text-md { font-size: 14px; }
+      .text-lg { font-size: 16px; }
+      .text-muted { fill: #999; }
+      .input { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .input-filled { fill: #ffffff; stroke: #1890ff; stroke-width: 1; }
+      .btn-primary { fill: #1890ff; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-text { fill: #ffffff; font-size: 14px; }
+      .empty-icon { fill: #d9d9d9; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Title -->
+  <text class="text text-lg" x="20" y="30" font-weight="600">자재 입출고 내역 - Empty State</text>
+
+  <!-- Search Card -->
+  <rect class="card" x="20" y="50" width="1160" height="110" rx="4"/>
+  <text class="text text-md" x="40" y="75" font-weight="500">검색 조건</text>
+
+  <!-- Search Fields Row with filled values -->
+  <!-- 자재명 (filled) -->
+  <text class="text text-sm" x="40" y="100">자재명</text>
+  <rect class="input-filled" x="40" y="108" width="280" height="32" rx="4"/>
+  <text class="text text-sm" x="52" y="128">없는자재명XYZ</text>
+
+  <!-- 입출고유형 -->
+  <text class="text text-sm" x="340" y="100">입출고유형</text>
+  <rect class="input" x="340" y="108" width="180" height="32" rx="4"/>
+  <text class="text text-sm" x="352" y="128">입고</text>
+  <polygon points="500,120 508,120 504,128" fill="#999"/>
+
+  <!-- 기간 -->
+  <text class="text text-sm" x="540" y="100">기간</text>
+  <rect class="input" x="540" y="108" width="280" height="32" rx="4"/>
+  <text class="text text-sm" x="552" y="128">2026-01-01</text>
+  <text class="text text-sm" x="660" y="128">~</text>
+  <text class="text text-sm" x="690" y="128">2026-01-05</text>
+
+  <!-- Buttons -->
+  <rect class="btn-default" x="960" y="108" width="80" height="32" rx="4"/>
+  <text class="text text-md" x="985" y="128">초기화</text>
+
+  <rect class="btn-primary" x="1050" y="108" width="80" height="32" rx="4"/>
+  <text class="btn-text" x="1078" y="128">조회</text>
+
+  <!-- Toolbar -->
+  <rect class="card" x="20" y="175" width="1160" height="45" rx="4"/>
+  <text class="text text-sm" x="40" y="203">총 0건</text>
+  <line x1="85" y1="188" x2="85" y2="208" stroke="#e8e8e8" stroke-width="1"/>
+  <text class="text text-sm" x="95" y="203">선택: 0건</text>
+
+  <!-- Action Buttons (disabled) -->
+  <rect class="btn-default" x="1000" y="185" width="70" height="28" rx="4" opacity="0.5"/>
+  <text class="text text-md" x="1022" y="203" opacity="0.5">삭제</text>
+
+  <rect class="btn-default" x="1080" y="185" width="80" height="28" rx="4" opacity="0.5"/>
+  <text class="text text-md" x="1098" y="203" opacity="0.5">내보내기</text>
+
+  <!-- Empty State Card -->
+  <rect class="card" x="20" y="235" width="1160" height="400" rx="4"/>
+
+  <!-- Empty Icon (Document with magnifying glass) -->
+  <g transform="translate(530, 320)">
+    <!-- Document -->
+    <rect x="0" y="0" width="80" height="100" rx="4" fill="#f5f5f5" stroke="#d9d9d9" stroke-width="2"/>
+    <line x1="15" y1="25" x2="65" y2="25" stroke="#d9d9d9" stroke-width="4" stroke-linecap="round"/>
+    <line x1="15" y1="40" x2="55" y2="40" stroke="#d9d9d9" stroke-width="4" stroke-linecap="round"/>
+    <line x1="15" y1="55" x2="50" y2="55" stroke="#d9d9d9" stroke-width="4" stroke-linecap="round"/>
+    <line x1="15" y1="70" x2="40" y2="70" stroke="#d9d9d9" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Magnifying Glass -->
+    <circle cx="100" cy="80" r="25" fill="none" stroke="#d9d9d9" stroke-width="4"/>
+    <line x1="118" y1="98" x2="135" y2="115" stroke="#d9d9d9" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- X mark in magnifying glass -->
+    <line x1="90" y1="70" x2="110" y2="90" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+    <line x1="110" y1="70" x2="90" y2="90" stroke="#ff4d4f" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Empty Text -->
+  <text class="text text-lg text-muted" x="600" y="470" text-anchor="middle">검색 결과가 없습니다</text>
+  <text class="text text-sm text-muted" x="600" y="495" text-anchor="middle">검색 조건을 변경하거나 초기화해 주세요</text>
+
+  <!-- Reset Button -->
+  <rect class="btn-primary" x="540" y="520" width="120" height="36" rx="4"/>
+  <text class="btn-text" x="573" y="543">조건 초기화</text>
+
+  <!-- Search Condition Summary -->
+  <rect x="50" y="650" width="400" height="30" fill="#fff1f0" rx="4" stroke="#ff4d4f"/>
+  <text class="text text-sm" x="70" y="670" fill="#cf1322">적용된 조건: 자재명="없는자재명XYZ", 유형=입고, 기간=2026-01-01~2026-01-05</text>
+</svg>

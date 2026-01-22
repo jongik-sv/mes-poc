@@ -1374,6 +1374,7 @@ workPackages:
             - DetailTemplate 사용
             - mock-data/inventory.json 로드
             - 로딩/에러/빈 상태 처리 구현
+        execution: verify
       - id: TSK-06-16
         title: "[샘플] 작업 지시 등록"
         category: development
@@ -1419,7 +1420,7 @@ workPackages:
         title: "[샘플] 자재 입출고 내역"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1454,7 +1455,6 @@ workPackages:
             - ListTemplate 사용
             - DataTable 컴포넌트 활용
             - mock-data/material-history.json 로드
-        execution: start
       - id: TSK-06-18
         title: "[샘플] 공정 관리"
         category: development
