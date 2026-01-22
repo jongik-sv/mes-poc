@@ -16,3 +16,7 @@ export { FormTemplate } from './FormTemplate'
 // 마스터-디테일 화면 템플릿 (TSK-06-04)
 export * from './MasterDetailTemplate'
 export { MasterDetailTemplate } from './MasterDetailTemplate'
+
+// 팝업(모달) 화면 템플릿 (TSK-06-05)
+export * from './SelectPopupTemplate'
+export { SelectPopupTemplate } from './SelectPopupTemplate'
