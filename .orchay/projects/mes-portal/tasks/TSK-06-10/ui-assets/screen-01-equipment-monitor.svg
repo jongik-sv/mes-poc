@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <style>
+      .bg { fill: #F8FAFC; }
+      .card-bg { fill: #FFFFFF; stroke: #E2E8F0; stroke-width: 1; }
+      .card-shadow { fill: #FFFFFF; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1)); }
+      .text-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; fill: #0F172A; }
+      .text-subtitle { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #64748B; }
+      .text-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #475569; }
+      .text-value { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 500; fill: #0F172A; }
+      .text-small { font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; fill: #64748B; }
+      .text-stat { font-family: 'IBM Plex Sans', sans-serif; font-size: 24px; font-weight: 600; }
+      .text-stat-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #64748B; }
+      .btn-primary { fill: #2563EB; }
+      .btn-default { fill: #FFFFFF; stroke: #E2E8F0; stroke-width: 1; }
+      .btn-text { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #FFFFFF; }
+      .btn-text-default { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #475569; }
+      .input-bg { fill: #FFFFFF; stroke: #D1D5DB; stroke-width: 1; }
+      .status-running { fill: #52C41A; }
+      .status-stopped { fill: #8C8C8C; }
+      .status-fault { fill: #FF4D4F; }
+      .status-maintenance { fill: #FAAD14; }
+      .card-running { fill: #F6FFED; stroke: #52C41A; stroke-width: 1; }
+      .card-stopped { fill: #FAFAFA; stroke: #D9D9D9; stroke-width: 1; }
+      .card-fault { fill: #FFF2F0; stroke: #FF4D4F; stroke-width: 1; }
+      .card-maintenance { fill: #FFFBE6; stroke: #FAAD14; stroke-width: 1; }
+      .progress-bg { fill: #E5E7EB; }
+      .progress-fill { fill: #2563EB; }
+      .divider { stroke: #E2E8F0; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Page Header -->
+  <text x="24" y="40" class="text-title">Equipment Monitoring</text>
+  <text x="1176" y="40" class="text-subtitle" text-anchor="end">Last updated: 14:30:25</text>
+
+  <!-- Filter Section -->
+  <rect x="24" y="56" width="1152" height="72" rx="6" class="card-shadow"/>
+
+  <!-- Status Filter -->
+  <text x="40" y="84" class="text-label">Status</text>
+  <rect x="40" y="92" width="160" height="32" rx="4" class="input-bg"/>
+  <text x="52" y="113" class="text-value">All</text>
+  <path d="M188 104 L192 108 L196 104" stroke="#94A3B8" fill="none" stroke-width="1.5"/>
+
+  <!-- Line Filter -->
+  <text x="220" y="84" class="text-label">Line</text>
+  <rect x="220" y="92" width="160" height="32" rx="4" class="input-bg"/>
+  <text x="232" y="113" class="text-value">All</text>
+  <path d="M368 104 L372 108 L376 104" stroke="#94A3B8" fill="none" stroke-width="1.5"/>
+
+  <!-- Reset Button -->
+  <rect x="1068" y="92" width="80" height="32" rx="4" class="btn-default"/>
+  <text x="1108" y="113" class="btn-text-default" text-anchor="middle">Reset</text>
+
+  <!-- Status Summary Section -->
+  <rect x="24" y="144" width="1152" height="80" rx="6" class="card-shadow"/>
+
+  <!-- Running Summary -->
+  <rect x="40" y="160" width="120" height="48" rx="4" fill="#F6FFED"/>
+  <circle cx="56" cy="176" r="6" class="status-running"/>
+  <text x="70" y="180" class="text-stat-label">Running</text>
+  <text x="100" y="200" class="text-stat status-running" text-anchor="middle">12</text>
+
+  <!-- Stopped Summary -->
+  <rect x="176" y="160" width="120" height="48" rx="4" fill="#FAFAFA"/>
+  <circle cx="192" cy="176" r="6" class="status-stopped"/>
+  <text x="206" y="180" class="text-stat-label">Stopped</text>
+  <text x="236" y="200" class="text-stat status-stopped" text-anchor="middle">3</text>
+
+  <!-- Fault Summary -->
+  <rect x="312" y="160" width="120" height="48" rx="4" fill="#FFF2F0"/>
+  <circle cx="328" cy="176" r="6" class="status-fault"/>
+  <text x="342" y="180" class="text-stat-label">Fault</text>
+  <text x="372" y="200" class="text-stat status-fault" text-anchor="middle">1</text>
+
+  <!-- Maintenance Summary -->
+  <rect x="448" y="160" width="120" height="48" rx="4" fill="#FFFBE6"/>
+  <circle cx="464" cy="176" r="6" class="status-maintenance"/>
+  <text x="478" y="180" class="text-stat-label">Maintenance</text>
+  <text x="508" y="200" class="text-stat status-maintenance" text-anchor="middle">2</text>
+
+  <!-- Equipment Cards Grid -->
+  <!-- Row 1 -->
+  <!-- Card 1: CNC-001 (Running) -->
+  <rect x="24" y="240" width="272" height="140" rx="6" class="card-running"/>
+  <text x="40" y="268" class="text-value">CNC-001</text>
+  <rect x="224" y="254" width="56" height="20" rx="10" class="status-running"/>
+  <text x="252" y="268" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="40" y="290" class="text-small">CNC Lathe No.1</text>
+  <line x1="40" y1="304" x2="280" y2="304" class="divider"/>
+  <text x="40" y="324" class="text-label">Line A</text>
+  <text x="40" y="348" class="text-small">Operation Rate</text>
+  <rect x="40" y="356" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="40" y="356" width="170" height="6" rx="3" class="progress-fill"/>
+  <text x="248" y="364" class="text-value">85%</text>
+
+  <!-- Card 2: CNC-002 (Stopped) -->
+  <rect x="316" y="240" width="272" height="140" rx="6" class="card-stopped"/>
+  <text x="332" y="268" class="text-value">CNC-002</text>
+  <rect x="516" y="254" width="56" height="20" rx="10" class="status-stopped"/>
+  <text x="544" y="268" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Stopped</text>
+  <text x="332" y="290" class="text-small">CNC Lathe No.2</text>
+  <line x1="332" y1="304" x2="572" y2="304" class="divider"/>
+  <text x="332" y="324" class="text-label">Line A</text>
+  <text x="332" y="348" class="text-small">Operation Rate</text>
+  <rect x="332" y="356" width="200" height="6" rx="3" class="progress-bg"/>
+  <text x="540" y="364" class="text-value">--</text>
+
+  <!-- Card 3: PRESS-001 (Running) -->
+  <rect x="608" y="240" width="272" height="140" rx="6" class="card-running"/>
+  <text x="624" y="268" class="text-value">PRESS-001</text>
+  <rect x="808" y="254" width="56" height="20" rx="10" class="status-running"/>
+  <text x="836" y="268" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="624" y="290" class="text-small">Press Machine No.1</text>
+  <line x1="624" y1="304" x2="864" y2="304" class="divider"/>
+  <text x="624" y="324" class="text-label">Line B</text>
+  <text x="624" y="348" class="text-small">Operation Rate</text>
+  <rect x="624" y="356" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="624" y="356" width="184" height="6" rx="3" class="progress-fill"/>
+  <text x="832" y="364" class="text-value">92%</text>
+
+  <!-- Card 4: PRESS-002 (Fault) -->
+  <rect x="900" y="240" width="272" height="140" rx="6" class="card-fault"/>
+  <text x="916" y="268" class="text-value">PRESS-002</text>
+  <rect x="1100" y="254" width="56" height="20" rx="10" class="status-fault"/>
+  <text x="1128" y="268" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Fault</text>
+  <text x="916" y="290" class="text-small">Press Machine No.2</text>
+  <line x1="916" y1="304" x2="1156" y2="304" class="divider"/>
+  <text x="916" y="324" class="text-label">Line B</text>
+  <text x="916" y="348" class="text-small">Status</text>
+  <text x="916" y="368" fill="#FF4D4F" font-size="14" font-family="IBM Plex Sans" font-weight="500">Error: Sensor Failure</text>
+
+  <!-- Row 2 -->
+  <!-- Card 5: ROBOT-001 (Running) -->
+  <rect x="24" y="400" width="272" height="140" rx="6" class="card-running"/>
+  <text x="40" y="428" class="text-value">ROBOT-001</text>
+  <rect x="224" y="414" width="56" height="20" rx="10" class="status-running"/>
+  <text x="252" y="428" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="40" y="450" class="text-small">Welding Robot No.1</text>
+  <line x1="40" y1="464" x2="280" y2="464" class="divider"/>
+  <text x="40" y="484" class="text-label">Line C</text>
+  <text x="40" y="508" class="text-small">Operation Rate</text>
+  <rect x="40" y="516" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="40" y="516" width="156" height="6" rx="3" class="progress-fill"/>
+  <text x="248" y="524" class="text-value">78%</text>
+
+  <!-- Card 6: ROBOT-002 (Maintenance) -->
+  <rect x="316" y="400" width="272" height="140" rx="6" class="card-maintenance"/>
+  <text x="332" y="428" class="text-value">ROBOT-002</text>
+  <rect x="488" y="414" width="84" height="20" rx="10" class="status-maintenance"/>
+  <text x="530" y="428" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Maintenance</text>
+  <text x="332" y="450" class="text-small">Welding Robot No.2</text>
+  <line x1="332" y1="464" x2="572" y2="464" class="divider"/>
+  <text x="332" y="484" class="text-label">Line C</text>
+  <text x="332" y="508" class="text-small">Status</text>
+  <text x="332" y="528" fill="#FAAD14" font-size="14" font-family="IBM Plex Sans" font-weight="500">Scheduled Maintenance</text>
+
+  <!-- Card 7: INSP-001 (Running) -->
+  <rect x="608" y="400" width="272" height="140" rx="6" class="card-running"/>
+  <text x="624" y="428" class="text-value">INSP-001</text>
+  <rect x="808" y="414" width="56" height="20" rx="10" class="status-running"/>
+  <text x="836" y="428" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="624" y="450" class="text-small">Inspection Station No.1</text>
+  <line x1="624" y1="464" x2="864" y2="464" class="divider"/>
+  <text x="624" y="484" class="text-label">Line D</text>
+  <text x="624" y="508" class="text-small">Operation Rate</text>
+  <rect x="624" y="516" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="624" y="516" width="190" height="6" rx="3" class="progress-fill"/>
+  <text x="832" y="524" class="text-value">95%</text>
+
+  <!-- Card 8: INSP-002 (Running) -->
+  <rect x="900" y="400" width="272" height="140" rx="6" class="card-running"/>
+  <text x="916" y="428" class="text-value">INSP-002</text>
+  <rect x="1100" y="414" width="56" height="20" rx="10" class="status-running"/>
+  <text x="1128" y="428" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="916" y="450" class="text-small">Inspection Station No.2</text>
+  <line x1="916" y1="464" x2="1156" y2="464" class="divider"/>
+  <text x="916" y="484" class="text-label">Line D</text>
+  <text x="916" y="508" class="text-small">Operation Rate</text>
+  <rect x="916" y="516" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="916" y="516" width="176" height="6" rx="3" class="progress-fill"/>
+  <text x="1124" y="524" class="text-value">88%</text>
+
+  <!-- Row 3 (partial) -->
+  <!-- Card 9: ASSY-001 (Running) -->
+  <rect x="24" y="560" width="272" height="140" rx="6" class="card-running"/>
+  <text x="40" y="588" class="text-value">ASSY-001</text>
+  <rect x="224" y="574" width="56" height="20" rx="10" class="status-running"/>
+  <text x="252" y="588" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="40" y="610" class="text-small">Assembly Line No.1</text>
+  <line x1="40" y1="624" x2="280" y2="624" class="divider"/>
+  <text x="40" y="644" class="text-label">Line A</text>
+  <text x="40" y="668" class="text-small">Operation Rate</text>
+  <rect x="40" y="676" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="40" y="676" width="182" height="6" rx="3" class="progress-fill"/>
+  <text x="248" y="684" class="text-value">91%</text>
+
+  <!-- Card 10: ASSY-002 (Running) -->
+  <rect x="316" y="560" width="272" height="140" rx="6" class="card-running"/>
+  <text x="332" y="588" class="text-value">ASSY-002</text>
+  <rect x="516" y="574" width="56" height="20" rx="10" class="status-running"/>
+  <text x="544" y="588" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <text x="332" y="610" class="text-small">Assembly Line No.2</text>
+  <line x1="332" y1="624" x2="572" y2="624" class="divider"/>
+  <text x="332" y="644" class="text-label">Line B</text>
+  <text x="332" y="668" class="text-small">Operation Rate</text>
+  <rect x="332" y="676" width="200" height="6" rx="3" class="progress-bg"/>
+  <rect x="332" y="676" width="164" height="6" rx="3" class="progress-fill"/>
+  <text x="540" y="684" class="text-value">82%</text>
+
+  <!-- Card 11: PACK-001 (Stopped) -->
+  <rect x="608" y="560" width="272" height="140" rx="6" class="card-stopped"/>
+  <text x="624" y="588" class="text-value">PACK-001</text>
+  <rect x="808" y="574" width="56" height="20" rx="10" class="status-stopped"/>
+  <text x="836" y="588" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Stopped</text>
+  <text x="624" y="610" class="text-small">Packaging Machine No.1</text>
+  <line x1="624" y1="624" x2="864" y2="624" class="divider"/>
+  <text x="624" y="644" class="text-label">Line C</text>
+  <text x="624" y="668" class="text-small">Operation Rate</text>
+  <rect x="624" y="676" width="200" height="6" rx="3" class="progress-bg"/>
+  <text x="832" y="684" class="text-value">--</text>
+
+  <!-- Card 12: PACK-002 (Maintenance) -->
+  <rect x="900" y="560" width="272" height="140" rx="6" class="card-maintenance"/>
+  <text x="916" y="588" class="text-value">PACK-002</text>
+  <rect x="1072" y="574" width="84" height="20" rx="10" class="status-maintenance"/>
+  <text x="1114" y="588" fill="#FFFFFF" font-size="11" font-family="IBM Plex Sans" text-anchor="middle">Maintenance</text>
+  <text x="916" y="610" class="text-small">Packaging Machine No.2</text>
+  <line x1="916" y1="624" x2="1156" y2="624" class="divider"/>
+  <text x="916" y="644" class="text-label">Line D</text>
+  <text x="916" y="668" class="text-small">Status</text>
+  <text x="916" y="688" fill="#FAAD14" font-size="14" font-family="IBM Plex Sans" font-weight="500">Daily Inspection</text>
+
+  <!-- Legend/Info -->
+  <text x="24" y="780" class="text-small">Click on any card to view detailed information. Data refreshes automatically every 5 seconds.</text>
+</svg>

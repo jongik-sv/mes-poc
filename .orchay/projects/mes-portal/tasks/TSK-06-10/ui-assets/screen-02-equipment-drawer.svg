@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 800">
+  <defs>
+    <style>
+      .bg { fill: #F8FAFC; }
+      .drawer-bg { fill: #FFFFFF; }
+      .overlay { fill: rgba(0, 0, 0, 0.45); }
+      .shadow { filter: drop-shadow(-4px 0 16px rgba(0,0,0,0.15)); }
+      .card-bg { fill: #FFFFFF; stroke: #E2E8F0; stroke-width: 1; }
+      .text-title { font-family: 'IBM Plex Sans', sans-serif; font-size: 18px; font-weight: 600; fill: #0F172A; }
+      .text-subtitle { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; fill: #64748B; }
+      .text-label { font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; fill: #64748B; }
+      .text-value { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 500; fill: #0F172A; }
+      .text-small { font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; fill: #64748B; }
+      .text-section { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 600; fill: #0F172A; }
+      .btn-primary { fill: #2563EB; }
+      .btn-text { font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; fill: #FFFFFF; }
+      .divider { stroke: #E2E8F0; stroke-width: 1; }
+      .status-running { fill: #52C41A; }
+      .status-badge-running { fill: #F6FFED; stroke: #B7EB8F; stroke-width: 1; }
+      .progress-bg { fill: #E5E7EB; }
+      .progress-fill { fill: #52C41A; }
+      .timeline-dot { fill: #2563EB; }
+      .timeline-line { stroke: #E2E8F0; stroke-width: 2; }
+      .close-btn { fill: none; stroke: #64748B; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <!-- Background with overlay (simulating drawer open state) -->
+  <rect class="overlay" width="100" height="800"/>
+
+  <!-- Drawer Panel -->
+  <g class="shadow">
+    <rect x="100" y="0" width="400" height="800" class="drawer-bg"/>
+  </g>
+
+  <!-- Drawer Header -->
+  <rect x="100" y="0" width="400" height="56" fill="#FAFAFA"/>
+  <text x="124" y="36" class="text-title">CNC-001 Details</text>
+  <!-- Close Button -->
+  <g transform="translate(460, 20)">
+    <circle cx="8" cy="8" r="16" fill="none"/>
+    <path d="M4 4 L12 12 M12 4 L4 12" class="close-btn"/>
+  </g>
+  <line x1="100" y1="56" x2="500" y2="56" class="divider"/>
+
+  <!-- Status Badge Section -->
+  <rect x="124" y="72" width="352" height="64" rx="8" class="status-badge-running"/>
+  <g transform="translate(300, 104)">
+    <circle cx="0" cy="0" r="8" class="status-running"/>
+    <text x="16" y="5" class="text-value" fill="#52C41A">Running</text>
+  </g>
+
+  <!-- Basic Information Section -->
+  <text x="124" y="168" class="text-section">Basic Information</text>
+
+  <!-- Info Table -->
+  <rect x="124" y="180" width="352" height="180" rx="6" class="card-bg"/>
+
+  <!-- Row 1: Equipment Code -->
+  <text x="140" y="206" class="text-label">Equipment Code</text>
+  <text x="320" y="206" class="text-value">CNC-001</text>
+  <line x1="140" y1="218" x2="460" y2="218" class="divider"/>
+
+  <!-- Row 2: Equipment Name -->
+  <text x="140" y="242" class="text-label">Equipment Name</text>
+  <text x="320" y="242" class="text-value">CNC Lathe No.1</text>
+  <line x1="140" y1="254" x2="460" y2="254" class="divider"/>
+
+  <!-- Row 3: Equipment Type -->
+  <text x="140" y="278" class="text-label">Equipment Type</text>
+  <text x="320" y="278" class="text-value">CNC</text>
+  <line x1="140" y1="290" x2="460" y2="290" class="divider"/>
+
+  <!-- Row 4: Production Line -->
+  <text x="140" y="314" class="text-label">Production Line</text>
+  <text x="320" y="314" class="text-value">Line A</text>
+  <line x1="140" y1="326" x2="460" y2="326" class="divider"/>
+
+  <!-- Row 5: Location -->
+  <text x="140" y="350" class="text-label">Location</text>
+  <text x="320" y="350" class="text-value">Building A, 1F</text>
+
+  <!-- Operation Information Section -->
+  <text x="124" y="396" class="text-section">Operation Information</text>
+
+  <!-- Operation Info Table -->
+  <rect x="124" y="408" width="352" height="180" rx="6" class="card-bg"/>
+
+  <!-- Row 1: Current Status -->
+  <text x="140" y="434" class="text-label">Current Status</text>
+  <rect x="320" y="420" width="60" height="22" rx="4" class="status-running"/>
+  <text x="350" y="436" fill="#FFFFFF" font-size="12" font-family="IBM Plex Sans" text-anchor="middle">Running</text>
+  <line x1="140" y1="448" x2="460" y2="448" class="divider"/>
+
+  <!-- Row 2: Operation Rate -->
+  <text x="140" y="472" class="text-label">Operation Rate</text>
+  <text x="320" y="472" class="text-value">85%</text>
+  <rect x="320" y="480" width="124" height="6" rx="3" class="progress-bg"/>
+  <rect x="320" y="480" width="105" height="6" rx="3" class="progress-fill"/>
+  <line x1="140" y1="500" x2="460" y2="500" class="divider"/>
+
+  <!-- Row 3: Today's Production -->
+  <text x="140" y="524" class="text-label">Today's Production</text>
+  <text x="320" y="524" class="text-value">1,250 EA</text>
+  <line x1="140" y1="536" x2="460" y2="536" class="divider"/>
+
+  <!-- Row 4: Target Production -->
+  <text x="140" y="560" class="text-label">Target Production</text>
+  <text x="320" y="560" class="text-value">1,500 EA</text>
+  <line x1="140" y1="572" x2="460" y2="572" class="divider"/>
+
+  <!-- Row 5: Achievement Rate -->
+  <text x="140" y="596" class="text-label">Achievement Rate</text>
+  <text x="320" y="596" class="text-value" fill="#2563EB">83.3%</text>
+
+  <!-- Status History Section -->
+  <text x="124" y="632" class="text-section">Status History (Recent 5)</text>
+
+  <!-- Timeline -->
+  <g transform="translate(124, 648)">
+    <!-- Timeline line -->
+    <line x1="8" y1="8" x2="8" y2="100" class="timeline-line"/>
+
+    <!-- Item 1 -->
+    <circle cx="8" cy="8" r="4" class="timeline-dot"/>
+    <text x="28" y="8" class="text-small">14:25</text>
+    <text x="80" y="8" class="text-value" font-size="13">Operation Started</text>
+
+    <!-- Item 2 -->
+    <circle cx="8" cy="32" r="4" class="timeline-dot"/>
+    <text x="28" y="32" class="text-small">12:30</text>
+    <text x="80" y="32" class="text-value" font-size="13">Lunch Break</text>
+
+    <!-- Item 3 -->
+    <circle cx="8" cy="56" r="4" class="timeline-dot"/>
+    <text x="28" y="56" class="text-small">08:00</text>
+    <text x="80" y="56" class="text-value" font-size="13">Operation Started</text>
+
+    <!-- Item 4 -->
+    <circle cx="8" cy="80" r="4" fill="#64748B"/>
+    <text x="28" y="80" class="text-small">Yesterday</text>
+    <text x="80" y="80" class="text-value" font-size="13">Daily Inspection</text>
+
+    <!-- Item 5 -->
+    <circle cx="8" cy="104" r="4" fill="#64748B"/>
+    <text x="28" y="104" class="text-small">Yesterday</text>
+    <text x="80" y="104" class="text-value" font-size="13">Operation Ended</text>
+  </g>
+
+  <!-- Close Button -->
+  <rect x="124" y="760" width="352" height="36" rx="6" class="btn-primary"/>
+  <text x="300" y="784" class="btn-text" text-anchor="middle">Close</text>
+
+</svg>

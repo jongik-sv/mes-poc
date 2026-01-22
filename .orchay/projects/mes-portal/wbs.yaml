@@ -1161,7 +1161,7 @@ workPackages:
         title: "[샘플] 설비 모니터링 카드뷰"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1191,7 +1191,6 @@ workPackages:
             - screens/sample/EquipmentMonitor.tsx
             - components/sample/EquipmentCard.tsx
             - mock-data/equipment.json 로드
-        execution: start
       - id: TSK-06-11
         title: "[샘플] 작업 일정 캘린더"
         category: development
