@@ -26,7 +26,7 @@ describe('FavoriteButton', () => {
 
   describe('인터랙션', () => {
     it('클릭 시 onToggle 콜백을 호출한다', () => {
-      const mockOnToggle = jest.fn()
+      const mockOnToggle = vi.fn()
       render(<FavoriteButton isFavorite={false} onToggle={mockOnToggle} />)
 
       fireEvent.click(screen.getByRole('button'))
@@ -35,7 +35,7 @@ describe('FavoriteButton', () => {
     })
 
     it('disabled 상태에서는 클릭해도 onToggle이 호출되지 않는다', () => {
-      const mockOnToggle = jest.fn()
+      const mockOnToggle = vi.fn()
       render(
         <FavoriteButton
           isFavorite={false}
@@ -51,8 +51,8 @@ describe('FavoriteButton', () => {
     })
 
     it('클릭 이벤트가 전파되지 않는다 (stopPropagation)', () => {
-      const mockOnToggle = jest.fn()
-      const mockParentClick = jest.fn()
+      const mockOnToggle = vi.fn()
+      const mockParentClick = vi.fn()
 
       render(
         <div onClick={mockParentClick}>

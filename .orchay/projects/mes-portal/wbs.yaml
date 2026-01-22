@@ -553,7 +553,7 @@ workPackages:
         title: 즐겨찾기 메뉴
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: low
         assignee: "-"
         tags:
@@ -575,7 +575,6 @@ workPackages:
           integrationCheck:
             - localStorage 또는 UserPreference 테이블 사용
             - components/common/FavoriteMenu.tsx 파일 존재
-        execution: build
   - id: WP-04
     title: 인증 및 권한
     status: planned
@@ -753,7 +752,7 @@ workPackages:
         title: 확인 다이얼로그
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -777,7 +776,6 @@ workPackages:
           integrationCheck:
             - lib/utils/confirm.ts 유틸리티 함수
             - confirmDelete, confirmDiscard 함수 제공
-        execution: build
       - id: TSK-05-03
         title: Toast 알림
         category: development

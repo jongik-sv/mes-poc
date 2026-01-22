@@ -77,7 +77,7 @@ describe('QuickMenu', () => {
     })
 
     it('메뉴 클릭 시 onMenuClick 콜백이 호출된다', async () => {
-      const mockOnMenuClick = jest.fn()
+      const mockOnMenuClick = vi.fn()
       render(
         <QuickMenu
           favoriteMenus={mockFavoriteMenus}
