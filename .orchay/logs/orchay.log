@@ -18255,3 +18255,16 @@
 2026-01-22 15:51:26,285 [INFO] orchay.application.worker_service: 수동 대기: TSK-07-02 (다음: done)
 2026-01-22 15:51:26,286 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=done, task=None, has_active_task=False)
 2026-01-22 15:51:26,300 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=done, info=DoneInfo(task_id='mes-portal/TSK-07-01', action='verify', status='success', message=None)
+2026-01-22 15:51:36,093 [DEBUG] orchay.ui.app: _on_auto_refresh: _tick 시작 (paused=True)
+2026-01-22 15:51:36,094 [DEBUG] orchay.main: _tick 시작
+2026-01-22 15:51:36,221 [DEBUG] orchay.application.task_service: Task 병합 완료: 39개
+2026-01-22 15:51:36,221 [DEBUG] orchay.application.worker_service: Worker 1: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-22 15:51:36,240 [DEBUG] orchay.application.worker_service: Worker 1: 감지 결과 state=idle, info=None
+2026-01-22 15:51:36,241 [DEBUG] orchay.application.worker_service: Worker 2: 상태 감지 시작 (현재=busy, task=TSK-07-03, has_active_task=True)
+2026-01-22 15:51:36,254 [DEBUG] orchay.application.worker_service: Worker 2: 감지 결과 state=busy, info=None
+2026-01-22 15:51:36,254 [DEBUG] orchay.application.worker_service: Worker 3: 상태 감지 시작 (현재=done, task=None, has_active_task=False)
+2026-01-22 15:51:36,272 [DEBUG] orchay.application.worker_service: Worker 3: 감지 결과 state=done, info=DoneInfo(task_id='mes-portal/TSK-07-02', action='verify', status='success', message=None)
+2026-01-22 15:51:36,273 [DEBUG] orchay.application.worker_service: Worker 4: 상태 감지 시작 (현재=idle, task=None, has_active_task=False)
+2026-01-22 15:51:36,286 [DEBUG] orchay.application.worker_service: Worker 4: 감지 결과 state=done, info=DoneInfo(task_id='mes-portal/TSK-07-01', action='verify', status='success', message=None)
+2026-01-22 15:51:36,470 [DEBUG] orchay.application.task_service: Task 상태 갱신: TSK-07-01 → [vf]
+2026-01-22 15:51:36,470 [INFO] orchay.application.worker_service: 수동 대기: TSK-07-01 (다음: done)

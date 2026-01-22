@@ -103,6 +103,43 @@
       ]
     },
     {
+      "id": "6",
+      "code": "SAMPLE",
+      "name": "샘플 화면",
+      "icon": "AppstoreOutlined",
+      "sortOrder": 6,
+      "isActive": true,
+      "children": [
+        {
+          "id": "6-1",
+          "code": "SAMPLE_USER_LIST",
+          "name": "사용자 목록",
+          "path": "/sample/user-list",
+          "icon": "UnorderedListOutlined",
+          "sortOrder": 1,
+          "isActive": true
+        },
+        {
+          "id": "6-2",
+          "code": "SAMPLE_MASTER_DETAIL",
+          "name": "마스터-디테일",
+          "path": "/sample/master-detail",
+          "icon": "SplitCellsOutlined",
+          "sortOrder": 2,
+          "isActive": true
+        },
+        {
+          "id": "6-3",
+          "code": "SAMPLE_WIZARD",
+          "name": "설정 마법사",
+          "path": "/sample/wizard",
+          "icon": "FundProjectionScreenOutlined",
+          "sortOrder": 3,
+          "isActive": true
+        }
+      ]
+    },
+    {
       "id": "5",
       "code": "SETTINGS",
       "name": "설정",

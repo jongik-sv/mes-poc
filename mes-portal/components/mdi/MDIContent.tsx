@@ -23,7 +23,7 @@ function EmptyState() {
       className="flex items-center justify-center h-full"
     >
       <Empty
-        image={<FolderOpenOutlined style={{ fontSize: 64, color: '#d9d9d9' }} />}
+        image={<FolderOpenOutlined style={{ fontSize: 64, color: 'var(--color-gray-400)' }} />}
         description={
           <div className="text-center">
             <div

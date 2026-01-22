@@ -54,6 +54,10 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   // 샘플 화면들 (개발용)
   '/sample/table': () => import('@/screens/sample/SampleTable'),
   '/sample/form': () => import('@/screens/sample/SampleForm'),
+  '/sample/user-list': () => import('@/screens/sample/UserList'),
+  '/sample/master-detail': () => import('@/screens/sample/CategoryProduct'),
+  '/sample/wizard': () =>
+    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.SettingWizardScreen })),
 });
 
 /**

@@ -165,7 +165,11 @@ export function TabBar() {
       <div
         data-testid="tab-bar"
         data-testid-mdi="mdi-tab-bar"
-        className="flex items-center h-10 bg-gray-50 border-b border-gray-200 px-1"
+        className="flex items-center h-10 px-1"
+        style={{
+          backgroundColor: 'var(--color-gray-100)',
+          borderBottom: '1px solid var(--color-gray-200)',
+        }}
       >
         {/* 좌측 스크롤 버튼 */}
         {showLeftScroll && (
@@ -173,7 +177,12 @@ export function TabBar() {
             data-testid="tab-scroll-left"
             aria-label="이전 탭"
             onClick={() => handleScroll('left')}
-            className="flex items-center justify-center w-6 h-8 bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 flex-shrink-0"
+            className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
+            style={{
+              backgroundColor: 'var(--color-gray-100)',
+              border: '1px solid var(--color-gray-200)',
+              color: 'var(--color-text-secondary)',
+            }}
           >
             <LeftOutlined className="text-xs" />
           </button>
@@ -215,7 +224,12 @@ export function TabBar() {
             data-testid="tab-scroll-right"
             aria-label="다음 탭"
             onClick={() => handleScroll('right')}
-            className="flex items-center justify-center w-6 h-8 bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 flex-shrink-0"
+            className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
+            style={{
+              backgroundColor: 'var(--color-gray-100)',
+              border: '1px solid var(--color-gray-200)',
+              color: 'var(--color-text-secondary)',
+            }}
           >
             <RightOutlined className="text-xs" />
           </button>
@@ -227,7 +241,12 @@ export function TabBar() {
             <button
               data-testid="tab-dropdown-btn"
               aria-label="모든 탭 보기"
-              className="flex items-center justify-center w-6 h-8 ml-1 bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 flex-shrink-0"
+              className="flex items-center justify-center w-6 h-8 ml-1 flex-shrink-0 rounded"
+              style={{
+                backgroundColor: 'var(--color-gray-100)',
+                border: '1px solid var(--color-gray-200)',
+                color: 'var(--color-text-secondary)',
+              }}
             >
               <DownOutlined className="text-xs" />
             </button>
@@ -238,7 +257,10 @@ export function TabBar() {
       {/* 드래그 오버레이 (마우스를 따라다니는 탭) */}
       <DragOverlay dropAnimation={{ duration: 200, easing: 'ease' }}>
         {activeDragTab ? (
-          <div className="shadow-lg opacity-90 rounded bg-white dark:bg-gray-700">
+          <div
+            className="shadow-lg opacity-90 rounded"
+            style={{ backgroundColor: 'var(--color-bg-container)' }}
+          >
             <TabItem
               tab={activeDragTab}
               isActive={activeDragTab.id === activeTabId}

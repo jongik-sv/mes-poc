@@ -257,7 +257,7 @@ export function Header({
         <Tooltip title="검색 (Ctrl+K)">
           <Button
             type="text"
-            icon={<SearchOutlined style={{ fontSize: 16 }} />}
+            icon={<SearchOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
             onClick={onSearchOpen}
             aria-label="전역 검색 (Ctrl+K)"
             data-testid="search-button"
@@ -278,7 +278,7 @@ export function Header({
             <Badge count={unreadNotifications} size="small" overflowCount={99}>
               <Button
                 type="text"
-                icon={<BellOutlined style={{ fontSize: 16 }} />}
+                icon={<BellOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
                 onClick={handleNotificationToggle}
                 aria-label={`알림 ${unreadNotifications}개`}
                 data-testid="notification-button"
@@ -307,7 +307,7 @@ export function Header({
         <Tooltip title={isDark ? '라이트 모드' : '다크 모드'}>
           <Button
             type="text"
-            icon={isDark ? <SunOutlined style={{ fontSize: 16 }} /> : <MoonOutlined style={{ fontSize: 16 }} />}
+            icon={isDark ? <SunOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} /> : <MoonOutlined style={{ fontSize: 16, color: 'var(--color-text-secondary)' }} />}
             onClick={toggleTheme}
             aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
             data-testid="theme-toggle"

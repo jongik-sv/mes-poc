@@ -1,88 +1,70 @@
 'use client';
 
 /**
- * Dashboard 화면
- * @description 샘플 대시보드 화면
+ * Dashboard Screen (MDI용)
+ * @description components/dashboard의 Dashboard를 래핑하여 MDI 탭에서 표시
  */
 
-import { Card, Row, Col, Statistic, Typography } from 'antd';
-import {
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-  BarChartOutlined,
-  PieChartOutlined,
-} from '@ant-design/icons';
+import { useState, useEffect } from 'react'
+import { Dashboard } from '@/components/dashboard'
+import type { DashboardData } from '@/components/dashboard/types'
+import dashboardMockData from '@/mock-data/dashboard.json'
 
-const { Title } = Typography;
+export default function DashboardScreen() {
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
+  const [data, setData] = useState<DashboardData | null>(null)
 
-export default function Dashboard() {
+  // Mock 데이터 로드 시뮬레이션
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true)
+        // 실제 API 호출 시뮬레이션 (500ms 딜레이)
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        setData(dashboardMockData as DashboardData)
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error('데이터 로드 실패'))
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [])
+
+  // 재시도 핸들러
+  const handleRetry = () => {
+    setError(null)
+    setLoading(true)
+    setTimeout(() => {
+      setData(dashboardMockData as DashboardData)
+      setLoading(false)
+    }, 500)
+  }
+
+  // 기본 데이터 (데이터가 없을 때)
+  const defaultData: DashboardData = {
+    kpi: {
+      operationRate: { value: 0, unit: '%', change: 0, changeType: 'unchanged' },
+      defectRate: { value: 0, unit: '%', change: 0, changeType: 'unchanged' },
+      productionVolume: { value: 0, unit: 'EA', change: 0, changeType: 'unchanged' },
+      achievementRate: { value: 0, unit: '%', change: 0, changeType: 'unchanged' },
+    },
+    productionTrend: [],
+    linePerformance: [],
+    recentActivities: [],
+  }
+
   return (
-    <div data-testid="screen-dashboard" className="p-6">
-      <Title level={3}>대시보드</Title>
-
-      <Row gutter={[16, 16]} className="mb-6">
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="일일 생산량"
-              value={1234}
-              suffix="EA"
-              prefix={<ArrowUpOutlined />}
-              valueStyle={{ color: '#3f8600' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="불량률"
-              value={2.3}
-              suffix="%"
-              prefix={<ArrowDownOutlined />}
-              valueStyle={{ color: '#cf1322' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="설비 가동률"
-              value={89.7}
-              suffix="%"
-              prefix={<BarChartOutlined />}
-              valueStyle={{ color: '#1890ff' }}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="주문 달성률"
-              value={95.2}
-              suffix="%"
-              prefix={<PieChartOutlined />}
-              valueStyle={{ color: '#722ed1' }}
-            />
-          </Card>
-        </Col>
-      </Row>
-
-      <Row gutter={[16, 16]}>
-        <Col xs={24} lg={16}>
-          <Card title="생산 현황">
-            <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-              <span className="text-gray-400">Line Chart Placeholder</span>
-            </div>
-          </Card>
-        </Col>
-        <Col xs={24} lg={8}>
-          <Card title="품목별 생산량">
-            <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-              <span className="text-gray-400">Bar Chart Placeholder</span>
-            </div>
-          </Card>
-        </Col>
-      </Row>
+    <div data-testid="screen-dashboard" className="p-4">
+      <Dashboard
+        data={data || defaultData}
+        loading={loading}
+        error={error}
+        onRetry={handleRetry}
+      />
     </div>
-  );
+  )
 }

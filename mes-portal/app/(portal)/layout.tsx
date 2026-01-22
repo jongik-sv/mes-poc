@@ -99,6 +99,25 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     { title: 'Dashboard' },
   ]
 
+  // 초기 로드 시 대시보드 탭 자동 열기
+  useEffect(() => {
+    if (tabs.length === 0) {
+      // 대시보드 메뉴 찾기
+      const dashboardMenu = findMenuByPath(menus, '/dashboard')
+      if (dashboardMenu) {
+        const tab: Tab = {
+          id: dashboardMenu.id,
+          title: dashboardMenu.name,
+          path: dashboardMenu.path!,
+          icon: dashboardMenu.icon,
+          closable: false, // 대시보드는 닫기 불가
+        }
+        openTab(tab)
+        setSelectedKeys([dashboardMenu.id])
+      }
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   // 현재 경로에 해당하는 메뉴 선택 및 부모 메뉴 펼침
   useEffect(() => {
     const currentMenu = findMenuByPath(menus, pathname)
@@ -117,6 +136,19 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   // 메뉴 클릭 핸들러 - MDI 탭으로 열기
   const handleMenuClick = useCallback(
     (menu: MenuItem) => {
+      // 자식이 있는 부모 메뉴 클릭 시 (사이드바 접혀있을 때 자동 펼침)
+      if (menu.children && menu.children.length > 0) {
+        if (collapsed) {
+          setCollapsed(false)
+          // 해당 메뉴 확장
+          setOpenKeys((prev) => {
+            if (prev.includes(menu.id)) return prev
+            return [...prev, menu.id]
+          })
+        }
+        return
+      }
+
       if (menu.path) {
         setSelectedKeys([menu.id])
 
@@ -131,7 +163,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
         openTab(tab)
       }
     },
-    [openTab]
+    [openTab, collapsed]
   )
 
   // 서브메뉴 열기/닫기 핸들러
@@ -253,6 +285,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           openKeys={openKeys}
           onMenuClick={handleMenuClick}
           onOpenChange={handleOpenChange}
+          onCollapsedChange={setCollapsed}
           favoriteOptions={favoriteOptions}
         />
       }

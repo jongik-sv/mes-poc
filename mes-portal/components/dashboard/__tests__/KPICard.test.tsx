@@ -159,8 +159,11 @@ describe('KPICard', () => {
       const trendElement = card.querySelector('[style*="color"]')
       if (trendElement) {
         const color = (trendElement as HTMLElement).style.color
-        // rgb(82, 196, 26) = #52c41a (success)
-        expect(color === 'rgb(82, 196, 26)' || color === '#52c41a').toBe(true)
+        // success color: light=#16A34A, dark=#22C55E
+        expect(
+          color === 'rgb(22, 163, 74)' || color === '#16A34A' ||  // light theme
+          color === 'rgb(34, 197, 94)' || color === '#22C55E'     // dark theme
+        ).toBe(true)
       }
     })
 
@@ -193,8 +196,11 @@ describe('KPICard', () => {
       const trendElement = card.querySelector('[style*="color"]')
       if (trendElement) {
         const color = (trendElement as HTMLElement).style.color
-        // rgb(255, 77, 79) = #ff4d4f (error)
-        expect(color === 'rgb(255, 77, 79)' || color === '#ff4d4f').toBe(true)
+        // error color: light=#DC2626, dark=#EF4444
+        expect(
+          color === 'rgb(220, 38, 38)' || color === '#DC2626' ||  // light theme
+          color === 'rgb(239, 68, 68)' || color === '#EF4444'     // dark theme
+        ).toBe(true)
       }
     })
   })
@@ -229,7 +235,10 @@ describe('KPICard', () => {
       const trendElement = card.querySelector('[style*="color"]')
       if (trendElement) {
         const color = (trendElement as HTMLElement).style.color
-        expect(color === 'rgb(255, 77, 79)' || color === '#ff4d4f').toBe(true)
+        expect(
+          color === 'rgb(220, 38, 38)' || color === '#DC2626' ||  // light theme
+          color === 'rgb(239, 68, 68)' || color === '#EF4444'     // dark theme
+        ).toBe(true)
       }
     })
 
@@ -255,7 +264,10 @@ describe('KPICard', () => {
       const trendElement = card.querySelector('[style*="color"]')
       if (trendElement) {
         const color = (trendElement as HTMLElement).style.color
-        expect(color === 'rgb(82, 196, 26)' || color === '#52c41a').toBe(true)
+        expect(
+          color === 'rgb(22, 163, 74)' || color === '#16A34A' ||  // light theme
+          color === 'rgb(34, 197, 94)' || color === '#22C55E'     // dark theme
+        ).toBe(true)
       }
     })
   })
@@ -484,7 +496,10 @@ describe('KPICard', () => {
       const trendElement = card.querySelector('[style*="color"]')
       if (trendElement) {
         const color = (trendElement as HTMLElement).style.color
-        expect(color === 'rgb(82, 196, 26)' || color === '#52c41a').toBe(true)
+        expect(
+          color === 'rgb(22, 163, 74)' || color === '#16A34A' ||  // light theme
+          color === 'rgb(34, 197, 94)' || color === '#22C55E'     // dark theme
+        ).toBe(true)
       }
     })
   })

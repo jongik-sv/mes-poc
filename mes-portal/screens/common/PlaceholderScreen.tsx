@@ -77,3 +77,7 @@ export function MenuManageScreen() {
 export function CodeManageScreen() {
   return <PlaceholderScreen title="코드 관리" />;
 }
+
+export function SettingWizardScreen() {
+  return <PlaceholderScreen title="설정 마법사" description="설정 마법사 화면은 현재 개발 중입니다." />;
+}

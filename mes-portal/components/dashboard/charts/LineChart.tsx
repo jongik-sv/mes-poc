@@ -65,6 +65,7 @@ export function LineChart({
     yField: 'value',
     smooth: true,
     autoFit: true,
+    theme: isDark ? 'classicDark' : 'classic',
     animation: {
       appear: {
         animation: 'path-in',
@@ -76,6 +77,10 @@ export function LineChart({
       shapeField: 'circle',
       sizeField: 4,
     },
+    // 차트 배경색 (다크 테마 대응)
+    viewStyle: {
+      fill: isDark ? '#1E293B' : 'transparent',
+    },
     // 선 스타일
     style: {
       stroke: chartTheme.colors10[0],
@@ -86,10 +91,44 @@ export function LineChart({
       x: {
         title: false,
         labelFormatter: (v: string) => v,
+        label: {
+          style: {
+            fill: chartTheme.styleSheet.axisLabelFillColor,
+          },
+        },
+        line: {
+          style: {
+            stroke: chartTheme.styleSheet.axisLineBorderColor,
+          },
+        },
+        grid: {
+          line: {
+            style: {
+              stroke: chartTheme.styleSheet.axisGridBorderColor,
+            },
+          },
+        },
       },
       y: {
         title: false,
         labelFormatter: (v: number) => formatNumber(v),
+        label: {
+          style: {
+            fill: chartTheme.styleSheet.axisLabelFillColor,
+          },
+        },
+        line: {
+          style: {
+            stroke: chartTheme.styleSheet.axisLineBorderColor,
+          },
+        },
+        grid: {
+          line: {
+            style: {
+              stroke: chartTheme.styleSheet.axisGridBorderColor,
+            },
+          },
+        },
       },
     },
     // 툴팁 설정 (FR-004)

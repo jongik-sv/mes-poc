@@ -2,7 +2,7 @@
 // MES Portal 사이드바 메뉴 컴포넌트 - Enterprise Design
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useCallback } from 'react'
 import { Menu } from 'antd'
 import type { MenuProps } from 'antd'
 import {
@@ -24,6 +24,13 @@ import {
   MenuOutlined,
   DatabaseOutlined,
   AppstoreOutlined,
+  BarChartOutlined,
+  FolderOutlined,
+  HistoryOutlined,
+  UnorderedListOutlined,
+  SplitCellsOutlined,
+  FundProjectionScreenOutlined,
+  CloseOutlined,
 } from '@ant-design/icons'
 import type { ReactNode } from 'react'
 import { FavoriteButton } from '@/components/common/FavoriteButton'
@@ -46,6 +53,14 @@ const iconMap: Record<string, ReactNode> = {
   SafetyCertificateOutlined: <SafetyCertificateOutlined />,
   MenuOutlined: <MenuOutlined />,
   DatabaseOutlined: <DatabaseOutlined />,
+  AppstoreOutlined: <AppstoreOutlined />,
+  BarChartOutlined: <BarChartOutlined />,
+  FolderOutlined: <FolderOutlined />,
+  HistoryOutlined: <HistoryOutlined />,
+  UnorderedListOutlined: <UnorderedListOutlined />,
+  SplitCellsOutlined: <SplitCellsOutlined />,
+  FundProjectionScreenOutlined: <FundProjectionScreenOutlined />,
+  CloseOutlined: <CloseOutlined />,
 }
 
 export interface MenuItem {
@@ -72,6 +87,7 @@ export interface SidebarProps {
   openKeys?: string[]
   onMenuClick?: (menu: MenuItem) => void
   onOpenChange?: (openKeys: string[]) => void
+  onCollapsedChange?: (collapsed: boolean) => void
   favoriteOptions?: FavoriteOptions
 }
 
@@ -84,6 +100,7 @@ const convertToMenuItems = (
   menus: MenuItem[],
   collapsed: boolean,
   favoriteOptions?: FavoriteOptions,
+  onParentIconClick?: (menuId: string) => void,
   level: number = 1,
   maxLevel: number = 3
 ): MenuProps['items'] => {
@@ -94,9 +111,22 @@ const convertToMenuItems = (
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .map((menu) => {
       const hasChildren = menu.children && menu.children.length > 0
-      const icon = getIcon(menu.icon)
+      const baseIcon = getIcon(menu.icon)
       const isLeaf = menu.path !== undefined && menu.path !== null
       const menuIdNum = parseInt(menu.id, 10)
+
+      // collapsed 상태에서 부모 메뉴 아이콘에 클릭 핸들러 추가
+      const icon = (level === 1 && collapsed && hasChildren && onParentIconClick) ? (
+        <span
+          onClick={(e) => {
+            e.stopPropagation()
+            onParentIconClick(menu.id)
+          }}
+          style={{ cursor: 'pointer' }}
+        >
+          {baseIcon}
+        </span>
+      ) : (level === 1 ? baseIcon : null)
 
       if (!hasChildren || level >= maxLevel) {
         const labelWithFavorite =
@@ -120,7 +150,7 @@ const convertToMenuItems = (
 
         const menuItem: NonNullable<MenuProps['items']>[number] = {
           key: menu.id,
-          icon: level === 1 ? icon : null,
+          icon,
           label: labelWithFavorite,
           'data-testid': `menu-${menu.code.toLowerCase()}`,
         }
@@ -129,12 +159,13 @@ const convertToMenuItems = (
 
       const subMenuItem: NonNullable<MenuProps['items']>[number] = {
         key: menu.id,
-        icon: level === 1 ? icon : null,
+        icon,
         label: <span className="truncate">{menu.name}</span>,
         children: convertToMenuItems(
           menu.children || [],
           collapsed,
           favoriteOptions,
+          onParentIconClick,
           level + 1,
           maxLevel
         ),
@@ -199,21 +230,50 @@ export function Sidebar({
   openKeys = [],
   onMenuClick,
   onOpenChange,
+  onCollapsedChange,
   favoriteOptions,
 }: SidebarProps) {
+  // 부모 메뉴 아이콘 클릭 시 사이드바 펼침 + 메뉴 확장
+  const handleParentIconClick = useCallback((menuId: string) => {
+    if (onCollapsedChange) {
+      onCollapsedChange(false)
+    }
+    if (onOpenChange) {
+      onOpenChange([...openKeys, menuId])
+    }
+  }, [onCollapsedChange, onOpenChange, openKeys])
+
   const menuItems = useMemo(
-    () => convertToMenuItems(menus, collapsed, favoriteOptions),
-    [menus, collapsed, favoriteOptions]
+    () => convertToMenuItems(menus, collapsed, favoriteOptions, handleParentIconClick),
+    [menus, collapsed, favoriteOptions, handleParentIconClick]
   )
 
   const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
     const menu = findMenuById(menus, key)
-    if (menu && onMenuClick) {
+    if (!menu) return
+
+    // 핵심: collapsed 상태에서 부모 메뉴(자식 있는 메뉴) 클릭 시 사이드바 펼침
+    if (collapsed && menu.children && menu.children.length > 0) {
+      if (onCollapsedChange) {
+        onCollapsedChange(false)  // 사이드바 펼침
+      }
+      if (onOpenChange) {
+        onOpenChange([...openKeys, menu.id])  // 메뉴 확장
+      }
+      return  // 부모 메뉴는 path가 없으므로 조기 반환
+    }
+
+    // 기존 로직: 리프 메뉴 클릭 시 처리
+    if (onMenuClick) {
       onMenuClick(menu)
     }
   }
 
   const handleOpenChange = (keys: string[]) => {
+    // 접힌 상태에서 서브메뉴가 열리려고 하면 사이드바 펼침
+    if (collapsed && keys.length > 0 && onCollapsedChange) {
+      onCollapsedChange(false)
+    }
     if (onOpenChange) {
       onOpenChange(keys)
     }
@@ -233,7 +293,7 @@ export function Sidebar({
           inlineCollapsed={collapsed}
           items={menuItems}
           selectedKeys={selectedKeys}
-          openKeys={collapsed ? [] : openKeys}
+          openKeys={openKeys}
           onClick={handleMenuClick}
           onOpenChange={handleOpenChange}
           className="border-none"

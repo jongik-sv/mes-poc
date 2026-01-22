@@ -51,15 +51,23 @@ export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
       tabIndex={isActive ? 0 : -1}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      className={`
-        flex items-center gap-2 px-3 h-8 mx-0.5 rounded cursor-pointer select-none
-        transition-colors duration-200
-        ${
-          isActive
-            ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 font-medium border-b-2 border-primary'
-            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+      className="flex items-center gap-2 px-3 h-8 mx-0.5 rounded cursor-pointer select-none transition-colors duration-200"
+      style={{
+        backgroundColor: isActive ? 'var(--color-bg-container)' : 'var(--color-gray-100)',
+        color: isActive ? 'var(--color-text-base)' : 'var(--color-text-secondary)',
+        fontWeight: isActive ? 500 : 400,
+        borderBottom: isActive ? '2px solid var(--color-primary)' : 'none',
+      }}
+      onMouseEnter={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.backgroundColor = 'var(--color-gray-200)';
         }
-      `}
+      }}
+      onMouseLeave={(e) => {
+        if (!isActive) {
+          e.currentTarget.style.backgroundColor = 'var(--color-gray-100)';
+        }
+      }}
     >
       {tab.icon && (
         <span data-testid={`tab-icon-${tab.id}`} className="flex-shrink-0">
@@ -80,11 +88,16 @@ export function TabItem({ tab, isActive, onClick, onClose }: TabItemProps) {
           role="button"
           aria-label={`${tab.title} 탭 닫기`}
           onClick={handleClose}
-          className={`
-            flex items-center justify-center w-4 h-4 rounded
-            text-gray-400 hover:text-red-600 hover:bg-red-50
-            transition-colors duration-150 flex-shrink-0
-          `}
+          className="flex items-center justify-center w-4 h-4 rounded transition-colors duration-150 flex-shrink-0"
+          style={{ color: 'var(--color-gray-400)' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-error)';
+            e.currentTarget.style.backgroundColor = 'var(--color-error-light)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--color-gray-400)';
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }}
         >
           <CloseOutlined className="text-xs" />
         </button>

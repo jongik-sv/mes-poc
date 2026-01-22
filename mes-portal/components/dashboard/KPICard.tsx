@@ -6,6 +6,8 @@
 import React from 'react'
 import { Card, Statistic, Skeleton, Typography } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined, MinusOutlined } from '@ant-design/icons'
+import { useTheme } from 'next-themes'
+import { themeTokens, darkThemeTokens } from '@/lib/theme/tokens'
 import type { KPICardProps, KPIChangeType, KPIValueType } from './types'
 
 const { Text } = Typography
@@ -47,13 +49,17 @@ function formatKPIValue(value: number | null | undefined, unit: string): string 
  * @param changeType - 변화 유형 (increase, decrease, neutral, unchanged)
  * @param valueType - KPI 유형 (positive, negative)
  * @param invertTrend - 역전 플래그 (legacy 지원)
- * @returns 색상 코드 (#52c41a = success, #ff4d4f = error, inherit = neutral)
+ * @param isDark - 다크 모드 여부
+ * @returns 색상 코드 (테마 토큰 기반)
  */
 function getChangeColor(
   changeType: KPIChangeType,
   valueType: KPIValueType = 'positive',
-  invertTrend: boolean = false
+  invertTrend: boolean = false,
+  isDark: boolean = false
 ): string {
+  const tokens = isDark ? darkThemeTokens : themeTokens
+
   // BR-005: neutral 또는 unchanged는 기본 색상
   if (changeType === 'neutral' || changeType === 'unchanged') {
     return 'inherit'
@@ -74,9 +80,9 @@ function getChangeColor(
   // 부정 KPI + 증가 = 나쁨 = 빨간색
   // 부정 KPI + 감소 = 좋음 = 녹색
   if (isPositiveChange === isPositiveKPI) {
-    return '#52c41a' // success (녹색)
+    return tokens.colorSuccess
   } else {
-    return '#ff4d4f' // error (빨간색)
+    return tokens.colorError
   }
 }
 
@@ -145,13 +151,15 @@ export function KPICard({
   loading = false,
   'data-testid': testId,
 }: KPICardProps) {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
   const { value, unit, change, changeType } = data
 
   // 포맷팅된 값 (BR-006, BR-007, BR-008)
   const formattedValue = formatKPIValue(value, unit)
 
-  // 증감률 색상 (BR-001 ~ BR-005)
-  const trendColor = getChangeColor(changeType, valueType, invertTrend)
+  // 증감률 색상 (BR-001 ~ BR-005) - 테마 토큰 사용
+  const trendColor = getChangeColor(changeType, valueType, invertTrend, isDark)
 
   // 증감 아이콘
   const trendIcon = getTrendIcon(changeType)

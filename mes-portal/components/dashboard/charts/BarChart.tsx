@@ -14,7 +14,7 @@ import {
   limitDataPoints,
   MAX_DATA_POINTS,
 } from './utils'
-import { getBarChartColors, getPerformanceColor } from '@/lib/theme/chart-theme'
+import { getBarChartColors, getPerformanceColor, getChartTheme } from '@/lib/theme/chart-theme'
 import type { LinePerformanceItem } from '../types'
 
 export interface BarChartProps {
@@ -65,6 +65,7 @@ export function BarChart({
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'
   const [primaryColor, targetColor] = getBarChartColors(isDark)
+  const chartTheme = getChartTheme(isDark)
 
   // 데이터 변환 및 제한
   const limitedData = limitDataPoints(data, MAX_DATA_POINTS.BAR_CHART)
@@ -98,6 +99,11 @@ export function BarChart({
     colorField: 'type',
     group: true,
     autoFit: true,
+    theme: isDark ? 'classicDark' : 'classic',
+    // 차트 배경색 (다크 테마 대응)
+    viewStyle: {
+      fill: isDark ? '#1E293B' : 'transparent',
+    },
     animation: {
       appear: {
         animation: 'grow-in-y',
@@ -117,10 +123,37 @@ export function BarChart({
     axis: {
       x: {
         title: false,
+        label: {
+          style: {
+            fill: chartTheme.styleSheet.axisLabelFillColor,
+          },
+        },
+        line: {
+          style: {
+            stroke: chartTheme.styleSheet.axisLineBorderColor,
+          },
+        },
       },
       y: {
         title: false,
         labelFormatter: (v: number) => formatNumber(v),
+        label: {
+          style: {
+            fill: chartTheme.styleSheet.axisLabelFillColor,
+          },
+        },
+        line: {
+          style: {
+            stroke: chartTheme.styleSheet.axisLineBorderColor,
+          },
+        },
+        grid: {
+          line: {
+            style: {
+              stroke: chartTheme.styleSheet.axisGridBorderColor,
+            },
+          },
+        },
       },
     },
     // 범례 설정
@@ -128,6 +161,7 @@ export function BarChart({
       color: {
         itemLabelText: (item: { value: string }) =>
           item.value === 'actual' ? '실적' : '목표',
+        itemLabelFill: chartTheme.styleSheet.legendItemNameFillColor,
       },
     },
     // 툴팁 설정 (FR-004)
@@ -151,7 +185,7 @@ export function BarChart({
           <div style="padding: 8px;">
             <div style="font-weight: bold; margin-bottom: 4px;">${title}</div>
             ${items.map((i) => `<div>${i.name}: ${i.value}</div>`).join('')}
-            <div style="margin-top: 4px; color: #888;">달성률: ${rate}%</div>
+            <div style="margin-top: 4px; color: ${chartTheme.styleSheet.axisLabelFillColor};">달성률: ${rate}%</div>
           </div>
         `
       },
