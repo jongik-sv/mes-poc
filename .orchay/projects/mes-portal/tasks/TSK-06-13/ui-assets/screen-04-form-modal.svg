@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .overlay { fill: rgba(0,0,0,0.45); }
+      .modal-bg { fill: #ffffff; }
+      .text-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #262626; }
+      .text-normal { font-family: Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-small { font-family: Arial, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-label { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .text-required { font-family: Arial, sans-serif; font-size: 14px; fill: #ff4d4f; }
+      .btn-primary { fill: #1677ff; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .input-bg { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .input-placeholder { font-family: Arial, sans-serif; font-size: 14px; fill: #bfbfbf; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+      .close-btn { font-family: Arial, sans-serif; font-size: 20px; fill: #8c8c8c; cursor: pointer; }
+      .shadow { filter: drop-shadow(0 6px 16px rgba(0,0,0,0.08)); }
+    </style>
+  </defs>
+
+  <!-- Background (dimmed) -->
+  <rect class="bg" width="1200" height="700"/>
+  <rect class="overlay" width="1200" height="700"/>
+
+  <!-- Modal -->
+  <g transform="translate(350, 80)" class="shadow">
+    <rect class="modal-bg" x="0" y="0" width="500" height="540" rx="8"/>
+
+    <!-- Modal Header -->
+    <text class="text-title" x="24" y="40">부서 추가</text>
+    <text class="close-btn" x="460" y="36">✕</text>
+    <line class="divider" x1="0" y1="60" x2="500" y2="60"/>
+
+    <!-- Form Content -->
+    <g transform="translate(24, 80)">
+      <!-- Field 1: 부서명 -->
+      <g transform="translate(0, 0)">
+        <text class="text-label" x="0" y="0">부서명</text>
+        <text class="text-required" x="40" y="0">*</text>
+        <rect class="input-bg" x="0" y="12" width="452" height="40" rx="6"/>
+        <text class="input-placeholder" x="12" y="38">부서명을 입력하세요</text>
+      </g>
+
+      <!-- Field 2: 부서 코드 -->
+      <g transform="translate(0, 72)">
+        <text class="text-label" x="0" y="0">부서 코드</text>
+        <text class="text-required" x="56" y="0">*</text>
+        <rect class="input-bg" x="0" y="12" width="452" height="40" rx="6"/>
+        <text class="input-placeholder" x="12" y="38">영문/숫자 2-10자</text>
+      </g>
+
+      <!-- Field 3: 담당자 -->
+      <g transform="translate(0, 144)">
+        <text class="text-label" x="0" y="0">담당자</text>
+        <rect class="input-bg" x="0" y="12" width="452" height="40" rx="6"/>
+        <text class="input-placeholder" x="12" y="38">담당자명</text>
+      </g>
+
+      <!-- Field 4: 연락처 -->
+      <g transform="translate(0, 216)">
+        <text class="text-label" x="0" y="0">연락처</text>
+        <rect class="input-bg" x="0" y="12" width="452" height="40" rx="6"/>
+        <text class="input-placeholder" x="12" y="38">02-0000-0000</text>
+      </g>
+
+      <!-- Field 5: 인원 -->
+      <g transform="translate(0, 288)">
+        <text class="text-label" x="0" y="0">인원</text>
+        <rect class="input-bg" x="0" y="12" width="120" height="40" rx="6"/>
+        <text class="text-normal" x="12" y="38">0</text>
+      </g>
+
+      <!-- Field 6: 설명 -->
+      <g transform="translate(0, 352)">
+        <text class="text-label" x="0" y="0">설명</text>
+        <rect class="input-bg" x="0" y="12" width="452" height="80" rx="6"/>
+        <text class="input-placeholder" x="12" y="38">부서 설명 (최대 200자)</text>
+      </g>
+    </g>
+
+    <!-- Modal Footer -->
+    <line class="divider" x1="0" y1="480" x2="500" y2="480"/>
+    <g transform="translate(280, 496)">
+      <rect class="btn-default" x="0" y="0" width="80" height="36" rx="6"/>
+      <text class="btn-text-dark" x="24" y="24">취소</text>
+
+      <rect class="btn-primary" x="96" y="0" width="80" height="36" rx="6"/>
+      <text class="btn-text" x="120" y="24">저장</text>
+    </g>
+  </g>
+</svg>

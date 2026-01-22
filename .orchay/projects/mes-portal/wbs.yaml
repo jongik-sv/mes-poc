@@ -1265,7 +1265,7 @@ workPackages:
         title: "[샘플] 조직/부서 트리"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: medium
         assignee: "-"
         tags:
@@ -1295,7 +1295,6 @@ workPackages:
             - screens/sample/OrganizationTree.tsx
             - mock-data/organization.json 로드
             - Tree onDrop 핸들러 구현
-        execution: start
       - id: TSK-06-14
         title: "[샘플] 생산 계획 간트 차트"
         category: development

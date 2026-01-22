@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .header-bg { fill: #ffffff; }
+      .text-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #262626; }
+      .text-subtitle { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #262626; }
+      .text-normal { font-family: Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-small { font-family: Arial, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .text-label { font-family: Arial, sans-serif; font-size: 13px; fill: #8c8c8c; }
+      .text-value { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .btn-primary { fill: #1677ff; }
+      .btn-danger { fill: #ff4d4f; }
+      .btn-default { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; }
+      .btn-text-dark { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .input-bg { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .tree-line { stroke: #d9d9d9; stroke-width: 1; fill: none; }
+      .selected-bg { fill: #e6f7ff; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+      .splitter { fill: #f0f0f0; }
+      .badge { fill: #f0f0f0; rx: 4; }
+      .badge-text { font-family: Arial, sans-serif; font-size: 12px; fill: #595959; }
+      .desc-row { fill: #fafafa; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Header -->
+  <rect class="header-bg" x="0" y="0" width="1200" height="60"/>
+  <line class="divider" x1="0" y1="60" x2="1200" y2="60"/>
+  <text class="text-title" x="24" y="38">조직/부서 트리</text>
+
+  <!-- Add Root Button -->
+  <rect class="btn-primary" x="1080" y="16" width="100" height="32" rx="6"/>
+  <text class="btn-text" x="1105" y="37">+ 루트 추가</text>
+
+  <!-- Left Panel: Search + Tree -->
+  <rect class="card" x="16" y="76" width="468" height="608" rx="8"/>
+
+  <!-- Search Input -->
+  <rect class="input-bg" x="32" y="92" width="436" height="40" rx="6"/>
+  <text class="text-small" x="48" y="117" fill="#bfbfbf">🔍 검색...</text>
+
+  <!-- Tree Structure with Selected Node -->
+  <g transform="translate(32, 152)">
+    <!-- Root Node -->
+    <g transform="translate(0, 0)">
+      <text class="text-normal" x="0" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="40" y="0">주식회사 A</text>
+    </g>
+
+    <!-- Level 1: 경영지원본부 -->
+    <g transform="translate(24, 36)">
+      <text class="text-normal" x="16" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="56" y="0">경영지원본부</text>
+    </g>
+
+    <!-- Level 2: 인사팀 -->
+    <g transform="translate(48, 72)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">인사팀</text>
+    </g>
+
+    <!-- Level 2: 재무팀 -->
+    <g transform="translate(48, 108)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">재무팀</text>
+    </g>
+
+    <!-- Level 2: 총무팀 -->
+    <g transform="translate(48, 144)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">총무팀</text>
+    </g>
+
+    <!-- Level 1: 생산본부 -->
+    <g transform="translate(24, 192)">
+      <text class="text-normal" x="16" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="56" y="0">생산본부</text>
+    </g>
+
+    <!-- Level 2: 생산1팀 (SELECTED) -->
+    <g transform="translate(48, 228)">
+      <rect class="selected-bg" x="-8" y="-16" width="380" height="28" rx="4"/>
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0" font-weight="bold">생산1팀</text>
+    </g>
+
+    <!-- Level 2: 생산2팀 -->
+    <g transform="translate(48, 264)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">생산2팀</text>
+    </g>
+
+    <!-- Level 2: 품질관리팀 -->
+    <g transform="translate(48, 300)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">품질관리팀</text>
+    </g>
+
+    <!-- Level 1: 영업본부 -->
+    <g transform="translate(24, 348)">
+      <text class="text-normal" x="16" y="0" fill="#faad14">▶ 📁</text>
+      <text class="text-normal" x="56" y="0">영업본부</text>
+    </g>
+  </g>
+
+  <!-- Splitter -->
+  <rect class="splitter" x="496" y="76" width="8" height="608"/>
+
+  <!-- Right Panel: Detail -->
+  <rect class="card" x="516" y="76" width="668" height="608" rx="8"/>
+
+  <!-- Detail Header -->
+  <text class="text-subtitle" x="540" y="112">부서 상세 정보</text>
+  <line class="divider" x1="540" y1="128" x2="1160" y2="128"/>
+
+  <!-- Detail Content (Descriptions style) -->
+  <g transform="translate(540, 148)">
+    <!-- Row 1: 부서명 -->
+    <rect class="desc-row" x="0" y="0" width="596" height="40"/>
+    <text class="text-label" x="16" y="26">부서명</text>
+    <text class="text-value" x="140" y="26">생산1팀</text>
+
+    <!-- Row 2: 부서 코드 -->
+    <rect x="0" y="40" width="596" height="40" fill="#ffffff"/>
+    <text class="text-label" x="16" y="66">부서 코드</text>
+    <rect class="badge" x="140" y="52" width="40" height="22"/>
+    <text class="badge-text" x="152" y="67">P1</text>
+
+    <!-- Row 3: 상위 부서 -->
+    <rect class="desc-row" x="0" y="80" width="596" height="40"/>
+    <text class="text-label" x="16" y="106">상위 부서</text>
+    <text class="text-value" x="140" y="106">생산본부</text>
+
+    <!-- Row 4: 담당자 -->
+    <rect x="0" y="120" width="596" height="40" fill="#ffffff"/>
+    <text class="text-label" x="16" y="146">담당자</text>
+    <text class="text-value" x="140" y="146">이철수</text>
+
+    <!-- Row 5: 연락처 -->
+    <rect class="desc-row" x="0" y="160" width="596" height="40"/>
+    <text class="text-label" x="16" y="186">연락처</text>
+    <text class="text-value" x="140" y="186">02-1234-5678</text>
+
+    <!-- Row 6: 인원 -->
+    <rect x="0" y="200" width="596" height="40" fill="#ffffff"/>
+    <text class="text-label" x="16" y="226">인원</text>
+    <text class="text-value" x="140" y="226">15명</text>
+
+    <!-- Row 7: 설명 -->
+    <rect class="desc-row" x="0" y="240" width="596" height="60"/>
+    <text class="text-label" x="16" y="266">설명</text>
+    <text class="text-value" x="140" y="266">제품 A 생산 담당</text>
+    <text class="text-value" x="140" y="286">주간 생산량 목표: 1,000 단위</text>
+
+    <!-- Row 8: 생성일 -->
+    <rect x="0" y="300" width="596" height="40" fill="#ffffff"/>
+    <text class="text-label" x="16" y="326">생성일</text>
+    <text class="text-value" x="140" y="326">2024-01-15</text>
+
+    <!-- Row 9: 수정일 -->
+    <rect class="desc-row" x="0" y="340" width="596" height="40"/>
+    <text class="text-label" x="16" y="366">수정일</text>
+    <text class="text-value" x="140" y="366">2026-01-10</text>
+  </g>
+
+  <!-- Action Buttons -->
+  <g transform="translate(540, 560)">
+    <rect class="btn-default" x="0" y="0" width="80" height="36" rx="6"/>
+    <text class="btn-text-dark" x="24" y="24">수정</text>
+
+    <rect class="btn-danger" x="96" y="0" width="80" height="36" rx="6"/>
+    <text class="btn-text" x="120" y="24">삭제</text>
+  </g>
+
+  <!-- Footer Help Text -->
+  <text class="text-small" x="24" y="690">💡 드래그하여 노드 위치를 변경할 수 있습니다.</text>
+</svg>

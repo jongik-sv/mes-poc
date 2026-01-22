@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <style>
+      .bg { fill: #f5f5f5; }
+      .card { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .header-bg { fill: #ffffff; }
+      .text-title { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #262626; }
+      .text-normal { font-family: Arial, sans-serif; font-size: 14px; fill: #595959; }
+      .text-small { font-family: Arial, sans-serif; font-size: 12px; fill: #8c8c8c; }
+      .btn-primary { fill: #1677ff; }
+      .btn-text { font-family: Arial, sans-serif; font-size: 14px; fill: #ffffff; }
+      .input-bg { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; rx: 6; }
+      .selected-bg { fill: #e6f7ff; }
+      .divider { stroke: #f0f0f0; stroke-width: 1; }
+      .splitter { fill: #f0f0f0; }
+      .menu-bg { fill: #ffffff; stroke: #d9d9d9; stroke-width: 1; }
+      .menu-item { fill: transparent; }
+      .menu-item:hover { fill: #f5f5f5; }
+      .menu-text { font-family: Arial, sans-serif; font-size: 14px; fill: #262626; }
+      .menu-text-danger { font-family: Arial, sans-serif; font-size: 14px; fill: #ff4d4f; }
+      .menu-icon { font-family: Arial, sans-serif; font-size: 14px; }
+      .menu-divider { stroke: #f0f0f0; stroke-width: 1; }
+      .empty-text { font-family: Arial, sans-serif; font-size: 14px; fill: #bfbfbf; text-anchor: middle; }
+      .shadow { filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Header -->
+  <rect class="header-bg" x="0" y="0" width="1200" height="60"/>
+  <line class="divider" x1="0" y1="60" x2="1200" y2="60"/>
+  <text class="text-title" x="24" y="38">조직/부서 트리</text>
+
+  <!-- Add Root Button -->
+  <rect class="btn-primary" x="1080" y="16" width="100" height="32" rx="6"/>
+  <text class="btn-text" x="1105" y="37">+ 루트 추가</text>
+
+  <!-- Left Panel: Search + Tree -->
+  <rect class="card" x="16" y="76" width="468" height="608" rx="8"/>
+
+  <!-- Search Input -->
+  <rect class="input-bg" x="32" y="92" width="436" height="40" rx="6"/>
+  <text class="text-small" x="48" y="117" fill="#bfbfbf">🔍 검색...</text>
+
+  <!-- Tree Structure with Right-clicked Node -->
+  <g transform="translate(32, 152)">
+    <!-- Root Node -->
+    <g transform="translate(0, 0)">
+      <text class="text-normal" x="0" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="40" y="0">주식회사 A</text>
+    </g>
+
+    <!-- Level 1: 경영지원본부 -->
+    <g transform="translate(24, 36)">
+      <text class="text-normal" x="16" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="56" y="0">경영지원본부</text>
+    </g>
+
+    <!-- Level 2: 인사팀 -->
+    <g transform="translate(48, 72)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">인사팀</text>
+    </g>
+
+    <!-- Level 2: 재무팀 -->
+    <g transform="translate(48, 108)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">재무팀</text>
+    </g>
+
+    <!-- Level 2: 총무팀 -->
+    <g transform="translate(48, 144)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">총무팀</text>
+    </g>
+
+    <!-- Level 1: 생산본부 (Right-clicked) -->
+    <g transform="translate(24, 192)">
+      <rect class="selected-bg" x="-8" y="-16" width="380" height="28" rx="4"/>
+      <text class="text-normal" x="16" y="0" fill="#faad14">▼ 📁</text>
+      <text class="text-normal" x="56" y="0" font-weight="bold">생산본부</text>
+    </g>
+
+    <!-- Level 2: 생산1팀 -->
+    <g transform="translate(48, 228)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">생산1팀</text>
+    </g>
+
+    <!-- Level 2: 생산2팀 -->
+    <g transform="translate(48, 264)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">생산2팀</text>
+    </g>
+
+    <!-- Level 2: 품질관리팀 -->
+    <g transform="translate(48, 300)">
+      <text class="text-normal" x="16" y="0" fill="#1677ff">📄</text>
+      <text class="text-normal" x="40" y="0">품질관리팀</text>
+    </g>
+
+    <!-- Level 1: 영업본부 -->
+    <g transform="translate(24, 348)">
+      <text class="text-normal" x="16" y="0" fill="#faad14">▶ 📁</text>
+      <text class="text-normal" x="56" y="0">영업본부</text>
+    </g>
+  </g>
+
+  <!-- Context Menu (appears on right-click) -->
+  <g transform="translate(200, 340)" class="shadow">
+    <rect class="menu-bg" x="0" y="0" width="180" height="120" rx="8"/>
+
+    <!-- Menu Item 1: Add Child -->
+    <g transform="translate(0, 8)">
+      <rect class="menu-item" x="4" y="0" width="172" height="32" rx="4"/>
+      <text class="menu-icon" x="16" y="22" fill="#1677ff">➕</text>
+      <text class="menu-text" x="44" y="22">하위 노드 추가</text>
+    </g>
+
+    <!-- Menu Item 2: Edit -->
+    <g transform="translate(0, 40)">
+      <rect class="menu-item" x="4" y="0" width="172" height="32" rx="4"/>
+      <text class="menu-icon" x="16" y="22" fill="#595959">✏️</text>
+      <text class="menu-text" x="44" y="22">수정</text>
+    </g>
+
+    <!-- Divider -->
+    <line class="menu-divider" x1="12" y1="80" x2="168" y2="80"/>
+
+    <!-- Menu Item 3: Delete -->
+    <g transform="translate(0, 84)">
+      <rect class="menu-item" x="4" y="0" width="172" height="32" rx="4"/>
+      <text class="menu-icon" x="16" y="22" fill="#ff4d4f">🗑️</text>
+      <text class="menu-text-danger" x="44" y="22">삭제</text>
+    </g>
+  </g>
+
+  <!-- Splitter -->
+  <rect class="splitter" x="496" y="76" width="8" height="608"/>
+
+  <!-- Right Panel: Detail (Empty State) -->
+  <rect class="card" x="516" y="76" width="668" height="608" rx="8"/>
+
+  <!-- Empty State -->
+  <g transform="translate(850, 350)">
+    <text class="empty-text" x="0" y="0">📋</text>
+    <text class="empty-text" x="0" y="30">좌측 트리에서 조직을 선택하세요.</text>
+  </g>
+
+  <!-- Footer Help Text -->
+  <text class="text-small" x="24" y="690">💡 드래그하여 노드 위치를 변경할 수 있습니다.</text>
+</svg>
