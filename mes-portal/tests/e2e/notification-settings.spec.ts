@@ -6,25 +6,32 @@ import { test, expect } from '@playwright/test'
 // 테스트 타임아웃 설정
 test.setTimeout(60000)
 
+// 로그인 및 페이지 이동 헬퍼 함수
+async function loginAndNavigate(page: import('@playwright/test').Page) {
+  // 로그인
+  await page.goto('/login')
+  await page.waitForSelector('[data-testid="login-page"]')
+  await page.fill('[data-testid="email-input"]', 'admin@example.com')
+  await page.fill('[data-testid="password-input"]', 'password123')
+  await page.click('[data-testid="login-button"]')
+  await expect(page).toHaveURL(/\/portal|\/dashboard/, { timeout: 15000 })
+
+  // 사이드바에서 샘플 화면 메뉴 확장
+  await page.click('[data-testid="menu-sample"]')
+  await page.waitForTimeout(300)
+
+  // 알림 설정 메뉴 클릭
+  await page.click('[data-testid="menu-sample_notification_settings"]')
+
+  // MDI 탭으로 페이지가 열릴 때까지 대기
+  await page.waitForSelector('[data-testid="notification-settings-page"]', {
+    timeout: 15000,
+  })
+}
+
 test.describe('알림 설정 관리', () => {
   test.beforeEach(async ({ page }) => {
-    // 로그인
-    await page.goto('/login')
-    await page.waitForSelector('[data-testid="login-page"]')
-    await page.fill('[data-testid="email-input"]', 'admin@example.com')
-    await page.fill('[data-testid="password-input"]', 'password123')
-    await page.click('[data-testid="login-button"]')
-    await expect(page).toHaveURL(/\/portal|\/dashboard/, { timeout: 10000 })
-
-    // 샘플 화면 메뉴 펼치기 (MDI 시스템 - 메뉴 클릭으로 탭 열기)
-    await page.click('text=샘플 화면')
-    await page.waitForTimeout(300)
-
-    // 알림 설정 메뉴 클릭
-    await page.click('text=알림 설정')
-
-    // 페이지 로드 대기
-    await page.waitForSelector('[data-testid="notification-settings-page"]', { timeout: 30000 })
+    await loginAndNavigate(page)
   })
 
   // E2E-001: 설정 화면 접근
