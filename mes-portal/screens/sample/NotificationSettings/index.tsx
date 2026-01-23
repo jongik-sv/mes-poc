@@ -256,7 +256,7 @@ export default function NotificationSettings() {
         className="flex items-center justify-center h-96"
         data-testid="notification-settings-loading"
       >
-        <Spin size="large" tip="불러오는 중..." />
+        <Spin size="large" />
       </div>
     )
   }

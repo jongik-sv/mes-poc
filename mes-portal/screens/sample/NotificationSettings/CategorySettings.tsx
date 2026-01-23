@@ -3,7 +3,7 @@
 // CategorySettings.tsx
 // TSK-06-19: 알림 카테고리 설정 컴포넌트
 
-import { Card, List, Switch, Typography } from 'antd'
+import { Card, Switch, Typography, Flex, theme } from 'antd'
 import type { NotificationCategory } from './types'
 
 const { Text } = Typography
@@ -23,44 +23,45 @@ export default function CategorySettings({
   categories,
   onChange,
 }: CategorySettingsProps) {
+  const { token } = theme.useToken()
+
   return (
     <Card
       title="알림 카테고리 설정"
       data-testid="category-settings"
       className="mb-6"
     >
-      <List
-        itemLayout="horizontal"
-        dataSource={categories}
-        split
-        renderItem={(category) => (
-          <List.Item
+      <Flex vertical gap={0}>
+        {categories.map((category, index) => (
+          <Flex
             key={category.id}
-            actions={[
-              <Switch
-                key={`switch-${category.id}`}
-                checked={category.enabled}
-                onChange={(checked) => onChange(category.id, checked)}
-                data-testid={`category-switch-${category.id}`}
-                aria-label={`${category.name} 알림 활성화`}
-              />,
-            ]}
+            justify="space-between"
+            align="center"
+            className="py-3"
+            style={{
+              borderBottom:
+                index < categories.length - 1
+                  ? `1px solid ${token.colorBorderSecondary}`
+                  : undefined,
+            }}
           >
-            <List.Item.Meta
-              title={
-                <Text strong data-testid={`category-name-${category.id}`}>
-                  {category.name}
-                </Text>
-              }
-              description={
-                <Text type="secondary" className="text-sm">
-                  {category.description}
-                </Text>
-              }
+            <Flex vertical gap={4}>
+              <Text strong data-testid={`category-name-${category.id}`}>
+                {category.name}
+              </Text>
+              <Text type="secondary" className="text-sm">
+                {category.description}
+              </Text>
+            </Flex>
+            <Switch
+              checked={category.enabled}
+              onChange={(checked) => onChange(category.id, checked)}
+              data-testid={`category-switch-${category.id}`}
+              aria-label={`${category.name} 알림 활성화`}
             />
-          </List.Item>
-        )}
-      />
+          </Flex>
+        ))}
+      </Flex>
     </Card>
   )
 }
