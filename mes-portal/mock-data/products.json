@@ -1,0 +1,86 @@
+{
+  "products": [
+    {
+      "code": "P001",
+      "name": "LCD 패널 A형",
+      "spec": "15인치",
+      "unit": "EA"
+    },
+    {
+      "code": "P002",
+      "name": "LCD 패널 B형",
+      "spec": "17인치",
+      "unit": "EA"
+    },
+    {
+      "code": "P003",
+      "name": "메인보드 A",
+      "spec": "ATX",
+      "unit": "EA"
+    },
+    {
+      "code": "P004",
+      "name": "메인보드 B",
+      "spec": "Mini-ITX",
+      "unit": "EA"
+    },
+    {
+      "code": "P005",
+      "name": "케이스 A형",
+      "spec": "Mid Tower",
+      "unit": "EA"
+    },
+    {
+      "code": "P006",
+      "name": "케이스 B형",
+      "spec": "Mini Tower",
+      "unit": "EA"
+    },
+    {
+      "code": "P007",
+      "name": "파워서플라이 500W",
+      "spec": "500W 80+",
+      "unit": "EA"
+    },
+    {
+      "code": "P008",
+      "name": "파워서플라이 750W",
+      "spec": "750W 80+ Gold",
+      "unit": "EA"
+    },
+    {
+      "code": "P009",
+      "name": "SSD 256GB",
+      "spec": "NVMe",
+      "unit": "EA"
+    },
+    {
+      "code": "P010",
+      "name": "SSD 512GB",
+      "spec": "NVMe",
+      "unit": "EA"
+    }
+  ],
+  "productionLines": [
+    {
+      "id": "L1",
+      "name": "라인 1"
+    },
+    {
+      "id": "L2",
+      "name": "라인 2"
+    },
+    {
+      "id": "L3",
+      "name": "라인 3"
+    },
+    {
+      "id": "L4",
+      "name": "라인 4"
+    },
+    {
+      "id": "L5",
+      "name": "라인 5"
+    }
+  ]
+}

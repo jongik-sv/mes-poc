@@ -199,6 +199,24 @@
           "icon": "SwapOutlined",
           "sortOrder": 10,
           "isActive": true
+        },
+        {
+          "id": "6-11",
+          "code": "SAMPLE_WORK_ORDER_FORM",
+          "name": "작업 지시 등록",
+          "path": "/sample/work-order-form",
+          "icon": "FormOutlined",
+          "sortOrder": 11,
+          "isActive": true
+        },
+        {
+          "id": "6-12",
+          "code": "SAMPLE_PROCESS_MANAGEMENT",
+          "name": "공정 관리",
+          "path": "/sample/process-management",
+          "icon": "SettingOutlined",
+          "sortOrder": 12,
+          "isActive": true
         }
       ]
     },
