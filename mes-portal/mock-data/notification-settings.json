@@ -1,0 +1,45 @@
+{
+  "categories": [
+    {
+      "id": "production",
+      "name": "생산 알림",
+      "description": "생산 시작/완료, 목표 달성, 지연 경고",
+      "enabled": true
+    },
+    {
+      "id": "quality",
+      "name": "품질 알림",
+      "description": "품질 이상, 검사 완료, 불량률 초과",
+      "enabled": true
+    },
+    {
+      "id": "equipment",
+      "name": "설비 알림",
+      "description": "설비 이상, 유지보수 예정, 가동률 저하",
+      "enabled": false
+    },
+    {
+      "id": "system",
+      "name": "시스템 알림",
+      "description": "시스템 공지, 업데이트, 권한 변경",
+      "enabled": true
+    }
+  ],
+  "recipients": [
+    {
+      "id": "r1",
+      "name": "홍길동",
+      "email": "hong@company.com"
+    },
+    {
+      "id": "r2",
+      "name": "김철수",
+      "email": "kim@company.com"
+    },
+    {
+      "id": "r3",
+      "name": "이영희",
+      "email": "lee@company.com"
+    }
+  ]
+}

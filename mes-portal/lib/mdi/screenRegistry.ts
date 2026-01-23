@@ -59,8 +59,7 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/sample/form': () => import('@/screens/sample/SampleForm'),
   '/sample/user-list': () => import('@/screens/sample/UserList'),
   '/sample/master-detail': () => import('@/screens/sample/CategoryProduct'),
-  '/sample/wizard': () =>
-    import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.SettingWizardScreen })),
+  '/sample/setting-wizard': () => import('@/screens/sample/SettingWizard'),
   '/sample/work-calendar': () => import('@/screens/sample/WorkCalendar'),
   '/sample/organization-tree': () => import('@/screens/sample/OrganizationTree'),
   '/sample/production-gantt': () => import('@/screens/sample/ProductionGantt'),
@@ -70,6 +69,7 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/sample/material-history': () => import('@/screens/sample/MaterialHistory'),
   '/sample/work-order-form': () => import('@/screens/sample/WorkOrderForm'),
   '/sample/process-management': () => import('@/screens/sample/ProcessManagement'),
+  '/sample/notification-settings': () => import('@/screens/sample/NotificationSettings'),
 });
 
 /**

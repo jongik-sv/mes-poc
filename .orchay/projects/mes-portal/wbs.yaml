@@ -1501,7 +1501,8 @@ workPackages:
         title: "[샘플] 알림 설정 관리"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
+        test-result: pass
         priority: low
         assignee: "-"
         tags:
@@ -1544,7 +1545,7 @@ workPackages:
         title: "[샘플] 데이터 테이블 종합"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: high
         assignee: "-"
         tags:
@@ -1592,6 +1593,7 @@ workPackages:
             - components/common/DataTable.tsx 모든 기능 활용
             - mock-data/large-dataset.json (1만건)
             - 기능별 토글 UI로 데모
+        execution: build
   - id: WP-07
     title: 대시보드
     status: planned

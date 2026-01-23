@@ -217,6 +217,24 @@
           "icon": "SettingOutlined",
           "sortOrder": 12,
           "isActive": true
+        },
+        {
+          "id": "6-13",
+          "code": "SAMPLE_NOTIFICATION_SETTINGS",
+          "name": "알림 설정",
+          "path": "/sample/notification-settings",
+          "icon": "BellOutlined",
+          "sortOrder": 13,
+          "isActive": true
+        },
+        {
+          "id": "6-14",
+          "code": "SAMPLE_DATA_TABLE_SHOWCASE",
+          "name": "데이터 테이블 종합",
+          "path": "/sample/data-table-showcase",
+          "icon": "TableOutlined",
+          "sortOrder": 14,
+          "isActive": true
         }
       ]
     },
