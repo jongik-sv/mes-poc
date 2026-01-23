@@ -1267,7 +1267,7 @@ workPackages:
         title: "[샘플] 조직/부서 트리"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
         assignee: "-"
         tags:
@@ -1297,7 +1297,6 @@ workPackages:
             - screens/sample/OrganizationTree.tsx
             - mock-data/organization.json 로드
             - Tree onDrop 핸들러 구현
-        execution: verify
         test-result: pass
       - id: TSK-06-14
         title: "[샘플] 생산 계획 간트 차트"
@@ -1416,6 +1415,7 @@ workPackages:
             - FormTemplate 사용
             - SelectPopupTemplate 연동
             - confirmDelete, showSuccess 유틸 사용
+        execution: build
       - id: TSK-06-17
         title: "[샘플] 자재 입출고 내역"
         category: development
