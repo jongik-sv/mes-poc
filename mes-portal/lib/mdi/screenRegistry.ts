@@ -70,6 +70,7 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/sample/work-order-form': () => import('@/screens/sample/WorkOrderForm'),
   '/sample/process-management': () => import('@/screens/sample/ProcessManagement'),
   '/sample/notification-settings': () => import('@/screens/sample/NotificationSettings'),
+  '/sample/data-table-showcase': () => import('@/screens/sample/DataTableShowcase'),
 });
 
 /**

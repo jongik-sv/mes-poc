@@ -1,0 +1,1899 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "전자부품 A-001",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 150,
+      "price": 12000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-20T10:00:00",
+      "updatedAt": "2026-01-21T15:30:00",
+      "details": {
+        "description": "고품질 전자 부품 - 반도체 칩셋",
+        "manufacturer": "삼성전자",
+        "warranty": "1년",
+        "processes": [
+          { "name": "SMT 공정", "status": "completed", "duration": "2시간" },
+          { "name": "검사 공정", "status": "completed", "duration": "30분" }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "전자부품 A-002",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 200,
+      "price": 15000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-19T09:00:00",
+      "updatedAt": "2026-01-20T14:00:00",
+      "details": {
+        "description": "고품질 전자 부품 - 커패시터",
+        "manufacturer": "LG전자",
+        "warranty": "2년",
+        "processes": [
+          { "name": "조립 공정", "status": "completed", "duration": "1시간" }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "목재 가구 B-001",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 50,
+      "price": 250000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-18T11:00:00",
+      "updatedAt": "2026-01-19T10:00:00",
+      "details": {
+        "description": "원목 책상 - 고급 오크 소재",
+        "manufacturer": "한샘",
+        "warranty": "3년",
+        "processes": [
+          { "name": "목재 가공", "status": "completed", "duration": "4시간" },
+          { "name": "도색 공정", "status": "in_progress", "duration": "2시간" }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "목재 가구 B-002",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 30,
+      "price": 180000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2026-01-17T14:00:00",
+      "updatedAt": "2026-01-18T09:00:00",
+      "details": {
+        "description": "원목 의자 - 고급 월넛 소재",
+        "manufacturer": "일룸",
+        "warranty": "2년",
+        "processes": [
+          { "name": "목재 가공", "status": "completed", "duration": "3시간" }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "의류 C-001",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 500,
+      "price": 35000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-16T08:00:00",
+      "updatedAt": "2026-01-17T16:00:00",
+      "details": {
+        "description": "면 100% 티셔츠 - 화이트",
+        "manufacturer": "무신사",
+        "warranty": "6개월",
+        "processes": [
+          { "name": "재단 공정", "status": "completed", "duration": "1시간" },
+          { "name": "봉제 공정", "status": "completed", "duration": "2시간" }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "의류 C-002",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 300,
+      "price": 45000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2026-01-15T10:00:00",
+      "updatedAt": "2026-01-16T11:00:00",
+      "details": {
+        "description": "린넨 셔츠 - 네이비",
+        "manufacturer": "지오다노",
+        "warranty": "6개월",
+        "processes": [
+          { "name": "재단 공정", "status": "pending", "duration": "1시간" }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "식품 D-001",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1000,
+      "price": 5000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-14T07:00:00",
+      "updatedAt": "2026-01-15T08:00:00",
+      "details": {
+        "description": "유기농 현미 - 5kg",
+        "manufacturer": "CJ제일제당",
+        "warranty": "1년",
+        "processes": [
+          { "name": "도정 공정", "status": "completed", "duration": "30분" },
+          { "name": "포장 공정", "status": "completed", "duration": "10분" }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "name": "식품 D-002",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 800,
+      "price": 8000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-13T09:00:00",
+      "updatedAt": "2026-01-14T10:00:00",
+      "details": {
+        "description": "유기농 잡곡 - 3kg",
+        "manufacturer": "오뚜기",
+        "warranty": "1년",
+        "processes": [
+          { "name": "혼합 공정", "status": "completed", "duration": "20분" }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name": "전자부품 A-003",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 75,
+      "price": 28000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2026-01-12T13:00:00",
+      "updatedAt": "2026-01-13T14:00:00",
+      "details": {
+        "description": "고성능 CPU 모듈",
+        "manufacturer": "인텔",
+        "warranty": "3년",
+        "processes": [
+          { "name": "테스트 공정", "status": "failed", "duration": "1시간" }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "전자부품 A-004",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 120,
+      "price": 9500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-11T15:00:00",
+      "updatedAt": "2026-01-12T16:00:00",
+      "details": {
+        "description": "LED 디스플레이 모듈",
+        "manufacturer": "LG디스플레이",
+        "warranty": "2년",
+        "processes": [
+          { "name": "조립 공정", "status": "completed", "duration": "2시간" }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "name": "가구 B-003",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 25,
+      "price": 450000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-10T08:30:00",
+      "updatedAt": "2026-01-11T09:30:00",
+      "details": {
+        "description": "프리미엄 소파 - 가죽 소재",
+        "manufacturer": "에이스침대",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 12,
+      "name": "의류 C-003",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 450,
+      "price": 89000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-09T11:00:00",
+      "updatedAt": "2026-01-10T12:00:00",
+      "details": {
+        "description": "패딩 점퍼 - 블랙",
+        "manufacturer": "노스페이스",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 13,
+      "name": "식품 D-003",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 2000,
+      "price": 3500,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2026-01-08T06:00:00",
+      "updatedAt": "2026-01-09T07:00:00",
+      "details": {
+        "description": "생수 2L - 6팩",
+        "manufacturer": "제주삼다수",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 14,
+      "name": "전자부품 A-005",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 85,
+      "price": 42000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-07T14:00:00",
+      "updatedAt": "2026-01-08T15:00:00",
+      "details": {
+        "description": "메모리 모듈 DDR5 16GB",
+        "manufacturer": "SK하이닉스",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 15,
+      "name": "가구 B-004",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 40,
+      "price": 320000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2026-01-06T10:00:00",
+      "updatedAt": "2026-01-07T11:00:00",
+      "details": {
+        "description": "서랍장 5단 - 화이트",
+        "manufacturer": "이케아",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 16,
+      "name": "의류 C-004",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 600,
+      "price": 29000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-05T09:00:00",
+      "updatedAt": "2026-01-06T10:00:00",
+      "details": {
+        "description": "청바지 - 스키니핏",
+        "manufacturer": "리바이스",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 17,
+      "name": "식품 D-004",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1500,
+      "price": 12000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-04T08:00:00",
+      "updatedAt": "2026-01-05T09:00:00",
+      "details": {
+        "description": "즉석밥 12팩 세트",
+        "manufacturer": "CJ제일제당",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 18,
+      "name": "전자부품 A-006",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 95,
+      "price": 18500,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2026-01-03T16:00:00",
+      "updatedAt": "2026-01-04T17:00:00",
+      "details": {
+        "description": "SSD 512GB NVMe",
+        "manufacturer": "삼성전자",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 19,
+      "name": "가구 B-005",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 20,
+      "price": 580000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-02T12:00:00",
+      "updatedAt": "2026-01-03T13:00:00",
+      "details": {
+        "description": "킹사이즈 침대 프레임",
+        "manufacturer": "시몬스",
+        "warranty": "10년",
+        "processes": []
+      }
+    },
+    {
+      "id": 20,
+      "name": "의류 C-005",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 350,
+      "price": 55000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2026-01-01T10:00:00",
+      "updatedAt": "2026-01-02T11:00:00",
+      "details": {
+        "description": "후드 집업 - 그레이",
+        "manufacturer": "나이키",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 21,
+      "name": "식품 D-005",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 900,
+      "price": 15000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-31T09:00:00",
+      "updatedAt": "2026-01-01T10:00:00",
+      "details": {
+        "description": "견과류 믹스 500g",
+        "manufacturer": "길림양행",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 22,
+      "name": "전자부품 A-007",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 180,
+      "price": 7500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-30T14:00:00",
+      "updatedAt": "2025-12-31T15:00:00",
+      "details": {
+        "description": "USB-C 케이블 1m",
+        "manufacturer": "앤커",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 23,
+      "name": "가구 B-006",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 60,
+      "price": 95000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-12-29T11:00:00",
+      "updatedAt": "2025-12-30T12:00:00",
+      "details": {
+        "description": "사무용 의자 - 메쉬백",
+        "manufacturer": "듀오백",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 24,
+      "name": "의류 C-006",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 250,
+      "price": 42000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-28T08:00:00",
+      "updatedAt": "2025-12-29T09:00:00",
+      "details": {
+        "description": "니트 스웨터 - 카멜",
+        "manufacturer": "유니클로",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 25,
+      "name": "식품 D-006",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1200,
+      "price": 4500,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-12-27T07:00:00",
+      "updatedAt": "2025-12-28T08:00:00",
+      "details": {
+        "description": "우유 1L - 저지방",
+        "manufacturer": "서울우유",
+        "warranty": "2주",
+        "processes": []
+      }
+    },
+    {
+      "id": 26,
+      "name": "전자부품 A-008",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 65,
+      "price": 95000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-26T15:00:00",
+      "updatedAt": "2025-12-27T16:00:00",
+      "details": {
+        "description": "그래픽카드 GTX 4060",
+        "manufacturer": "NVIDIA",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 27,
+      "name": "가구 B-007",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 35,
+      "price": 145000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-25T10:00:00",
+      "updatedAt": "2025-12-26T11:00:00",
+      "details": {
+        "description": "책장 5단 - 오크",
+        "manufacturer": "리바트",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 28,
+      "name": "의류 C-007",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 400,
+      "price": 78000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-12-24T09:00:00",
+      "updatedAt": "2025-12-25T10:00:00",
+      "details": {
+        "description": "트렌치 코트 - 베이지",
+        "manufacturer": "버버리",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 29,
+      "name": "식품 D-007",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 700,
+      "price": 25000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-23T08:00:00",
+      "updatedAt": "2025-12-24T09:00:00",
+      "details": {
+        "description": "프리미엄 올리브유 500ml",
+        "manufacturer": "올리타리아",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 30,
+      "name": "전자부품 A-009",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 220,
+      "price": 5500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-22T14:00:00",
+      "updatedAt": "2025-12-23T15:00:00",
+      "details": {
+        "description": "무선 마우스 - 블루투스",
+        "manufacturer": "로지텍",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 31,
+      "name": "가구 B-008",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 15,
+      "price": 890000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-21T11:00:00",
+      "updatedAt": "2025-12-22T12:00:00",
+      "details": {
+        "description": "L자형 데스크 - 블랙",
+        "manufacturer": "퍼시스",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 32,
+      "name": "의류 C-008",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 550,
+      "price": 32000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-12-20T10:00:00",
+      "updatedAt": "2025-12-21T11:00:00",
+      "details": {
+        "description": "조거 팬츠 - 네이비",
+        "manufacturer": "아디다스",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 33,
+      "name": "식품 D-008",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1800,
+      "price": 2500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-19T07:00:00",
+      "updatedAt": "2025-12-20T08:00:00",
+      "details": {
+        "description": "탄산수 350ml - 24캔",
+        "manufacturer": "트레비",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 34,
+      "name": "전자부품 A-010",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 140,
+      "price": 35000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-18T16:00:00",
+      "updatedAt": "2025-12-19T17:00:00",
+      "details": {
+        "description": "기계식 키보드 - 청축",
+        "manufacturer": "레오폴드",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 35,
+      "name": "가구 B-009",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 45,
+      "price": 75000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-12-17T09:00:00",
+      "updatedAt": "2025-12-18T10:00:00",
+      "details": {
+        "description": "벽걸이 선반 3단",
+        "manufacturer": "무인양품",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 36,
+      "name": "의류 C-009",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 280,
+      "price": 65000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-16T08:00:00",
+      "updatedAt": "2025-12-17T09:00:00",
+      "details": {
+        "description": "캐시미어 머플러 - 버건디",
+        "manufacturer": "폴스미스",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 37,
+      "name": "식품 D-009",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 950,
+      "price": 18000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-15T10:00:00",
+      "updatedAt": "2025-12-16T11:00:00",
+      "details": {
+        "description": "프리미엄 커피원두 1kg",
+        "manufacturer": "스타벅스",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 38,
+      "name": "전자부품 A-011",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 105,
+      "price": 125000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-14T13:00:00",
+      "updatedAt": "2025-12-15T14:00:00",
+      "details": {
+        "description": "외장 SSD 1TB - USB 3.2",
+        "manufacturer": "삼성전자",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 39,
+      "name": "가구 B-010",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 55,
+      "price": 68000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-12-13T11:00:00",
+      "updatedAt": "2025-12-14T12:00:00",
+      "details": {
+        "description": "접이식 테이블 - 화이트",
+        "manufacturer": "이케아",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 40,
+      "name": "의류 C-010",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 420,
+      "price": 48000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-12T09:00:00",
+      "updatedAt": "2025-12-13T10:00:00",
+      "details": {
+        "description": "데님 재킷 - 블루",
+        "manufacturer": "리바이스",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 41,
+      "name": "식품 D-010",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1100,
+      "price": 9500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-11T08:00:00",
+      "updatedAt": "2025-12-12T09:00:00",
+      "details": {
+        "description": "시리얼 750g - 오트밀",
+        "manufacturer": "켈로그",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 42,
+      "name": "전자부품 A-012",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 195,
+      "price": 22000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-12-10T15:00:00",
+      "updatedAt": "2025-12-11T16:00:00",
+      "details": {
+        "description": "웹캠 FHD 1080p",
+        "manufacturer": "로지텍",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 43,
+      "name": "가구 B-011",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 28,
+      "price": 420000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-09T10:00:00",
+      "updatedAt": "2025-12-10T11:00:00",
+      "details": {
+        "description": "식탁 세트 4인용 - 원목",
+        "manufacturer": "한샘",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 44,
+      "name": "의류 C-011",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 380,
+      "price": 38000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-08T08:00:00",
+      "updatedAt": "2025-12-09T09:00:00",
+      "details": {
+        "description": "카고 팬츠 - 올리브",
+        "manufacturer": "칼하트",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 45,
+      "name": "식품 D-011",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 650,
+      "price": 32000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-12-07T07:00:00",
+      "updatedAt": "2025-12-08T08:00:00",
+      "details": {
+        "description": "단백질 파우더 2kg",
+        "manufacturer": "마이프로틴",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 46,
+      "name": "전자부품 A-013",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 170,
+      "price": 15500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-06T14:00:00",
+      "updatedAt": "2025-12-07T15:00:00",
+      "details": {
+        "description": "USB 허브 7포트",
+        "manufacturer": "벨킨",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 47,
+      "name": "가구 B-012",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 38,
+      "price": 185000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-05T11:00:00",
+      "updatedAt": "2025-12-06T12:00:00",
+      "details": {
+        "description": "TV 스탠드 - 월넛",
+        "manufacturer": "보이스",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 48,
+      "name": "의류 C-012",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 320,
+      "price": 125000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-12-04T09:00:00",
+      "updatedAt": "2025-12-05T10:00:00",
+      "details": {
+        "description": "다운 재킷 - 블랙",
+        "manufacturer": "캐나다구스",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 49,
+      "name": "식품 D-012",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1400,
+      "price": 6500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-03T08:00:00",
+      "updatedAt": "2025-12-04T09:00:00",
+      "details": {
+        "description": "두유 190ml - 16팩",
+        "manufacturer": "정식품",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 50,
+      "name": "전자부품 A-014",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 88,
+      "price": 89000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-02T16:00:00",
+      "updatedAt": "2025-12-03T17:00:00",
+      "details": {
+        "description": "무선 이어폰 ANC",
+        "manufacturer": "소니",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 51,
+      "name": "가구 B-013",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 22,
+      "price": 550000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-12-01T10:00:00",
+      "updatedAt": "2025-12-02T11:00:00",
+      "details": {
+        "description": "수납 침대 퀸 - 그레이",
+        "manufacturer": "에이스침대",
+        "warranty": "10년",
+        "processes": []
+      }
+    },
+    {
+      "id": 52,
+      "name": "의류 C-013",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 480,
+      "price": 28000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-11-30T08:00:00",
+      "updatedAt": "2025-12-01T09:00:00",
+      "details": {
+        "description": "면 셔츠 - 스트라이프",
+        "manufacturer": "랄프로렌",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 53,
+      "name": "식품 D-013",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 850,
+      "price": 42000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-29T07:00:00",
+      "updatedAt": "2025-11-30T08:00:00",
+      "details": {
+        "description": "프리미엄 꿀 1kg",
+        "manufacturer": "꽃샘",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 54,
+      "name": "전자부품 A-015",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 135,
+      "price": 48000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-28T13:00:00",
+      "updatedAt": "2025-11-29T14:00:00",
+      "details": {
+        "description": "스마트 워치 밴드 - 실리콘",
+        "manufacturer": "애플",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 55,
+      "name": "가구 B-014",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 42,
+      "price": 125000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-11-27T11:00:00",
+      "updatedAt": "2025-11-28T12:00:00",
+      "details": {
+        "description": "화장대 - 화이트",
+        "manufacturer": "일룸",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 56,
+      "name": "의류 C-014",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 360,
+      "price": 52000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-26T09:00:00",
+      "updatedAt": "2025-11-27T10:00:00",
+      "details": {
+        "description": "블레이저 - 네이비",
+        "manufacturer": "자라",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 57,
+      "name": "식품 D-014",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1050,
+      "price": 8500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-25T08:00:00",
+      "updatedAt": "2025-11-26T09:00:00",
+      "details": {
+        "description": "요거트 12팩 - 플레인",
+        "manufacturer": "빙그레",
+        "warranty": "3주",
+        "processes": []
+      }
+    },
+    {
+      "id": 58,
+      "name": "전자부품 A-016",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 210,
+      "price": 12500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-24T15:00:00",
+      "updatedAt": "2025-11-25T16:00:00",
+      "details": {
+        "description": "보조배터리 20000mAh",
+        "manufacturer": "샤오미",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 59,
+      "name": "가구 B-015",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 18,
+      "price": 720000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-23T10:00:00",
+      "updatedAt": "2025-11-24T11:00:00",
+      "details": {
+        "description": "모듈형 소파 - 그레이",
+        "manufacturer": "까사미아",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 60,
+      "name": "의류 C-015",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 290,
+      "price": 95000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-11-22T08:00:00",
+      "updatedAt": "2025-11-23T09:00:00",
+      "details": {
+        "description": "울 코트 - 카멜",
+        "manufacturer": "막스마라",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 61,
+      "name": "식품 D-015",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 750,
+      "price": 28000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-21T07:00:00",
+      "updatedAt": "2025-11-22T08:00:00",
+      "details": {
+        "description": "아보카도 오일 500ml",
+        "manufacturer": "코스트코",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 62,
+      "name": "전자부품 A-017",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 165,
+      "price": 32000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-11-20T14:00:00",
+      "updatedAt": "2025-11-21T15:00:00",
+      "details": {
+        "description": "블루투스 스피커 - 포터블",
+        "manufacturer": "JBL",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 63,
+      "name": "가구 B-016",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 52,
+      "price": 58000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-19T11:00:00",
+      "updatedAt": "2025-11-20T12:00:00",
+      "details": {
+        "description": "스탠드 조명 - 블랙",
+        "manufacturer": "이케아",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 64,
+      "name": "의류 C-016",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 440,
+      "price": 22000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-18T09:00:00",
+      "updatedAt": "2025-11-19T10:00:00",
+      "details": {
+        "description": "레깅스 - 블랙",
+        "manufacturer": "룰루레몬",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 65,
+      "name": "식품 D-016",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1300,
+      "price": 5500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-17T08:00:00",
+      "updatedAt": "2025-11-18T09:00:00",
+      "details": {
+        "description": "파스타 소스 350g",
+        "manufacturer": "바릴라",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 66,
+      "name": "전자부품 A-018",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 125,
+      "price": 78000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-16T16:00:00",
+      "updatedAt": "2025-11-17T17:00:00",
+      "details": {
+        "description": "게이밍 마우스패드 XL",
+        "manufacturer": "레이저",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 67,
+      "name": "가구 B-017",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 33,
+      "price": 245000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-11-15T10:00:00",
+      "updatedAt": "2025-11-16T11:00:00",
+      "details": {
+        "description": "옷장 2문 - 화이트",
+        "manufacturer": "한샘",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 68,
+      "name": "의류 C-017",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 370,
+      "price": 68000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-14T08:00:00",
+      "updatedAt": "2025-11-15T09:00:00",
+      "details": {
+        "description": "플리스 자켓 - 네이비",
+        "manufacturer": "파타고니아",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 69,
+      "name": "식품 D-017",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 920,
+      "price": 15500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-13T07:00:00",
+      "updatedAt": "2025-11-14T08:00:00",
+      "details": {
+        "description": "그래놀라 바 12팩",
+        "manufacturer": "네이처밸리",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 70,
+      "name": "전자부품 A-019",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 155,
+      "price": 25000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-11-12T13:00:00",
+      "updatedAt": "2025-11-13T14:00:00",
+      "details": {
+        "description": "USB-C 독 스테이션",
+        "manufacturer": "앤커",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 71,
+      "name": "가구 B-018",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 26,
+      "price": 380000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-11T11:00:00",
+      "updatedAt": "2025-11-12T12:00:00",
+      "details": {
+        "description": "바 스툴 2개 세트",
+        "manufacturer": "토넷",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 72,
+      "name": "의류 C-018",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 510,
+      "price": 35000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-10T09:00:00",
+      "updatedAt": "2025-11-11T10:00:00",
+      "details": {
+        "description": "반팔 폴로 - 화이트",
+        "manufacturer": "라코스테",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 73,
+      "name": "식품 D-018",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1150,
+      "price": 4200,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-11-09T08:00:00",
+      "updatedAt": "2025-11-10T09:00:00",
+      "details": {
+        "description": "냉동 야채믹스 1kg",
+        "manufacturer": "풀무원",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 74,
+      "name": "전자부품 A-020",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 185,
+      "price": 55000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-08T15:00:00",
+      "updatedAt": "2025-11-09T16:00:00",
+      "details": {
+        "description": "스마트 플러그 4팩",
+        "manufacturer": "TP-Link",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 75,
+      "name": "가구 B-019",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 48,
+      "price": 82000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-07T10:00:00",
+      "updatedAt": "2025-11-08T11:00:00",
+      "details": {
+        "description": "사이드 테이블 - 라탄",
+        "manufacturer": "무인양품",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 76,
+      "name": "의류 C-019",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 330,
+      "price": 45000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-11-06T08:00:00",
+      "updatedAt": "2025-11-07T09:00:00",
+      "details": {
+        "description": "린넨 바지 - 베이지",
+        "manufacturer": "COS",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 77,
+      "name": "식품 D-019",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 680,
+      "price": 35000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-05T07:00:00",
+      "updatedAt": "2025-11-06T08:00:00",
+      "details": {
+        "description": "유기농 잼 세트 3종",
+        "manufacturer": "본프레",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 78,
+      "name": "전자부품 A-021",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 145,
+      "price": 18000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-04T14:00:00",
+      "updatedAt": "2025-11-05T15:00:00",
+      "details": {
+        "description": "HDMI 케이블 2m - 8K",
+        "manufacturer": "유그린",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 79,
+      "name": "가구 B-020",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 19,
+      "price": 650000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-03T11:00:00",
+      "updatedAt": "2025-11-04T12:00:00",
+      "details": {
+        "description": "드레스룸 시스템",
+        "manufacturer": "퍼시스",
+        "warranty": "10년",
+        "processes": []
+      }
+    },
+    {
+      "id": 80,
+      "name": "의류 C-020",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 460,
+      "price": 58000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-11-02T09:00:00",
+      "updatedAt": "2025-11-03T10:00:00",
+      "details": {
+        "description": "가죽 벨트 - 브라운",
+        "manufacturer": "몽블랑",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 81,
+      "name": "식품 D-020",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1250,
+      "price": 7500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-11-01T08:00:00",
+      "updatedAt": "2025-11-02T09:00:00",
+      "details": {
+        "description": "치즈 슬라이스 24매",
+        "manufacturer": "소와나무",
+        "warranty": "3개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 82,
+      "name": "전자부품 A-022",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 175,
+      "price": 42000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-10-31T16:00:00",
+      "updatedAt": "2025-11-01T17:00:00",
+      "details": {
+        "description": "태블릿 거치대 - 알루미늄",
+        "manufacturer": "람보르기니",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 83,
+      "name": "가구 B-021",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 36,
+      "price": 195000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-30T10:00:00",
+      "updatedAt": "2025-10-31T11:00:00",
+      "details": {
+        "description": "행거 랙 2단 - 블랙",
+        "manufacturer": "브루클린웍스",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 84,
+      "name": "의류 C-021",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 395,
+      "price": 75000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-29T08:00:00",
+      "updatedAt": "2025-10-30T09:00:00",
+      "details": {
+        "description": "스웨이드 스니커즈 - 그레이",
+        "manufacturer": "뉴발란스",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 85,
+      "name": "식품 D-021",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 880,
+      "price": 22000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-28T07:00:00",
+      "updatedAt": "2025-10-29T08:00:00",
+      "details": {
+        "description": "수제 쿠키 세트 500g",
+        "manufacturer": "더벤티",
+        "warranty": "2개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 86,
+      "name": "전자부품 A-023",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 115,
+      "price": 65000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-27T13:00:00",
+      "updatedAt": "2025-10-28T14:00:00",
+      "details": {
+        "description": "스마트 체중계 - Wi-Fi",
+        "manufacturer": "샤오미",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 87,
+      "name": "가구 B-022",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 41,
+      "price": 110000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-10-26T11:00:00",
+      "updatedAt": "2025-10-27T12:00:00",
+      "details": {
+        "description": "북엔드 세트 - 마블",
+        "manufacturer": "웨스트엘름",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 88,
+      "name": "의류 C-022",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 425,
+      "price": 32000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-25T09:00:00",
+      "updatedAt": "2025-10-26T10:00:00",
+      "details": {
+        "description": "양말 6족 세트 - 베이직",
+        "manufacturer": "탑텐",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 89,
+      "name": "식품 D-022",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1000,
+      "price": 11000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-10-24T08:00:00",
+      "updatedAt": "2025-10-25T09:00:00",
+      "details": {
+        "description": "망고 주스 1L - 6팩",
+        "manufacturer": "델몬트",
+        "warranty": "1년",
+        "processes": []
+      }
+    },
+    {
+      "id": 90,
+      "name": "전자부품 A-024",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 195,
+      "price": 28500,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-23T15:00:00",
+      "updatedAt": "2025-10-24T16:00:00",
+      "details": {
+        "description": "LED 데스크 램프 - 조광",
+        "manufacturer": "필립스",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 91,
+      "name": "가구 B-023",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 29,
+      "price": 480000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-22T10:00:00",
+      "updatedAt": "2025-10-23T11:00:00",
+      "details": {
+        "description": "거실장 3단 - 월넛",
+        "manufacturer": "일룸",
+        "warranty": "5년",
+        "processes": []
+      }
+    },
+    {
+      "id": 92,
+      "name": "의류 C-023",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 355,
+      "price": 88000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-21T08:00:00",
+      "updatedAt": "2025-10-22T09:00:00",
+      "details": {
+        "description": "가죽 재킷 - 블랙",
+        "manufacturer": "올세인츠",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 93,
+      "name": "식품 D-023",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 720,
+      "price": 48000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-20T07:00:00",
+      "updatedAt": "2025-10-21T08:00:00",
+      "details": {
+        "description": "한우 등심 500g",
+        "manufacturer": "횡성한우",
+        "warranty": "7일",
+        "processes": []
+      }
+    },
+    {
+      "id": 94,
+      "name": "전자부품 A-025",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 160,
+      "price": 38000,
+      "status": "pending",
+      "statusLabel": "대기",
+      "createdAt": "2025-10-19T14:00:00",
+      "updatedAt": "2025-10-20T15:00:00",
+      "details": {
+        "description": "멀티탭 6구 - 서지보호",
+        "manufacturer": "일렉트로룩스",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 95,
+      "name": "가구 B-024",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 24,
+      "price": 350000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-18T11:00:00",
+      "updatedAt": "2025-10-19T12:00:00",
+      "details": {
+        "description": "안락 의자 - 그린",
+        "manufacturer": "까사미아",
+        "warranty": "3년",
+        "processes": []
+      }
+    },
+    {
+      "id": 96,
+      "name": "의류 C-024",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 480,
+      "price": 25000,
+      "status": "inactive",
+      "statusLabel": "비활성",
+      "createdAt": "2025-10-17T09:00:00",
+      "updatedAt": "2025-10-18T10:00:00",
+      "details": {
+        "description": "스포츠 브라 - 블랙",
+        "manufacturer": "언더아머",
+        "warranty": "6개월",
+        "processes": []
+      }
+    },
+    {
+      "id": 97,
+      "name": "식품 D-024",
+      "category": "식품",
+      "categoryCode": "FOOD",
+      "quantity": 1350,
+      "price": 3800,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-16T08:00:00",
+      "updatedAt": "2025-10-17T09:00:00",
+      "details": {
+        "description": "사과 2kg - 부사",
+        "manufacturer": "청송사과",
+        "warranty": "2주",
+        "processes": []
+      }
+    },
+    {
+      "id": 98,
+      "name": "전자부품 A-026",
+      "category": "전자",
+      "categoryCode": "ELEC",
+      "quantity": 130,
+      "price": 85000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-15T16:00:00",
+      "updatedAt": "2025-10-16T17:00:00",
+      "details": {
+        "description": "액션캠 4K - 방수",
+        "manufacturer": "고프로",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 99,
+      "name": "가구 B-025",
+      "category": "가구",
+      "categoryCode": "FURN",
+      "quantity": 31,
+      "price": 175000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-14T10:00:00",
+      "updatedAt": "2025-10-15T11:00:00",
+      "details": {
+        "description": "신발장 5단 - 화이트",
+        "manufacturer": "리바트",
+        "warranty": "2년",
+        "processes": []
+      }
+    },
+    {
+      "id": 100,
+      "name": "의류 C-025",
+      "category": "의류",
+      "categoryCode": "CLTH",
+      "quantity": 400,
+      "price": 62000,
+      "status": "active",
+      "statusLabel": "활성",
+      "createdAt": "2025-10-13T08:00:00",
+      "updatedAt": "2025-10-14T09:00:00",
+      "details": {
+        "description": "러닝화 - 네온",
+        "manufacturer": "아식스",
+        "warranty": "1년",
+        "processes": []
+      }
+    }
+  ],
+  "total": 100,
+  "columns": [
+    {
+      "key": "name",
+      "title": "제품명",
+      "dataType": "text",
+      "filterable": true,
+      "sortable": true,
+      "editable": true,
+      "width": 200
+    },
+    {
+      "key": "category",
+      "title": "카테고리",
+      "dataType": "dropdown",
+      "options": ["전자", "가구", "의류", "식품"],
+      "filterable": true,
+      "sortable": true,
+      "mergeable": true,
+      "width": 100
+    },
+    {
+      "key": "quantity",
+      "title": "수량",
+      "dataType": "number",
+      "filterable": true,
+      "sortable": true,
+      "editable": true,
+      "width": 100
+    },
+    {
+      "key": "price",
+      "title": "가격",
+      "dataType": "number",
+      "filterable": true,
+      "sortable": true,
+      "format": "currency",
+      "width": 120
+    },
+    {
+      "key": "status",
+      "title": "상태",
+      "dataType": "dropdown",
+      "options": ["active", "inactive", "pending"],
+      "filterable": true,
+      "width": 100
+    },
+    {
+      "key": "createdAt",
+      "title": "생성일",
+      "dataType": "date",
+      "filterable": true,
+      "sortable": true,
+      "format": "YYYY-MM-DD",
+      "width": 120
+    }
+  ],
+  "groupHeaders": [
+    {
+      "title": "제품 정보",
+      "children": ["name", "category"]
+    },
+    {
+      "title": "수량/가격",
+      "children": ["quantity", "price"]
+    },
+    {
+      "title": "상태 정보",
+      "children": ["status", "createdAt"]
+    }
+  ]
+}
