@@ -54,16 +54,21 @@ test.describe('자재 입출고 내역', () => {
     expect(rowCount).toBeGreaterThan(0)
 
     // 모든 행에 '원자재'가 포함되어 있는지 확인 (BR-02)
+    // 자재명은 첫 번째 실제 데이터 컬럼 (체크박스 있으면 1, 없으면 0)
     if (rowCount > 0) {
-      const firstRowMaterialName = await tableRows.first().locator('td').first().textContent()
+      // 체크박스 컬럼 유무 확인 후 자재명 컬럼 선택
+      const firstRow = tableRows.first()
+      const hasCheckbox = await firstRow.locator('.ant-checkbox').count() > 0
+      const materialNameColIndex = hasCheckbox ? 1 : 0
+      const firstRowMaterialName = await firstRow.locator('td').nth(materialNameColIndex).textContent()
       expect(firstRowMaterialName?.toLowerCase()).toContain('원자재')
     }
   })
 
   // E2E-002: 기간 선택 조회
   test('E2E-002: 사용자가 기간으로 필터링할 수 있다', async ({ page }) => {
-    // RangePicker 확인
-    await expect(page.locator('[data-testid="search-dateRange-daterange"]')).toBeVisible()
+    // RangePicker 확인 (두 개의 input 중 첫 번째 사용)
+    await expect(page.locator('[data-testid="search-dateRange-daterange"]').first()).toBeVisible()
 
     // RangePicker 클릭하여 날짜 선택 패널 열기
     await page.click('[data-testid="search-dateRange-daterange"]')
@@ -232,8 +237,13 @@ test.describe('자재 입출고 내역', () => {
 
     if (rowCount > 0) {
       // 모든 행에 '입고' 태그가 있는지 확인
+      // 체크박스 유무에 따라 컬럼 인덱스 조정
+      const firstRow = tableRows.first()
+      const hasCheckbox = await firstRow.locator('.ant-checkbox').count() > 0
+      const typeColIndex = hasCheckbox ? 3 : 2 // 체크박스, 자재명, 자재코드, 입출고유형
       for (let i = 0; i < Math.min(rowCount, 5); i++) {
-        await expect(tableRows.nth(i).locator('.ant-tag')).toContainText('입고')
+        const typeCell = tableRows.nth(i).locator('td').nth(typeColIndex)
+        await expect(typeCell).toContainText('입고')
       }
     }
   })
@@ -273,9 +283,9 @@ test.describe('자재 입출고 내역', () => {
     await page.click('[data-testid="search-btn"]')
     await page.waitForTimeout(500)
 
-    // Empty State 또는 No Data 표시 확인
-    const noData = page.locator('.ant-empty, .ant-table-placeholder')
-    await expect(noData).toBeVisible()
+    // Empty State 표시 확인 - 테이블 내부의 placeholder를 특정
+    const noData = page.locator('[data-testid="material-history-page"] .ant-table-placeholder, [data-testid="material-history-page"] .ant-empty')
+    await expect(noData.first()).toBeVisible()
   })
 
   // 반응형 테스트

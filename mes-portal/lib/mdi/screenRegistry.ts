@@ -16,6 +16,9 @@ type ScreenLoader = () => Promise<{ default: ComponentType }>;
  * @description Object.freeze로 런타임 조작 방지 (BR-07)
  */
 export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.freeze({
+  // 홈
+  '/': () => import('@/screens/home/page'),
+
   // 대시보드
   '/dashboard': () => import('@/screens/dashboard/Dashboard'),
 
@@ -64,6 +67,8 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/sample/inventory-detail': () => import('@/screens/sample/InventoryDetail'),
   '/sample/equipment-monitor': () => import('@/screens/sample/EquipmentMonitor'),
   '/sample/quality-inspection': () => import('@/screens/sample/QualityInspection'),
+  '/sample/material-history': () => import('@/screens/sample/MaterialHistory'),
+  '/sample/work-order-form': () => import('@/screens/sample/WorkOrderForm'),
 });
 
 /**
