@@ -1420,7 +1420,7 @@ workPackages:
         title: "[샘플] 자재 입출고 내역"
         category: development
         domain: frontend
-        status: "[ap]"
+        status: "[im]"
         priority: medium
         assignee: "-"
         tags:
@@ -1455,7 +1455,7 @@ workPackages:
             - ListTemplate 사용
             - DataTable 컴포넌트 활용
             - mock-data/material-history.json 로드
-        execution: build
+        execution: verify
       - id: TSK-06-18
         title: "[샘플] 공정 관리"
         category: development
@@ -1501,7 +1501,7 @@ workPackages:
         title: "[샘플] 알림 설정 관리"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: low
         assignee: "-"
         tags:
@@ -1539,7 +1539,6 @@ workPackages:
             - FormTemplate 사용
             - 키보드 단축키 시스템 연동
             - mock-data/notification-settings.json 로드
-        execution: start
       - id: TSK-06-20
         title: "[샘플] 데이터 테이블 종합"
         category: development
