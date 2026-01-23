@@ -298,10 +298,10 @@ export function SelectPopupTemplate<T extends Record<string, unknown>>({
       width={width}
       onCancel={onClose}
       footer={renderFooter()}
-      destroyOnClose
+      destroyOnHidden
       maskClosable
     >
-      <Space direction="vertical" style={{ width: '100%' }} size="middle">
+      <Space orientation="vertical" style={{ width: '100%' }} size="middle">
         {/* 검색 영역 */}
         <Space.Compact style={{ width: '100%' }}>
           <Input

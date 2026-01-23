@@ -2,7 +2,7 @@
 // 테마 프로바이더 - next-themes + Ant Design ConfigProvider 통합
 'use client'
 
-import { ConfigProvider } from 'antd'
+import { App, ConfigProvider } from 'antd'
 import { ThemeProvider as NextThemeProvider, useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import {
@@ -42,7 +42,7 @@ function AntdConfigProvider({ children }: ThemeProviderProps) {
         components: isDark ? darkComponentTokens : componentTokens,
       }}
     >
-      {children}
+      <App>{children}</App>
     </ConfigProvider>
   )
 }

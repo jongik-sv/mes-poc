@@ -5,7 +5,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { message } from 'antd'
+import { App } from 'antd'
 import type { FavoriteData, FavoriteMenuItem } from '@/lib/types/favorites'
 import { FAVORITES_CONFIG } from '@/lib/types/favorites'
 
@@ -13,7 +13,7 @@ import { FAVORITES_CONFIG } from '@/lib/types/favorites'
  * 메뉴 아이템 인터페이스 (API 응답 호환)
  */
 interface MenuItem {
-  id: number
+  id: string
   code: string
   name: string
   path: string | null
@@ -28,13 +28,13 @@ interface UseFavoritesOptions {
 }
 
 interface UseFavoritesReturn {
-  favoriteIds: number[]
+  favoriteIds: string[]
   favoriteMenus: FavoriteMenuItem[]
-  isFavorite: (menuId: number) => boolean
+  isFavorite: (menuId: string) => boolean
   canAddFavorite: () => boolean
-  addFavorite: (menuId: number) => void
-  removeFavorite: (menuId: number) => void
-  toggleFavorite: (menuId: number) => void
+  addFavorite: (menuId: string) => void
+  removeFavorite: (menuId: string) => void
+  toggleFavorite: (menuId: string) => void
   isLoading: boolean
   error: Error | null
 }
@@ -48,7 +48,8 @@ export function useFavorites({
   userId,
   allMenus,
 }: UseFavoritesOptions): UseFavoritesReturn {
-  const [favoriteIds, setFavoriteIds] = useState<number[]>([])
+  const { message } = App.useApp()
+  const [favoriteIds, setFavoriteIds] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -110,7 +111,7 @@ export function useFavorites({
 
   // localStorage에 저장
   const saveFavorites = useCallback(
-    (ids: number[]) => {
+    (ids: string[]) => {
       try {
         const data: FavoriteData = {
           userId,
@@ -128,7 +129,7 @@ export function useFavorites({
         throw err
       }
     },
-    [userId, storageKey]
+    [userId, storageKey, message]
   )
 
   // 초기 로드
@@ -150,7 +151,7 @@ export function useFavorites({
 
   // 즐겨찾기 여부 확인
   const isFavorite = useCallback(
-    (menuId: number) => {
+    (menuId: string) => {
       return favoriteIds.includes(menuId)
     },
     [favoriteIds]
@@ -163,7 +164,7 @@ export function useFavorites({
 
   // 즐겨찾기 추가
   const addFavorite = useCallback(
-    (menuId: number) => {
+    (menuId: string) => {
       // 이미 즐겨찾기된 경우
       if (favoriteIds.includes(menuId)) {
         return
@@ -193,12 +194,12 @@ export function useFavorites({
         // saveFavorites에서 에러 처리됨
       }
     },
-    [favoriteIds, leafMenus, saveFavorites]
+    [favoriteIds, leafMenus, saveFavorites, message]
   )
 
   // 즐겨찾기 제거
   const removeFavorite = useCallback(
-    (menuId: number) => {
+    (menuId: string) => {
       if (!favoriteIds.includes(menuId)) {
         return
       }
@@ -212,12 +213,12 @@ export function useFavorites({
         // saveFavorites에서 에러 처리됨
       }
     },
-    [favoriteIds, saveFavorites]
+    [favoriteIds, saveFavorites, message]
   )
 
   // 즐겨찾기 토글
   const toggleFavorite = useCallback(
-    (menuId: number) => {
+    (menuId: string) => {
       if (favoriteIds.includes(menuId)) {
         removeFavorite(menuId)
       } else {

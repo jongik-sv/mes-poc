@@ -135,6 +135,8 @@ export function TabBar() {
 
       // BR-03: 탭 바 영역 밖 드롭 시 취소
       if (over && active.id !== over.id) {
+        // 홈 탭은 드래그 불가 (SortableTabItem에서 disabled)
+        // 홈 탭 위에 드롭 시 -> context에서 홈 바로 다음(index 1)으로 이동 처리
         reorderTabs(active.id as string, over.id as string);
       }
 

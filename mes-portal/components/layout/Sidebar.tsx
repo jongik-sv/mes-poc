@@ -75,8 +75,8 @@ export interface MenuItem {
 }
 
 export interface FavoriteOptions {
-  isFavorite: (menuId: number) => boolean
-  toggleFavorite: (menuId: number) => void
+  isFavorite: (menuId: string) => boolean
+  toggleFavorite: (menuId: string) => void
   canAddFavorite: () => boolean
 }
 
@@ -113,36 +113,33 @@ const convertToMenuItems = (
       const hasChildren = menu.children && menu.children.length > 0
       const baseIcon = getIcon(menu.icon)
       const isLeaf = menu.path !== undefined && menu.path !== null
-      const menuIdNum = parseInt(menu.id, 10)
 
-      // collapsed 상태에서 부모 메뉴 아이콘에 클릭 핸들러 추가
-      const icon = (level === 1 && collapsed && hasChildren && onParentIconClick) ? (
-        <span
-          onClick={(e) => {
-            e.stopPropagation()
-            onParentIconClick(menu.id)
-          }}
-          style={{ cursor: 'pointer' }}
-        >
-          {baseIcon}
-        </span>
-      ) : (level === 1 ? baseIcon : null)
+      // 1레벨 메뉴에만 아이콘 표시
+      const icon = level === 1 ? baseIcon : null
 
       if (!hasChildren || level >= maxLevel) {
+        const isFavorited = favoriteOptions?.isFavorite(menu.id) ?? false
         const labelWithFavorite =
           favoriteOptions && isLeaf && !collapsed ? (
             <div className="flex items-center justify-between w-full group">
               <span className="truncate">{menu.name}</span>
-              <FavoriteButton
-                isFavorite={favoriteOptions.isFavorite(menuIdNum)}
-                onToggle={() => favoriteOptions.toggleFavorite(menuIdNum)}
-                disabled={
-                  !favoriteOptions.isFavorite(menuIdNum) &&
-                  !favoriteOptions.canAddFavorite()
-                }
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
-                showTooltip={true}
-              />
+              {isFavorited ? (
+                <FavoriteButton
+                  isFavorite={true}
+                  onToggle={() => favoriteOptions.toggleFavorite(menu.id)}
+                  disabled={false}
+                  className="ml-2 flex-shrink-0"
+                  showTooltip={true}
+                />
+              ) : (
+                <FavoriteButton
+                  isFavorite={false}
+                  onToggle={() => favoriteOptions.toggleFavorite(menu.id)}
+                  disabled={!favoriteOptions.canAddFavorite()}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
+                  showTooltip={true}
+                />
+              )}
             </div>
           ) : (
             <span className="truncate">{menu.name}</span>

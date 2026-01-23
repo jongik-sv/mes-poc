@@ -11,3 +11,7 @@ export type { ColumnConfig, UseTableColumnsOptions, UseTableColumnsReturn } from
 // TSK-05-06: 전역 단축키 훅
 export { useGlobalHotkeys, getModifierKey, isMacPlatform, HOTKEY_CATEGORIES } from './useGlobalHotkeys'
 export type { HotkeyItem, HotkeyCategory, UseGlobalHotkeysOptions, HotkeyConfig } from './useGlobalHotkeys'
+
+// 홈 화면: 최근 사용 메뉴 훅
+export { useRecentMenus } from './useRecentMenus'
+export type { RecentMenuItem } from './useRecentMenus'

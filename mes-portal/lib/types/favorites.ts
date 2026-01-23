@@ -7,7 +7,7 @@
  */
 export interface FavoriteData {
   userId: number
-  menuIds: number[]
+  menuIds: string[]
   updatedAt: string
 }
 
@@ -15,7 +15,7 @@ export interface FavoriteData {
  * 즐겨찾기 메뉴 아이템 인터페이스
  */
 export interface FavoriteMenuItem {
-  id: number
+  id: string
   code: string
   name: string
   path: string

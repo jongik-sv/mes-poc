@@ -24,8 +24,10 @@ interface PortalLayoutProps {
   sidebar?: ReactNode
   tabBar?: ReactNode
   footer?: ReactNode
-  /** 사이드바 접힘 상태 변경 콜백 */
+  /** 사이드바 접힘 상태 변경 콜백 (토글 버튼으로 변경 시) */
   onCollapsedChange?: (collapsed: boolean) => void
+  /** 사이드바 시각적 접힘 상태 변경 콜백 (호버 포함) */
+  onVisualCollapsedChange?: (isVisuallyCollapsed: boolean) => void
 }
 
 export function PortalLayout({
@@ -35,11 +37,24 @@ export function PortalLayout({
   tabBar,
   footer,
   onCollapsedChange,
+  onVisualCollapsedChange,
 }: PortalLayoutProps) {
   const { token } = theme.useToken()
   const [collapsed, setCollapsed] = useState(false)
+  const [hoverExpanded, setHoverExpanded] = useState(false)  // 호버로 임시 펼친 상태
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('desktop')
   const [mounted, setMounted] = useState(false)
+
+  // 실제 표시되는 사이드바 상태 (호버 시 펼침)
+  const isVisuallyCollapsed = collapsed && !hoverExpanded
+
+  // 메인 콘텐츠 marginLeft (호버 시에도 collapsed 기준 유지 - 오버레이 방식)
+  const contentMarginLeft = collapsed ? 72 : 256
+
+  // 시각적 접힘 상태가 변경될 때 콜백 호출
+  useEffect(() => {
+    onVisualCollapsedChange?.(isVisuallyCollapsed)
+  }, [isVisuallyCollapsed, onVisualCollapsedChange])
 
   const getBreakpoint = (width: number): Breakpoint => {
     if (width <= BREAKPOINTS.mobile) return 'mobile'
@@ -94,8 +109,16 @@ export function PortalLayout({
     handleCollapse(!collapsed)
   }
 
-  // collapsed 상태에 따라 즉시 sidebarWidth 계산 (Sider의 width/collapsedWidth와 일치)
-  const sidebarWidth = collapsed ? 72 : 256
+  // 사이드바 호버 이벤트 핸들러 (데스크톱에서만 동작)
+  const handleSiderMouseEnter = () => {
+    if (collapsed && breakpoint === 'desktop') {
+      setHoverExpanded(true)
+    }
+  }
+
+  const handleSiderMouseLeave = () => {
+    setHoverExpanded(false)
+  }
 
   return (
     <Layout className="min-h-screen" data-testid="portal-layout">
@@ -146,12 +169,14 @@ export function PortalLayout({
         {/* 사이드바 영역 */}
         <Sider
           collapsible
-          collapsed={collapsed}
+          collapsed={isVisuallyCollapsed}
           onCollapse={handleCollapse}
           trigger={null}
           width={256}
           collapsedWidth={72}
-          className="left-0 bottom-0 z-40"
+          className="left-0 bottom-0"
+          onMouseEnter={handleSiderMouseEnter}
+          onMouseLeave={handleSiderMouseLeave}
           style={{
             position: 'fixed',
             top: 'var(--header-height)',
@@ -159,9 +184,12 @@ export function PortalLayout({
             overflow: 'auto',
             backgroundColor: token.colorBgContainer,
             borderRight: `1px solid ${token.colorBorder}`,
+            zIndex: hoverExpanded ? 50 : 40,
+            boxShadow: hoverExpanded ? token.boxShadowSecondary : undefined,
+            transition: 'width 0.15s ease-out, box-shadow 0.15s ease-out',
           }}
           role="navigation"
-          aria-expanded={!collapsed}
+          aria-expanded={!isVisuallyCollapsed}
           data-testid="portal-sidebar"
         >
           {sidebar}
@@ -169,15 +197,18 @@ export function PortalLayout({
 
         {/* 메인 컨텐츠 영역 */}
         <Layout
+          className="flex flex-col"
           style={{
-            marginLeft: sidebarWidth,
-            transition: 'margin-left 0.2s ease-out',
+            marginLeft: contentMarginLeft,
+            transition: 'margin-left 0.15s ease-out',
+            height: 'calc(100vh - var(--header-height))',
+            overflow: 'hidden',
           }}
         >
           {/* 탭 바 영역 (선택적) */}
           {tabBar && (
             <div
-              className="sticky top-0 z-30"
+              className="flex-shrink-0"
               style={{
                 height: 'var(--tab-bar-height)',
                 backgroundColor: token.colorBgContainer,
@@ -191,11 +222,8 @@ export function PortalLayout({
 
           {/* 컨텐츠 영역 */}
           <Content
-            className="overflow-auto p-5"
+            className="flex-1 overflow-auto p-5"
             style={{
-              minHeight: tabBar
-                ? 'calc(100vh - var(--header-height) - var(--tab-bar-height) - var(--footer-height))'
-                : 'calc(100vh - var(--header-height) - var(--footer-height))',
               backgroundColor: token.colorBgLayout,
             }}
             data-testid="portal-content"
@@ -204,20 +232,9 @@ export function PortalLayout({
           </Content>
 
           {/* 푸터 영역 */}
-          <Footer
-            className="text-center"
-            style={{
-              height: 'var(--footer-height)',
-              padding: '8px 24px',
-              lineHeight: '20px',
-              backgroundColor: token.colorBgContainer,
-              borderTop: `1px solid ${token.colorBorder}`,
-              color: token.colorTextTertiary,
-            }}
-            data-testid="portal-footer"
-          >
-            {footer || 'MES Portal © 2026'}
-          </Footer>
+          <div className="flex-shrink-0">
+            {footer}
+          </div>
         </Layout>
       </Layout>
     </Layout>

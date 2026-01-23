@@ -113,7 +113,7 @@ export function ScheduleFormModal({
       }
       width={520}
       centered
-      destroyOnClose
+      destroyOnHidden
       data-testid="schedule-form-modal"
     >
       <Form

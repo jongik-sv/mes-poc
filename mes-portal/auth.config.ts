@@ -80,6 +80,7 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
+      const isOnHome = nextUrl.pathname === '/'
       const isOnPortal = nextUrl.pathname.startsWith('/dashboard') ||
         nextUrl.pathname.startsWith('/production') ||
         nextUrl.pathname.startsWith('/quality') ||
@@ -94,15 +95,21 @@ export const authConfig: NextAuthConfig = {
         return true
       }
 
+      // 홈 경로: 로그인 필수
+      if (isOnHome) {
+        if (isLoggedIn) return true
+        return false // Redirect to /login
+      }
+
       // 포털 경로: 로그인 필수
       if (isOnPortal) {
         if (isLoggedIn) return true
         return false // Redirect to /login
       }
 
-      // 이미 로그인한 사용자가 /login 접근 시 대시보드로 리다이렉트
+      // 이미 로그인한 사용자가 /login 접근 시 홈으로 리다이렉트
       if (isOnLogin && isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', nextUrl))
+        return Response.redirect(new URL('/', nextUrl))
       }
 
       return true

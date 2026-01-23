@@ -54,7 +54,7 @@ export function FunctionInspection({ form }: FunctionInspectionProps) {
             </Button>
           </div>
 
-          <Space direction="vertical" className="w-full" size="middle">
+          <Space orientation="vertical" className="w-full" size="middle">
             {fields.map((field, index) => {
               const items = form.getFieldValue('functionItems') as FunctionItem[]
               const currentItem = items?.[index]

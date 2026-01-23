@@ -103,7 +103,7 @@ export function OrganizationFormModal({
       cancelText="취소"
       okButtonProps={{ 'data-testid': 'btn-save' }}
       cancelButtonProps={{ 'data-testid': 'btn-cancel' }}
-      destroyOnClose
+      destroyOnHidden
     >
       {parentNode && !isEditMode && (
         <div className="mb-4 rounded bg-gray-50 p-2 text-sm dark:bg-gray-800">

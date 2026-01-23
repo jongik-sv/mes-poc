@@ -3,7 +3,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { Button, List, Empty, Typography, Spin, Divider, theme } from 'antd'
+import { Button, Empty, Typography, Spin, theme } from 'antd'
 import {
   BellOutlined,
   CheckCircleOutlined,
@@ -156,17 +156,15 @@ export function NotificationPanel({
       {/* 콘텐츠 */}
       <div className="max-h-96 overflow-y-auto">
         <Spin spinning={loading}>
-          <List
-            dataSource={sortedNotifications}
-            locale={{
-              emptyText: (
-                <Empty
-                  image={<BellOutlined className="text-4xl text-gray-300" />}
-                  description="새로운 알림이 없습니다"
-                />
-              ),
-            }}
-            renderItem={(notification) => (
+          {sortedNotifications.length === 0 ? (
+            <div className="py-8">
+              <Empty
+                image={<BellOutlined className="text-4xl text-gray-300" />}
+                description="새로운 알림이 없습니다"
+              />
+            </div>
+          ) : (
+            sortedNotifications.map((notification) => (
               <div
                 key={notification.id}
                 data-testid={`notification-item-${notification.id}`}
@@ -227,8 +225,8 @@ export function NotificationPanel({
                   </div>
                 </div>
               </div>
-            )}
-          />
+            ))
+          )}
         </Spin>
       </div>
 

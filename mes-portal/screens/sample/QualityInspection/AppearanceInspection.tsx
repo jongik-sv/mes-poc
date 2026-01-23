@@ -53,7 +53,7 @@ export function AppearanceInspection({ form }: AppearanceInspectionProps) {
             </Button>
           </div>
 
-          <Space direction="vertical" className="w-full" size="middle">
+          <Space orientation="vertical" className="w-full" size="middle">
             {fields.map((field, index) => {
               const items = form.getFieldValue('appearanceItems') as AppearanceItem[]
               const currentItem = items?.[index]

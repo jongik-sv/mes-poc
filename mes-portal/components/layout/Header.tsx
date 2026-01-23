@@ -240,10 +240,14 @@ export function Header({
 
       {/* 우측 영역 */}
       <div className="flex items-center gap-1">
-        {/* 시계 */}
+        {/* 시계 - Soft UI Style */}
         <div
-          className="hidden sm:flex items-center px-3 py-1.5 rounded-md mr-2"
-          style={{ backgroundColor: token.colorFillSecondary }}
+          className="hidden sm:flex items-center px-4 py-2 mr-2"
+          style={{
+            backgroundColor: token.colorFillSecondary,
+            borderRadius: token.borderRadiusSM,
+            boxShadow: 'inset 2px 2px 4px rgba(166, 180, 200, 0.15), inset -2px -2px 4px rgba(255, 255, 255, 0.5)',
+          }}
         >
           <span
             className="text-sm tabular-nums font-medium"

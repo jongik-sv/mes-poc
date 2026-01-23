@@ -38,6 +38,9 @@ export function SortableTabItem({
   onClick,
   onClose,
 }: SortableTabItemProps) {
+  // 홈 탭은 드래그 비활성화
+  const isHomeTab = tab.id === 'home';
+
   const {
     attributes,
     listeners,
@@ -45,13 +48,16 @@ export function SortableTabItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: tab.id });
+  } = useSortable({
+    id: tab.id,
+    disabled: isHomeTab, // 홈 탭은 드래그 비활성화
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    cursor: isDragging ? 'grabbing' : 'grab',
+    cursor: isHomeTab ? 'default' : isDragging ? 'grabbing' : 'grab',
   };
 
   return (

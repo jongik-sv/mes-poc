@@ -6,6 +6,7 @@ export default NextAuth(authConfigEdge).auth
 
 export const config = {
   matcher: [
+    '/',
     '/dashboard/:path*',
     '/production/:path*',
     '/quality/:path*',

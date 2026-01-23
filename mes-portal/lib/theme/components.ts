@@ -1,103 +1,109 @@
 // lib/theme/components.ts
-// 컴포넌트별 커스텀 토큰 - Enterprise MES Portal
+// 컴포넌트별 커스텀 토큰 - Glassmorphism SaaS Dashboard
+// Modern, Professional, Clarity-focused
 
 import type { ThemeConfig } from 'antd'
 
-// 라이트 모드 컴포넌트 토큰
+// 라이트 모드 컴포넌트 토큰 - Glassmorphism Style
 export const componentTokens: ThemeConfig['components'] = {
-  // 버튼
+  // 버튼 - Clean & Modern
   Button: {
-    primaryShadow: '0 2px 4px -1px rgba(37, 99, 235, 0.2)',
+    primaryShadow: '0 4px 14px rgba(59, 130, 246, 0.4)',
     defaultBorderColor: '#E2E8F0',
-    defaultBg: '#FFFFFF',
-    defaultHoverBg: '#F8FAFC',
+    defaultBg: 'rgba(255, 255, 255, 0.8)',
+    defaultHoverBg: 'rgba(255, 255, 255, 0.95)',
     defaultHoverBorderColor: '#CBD5E1',
-    defaultActiveBg: '#F1F5F9',
+    defaultActiveBg: '#F8FAFC',
     defaultActiveBorderColor: '#94A3B8',
     fontWeight: 500,
+    borderRadius: 10,
   },
 
-  // 레이아웃
+  // 레이아웃 - Glassmorphism Base
   Layout: {
-    headerBg: '#FFFFFF',
-    headerColor: '#0F172A',
-    headerPadding: '0 16px',
-    headerHeight: 56,
-    siderBg: '#FFFFFF',
-    bodyBg: '#F8FAFC',
-    footerBg: '#FFFFFF',
+    headerBg: 'rgba(255, 255, 255, 0.85)',
+    headerColor: '#1E293B',
+    headerPadding: '0 20px',
+    headerHeight: 60,
+    siderBg: 'rgba(255, 255, 255, 0.75)',
+    bodyBg: '#F1F5F9',
+    footerBg: 'rgba(255, 255, 255, 0.7)',
     footerPadding: '12px 24px',
   },
 
-  // 메뉴
+  // 메뉴 - Clean Navigation
   Menu: {
     itemBg: 'transparent',
     subMenuItemBg: 'transparent',
     itemColor: '#475569',
-    itemHoverColor: '#2563EB',
-    itemHoverBg: '#F1F5F9',
-    itemSelectedBg: '#DBEAFE',
-    itemSelectedColor: '#2563EB',
-    itemActiveBg: '#DBEAFE',
+    itemHoverColor: '#3B82F6',
+    itemHoverBg: 'rgba(59, 130, 246, 0.08)',
+    itemSelectedBg: 'rgba(59, 130, 246, 0.12)',
+    itemSelectedColor: '#3B82F6',
+    itemActiveBg: 'rgba(59, 130, 246, 0.12)',
     groupTitleColor: '#94A3B8',
-    horizontalItemSelectedColor: '#2563EB',
-    horizontalItemSelectedBg: '#DBEAFE',
-    iconSize: 16,
-    collapsedIconSize: 18,
+    horizontalItemSelectedColor: '#3B82F6',
+    horizontalItemSelectedBg: 'rgba(59, 130, 246, 0.12)',
+    iconSize: 18,
+    collapsedIconSize: 20,
     itemMarginInline: 8,
-    itemBorderRadius: 6,
-    itemPaddingInline: 12,
-    subMenuItemBorderRadius: 4,
+    itemBorderRadius: 10,
+    itemPaddingInline: 16,
+    subMenuItemBorderRadius: 8,
   },
 
-  // 카드
+  // 카드 - Glassmorphism Style
   Card: {
     headerBg: 'transparent',
-    headerHeight: 48,
-    paddingLG: 20,
+    headerHeight: 52,
+    paddingLG: 24,
+    borderRadiusLG: 16,
+    colorBorderSecondary: '#E2E8F0',
   },
 
-  // 테이블
+  // 테이블 - Clean & Readable
   Table: {
-    headerBg: '#F8FAFC',
+    headerBg: 'rgba(248, 250, 252, 0.9)',
     headerColor: '#475569',
     headerSplitColor: '#E2E8F0',
-    rowHoverBg: '#F1F5F9',
-    rowSelectedBg: '#DBEAFE',
-    rowSelectedHoverBg: '#BFDBFE',
+    rowHoverBg: 'rgba(59, 130, 246, 0.04)',
+    rowSelectedBg: 'rgba(59, 130, 246, 0.08)',
+    rowSelectedHoverBg: 'rgba(59, 130, 246, 0.12)',
     borderColor: '#E2E8F0',
-    cellPaddingBlock: 12,
-    cellPaddingInline: 16,
-    headerBorderRadius: 6,
+    cellPaddingBlock: 14,
+    cellPaddingInline: 18,
+    headerBorderRadius: 10,
   },
 
-  // 입력
+  // 입력 - Subtle & Clean
   Input: {
-    activeBorderColor: '#2563EB',
+    activeBorderColor: '#3B82F6',
     hoverBorderColor: '#93C5FD',
-    activeShadow: '0 0 0 2px rgba(37, 99, 235, 0.1)',
-    paddingBlock: 8,
-    paddingInline: 12,
+    activeShadow: '0 0 0 3px rgba(59, 130, 246, 0.15)',
+    paddingBlock: 10,
+    paddingInline: 14,
     addonBg: '#F8FAFC',
+    borderRadius: 10,
   },
 
-  // 선택
+  // 선택 - Clean Dropdown
   Select: {
-    optionSelectedBg: '#DBEAFE',
-    optionActiveBg: '#F1F5F9',
-    selectorBg: '#FFFFFF',
+    optionSelectedBg: 'rgba(59, 130, 246, 0.12)',
+    optionActiveBg: 'rgba(59, 130, 246, 0.08)',
+    selectorBg: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 10,
   },
 
-  // 탭
+  // 탭 - Modern Style
   Tabs: {
     itemColor: '#64748B',
-    itemHoverColor: '#2563EB',
-    itemSelectedColor: '#2563EB',
-    inkBarColor: '#2563EB',
-    cardBg: '#F8FAFC',
-    cardHeight: 40,
-    cardPadding: '8px 16px',
-    cardGutter: 4,
+    itemHoverColor: '#3B82F6',
+    itemSelectedColor: '#3B82F6',
+    inkBarColor: '#3B82F6',
+    cardBg: 'rgba(255, 255, 255, 0.8)',
+    cardHeight: 44,
+    cardPadding: '10px 18px',
+    cardGutter: 6,
   },
 
   // 배지
@@ -105,45 +111,48 @@ export const componentTokens: ThemeConfig['components'] = {
     dotSize: 8,
   },
 
-  // 브레드크럼
+  // 브레드크럼 - Subtle
   Breadcrumb: {
     itemColor: '#64748B',
-    lastItemColor: '#0F172A',
+    lastItemColor: '#1E293B',
     linkColor: '#64748B',
-    linkHoverColor: '#2563EB',
+    linkHoverColor: '#3B82F6',
     separatorColor: '#CBD5E1',
   },
 
-  // 모달
+  // 모달 - Glassmorphism
   Modal: {
-    headerBg: '#FFFFFF',
-    contentBg: '#FFFFFF',
-    footerBg: '#FFFFFF',
-    titleColor: '#0F172A',
+    headerBg: 'rgba(255, 255, 255, 0.95)',
+    contentBg: 'rgba(255, 255, 255, 0.95)',
+    footerBg: 'rgba(255, 255, 255, 0.95)',
+    titleColor: '#1E293B',
     titleFontSize: 18,
+    borderRadiusLG: 20,
   },
 
-  // 드롭다운
+  // 드롭다운 - Clean
   Dropdown: {
-    paddingBlock: 8,
+    paddingBlock: 10,
+    borderRadiusLG: 12,
   },
 
-  // 폼
+  // 폼 - Professional Labels
   Form: {
-    labelColor: '#334155',
-    labelRequiredMarkColor: '#DC2626',
+    labelColor: '#475569',
+    labelRequiredMarkColor: '#EF4444',
   },
 
-  // 알림
+  // 알림 - Clear & Distinct
   Alert: {
-    colorInfoBg: '#E0F2FE',
-    colorInfoBorder: '#7DD3FC',
-    colorSuccessBg: '#DCFCE7',
-    colorSuccessBorder: '#86EFAC',
-    colorWarningBg: '#FEF3C7',
+    colorInfoBg: '#ECFEFF',
+    colorInfoBorder: '#67E8F9',
+    colorSuccessBg: '#ECFDF5',
+    colorSuccessBorder: '#6EE7B7',
+    colorWarningBg: '#FFFBEB',
     colorWarningBorder: '#FCD34D',
-    colorErrorBg: '#FEE2E2',
+    colorErrorBg: '#FEF2F2',
     colorErrorBorder: '#FCA5A5',
+    borderRadiusLG: 12,
   },
 
   // 스핀
@@ -153,29 +162,54 @@ export const componentTokens: ThemeConfig['components'] = {
     dotSizeSM: 16,
   },
 
-  // 태그
+  // 태그 - Modern
   Tag: {
     defaultBg: '#F1F5F9',
     defaultColor: '#475569',
+    borderRadiusSM: 6,
   },
 
   // 아바타
   Avatar: {
-    containerSize: 32,
-    containerSizeLG: 40,
-    containerSizeSM: 24,
+    containerSize: 36,
+    containerSizeLG: 44,
+    containerSizeSM: 28,
+    borderRadius: 10,
   },
 
-  // 토스트/메시지
+  // 토스트/메시지 - Glassmorphism
   Message: {
-    contentBg: '#FFFFFF',
-    contentPadding: '10px 16px',
+    contentBg: 'rgba(255, 255, 255, 0.95)',
+    contentPadding: '12px 18px',
   },
 
-  // 툴팁
+  // 툴팁 - Dark Contrast
   Tooltip: {
     colorBgSpotlight: '#1E293B',
-    colorTextLightSolid: '#F8FAFC',
+    colorTextLightSolid: '#FFFFFF',
+    borderRadius: 8,
+  },
+
+  // 슬라이더 - Blue Accent
+  Slider: {
+    trackBg: '#DBEAFE',
+    trackHoverBg: '#BFDBFE',
+    handleColor: '#3B82F6',
+    handleActiveColor: '#2563EB',
+    dotBorderColor: '#E2E8F0',
+  },
+
+  // 스위치 - Blue Accent
+  Switch: {
+    colorPrimary: '#3B82F6',
+    colorPrimaryHover: '#2563EB',
+    handleBg: '#FFFFFF',
+  },
+
+  // 진행바 - Blue Accent
+  Progress: {
+    defaultColor: '#3B82F6',
+    remainingColor: '#E2E8F0',
   },
 }
 

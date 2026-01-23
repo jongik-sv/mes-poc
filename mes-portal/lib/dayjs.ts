@@ -7,12 +7,14 @@ import localeData from 'dayjs/plugin/localeData'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
 dayjs.extend(customParseFormat)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
+dayjs.extend(relativeTime)
 
 dayjs.locale('ko')
 

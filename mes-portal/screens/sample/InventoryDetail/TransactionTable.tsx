@@ -206,7 +206,7 @@ export function TransactionTable({
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
-              <Space direction="vertical" size={4}>
+              <Space orientation="vertical" size={4}>
                 <Text type="secondary">입출고 이력이 없습니다</Text>
                 <Text type="secondary" className="text-xs">
                   선택한 기간에 입출고 내역이 없습니다

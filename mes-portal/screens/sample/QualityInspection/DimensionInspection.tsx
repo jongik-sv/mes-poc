@@ -99,7 +99,7 @@ export function DimensionInspection({ form }: DimensionInspectionProps) {
             </Button>
           </div>
 
-          <Space direction="vertical" className="w-full" size="middle">
+          <Space orientation="vertical" className="w-full" size="middle">
             {fields.map((field, index) => {
               const items = form.getFieldValue('dimensionItems') as DimensionItem[]
               const currentItem = items?.[index]

@@ -1,0 +1,37 @@
+{
+  "categories": [
+    {
+      "name": "냉연",
+      "items": [
+        { "code": "PO", "name": "생산 오더", "value": 53426 },
+        { "code": "CR", "name": "냉연 출하", "value": 12602175 },
+        { "code": "COIL", "name": "코일 재고", "value": 8456 }
+      ]
+    },
+    {
+      "name": "도금",
+      "items": [
+        { "code": "GA", "name": "GA 생산", "value": 245800 },
+        { "code": "GI", "name": "GI 생산", "value": 189500 },
+        { "code": "EG", "name": "EG 생산", "value": 78200 }
+      ]
+    },
+    {
+      "name": "품질",
+      "items": [
+        { "code": "INSP", "name": "검사 완료", "value": 15680 },
+        { "code": "NG", "name": "불량 건수", "value": 234 },
+        { "code": "HOLD", "name": "보류 재고", "value": 567 }
+      ]
+    },
+    {
+      "name": "설비",
+      "items": [
+        { "code": "RUN", "name": "가동 설비", "value": 156 },
+        { "code": "STOP", "name": "정지 설비", "value": 12 },
+        { "code": "PM", "name": "예방 보전", "value": 8 }
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-23T09:30:00Z"
+}

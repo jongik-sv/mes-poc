@@ -65,7 +65,7 @@ export function StockTrendChart({
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
-            <Space direction="vertical" size={4}>
+            <Space orientation="vertical" size={4}>
               <Text type="secondary">재고 추이 데이터가 없습니다</Text>
               <Text type="secondary" className="text-xs">
                 해당 품목의 재고 추이 기록이 없습니다

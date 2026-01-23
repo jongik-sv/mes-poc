@@ -24,9 +24,9 @@ export default function PortalGroupLayout({
 }) {
   return (
     <MDIProvider
-      maxTabs={10}
+      maxTabs={20}
       onMaxTabsReached={() => {
-        message.warning('최대 10개의 탭만 열 수 있습니다.')
+        message.warning('최대 20개의 탭만 열 수 있습니다.')
       }}
     >
       <PortalLayoutContent>{children}</PortalLayoutContent>
@@ -44,6 +44,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isHelpOpen, setIsHelpOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
+  const [visuallyCollapsed, setVisuallyCollapsed] = useState(false)  // 호버 포함 시각적 상태
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
   const [openKeys, setOpenKeys] = useState<string[]>([])
 
@@ -51,10 +52,10 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const menus = menuData.menus as MenuItem[]
 
   // useFavorites에 필요한 MenuItem 형식으로 변환
-  type ConvertedMenu = { id: number; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ConvertedMenu[] }
+  type ConvertedMenu = { id: string; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ConvertedMenu[] }
   const allMenusForFavorites = useMemo(() => {
     const convertMenu = (menu: MenuItem): ConvertedMenu => ({
-      id: parseInt(menu.id, 10),
+      id: menu.id,
       code: menu.code,
       name: menu.name,
       path: menu.path ?? null,
@@ -93,28 +94,33 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     email: 'admin@mes.com',
   }
 
-  // 임시 브레드크럼 데이터
-  const breadcrumbItems = [
-    { title: 'Home', path: '/' },
-    { title: 'Dashboard' },
-  ]
+  // 현재 활성 탭 기반 브레드크럼 생성
+  const breadcrumbItems = useMemo(() => {
+    const items: { title: string; path?: string }[] = [
+      { title: 'Home', path: '/' },
+    ]
 
-  // 초기 로드 시 대시보드 탭 자동 열기
+    // 활성 탭이 있고 홈이 아닌 경우에만 추가
+    const activeTab = tabs.find(t => t.id === activeTabId)
+    if (activeTab && activeTab.id !== 'home') {
+      items.push({ title: activeTab.title })
+    }
+
+    return items
+  }, [tabs, activeTabId])
+
+  // 초기 로드 시 홈 탭 자동 열기
   useEffect(() => {
     if (tabs.length === 0) {
-      // 대시보드 메뉴 찾기
-      const dashboardMenu = findMenuByPath(menus, '/dashboard')
-      if (dashboardMenu) {
-        const tab: Tab = {
-          id: dashboardMenu.id,
-          title: dashboardMenu.name,
-          path: dashboardMenu.path!,
-          icon: dashboardMenu.icon,
-          closable: false, // 대시보드는 닫기 불가
-        }
-        openTab(tab)
-        setSelectedKeys([dashboardMenu.id])
+      // 홈 탭 생성 (닫기 불가)
+      const homeTab: Tab = {
+        id: 'home',
+        title: '홈',
+        path: '/',
+        icon: 'HomeOutlined',
+        closable: false, // 홈은 닫기 불가
       }
+      openTab(homeTab)
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -176,6 +182,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     setCollapsed(value)
   }, [])
 
+  // 시각적 접힘 상태 변경 핸들러 (호버 포함)
+  const handleVisualCollapsedChange = useCallback((value: boolean) => {
+    setVisuallyCollapsed(value)
+  }, [])
+
   // 알림 클릭으로 화면 이동 핸들러
   const handleNotificationNavigate = useCallback(
     (link: string, title: string) => {
@@ -208,12 +219,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   // 즐겨찾기 메뉴 클릭 핸들러 (TSK-03-04)
   const handleFavoriteMenuClick = useCallback(
     (menu: FavoriteMenuItem) => {
-      const menuId = String(menu.id)
-      setSelectedKeys([menuId])
+      setSelectedKeys([menu.id])
 
       // 탭으로 열기
       const tab: Tab = {
-        id: menuId,
+        id: menu.id,
         title: menu.name,
         path: menu.path,
         icon: menu.icon ?? undefined,
@@ -264,6 +274,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <PortalLayout
       onCollapsedChange={handleCollapsedChange}
+      onVisualCollapsedChange={handleVisualCollapsedChange}
       header={
         <Header
           user={mockUser}
@@ -280,7 +291,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
       sidebar={
         <Sidebar
           menus={menus}
-          collapsed={collapsed}
+          collapsed={visuallyCollapsed}
           selectedKeys={selectedKeys}
           openKeys={openKeys}
           onMenuClick={handleMenuClick}

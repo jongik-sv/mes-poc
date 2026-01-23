@@ -14,6 +14,7 @@ export interface Product {
   name: string
   spec: string
   unit: string
+  [key: string]: string
 }
 
 /**
@@ -48,6 +49,7 @@ export interface WorkOrderFormValues {
   startDate: Dayjs | null
   endDate: Dayjs | null
   remarks?: string
+  [key: string]: string | number | Dayjs | null | undefined
 }
 
 /**

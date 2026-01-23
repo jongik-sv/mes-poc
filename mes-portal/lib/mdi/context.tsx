@@ -171,11 +171,21 @@ function mdiReducer(state: MDIState, action: MDIAction): MDIState {
       }
 
       const oldIndex = state.tabs.findIndex((tab) => tab.id === activeId);
-      const newIndex = state.tabs.findIndex((tab) => tab.id === overId);
+      let newIndex = state.tabs.findIndex((tab) => tab.id === overId);
 
       // 유효성 검사
       if (oldIndex === -1 || newIndex === -1) {
         return state;
+      }
+
+      // 홈 탭 보호: 홈 탭은 이동 불가
+      if (activeId === 'home') {
+        return state;
+      }
+
+      // 홈 탭 앞으로 이동 시: 홈 탭 바로 다음(index 1)으로 이동
+      if (state.tabs[0]?.id === 'home' && newIndex === 0) {
+        newIndex = 1;
       }
 
       // 배열 순서 변경 (arrayMove 로직)

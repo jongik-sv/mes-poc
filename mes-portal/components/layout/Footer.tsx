@@ -34,24 +34,13 @@ export function Footer({ className }: FooterProps) {
       >
         Copyright &copy; {COPYRIGHT_YEAR} Company. All rights reserved.
       </span>
-      <div className="flex items-center gap-4">
-        <span
-          className="text-xs"
-          style={{ color: token.colorTextQuaternary }}
-        >
-          MES Portal
-        </span>
-        <span
-          className="text-xs font-medium px-2 py-0.5 rounded"
-          style={{
-            color: token.colorPrimary,
-            backgroundColor: token.colorPrimaryBg,
-          }}
-          data-testid="footer-version"
-        >
-          v{APP_VERSION}
-        </span>
-      </div>
+      <span
+        className="text-xs"
+        style={{ color: token.colorTextTertiary }}
+        data-testid="footer-version"
+      >
+        MES Portal v{APP_VERSION}
+      </span>
     </AntFooter>
   )
 }
