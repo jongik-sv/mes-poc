@@ -1420,7 +1420,7 @@ workPackages:
         title: "[샘플] 자재 입출고 내역"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
         priority: medium
         assignee: "-"
         tags:
@@ -1455,7 +1455,7 @@ workPackages:
             - ListTemplate 사용
             - DataTable 컴포넌트 활용
             - mock-data/material-history.json 로드
-        execution: verify
+        test-result: pass
       - id: TSK-06-18
         title: "[샘플] 공정 관리"
         category: development
