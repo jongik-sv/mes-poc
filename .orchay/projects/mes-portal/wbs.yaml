@@ -1196,7 +1196,8 @@ workPackages:
         title: "[샘플] 작업 일정 캘린더"
         category: development
         domain: frontend
-        status: "[im]"
+        status: "[vf]"
+        test-result: pass
         priority: medium
         assignee: "-"
         tags:
@@ -1227,7 +1228,6 @@ workPackages:
           integrationCheck:
             - screens/sample/WorkCalendar.tsx
             - mock-data/schedule.json 로드
-        execution: verify
       - id: TSK-06-12
         title: "[샘플] 품질 검사 입력 폼"
         category: development
@@ -1460,7 +1460,7 @@ workPackages:
         title: "[샘플] 공정 관리"
         category: development
         domain: frontend
-        status: "[dd]"
+        status: "[ap]"
         priority: medium
         assignee: "-"
         tags:
@@ -1496,6 +1496,7 @@ workPackages:
             - ListTemplate, DetailTemplate, FormTemplate 조합
             - ErrorBoundary, EmptyState 컴포넌트 활용
             - mock-data/processes.json 로드
+        execution: build
       - id: TSK-06-19
         title: "[샘플] 알림 설정 관리"
         category: development
