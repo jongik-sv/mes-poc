@@ -1544,7 +1544,7 @@ workPackages:
         title: "[샘플] 데이터 테이블 종합"
         category: development
         domain: frontend
-        status: "[ ]"
+        status: "[dd]"
         priority: high
         assignee: "-"
         tags:
@@ -1592,7 +1592,6 @@ workPackages:
             - components/common/DataTable.tsx 모든 기능 활용
             - mock-data/large-dataset.json (1만건)
             - 기능별 토글 UI로 데모
-        execution: start
   - id: WP-07
     title: 대시보드
     status: planned
