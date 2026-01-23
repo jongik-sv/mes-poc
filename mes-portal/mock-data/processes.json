@@ -1,0 +1,105 @@
+{
+  "processes": [
+    {
+      "id": "1",
+      "code": "PRC001",
+      "name": "조립",
+      "status": "active",
+      "order": 1,
+      "description": "부품 조립 공정. 주요 부품들을 결합하여 완제품을 만드는 과정입니다.",
+      "equipmentCount": 5,
+      "createdAt": "2026-01-01T09:00:00Z",
+      "updatedAt": "2026-01-20T14:30:00Z",
+      "equipment": [
+        { "id": "EQ001", "code": "ASM-001", "name": "조립기 1호", "status": "running" },
+        { "id": "EQ002", "code": "ASM-002", "name": "조립기 2호", "status": "running" },
+        { "id": "EQ003", "code": "ASM-003", "name": "조립기 3호", "status": "stopped" },
+        { "id": "EQ004", "code": "RBT-001", "name": "로봇암 1호", "status": "running" },
+        { "id": "EQ005", "code": "RBT-002", "name": "로봇암 2호", "status": "maintenance" }
+      ],
+      "history": [
+        { "id": "H001", "action": "create", "timestamp": "2026-01-01T09:00:00Z", "user": "관리자", "changes": "공정 생성" },
+        { "id": "H002", "action": "update", "timestamp": "2026-01-15T10:00:00Z", "user": "홍길동", "changes": "설비 연결 추가" },
+        { "id": "H003", "action": "update", "timestamp": "2026-01-20T14:30:00Z", "user": "김철수", "changes": "설명 수정" }
+      ]
+    },
+    {
+      "id": "2",
+      "code": "PRC002",
+      "name": "도장",
+      "status": "active",
+      "order": 2,
+      "description": "표면 도장 공정. 제품 외관에 도료를 도포하여 마감 처리합니다.",
+      "equipmentCount": 3,
+      "createdAt": "2026-01-02T10:00:00Z",
+      "updatedAt": "2026-01-18T11:00:00Z",
+      "equipment": [
+        { "id": "EQ006", "code": "PNT-001", "name": "도장 부스 1호", "status": "running" },
+        { "id": "EQ007", "code": "PNT-002", "name": "도장 부스 2호", "status": "running" },
+        { "id": "EQ008", "code": "DRY-001", "name": "건조로 1호", "status": "running" }
+      ],
+      "history": [
+        { "id": "H004", "action": "create", "timestamp": "2026-01-02T10:00:00Z", "user": "관리자", "changes": "공정 생성" },
+        { "id": "H005", "action": "update", "timestamp": "2026-01-18T11:00:00Z", "user": "박영희", "changes": "순서 변경" }
+      ]
+    },
+    {
+      "id": "3",
+      "code": "PRC003",
+      "name": "검사",
+      "status": "inactive",
+      "order": 3,
+      "description": "품질 검사 공정. 완성된 제품의 품질을 검사하여 불량품을 선별합니다.",
+      "equipmentCount": 2,
+      "createdAt": "2026-01-03T11:00:00Z",
+      "updatedAt": "2026-01-10T09:00:00Z",
+      "equipment": [
+        { "id": "EQ009", "code": "INS-001", "name": "외관 검사기", "status": "stopped" },
+        { "id": "EQ010", "code": "INS-002", "name": "기능 검사기", "status": "stopped" }
+      ],
+      "history": [
+        { "id": "H006", "action": "create", "timestamp": "2026-01-03T11:00:00Z", "user": "관리자", "changes": "공정 생성" },
+        { "id": "H007", "action": "update", "timestamp": "2026-01-10T09:00:00Z", "user": "이민수", "changes": "상태 비활성화" }
+      ]
+    },
+    {
+      "id": "4",
+      "code": "PRC004",
+      "name": "포장",
+      "status": "active",
+      "order": 4,
+      "description": "제품 포장 공정. 검사를 통과한 제품을 포장하여 출하 준비합니다.",
+      "equipmentCount": 4,
+      "createdAt": "2026-01-04T08:00:00Z",
+      "updatedAt": "2026-01-22T16:00:00Z",
+      "equipment": [
+        { "id": "EQ011", "code": "PKG-001", "name": "박스 포장기", "status": "running" },
+        { "id": "EQ012", "code": "PKG-002", "name": "랩핑기", "status": "running" },
+        { "id": "EQ013", "code": "LBL-001", "name": "라벨러", "status": "running" },
+        { "id": "EQ014", "code": "PLT-001", "name": "팰릿타이저", "status": "error" }
+      ],
+      "history": [
+        { "id": "H008", "action": "create", "timestamp": "2026-01-04T08:00:00Z", "user": "관리자", "changes": "공정 생성" },
+        { "id": "H009", "action": "update", "timestamp": "2026-01-22T16:00:00Z", "user": "정수민", "changes": "설비 추가" }
+      ]
+    },
+    {
+      "id": "5",
+      "code": "PRC005",
+      "name": "절단",
+      "status": "active",
+      "order": 5,
+      "description": "원자재 절단 공정. 원자재를 필요한 크기로 절단하는 전처리 공정입니다.",
+      "equipmentCount": 2,
+      "createdAt": "2026-01-05T07:00:00Z",
+      "updatedAt": "2026-01-19T13:00:00Z",
+      "equipment": [
+        { "id": "EQ015", "code": "CUT-001", "name": "레이저 커터", "status": "running" },
+        { "id": "EQ016", "code": "CUT-002", "name": "워터젯", "status": "maintenance" }
+      ],
+      "history": [
+        { "id": "H010", "action": "create", "timestamp": "2026-01-05T07:00:00Z", "user": "관리자", "changes": "공정 생성" }
+      ]
+    }
+  ]
+}
