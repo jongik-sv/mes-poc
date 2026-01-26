@@ -182,19 +182,19 @@ export function SettingWizard({ config }: SettingWizardProps) {
     () => [
       {
         title: '기본 정보',
-        description: '회사 및 공장 정보',
+        content: '회사 및 공장 정보',
       },
       {
         title: '상세 설정',
-        description: '연결 및 옵션 설정',
+        content: '연결 및 옵션 설정',
       },
       {
         title: '확인',
-        description: '설정 내용 확인',
+        content: '설정 내용 확인',
       },
       {
         title: '완료',
-        description: '설정 완료',
+        content: '설정 완료',
       },
     ],
     []

@@ -39,7 +39,7 @@ export const themeTokens = {
   colorBgLayout: '#F1F5F9',    // 페이지 배경 - Slate 100
   colorBgSpotlight: '#FFFFFF',
   colorBgMask: 'rgba(15, 23, 42, 0.5)',
-  colorBorder: 'rgba(255, 255, 255, 0.3)',  // Glassmorphism border
+  colorBorder: '#94A3B8',  // Slate 400 - 라이트 모드에서 가시성 확보
   colorBorderSecondary: '#E2E8F0',
   colorFill: '#F1F5F9',
   colorFillSecondary: '#E2E8F0',
@@ -157,7 +157,7 @@ export const darkThemeTokens = {
   colorBgSpotlight: '#1E293B',
   colorBgMask: 'rgba(0, 0, 0, 0.65)',
   colorBorder: '#334155',
-  colorBorderSecondary: '#1E293B',
+  colorBorderSecondary: '#475569',
   colorFill: '#334155',
   colorFillSecondary: '#1E293B',
   colorFillTertiary: '#0F172A',

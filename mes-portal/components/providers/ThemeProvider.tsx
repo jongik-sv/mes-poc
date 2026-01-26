@@ -30,12 +30,8 @@ function AntdConfigProvider({ children }: ThemeProviderProps) {
   // 마운트 후 사용자가 테마 전환하면 resolvedTheme 반영
   const isDark = mounted && resolvedTheme === 'dark'
 
-  // key prop으로 테마 변경 시 ConfigProvider 리마운트 → 스타일 재생성
-  const themeKey = isDark ? 'dark' : 'light'
-
   return (
     <ConfigProvider
-      key={themeKey}
       theme={{
         token: isDark ? darkThemeTokens : themeTokens,
         algorithm: isDark ? darkThemeAlgorithm : lightThemeAlgorithm,

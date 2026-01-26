@@ -279,9 +279,9 @@ export function WorkCalendar({
         {/* 범례 */}
         <div
           data-testid="schedule-legend"
-          className="mt-4 flex items-center gap-4 border-t border-gray-200 pt-4"
+          className="mt-4 flex items-center gap-4 border-t border-border pt-4"
         >
-          <span className="text-sm text-gray-500">일정 유형:</span>
+          <span className="text-sm text-text-muted">일정 유형:</span>
           {Object.entries(SCHEDULE_TYPE_LABELS).map(([code, label]) => (
             <Tag
               key={code}

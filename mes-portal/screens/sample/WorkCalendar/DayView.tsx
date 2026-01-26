@@ -108,20 +108,20 @@ export function DayView({
   return (
     <div
       data-testid="calendar-day-view"
-      className="flex overflow-auto border border-gray-100"
+      className="flex overflow-auto border border-border-light"
       style={{ maxHeight: 'calc(100vh - 300px)' }}
     >
       {/* 시간 컬럼 */}
-      <div className="sticky left-0 z-10 w-16 flex-shrink-0 border-r border-gray-200 bg-gray-50">
+      <div className="sticky left-0 z-10 w-16 flex-shrink-0 border-r border-border bg-surface-elevated">
         {/* 헤더 공간 */}
-        <div className="h-10 border-b border-gray-200 flex items-center justify-center text-xs text-gray-500">
+        <div className="h-10 border-b border-border flex items-center justify-center text-xs text-text-muted">
           시간
         </div>
         {/* 시간 라벨 */}
         {HOURS.map((hour) => (
           <div
             key={hour}
-            className="relative border-b border-gray-100 text-right pr-2 text-sm text-gray-500"
+            className="relative border-b border-border-light text-right pr-2 text-sm text-text-muted"
             style={{ height: HOUR_HEIGHT }}
           >
             <span className="absolute -top-2 right-2">
@@ -136,24 +136,24 @@ export function DayView({
         {/* 날짜 헤더 */}
         <div
           className={`
-            sticky top-0 z-10 flex items-center justify-center gap-2 border-b border-gray-200 py-2
-            ${isToday ? 'bg-blue-50' : 'bg-gray-50'}
+            sticky top-0 z-10 flex items-center justify-center gap-2 border-b border-border py-2
+            ${isToday ? 'bg-primary/10' : 'bg-surface-elevated'}
           `}
           style={{ height: 40 }}
         >
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-text-muted">
             {currentDate.format('YYYY년 M월 D일')}
           </span>
           <span
             className={`
               text-sm font-medium
-              ${currentDate.day() === 0 || currentDate.day() === 6 ? 'text-red-500' : 'text-gray-600'}
+              ${currentDate.day() === 0 || currentDate.day() === 6 ? 'text-red-500' : 'text-text-muted'}
             `}
           >
             ({['일', '월', '화', '수', '목', '금', '토'][currentDate.day()]})
           </span>
           {isToday && (
-            <span className="rounded bg-blue-500 px-2 py-0.5 text-xs text-white">
+            <span className="rounded bg-primary px-2 py-0.5 text-xs text-white">
               오늘
             </span>
           )}
@@ -164,13 +164,13 @@ export function DayView({
           {HOURS.map((hour) => (
             <div
               key={hour}
-              className="relative border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer"
+              className="relative border-b border-border-light hover:bg-primary/10 cursor-pointer"
               style={{ height: HOUR_HEIGHT }}
               onDoubleClick={() => onDateDoubleClick(currentDate.hour(hour))}
             >
               {/* 30분 구분선 */}
               <div
-                className="absolute left-0 right-0 border-b border-gray-100 border-dashed"
+                className="absolute left-0 right-0 border-b border-border-light border-dashed"
                 style={{ top: HOUR_HEIGHT / 2 }}
               />
             </div>

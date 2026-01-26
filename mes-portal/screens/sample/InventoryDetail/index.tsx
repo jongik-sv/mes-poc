@@ -126,7 +126,7 @@ export function InventoryDetail() {
         image={
           <InboxOutlined style={{ fontSize: 64, color: 'var(--ant-color-text-quaternary)' }} />
         }
-        imageStyle={{ height: 80 }}
+        styles={{ image: { height: 80 } }}
         description={
           <div className="text-center">
             <Text type="secondary" className="block text-base">

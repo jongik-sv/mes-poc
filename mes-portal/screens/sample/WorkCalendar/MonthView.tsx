@@ -91,9 +91,9 @@ export function MonthView({
         <div
           key={date.format('YYYY-MM-DD')}
           className={`
-            min-h-[100px] border-b border-r border-gray-100 p-1
-            ${!isCurrentMonth ? 'bg-gray-50' : 'bg-white'}
-            hover:bg-blue-50/30 cursor-pointer transition-colors
+            min-h-[100px] border-b border-r border-border-light p-1
+            ${!isCurrentMonth ? 'bg-surface-elevated' : 'bg-surface'}
+            hover:bg-primary/10 cursor-pointer transition-colors
           `}
           onDoubleClick={() => onDateDoubleClick(date)}
           data-testid={`calendar-cell-${date.format('YYYY-MM-DD')}`}
@@ -102,8 +102,8 @@ export function MonthView({
           <div
             className={`
               mb-1 flex h-7 w-7 items-center justify-center rounded-full text-sm
-              ${isToday ? 'bg-blue-500 text-white font-semibold' : ''}
-              ${!isCurrentMonth ? 'text-gray-400' : isWeekend ? 'text-red-500' : 'text-gray-700'}
+              ${isToday ? 'bg-primary text-white font-semibold' : ''}
+              ${!isCurrentMonth ? 'text-text-dim' : isWeekend ? 'text-red-500' : 'text-text'}
             `}
           >
             {date.date()}
@@ -144,7 +144,7 @@ export function MonthView({
               )
             })}
             {daySchedules.length > MAX_DISPLAY_SCHEDULES && (
-              <div className="text-xs text-gray-500 px-1">
+              <div className="text-xs text-text-muted px-1">
                 +{daySchedules.length - MAX_DISPLAY_SCHEDULES}개 더보기
               </div>
             )}
@@ -156,15 +156,15 @@ export function MonthView({
   )
 
   return (
-    <div data-testid="calendar-month-view" className="border-l border-t border-gray-100">
+    <div data-testid="calendar-month-view" className="border-l border-t border-border-light">
       {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
+      <div className="grid grid-cols-7 border-b border-border bg-surface-elevated">
         {WEEKDAY_LABELS.map((label, index) => (
           <div
             key={label}
             className={`
               py-2 text-center text-sm font-medium
-              ${index === 0 || index === 6 ? 'text-red-500' : 'text-gray-600'}
+              ${index === 0 || index === 6 ? 'text-red-500' : 'text-text-muted'}
             `}
           >
             {label}

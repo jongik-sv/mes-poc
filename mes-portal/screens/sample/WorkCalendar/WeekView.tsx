@@ -120,14 +120,14 @@ export function WeekView({
 
   // 시간 셀 렌더링
   const renderTimeColumn = () => (
-    <div className="sticky left-0 z-10 w-16 flex-shrink-0 border-r border-gray-200 bg-gray-50">
+    <div className="sticky left-0 z-10 w-16 flex-shrink-0 border-r border-border bg-surface-elevated">
       {/* 헤더 공간 */}
-      <div className="h-14 border-b border-gray-200" />
+      <div className="h-14 border-b border-border" />
       {/* 시간 라벨 */}
       {HOURS.map((hour) => (
         <div
           key={hour}
-          className="relative border-b border-gray-100 text-right pr-2 text-xs text-gray-500"
+          className="relative border-b border-border-light text-right pr-2 text-xs text-text-muted"
           style={{ height: HOUR_HEIGHT }}
         >
           <span className="absolute -top-2 right-2">
@@ -147,25 +147,25 @@ export function WeekView({
     return (
       <div
         key={date.format('YYYY-MM-DD')}
-        className="relative flex-1 min-w-[120px] border-r border-gray-100"
+        className="relative flex-1 min-w-[120px] border-r border-border-light"
       >
         {/* 요일 헤더 */}
         <div
           className={`
-            sticky top-0 z-10 flex flex-col items-center justify-center border-b border-gray-200 py-1
-            ${isToday ? 'bg-blue-50' : 'bg-gray-50'}
+            sticky top-0 z-10 flex flex-col items-center justify-center border-b border-border py-1
+            ${isToday ? 'bg-primary/10' : 'bg-surface-elevated'}
           `}
           style={{ height: 56 }}
         >
           <div
-            className={`text-xs ${isWeekend ? 'text-red-500' : 'text-gray-500'}`}
+            className={`text-xs ${isWeekend ? 'text-red-500' : 'text-text-muted'}`}
           >
             {WEEKDAY_LABELS[index]}
           </div>
           <div
             className={`
               flex h-8 w-8 items-center justify-center rounded-full text-lg font-semibold
-              ${isToday ? 'bg-blue-500 text-white' : isWeekend ? 'text-red-500' : 'text-gray-700'}
+              ${isToday ? 'bg-primary text-white' : isWeekend ? 'text-red-500' : 'text-text'}
             `}
           >
             {date.date()}
@@ -177,7 +177,7 @@ export function WeekView({
           {HOURS.map((hour) => (
             <div
               key={hour}
-              className="border-b border-gray-100 hover:bg-blue-50/30 cursor-pointer"
+              className="border-b border-border-light hover:bg-primary/10 cursor-pointer"
               style={{ height: HOUR_HEIGHT }}
               onDoubleClick={() => onDateDoubleClick(date.hour(hour))}
             />
@@ -236,7 +236,7 @@ export function WeekView({
   return (
     <div
       data-testid="calendar-week-view"
-      className="flex overflow-auto border-l border-t border-gray-100"
+      className="flex overflow-auto border-l border-t border-border-light"
       style={{ maxHeight: 'calc(100vh - 300px)' }}
     >
       {/* 시간 컬럼 */}

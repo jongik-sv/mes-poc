@@ -1,7 +1,7 @@
 // screens/sample/DataTableShowcase/hooks/useColumnResize.ts
 // 컬럼 리사이즈 훅
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 
 interface ColumnWidth {
   [key: string]: number
@@ -14,16 +14,33 @@ interface ColumnWidth {
 export function useColumnResize(initialWidths: ColumnWidth = {}) {
   const [columnWidths, setColumnWidths] = useState<ColumnWidth>(initialWidths)
 
+  // 드래그 중 성능 최적화를 위한 ref (throttle 대신 사용)
+  const pendingWidthsRef = useRef<ColumnWidth>({})
+  const rafIdRef = useRef<number | null>(null)
+
   /**
-   * 컬럼 너비 변경
+   * 컬럼 너비 변경 (throttled)
    */
   const resizeColumn = useCallback((columnKey: string, width: number) => {
     // 최소 너비 50px 보장
     const newWidth = Math.max(50, width)
-    setColumnWidths((prev) => ({
-      ...prev,
-      [columnKey]: newWidth,
-    }))
+
+    // pending에 저장
+    pendingWidthsRef.current[columnKey] = newWidth
+
+    // requestAnimationFrame으로 배치 처리
+    if (rafIdRef.current === null) {
+      rafIdRef.current = requestAnimationFrame(() => {
+        const updates = { ...pendingWidthsRef.current }
+        pendingWidthsRef.current = {}
+        rafIdRef.current = null
+
+        setColumnWidths((prev) => ({
+          ...prev,
+          ...updates,
+        }))
+      })
+    }
   }, [])
 
   /**

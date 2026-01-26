@@ -1,7 +1,7 @@
 // screens/sample/DataTableShowcase/hooks/useColumnSettings.ts
 // 컬럼 설정 영속화 훅
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import type { ColumnSettings } from '../types'
 
 const STORAGE_KEY = 'data-table-showcase-column-settings'
@@ -11,6 +11,10 @@ const STORAGE_KEY = 'data-table-showcase-column-settings'
  * BR-004: localStorage에 컬럼 설정 저장/복원
  */
 export function useColumnSettings(columnKeys: string[]) {
+  // columnKeys 배열의 안정적인 비교를 위해 직렬화된 값 사용
+  const columnKeysStr = JSON.stringify(columnKeys)
+  const isInitialized = useRef(false)
+
   const [settings, setSettings] = useState<ColumnSettings[]>(() => {
     // 초기값: 기본 설정
     return columnKeys.map((key, index) => ({
@@ -22,15 +26,19 @@ export function useColumnSettings(columnKeys: string[]) {
   })
 
   /**
-   * localStorage에서 설정 로드
+   * localStorage에서 설정 로드 (초기 1회만 실행)
    */
   useEffect(() => {
+    if (isInitialized.current) return
+    isInitialized.current = true
+
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
         const parsed = JSON.parse(saved) as ColumnSettings[]
+        const keys = JSON.parse(columnKeysStr) as string[]
         // 기존 컬럼과 병합 (새 컬럼이 추가된 경우 대비)
-        const merged = columnKeys.map((key, index) => {
+        const merged = keys.map((key, index) => {
           const existing = parsed.find((s) => s.key === key)
           return existing || { key, width: 100, order: index, visible: true }
         })
@@ -39,7 +47,7 @@ export function useColumnSettings(columnKeys: string[]) {
     } catch {
       // localStorage 접근 실패 시 기본값 유지
     }
-  }, [columnKeys])
+  }, [columnKeysStr])
 
   /**
    * localStorage에 설정 저장
@@ -95,7 +103,8 @@ export function useColumnSettings(columnKeys: string[]) {
    * 설정 초기화
    */
   const resetSettings = useCallback(() => {
-    const defaultSettings = columnKeys.map((key, index) => ({
+    const keys = JSON.parse(columnKeysStr) as string[]
+    const defaultSettings = keys.map((key, index) => ({
       key,
       width: 100,
       order: index,
@@ -107,7 +116,7 @@ export function useColumnSettings(columnKeys: string[]) {
     } catch {
       // 무시
     }
-  }, [columnKeys])
+  }, [columnKeysStr])
 
   /**
    * 특정 컬럼 설정 가져오기

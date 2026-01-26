@@ -4,7 +4,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { message } from 'antd'
+import { App } from 'antd'
 import { PortalLayout, Header, Footer, Sidebar } from '@/components/layout'
 import type { MenuItem } from '@/components/layout'
 import { findMenuByPath, findParentKeys } from '@/components/layout/Sidebar'
@@ -22,6 +22,15 @@ export default function PortalGroupLayout({
 }: {
   children: React.ReactNode
 }) {
+  return <PortalLayoutWrapper>{children}</PortalLayoutWrapper>
+}
+
+/**
+ * MDIProvider 래퍼 - App.useApp() 훅 사용을 위해 분리
+ */
+function PortalLayoutWrapper({ children }: { children: React.ReactNode }) {
+  const { message } = App.useApp()
+
   return (
     <MDIProvider
       maxTabs={20}

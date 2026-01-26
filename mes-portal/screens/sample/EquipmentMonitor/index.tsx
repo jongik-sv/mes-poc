@@ -117,7 +117,9 @@ export function EquipmentMonitor() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <Spin size="large" tip="설비 정보를 불러오는 중..." />
+        <Spin size="large" tip="설비 정보를 불러오는 중...">
+          <div className="min-h-[100px]" />
+        </Spin>
       </div>
     )
   }

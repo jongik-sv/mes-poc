@@ -29,14 +29,38 @@ import { Resizable } from 'react-resizable'
 import 'react-resizable/css/styles.css'
 import dayjs from '@/lib/dayjs'
 
+// dnd-kit imports
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+  horizontalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { restrictToVerticalAxis, restrictToHorizontalAxis } from '@dnd-kit/modifiers'
+
 import { FeatureTogglePanel } from './FeatureTogglePanel'
 import { ExpandedRowContent } from './ExpandedRowContent'
+import { ColumnOrderSettings } from './ColumnOrderSettings'
 import {
   useFeatureToggle,
   useTableFilter,
   useInlineEdit,
   useColumnResize,
   useColumnSettings,
+  useRowDragSort,
+  useColumnOrder,
 } from './hooks'
 import type { Product, ProductStatus, Category, FeatureToggles } from './types'
 import { STATUS_COLORS, STATUS_LABELS } from './types'
@@ -101,6 +125,110 @@ function ResizableTitle(
     >
       <th {...restProps} />
     </Resizable>
+  )
+}
+
+/**
+ * 드래그 가능한 테이블 행 컴포넌트
+ */
+interface SortableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
+  'data-row-key': string | number
+}
+
+function SortableRow({ children, ...props }: SortableRowProps) {
+  const rowKey = props['data-row-key']
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: rowKey,
+  })
+
+  const style: React.CSSProperties = {
+    ...props.style,
+    transform: CSS.Transform.toString(transform && { ...transform, scaleY: 1 }),
+    transition,
+    ...(isDragging ? {
+      position: 'relative' as const,
+      zIndex: 9999,
+      opacity: 0.8,
+      backgroundColor: 'var(--ant-color-bg-container)',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+    } : {}),
+  }
+
+  return (
+    <tr {...props} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </tr>
+  )
+}
+
+/**
+ * 드래그 가능한 테이블 헤더 셀 컴포넌트
+ */
+interface SortableHeaderCellProps extends React.HTMLAttributes<HTMLTableCellElement> {
+  columnKey?: string
+  onResize?: (e: React.SyntheticEvent, data: { size: { width: number } }) => void
+  width?: number
+}
+
+function SortableHeaderCell({ columnKey, onResize, width, children, ...props }: SortableHeaderCellProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: columnKey || 'unknown',
+  })
+
+  const style: React.CSSProperties = {
+    ...props.style,
+    transform: CSS.Transform.toString(transform),
+    transition,
+    cursor: 'move',
+    ...(isDragging ? {
+      zIndex: 9999,
+      opacity: 0.8,
+      backgroundColor: 'var(--ant-color-bg-container)',
+    } : {}),
+  }
+
+  // 리사이즈 기능과 함께 사용
+  if (width && onResize) {
+    return (
+      <Resizable
+        width={width}
+        height={0}
+        handle={
+          <span
+            className="react-resizable-handle"
+            onClick={(e) => e.stopPropagation()}
+            data-testid={`resize-handle`}
+          />
+        }
+        onResize={onResize}
+        draggableOpts={{ enableUserSelectHack: false }}
+      >
+        <th {...props} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+          {children}
+        </th>
+      </Resizable>
+    )
+  }
+
+  return (
+    <th {...props} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </th>
   )
 }
 
@@ -229,6 +357,57 @@ export function DataTableShowcase() {
     'status',
     'createdAt',
   ])
+
+  // 행 드래그 정렬
+  const { moveRow } = useRowDragSort(data, setData)
+
+  // 컬럼 순서 관리
+  const initialColumnOrder = ['name', 'category', 'quantity', 'price', 'status', 'createdAt']
+  const { columnOrder, moveColumn, reorderColumns } = useColumnOrder(initialColumnOrder)
+
+  // dnd-kit sensors 설정
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5, // 5px 이상 드래그해야 시작
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // 행 드래그 완료 핸들러
+  const handleRowDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
+
+      const oldIndex = filteredData.findIndex((item) => item.id === active.id)
+      const newIndex = filteredData.findIndex((item) => item.id === over.id)
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        moveRow(oldIndex, newIndex)
+      }
+    },
+    [filteredData, moveRow]
+  )
+
+  // 컬럼 드래그 완료 핸들러
+  const handleColumnDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+      if (!over || active.id === over.id) return
+
+      const oldIndex = columnOrder.indexOf(active.id as string)
+      const newIndex = columnOrder.indexOf(over.id as string)
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        moveColumn(oldIndex, newIndex)
+      }
+    },
+    [columnOrder, moveColumn]
+  )
 
   // 선택된 행
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
@@ -486,7 +665,7 @@ export function DataTableShowcase() {
       return (
         <div
           onDoubleClick={() => startEdit(record.id, columnKey, text)}
-          className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900 px-1 -mx-1 rounded"
+          className="cursor-pointer px-1 -mx-1 rounded editable-cell-hover"
           data-testid={`cell-${columnKey}-${record.id}`}
         >
           {text}
@@ -783,13 +962,55 @@ export function DataTableShowcase() {
   /**
    * 테이블 컴포넌트 설정
    */
-  const tableComponents: TableProps<Product>['components'] = features.resize
-    ? {
-        header: {
-          cell: ResizableTitle,
-        },
+  const tableComponents: TableProps<Product>['components'] = useMemo(() => {
+    const components: TableProps<Product>['components'] = {}
+
+    // 리사이즈 가능한 헤더
+    if (features.resize) {
+      components.header = {
+        cell: ResizableTitle,
       }
-    : undefined
+    }
+
+    // 행 드래그 가능한 body (가상 스크롤과 함께 사용 불가)
+    if (features.rowDrag && !features.virtualScroll) {
+      components.body = {
+        row: SortableRow,
+      }
+    }
+
+    return Object.keys(components).length > 0 ? components : undefined
+  }, [features.resize, features.rowDrag, features.virtualScroll])
+
+  // 행 ID 목록 (SortableContext용)
+  const rowIds = useMemo(() => filteredData.map((item) => item.id), [filteredData])
+
+  // 컬럼을 순서대로 정렬
+  const orderedColumns = useMemo(() => {
+    if (!features.reorder) return columns
+
+    // columnOrder에 따라 컬럼 정렬 (drag 컬럼은 제외)
+    const sortedColumns = [...columns].sort((a, b) => {
+      const aKey = a.key as string
+      const bKey = b.key as string
+
+      // drag 컬럼은 항상 맨 앞
+      if (aKey === 'drag') return -1
+      if (bKey === 'drag') return 1
+
+      const aIndex = columnOrder.indexOf(aKey)
+      const bIndex = columnOrder.indexOf(bKey)
+
+      // columnOrder에 없는 컬럼은 원래 순서 유지
+      if (aIndex === -1 && bIndex === -1) return 0
+      if (aIndex === -1) return 1
+      if (bIndex === -1) return -1
+
+      return aIndex - bIndex
+    })
+
+    return sortedColumns
+  }, [columns, columnOrder, features.reorder])
 
   return (
     <div data-testid="data-table-showcase-page" className="p-4 space-y-4">
@@ -801,6 +1022,16 @@ export function DataTableShowcase() {
         onDisableAll={disableAll}
         onReset={resetToDefault}
       />
+
+      {/* 컬럼 순서 설정 (reorder 기능 활성화 시) */}
+      {features.reorder && (
+        <div className="flex justify-end">
+          <ColumnOrderSettings
+            columnOrder={columnOrder}
+            onOrderChange={reorderColumns}
+          />
+        </div>
+      )}
 
       {/* 선택된 항목 정보 */}
       {features.selection && selectedRowKeys.length > 0 && (
@@ -820,27 +1051,65 @@ export function DataTableShowcase() {
         data-testid="table-container"
         className={features.virtualScroll ? 'virtual-scroll-container' : ''}
       >
-        <Table<Product>
-          data-testid="data-table"
-          columns={features.groupHeader ? groupedColumns : columns}
-          dataSource={filteredData}
-          rowKey="id"
-          loading={false}
-          onChange={handleTableChange}
-          rowSelection={rowSelection}
-          expandable={expandable}
-          pagination={pagination}
-          components={tableComponents}
-          scroll={{
-            x: features.sticky ? 'max-content' : undefined,
-            y: features.virtualScroll ? 600 : undefined,
-          }}
-          sticky={features.sticky}
-          virtual={features.virtualScroll}
-          bordered
-          size="middle"
-          rowClassName={(record) => `table-row-${record.id}`}
-        />
+        {/* 행 드래그는 가상 스크롤과 함께 사용 불가 (HTML 구조 충돌) */}
+        {features.rowDrag && !features.virtualScroll ? (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleRowDragEnd}
+            modifiers={[restrictToVerticalAxis]}
+          >
+            <SortableContext items={rowIds} strategy={verticalListSortingStrategy}>
+              <Table<Product>
+                data-testid="data-table"
+                columns={features.groupHeader ? groupedColumns : orderedColumns}
+                dataSource={filteredData}
+                rowKey="id"
+                loading={false}
+                onChange={handleTableChange}
+                rowSelection={rowSelection}
+                expandable={expandable}
+                pagination={pagination}
+                components={tableComponents}
+                scroll={{
+                  x: features.sticky ? 'max-content' : undefined,
+                  y: undefined,
+                }}
+                sticky={features.sticky}
+                virtual={false}
+                bordered
+                size="middle"
+                rowClassName={(record) => `table-row-${record.id}`}
+              />
+            </SortableContext>
+          </DndContext>
+        ) : (
+          <Table<Product>
+            data-testid="data-table"
+            columns={features.groupHeader ? groupedColumns : orderedColumns}
+            dataSource={filteredData}
+            rowKey="id"
+            loading={false}
+            onChange={handleTableChange}
+            rowSelection={rowSelection}
+            expandable={expandable}
+            pagination={pagination}
+            components={tableComponents}
+            scroll={{
+              x: features.virtualScroll
+                ? Object.values(columnWidths).reduce((sum, w) => sum + w, 0) + 100 // 가상 테이블은 숫자 필수
+                : features.sticky
+                  ? 'max-content'
+                  : undefined,
+              y: features.virtualScroll ? 600 : undefined,
+            }}
+            sticky={features.sticky}
+            virtual={features.virtualScroll}
+            bordered
+            size="middle"
+            rowClassName={(record) => `table-row-${record.id}`}
+          />
+        )}
       </div>
 
       {/* 필터 초기화 버튼 */}

@@ -170,8 +170,8 @@ export function TabBar() {
         data-testid-mdi="mdi-tab-bar"
         className="flex items-center h-10 px-1"
         style={{
-          backgroundColor: token.colorFillSecondary,
-          borderBottom: `1px solid ${token.colorBorder}`,
+          backgroundColor: token.colorBgContainer,
+          borderBottom: `1px solid ${token.colorBorderSecondary}`,
         }}
       >
         {/* 좌측 스크롤 버튼 */}
@@ -182,8 +182,8 @@ export function TabBar() {
             onClick={() => handleScroll('left')}
             className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
             style={{
-              backgroundColor: token.colorFillSecondary,
-              border: `1px solid ${token.colorBorder}`,
+              backgroundColor: token.colorBgContainer,
+              border: `1px solid ${token.colorBorderSecondary}`,
               color: token.colorTextSecondary,
             }}
           >
@@ -229,8 +229,8 @@ export function TabBar() {
             onClick={() => handleScroll('right')}
             className="flex items-center justify-center w-6 h-8 flex-shrink-0 rounded"
             style={{
-              backgroundColor: token.colorFillSecondary,
-              border: `1px solid ${token.colorBorder}`,
+              backgroundColor: token.colorBgContainer,
+              border: `1px solid ${token.colorBorderSecondary}`,
               color: token.colorTextSecondary,
             }}
           >
@@ -246,8 +246,8 @@ export function TabBar() {
               aria-label="모든 탭 보기"
               className="flex items-center justify-center w-6 h-8 ml-1 flex-shrink-0 rounded"
               style={{
-                backgroundColor: token.colorFillSecondary,
-                border: `1px solid ${token.colorBorder}`,
+                backgroundColor: token.colorBgContainer,
+                border: `1px solid ${token.colorBorderSecondary}`,
                 color: token.colorTextSecondary,
               }}
             >
