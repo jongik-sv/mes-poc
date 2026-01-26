@@ -1,0 +1,356 @@
+# wbs.yaml - Auth System (RBAC 기반 AAA 권한 관리 시스템)
+project:
+  id: auth-system
+  name: "Auth System - RBAC 기반 AAA 권한 관리 시스템"
+  description: "MES Portal에 통합되는 인증(Authentication), 인가(Authorization), 회계(Accounting) 기능을 제공하는 RBAC 기반 권한 관리 시스템"
+  version: "0.1.0"
+  status: active
+  createdAt: "2026-01-26"
+  updatedAt: "2026-01-26"
+
+wbs:
+  version: "1.0"
+  depth: 3
+  projectRoot: mes-portal/modules/auth
+  strategy: "인증 → 인가 → 감사로그 → 관리화면 순서로 개발. Prisma 스키마 우선 구축 후 API/UI 순차 개발"
+
+workPackages:
+  # ============================================
+  # WP-01: 기반 구축
+  # ============================================
+  - id: WP-01
+    title: "기반 구축"
+    status: planned
+    priority: critical
+    schedule: "2026-01-27 ~ 2026-01-28"
+    tasks:
+      - id: TSK-01-01
+        title: "Prisma 스키마 및 Auth.js 설정"
+        category: infrastructure
+        domain: backend
+        status: "[xx]"
+        priority: critical
+        assignee: "-"
+        schedule: "2026-01-27 ~ 2026-01-28"
+        tags: [prisma, auth, setup]
+        depends: []
+        blockedBy: null
+        testResult: null
+        note: "데이터베이스 스키마와 인증 프레임워크 기반 구축"
+        requirements:
+          prdRef: "PRD 4.1, TRD 2.2"
+          items:
+            - "Prisma 스키마 생성 (User, Role, Permission, Session, RefreshToken, AuditLog 등 10개 모델)"
+            - "Auth.js v5 Credentials Provider 설정"
+            - "JWT RS256 서명 설정 (jose)"
+            - "bcrypt 비밀번호 해싱 유틸리티"
+            - "기본 역할/권한 시드 데이터"
+          acceptance:
+            - "pnpm prisma db push 성공"
+            - "기본 역할 (SYSTEM_ADMIN, USER 등) 시드 완료"
+            - "Auth.js /api/auth/* 엔드포인트 동작"
+          techSpec:
+            - "Prisma 7.x + SQLite (MVP)"
+            - "Auth.js 5.x"
+            - "bcrypt 5.x (rounds: 10)"
+            - "jose 5.x (RS256)"
+
+  # ============================================
+  # WP-02: 인증 (Authentication)
+  # ============================================
+  - id: WP-02
+    title: "인증 시스템"
+    status: planned
+    priority: critical
+    schedule: "2026-01-29 ~ 2026-02-02"
+    tasks:
+      - id: TSK-02-01
+        title: "로그인/로그아웃 API 및 화면"
+        category: development
+        domain: fullstack
+        status: "[xx]"
+        priority: critical
+        assignee: "-"
+        schedule: "2026-01-29 ~ 2026-01-30"
+        tags: [auth, login, jwt]
+        depends: [TSK-01-01]
+        blockedBy: null
+        testResult: null
+        note: "JWT 기반 로그인/로그아웃 전체 플로우"
+        requirements:
+          prdRef: "PRD 4.1.1, 4.1.2"
+          items:
+            - "POST /api/auth/login (Access + Refresh Token 발급)"
+            - "POST /api/auth/logout (토큰 무효화)"
+            - "POST /api/auth/refresh (토큰 갱신)"
+            - "GET /api/auth/me (현재 사용자 정보)"
+            - "로그인 화면 (LoginForm 컴포넌트)"
+          acceptance:
+            - "로그인 성공 시 accessToken, refreshToken 반환"
+            - "로그아웃 시 세션 및 토큰 무효화"
+            - "토큰 만료 전 자동 갱신 동작"
+          apiSpec:
+            - "POST /api/auth/login { email, password, rememberMe? }"
+            - "POST /api/auth/logout (Authorization 헤더)"
+            - "POST /api/auth/refresh { refreshToken }"
+          uiSpec:
+            - "LoginForm: 이메일/비밀번호 입력, 자동로그인 체크박스"
+            - "Ant Design Form + Input 컴포넌트"
+
+      - id: TSK-02-02
+        title: "비밀번호 정책 및 계정 잠금"
+        category: development
+        domain: backend
+        status: "[xx]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-31 ~ 2026-02-01"
+        tags: [auth, password, security]
+        depends: [TSK-02-01]
+        blockedBy: null
+        testResult: null
+        note: "비밀번호 복잡도, 만료, 이력 관리 및 계정 잠금 메커니즘"
+        requirements:
+          prdRef: "PRD 4.1.4, 4.1.5"
+          items:
+            - "비밀번호 복잡도 검증 (zod 스키마)"
+            - "비밀번호 만료 체크 (90일 기본)"
+            - "비밀번호 이력 관리 (최근 5개 재사용 금지)"
+            - "로그인 실패 횟수 추적 (5회 초과 시 잠금)"
+            - "계정 자동 잠금/해제 (30분)"
+          acceptance:
+            - "복잡도 미충족 시 에러 반환"
+            - "5회 실패 시 계정 잠금"
+            - "30분 후 자동 잠금 해제"
+          techSpec:
+            - "zod 3.x 스키마 검증"
+            - "bcrypt.compare로 이력 비교"
+
+      - id: TSK-02-03
+        title: "비밀번호 변경/찾기/재설정"
+        category: development
+        domain: fullstack
+        status: "[xx]"
+        priority: medium
+        assignee: "-"
+        schedule: "2026-02-02 ~ 2026-02-02"
+        tags: [auth, password, reset]
+        depends: [TSK-02-02]
+        blockedBy: null
+        testResult: null
+        note: "비밀번호 변경 및 찾기/재설정 플로우"
+        requirements:
+          prdRef: "PRD 4.1.6"
+          items:
+            - "POST /api/auth/password/change (현재 비밀번호 확인 후 변경)"
+            - "POST /api/auth/password/forgot (이메일로 재설정 링크)"
+            - "POST /api/auth/password/reset (토큰 검증 후 재설정)"
+            - "비밀번호 변경/재설정 화면"
+          acceptance:
+            - "현재 비밀번호 불일치 시 에러"
+            - "재설정 링크 1시간 유효"
+            - "변경 후 비밀번호 이력 저장"
+          uiSpec:
+            - "PasswordChangeForm: 현재/새 비밀번호 입력"
+            - "PasswordResetForm: 새 비밀번호 입력"
+
+  # ============================================
+  # WP-03: 인가 (Authorization)
+  # ============================================
+  - id: WP-03
+    title: "인가 시스템 (RBAC)"
+    status: planned
+    priority: critical
+    schedule: "2026-02-03 ~ 2026-02-07"
+    tasks:
+      - id: TSK-03-01
+        title: "역할/권한 CRUD API"
+        category: development
+        domain: backend
+        status: "[xx]"
+        priority: critical
+        assignee: "-"
+        schedule: "2026-02-03 ~ 2026-02-04"
+        tags: [rbac, role, permission, api]
+        depends: [TSK-01-01]
+        blockedBy: null
+        testResult: "PASS (52/52 tests)"
+        note: "역할, 권한 관리 REST API"
+        requirements:
+          prdRef: "PRD 4.2.1, 4.2.2, 4.2.3"
+          items:
+            - "GET/POST/PUT/DELETE /api/roles"
+            - "GET/POST/PUT/DELETE /api/permissions"
+            - "PUT /api/roles/:id/permissions (역할-권한 매핑)"
+            - "PUT /api/users/:id/roles (사용자-역할 할당)"
+          acceptance:
+            - "역할 CRUD 동작"
+            - "권한 CRUD 동작"
+            - "역할-권한, 사용자-역할 매핑 동작"
+          apiSpec:
+            - "GET /api/roles?page=1&pageSize=10"
+            - "POST /api/roles { code, name, parentId?, description }"
+            - "PUT /api/roles/:id/permissions { permissionIds: [] }"
+
+      - id: TSK-03-02
+        title: "메뉴/API 접근 제어 미들웨어"
+        category: development
+        domain: backend
+        status: "[xx]"
+        priority: critical
+        assignee: "-"
+        schedule: "2026-02-05 ~ 2026-02-06"
+        tags: [rbac, middleware, casl]
+        depends: [TSK-03-01]
+        blockedBy: null
+        testResult: "PASS (33/33 tests)"
+        note: "CASL 기반 권한 체크 및 Next.js 미들웨어"
+        requirements:
+          prdRef: "PRD 4.2.5, 4.2.7"
+          items:
+            - "CASL Ability 정의 (lib/auth/ability.ts)"
+            - "Next.js Middleware 권한 체크 (middleware.ts)"
+            - "권한 기반 메뉴 필터링 (getAuthorizedMenus)"
+            - "403 Forbidden 응답 처리"
+          acceptance:
+            - "권한 없는 API 접근 시 403 반환"
+            - "권한 기반 메뉴 필터링 동작"
+            - "JWT 토큰에서 permissions 추출"
+          techSpec:
+            - "CASL 6.x"
+            - "Next.js Middleware (Edge Runtime)"
+
+      - id: TSK-03-03
+        title: "usePermission Hook 및 화면 요소 제어"
+        category: development
+        domain: frontend
+        status: "[xx]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-02-07 ~ 2026-02-07"
+        tags: [rbac, hook, ui]
+        depends: [TSK-03-02]
+        blockedBy: null
+        testResult: "PASS (23/23 tests)"
+        note: "React Hook으로 UI 요소 권한 제어"
+        requirements:
+          prdRef: "PRD 4.2.6"
+          items:
+            - "usePermission Hook (can, cannot 메서드)"
+            - "PermissionGuard 컴포넌트 (조건부 렌더링)"
+            - "버튼 활성화/비활성화, 영역 표시/숨김"
+          acceptance:
+            - "can('create', 'User') 동작"
+            - "권한 없는 버튼 숨김/비활성화"
+          uiSpec:
+            - "PermissionGuard: children 래핑"
+            - "can() 조건부 렌더링"
+
+  # ============================================
+  # WP-04: 회계 (Accounting) - 감사 로그
+  # ============================================
+  - id: WP-04
+    title: "감사 로그 시스템"
+    status: planned
+    priority: high
+    schedule: "2026-02-08 ~ 2026-02-10"
+    tasks:
+      - id: TSK-04-01
+        title: "감사 로그 수집 및 조회 API"
+        category: development
+        domain: backend
+        status: "[xx]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-02-08 ~ 2026-02-09"
+        tags: [audit, logging, api]
+        depends: [TSK-02-01, TSK-03-01]
+        blockedBy: null
+        testResult: "PASS (18/18 tests)"
+        note: "감사 로그 생성, 조회, 내보내기 API"
+        requirements:
+          prdRef: "PRD 4.3.1, 4.3.2, 4.3.3, 4.3.4"
+          items:
+            - "createAuditLog 함수 (lib/audit/audit-logger.ts)"
+            - "인증 이벤트 로깅 (LOGIN, LOGOUT, LOGIN_FAILED 등)"
+            - "권한 변경 이벤트 로깅"
+            - "GET /api/audit-logs (필터/페이징)"
+            - "GET /api/audit-logs/export (CSV)"
+          acceptance:
+            - "로그인/로그아웃 시 감사 로그 생성"
+            - "역할/권한 변경 시 감사 로그 생성"
+            - "감사 로그 조회 3초 이내 (100만 건 기준)"
+          apiSpec:
+            - "GET /api/audit-logs?userId=&action=&startDate=&endDate="
+            - "GET /api/audit-logs/export?format=csv"
+          techSpec:
+            - "Pino 9.x (JSON 로깅)"
+            - "Prisma 비동기 저장"
+
+  # ============================================
+  # WP-05: 관리 화면
+  # ============================================
+  - id: WP-05
+    title: "관리 화면"
+    status: planned
+    priority: high
+    schedule: "2026-02-11 ~ 2026-02-14"
+    tasks:
+      - id: TSK-05-01
+        title: "사용자 관리 화면"
+        category: development
+        domain: frontend
+        status: "[xx]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-02-11 ~ 2026-02-12"
+        tags: [admin, user, ui]
+        depends: [TSK-03-01, TSK-03-03]
+        blockedBy: null
+        testResult: "PASS (수동 테스트)"
+        note: "사용자 목록/등록/수정/삭제, 역할 할당, 계정 잠금 화면"
+        requirements:
+          prdRef: "PRD 4.4.1"
+          items:
+            - "사용자 목록 (검색, 필터, 페이징)"
+            - "사용자 등록/수정 폼"
+            - "역할 할당 인터페이스"
+            - "계정 잠금/해제, 비밀번호 초기화 버튼"
+          acceptance:
+            - "사용자 CRUD 동작"
+            - "역할 다중 선택 할당"
+            - "계정 잠금/해제 동작"
+          uiSpec:
+            - "Ant Design Table + ProTable 패턴"
+            - "Modal Form (등록/수정)"
+            - "권한 기반 버튼 표시"
+
+      - id: TSK-05-02
+        title: "역할/권한 관리 및 감사로그 조회 화면"
+        category: development
+        domain: frontend
+        status: "[xx]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-02-13 ~ 2026-02-14"
+        tags: [admin, role, permission, audit, ui]
+        depends: [TSK-05-01, TSK-04-01]
+        blockedBy: null
+        testResult: "PASS (수동 테스트)"
+        note: "역할/권한 관리 및 감사 로그 조회 화면 통합 구현"
+        requirements:
+          prdRef: "PRD 4.4.2, 4.4.3, 4.4.4"
+          items:
+            - "역할 목록 (트리/리스트 뷰)"
+            - "역할-권한 매핑 매트릭스"
+            - "권한 목록 (그룹별 분류)"
+            - "감사 로그 검색/필터링/상세 조회"
+            - "로그 내보내기 (CSV)"
+          acceptance:
+            - "역할 계층 트리 표시"
+            - "권한 매트릭스 체크박스 매핑"
+            - "감사 로그 필터/페이징/내보내기"
+          uiSpec:
+            - "Tree 컴포넌트 (역할 계층)"
+            - "Checkbox Matrix (역할-권한)"
+            - "Table + 날짜 필터 (감사 로그)"

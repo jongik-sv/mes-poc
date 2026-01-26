@@ -11,7 +11,8 @@ interface AuthUser {
   id: string
   email: string
   name: string
-  role: UserRole
+  roles: UserRole[]
+  permissions: string[]
 }
 
 /**
@@ -41,30 +42,126 @@ export const authConfig: NextAuthConfig = {
           return null
         }
 
+        // 사용자 조회 (UserRole 기반)
         const user = await prisma.user.findUnique({
           where: { email },
-          include: { role: true },
+          include: {
+            userRoles: {
+              include: {
+                role: {
+                  include: {
+                    rolePermissions: {
+                      include: {
+                        permission: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         })
 
-        if (!user || !user.isActive) {
+        if (!user) {
           return null
+        }
+
+        // 계정 비활성화 체크
+        if (!user.isActive) {
+          return null
+        }
+
+        // 계정 잠금 체크
+        if (user.isLocked) {
+          // 잠금 해제 시간 체크
+          if (user.lockUntil && new Date() < user.lockUntil) {
+            return null
+          }
+          // 잠금 해제
+          await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              isLocked: false,
+              lockUntil: null,
+              failedLoginAttempts: 0,
+            },
+          })
         }
 
         const isValidPassword = await bcrypt.default.compare(password, user.password)
 
         if (!isValidPassword) {
+          // 로그인 실패 횟수 증가
+          const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              failedLoginAttempts: { increment: 1 },
+            },
+          })
+
+          // 5회 실패 시 계정 잠금 (30분)
+          if (updatedUser.failedLoginAttempts >= 5) {
+            await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                isLocked: true,
+                lockUntil: new Date(Date.now() + 30 * 60 * 1000),
+              },
+            })
+          }
+
+          // 감사 로그 기록 (LOGIN_FAILED)
+          await prisma.auditLog.create({
+            data: {
+              userId: user.id,
+              action: 'LOGIN_FAILED',
+              status: 'FAILURE',
+              details: JSON.stringify({ reason: 'INVALID_PASSWORD' }),
+            },
+          })
+
           return null
         }
+
+        // 로그인 성공: 실패 횟수 초기화, 마지막 로그인 시간 갱신
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            failedLoginAttempts: 0,
+            lastLoginAt: new Date(),
+          },
+        })
+
+        // 감사 로그 기록 (LOGIN)
+        await prisma.auditLog.create({
+          data: {
+            userId: user.id,
+            action: 'LOGIN',
+            status: 'SUCCESS',
+          },
+        })
+
+        // 역할 및 권한 추출
+        const roles = user.userRoles.map((ur) => ({
+          id: ur.role.id,
+          code: ur.role.code,
+          name: ur.role.name,
+        }))
+
+        const permissions = [
+          ...new Set(
+            user.userRoles.flatMap((ur) =>
+              ur.role.rolePermissions.map((rp) => rp.permission.code)
+            )
+          ),
+        ]
 
         return {
           id: String(user.id),
           email: user.email,
           name: user.name,
-          role: {
-            id: user.role.id,
-            code: user.role.code,
-            name: user.role.name,
-          },
+          roles,
+          permissions,
         }
       },
     }),
@@ -118,14 +215,16 @@ export const authConfig: NextAuthConfig = {
       if (user) {
         const authUser = user as AuthUser
         token.id = authUser.id
-        token.role = authUser.role
+        token.roles = authUser.roles
+        token.permissions = authUser.permissions
       }
       return token
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id as string
-        session.user.role = token.role as UserRole
+        session.user.roles = token.roles as UserRole[]
+        session.user.permissions = token.permissions as string[]
       }
       return session
     },

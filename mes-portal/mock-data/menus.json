@@ -258,7 +258,7 @@
               "id": "5-1-1",
               "code": "USER_LIST",
               "name": "사용자 관리",
-              "path": "/settings/user/list",
+              "path": "/system/users",
               "icon": "TeamOutlined",
               "sortOrder": 1,
               "isActive": true
@@ -267,9 +267,18 @@
               "id": "5-1-2",
               "code": "ROLE",
               "name": "역할 관리",
-              "path": "/settings/user/role",
+              "path": "/system/roles",
               "icon": "SafetyCertificateOutlined",
               "sortOrder": 2,
+              "isActive": true
+            },
+            {
+              "id": "5-1-3",
+              "code": "AUDIT_LOG",
+              "name": "감사 로그",
+              "path": "/system/audit-logs",
+              "icon": "FileSearchOutlined",
+              "sortOrder": 3,
               "isActive": true
             }
           ]

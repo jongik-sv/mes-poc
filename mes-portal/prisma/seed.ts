@@ -4,6 +4,7 @@
  * - TSK-03-01: 초기 메뉴 데이터 생성
  * - TSK-04-02: 역할 및 사용자 데이터 생성
  * - TSK-03-02: 역할-메뉴 매핑 데이터 생성
+ * - Auth System: RBAC 기반 역할/권한/보안설정 데이터
  */
 
 import 'dotenv/config'
@@ -18,67 +19,285 @@ const adapter = new PrismaBetterSqlite3({
 const prisma = new PrismaClient({ adapter })
 
 // ============================================
-// 역할 데이터 (TSK-04-02)
+// RBAC 역할 데이터 (Auth System)
 // ============================================
 const roles = [
-  { code: 'ADMIN', name: '시스템 관리자' },
-  { code: 'MANAGER', name: '생산 관리자' },
-  { code: 'OPERATOR', name: '현장 작업자' },
+  { code: 'SYSTEM_ADMIN', name: '시스템 관리자', description: '전체 시스템 관리 권한', level: 0, isSystem: true, parentCode: null },
+  { code: 'SECURITY_ADMIN', name: '보안 관리자', description: '보안 정책 및 감사 로그 관리', level: 1, isSystem: true, parentCode: 'SYSTEM_ADMIN' },
+  { code: 'OPERATION_ADMIN', name: '운영 관리자', description: '운영 관련 관리 권한', level: 1, isSystem: true, parentCode: 'SYSTEM_ADMIN' },
+  { code: 'PRODUCTION_MANAGER', name: '생산 관리자', description: '생산 현장 관리 권한', level: 2, isSystem: false, parentCode: 'OPERATION_ADMIN' },
+  { code: 'QUALITY_MANAGER', name: '품질 관리자', description: '품질 관리 권한', level: 2, isSystem: false, parentCode: 'OPERATION_ADMIN' },
+  { code: 'EQUIPMENT_MANAGER', name: '설비 관리자', description: '설비 관리 권한', level: 2, isSystem: false, parentCode: 'OPERATION_ADMIN' },
+  { code: 'USER', name: '일반 사용자', description: '기본 사용자 권한', level: 3, isSystem: true, parentCode: null },
 ] as const
 
 // ============================================
-// 테스트 사용자 데이터 (TSK-04-02)
+// 권한 데이터 (Auth System)
+// ============================================
+const permissions = [
+  // 사용자 관리 권한
+  { code: 'user:read', name: '사용자 조회', type: 'API', resource: '/api/users', action: 'READ' },
+  { code: 'user:create', name: '사용자 생성', type: 'API', resource: '/api/users', action: 'CREATE' },
+  { code: 'user:update', name: '사용자 수정', type: 'API', resource: '/api/users', action: 'UPDATE' },
+  { code: 'user:delete', name: '사용자 삭제', type: 'API', resource: '/api/users', action: 'DELETE' },
+  { code: 'user:lock', name: '계정 잠금', type: 'API', resource: '/api/users', action: 'LOCK' },
+  { code: 'user:unlock', name: '계정 잠금 해제', type: 'API', resource: '/api/users', action: 'UNLOCK' },
+  { code: 'user:password-reset', name: '비밀번호 초기화', type: 'API', resource: '/api/users', action: 'PASSWORD_RESET' },
+  { code: 'user:assign-role', name: '역할 할당', type: 'API', resource: '/api/users', action: 'ASSIGN_ROLE' },
+
+  // 역할 관리 권한
+  { code: 'role:read', name: '역할 조회', type: 'API', resource: '/api/roles', action: 'READ' },
+  { code: 'role:create', name: '역할 생성', type: 'API', resource: '/api/roles', action: 'CREATE' },
+  { code: 'role:update', name: '역할 수정', type: 'API', resource: '/api/roles', action: 'UPDATE' },
+  { code: 'role:delete', name: '역할 삭제', type: 'API', resource: '/api/roles', action: 'DELETE' },
+  { code: 'role:assign-permission', name: '권한 할당', type: 'API', resource: '/api/roles', action: 'ASSIGN_PERMISSION' },
+  { code: 'role:assign-menu', name: '메뉴 할당', type: 'API', resource: '/api/roles', action: 'ASSIGN_MENU' },
+
+  // 권한 관리 권한
+  { code: 'permission:read', name: '권한 조회', type: 'API', resource: '/api/permissions', action: 'READ' },
+  { code: 'permission:create', name: '권한 생성', type: 'API', resource: '/api/permissions', action: 'CREATE' },
+  { code: 'permission:update', name: '권한 수정', type: 'API', resource: '/api/permissions', action: 'UPDATE' },
+  { code: 'permission:delete', name: '권한 삭제', type: 'API', resource: '/api/permissions', action: 'DELETE' },
+
+  // 감사 로그 권한
+  { code: 'audit-log:read', name: '감사 로그 조회', type: 'API', resource: '/api/audit-logs', action: 'READ' },
+  { code: 'audit-log:export', name: '감사 로그 내보내기', type: 'API', resource: '/api/audit-logs/export', action: 'EXPORT' },
+
+  // 보안 설정 권한
+  { code: 'security:read', name: '보안 설정 조회', type: 'API', resource: '/api/security-settings', action: 'READ' },
+  { code: 'security:update', name: '보안 설정 수정', type: 'API', resource: '/api/security-settings', action: 'UPDATE' },
+
+  // 메뉴 관리 권한
+  { code: 'menu:read', name: '메뉴 조회', type: 'API', resource: '/api/menus', action: 'READ' },
+  { code: 'menu:create', name: '메뉴 생성', type: 'API', resource: '/api/menus', action: 'CREATE' },
+  { code: 'menu:update', name: '메뉴 수정', type: 'API', resource: '/api/menus', action: 'UPDATE' },
+  { code: 'menu:delete', name: '메뉴 삭제', type: 'API', resource: '/api/menus', action: 'DELETE' },
+] as const
+
+// ============================================
+// 역할-권한 매핑 데이터 (Auth System)
+// ============================================
+const rolePermissions: { roleCode: string; permissionCodes: string[] }[] = [
+  // SYSTEM_ADMIN: 모든 권한
+  { roleCode: 'SYSTEM_ADMIN', permissionCodes: ['*'] },
+
+  // SECURITY_ADMIN: 감사 로그, 보안 설정
+  {
+    roleCode: 'SECURITY_ADMIN',
+    permissionCodes: [
+      'audit-log:read',
+      'audit-log:export',
+      'security:read',
+      'security:update',
+      'user:read',
+    ],
+  },
+
+  // OPERATION_ADMIN: 사용자/역할 관리 (보안 설정 제외)
+  {
+    roleCode: 'OPERATION_ADMIN',
+    permissionCodes: [
+      'user:read',
+      'user:create',
+      'user:update',
+      'user:lock',
+      'user:unlock',
+      'user:password-reset',
+      'user:assign-role',
+      'role:read',
+      'menu:read',
+    ],
+  },
+
+  // PRODUCTION_MANAGER, QUALITY_MANAGER, EQUIPMENT_MANAGER: 기본 조회
+  {
+    roleCode: 'PRODUCTION_MANAGER',
+    permissionCodes: ['user:read', 'role:read', 'menu:read'],
+  },
+  {
+    roleCode: 'QUALITY_MANAGER',
+    permissionCodes: ['user:read', 'role:read', 'menu:read'],
+  },
+  {
+    roleCode: 'EQUIPMENT_MANAGER',
+    permissionCodes: ['user:read', 'role:read', 'menu:read'],
+  },
+
+  // USER: 최소 권한
+  {
+    roleCode: 'USER',
+    permissionCodes: ['menu:read'],
+  },
+]
+
+// ============================================
+// 보안 설정 데이터 (Auth System)
+// ============================================
+const securitySettings = [
+  // 비밀번호 정책
+  { key: 'PASSWORD_MIN_LENGTH', value: '8', type: 'NUMBER', description: '비밀번호 최소 길이' },
+  { key: 'PASSWORD_REQUIRE_UPPERCASE', value: 'true', type: 'BOOLEAN', description: '대문자 필수' },
+  { key: 'PASSWORD_REQUIRE_LOWERCASE', value: 'true', type: 'BOOLEAN', description: '소문자 필수' },
+  { key: 'PASSWORD_REQUIRE_NUMBER', value: 'true', type: 'BOOLEAN', description: '숫자 필수' },
+  { key: 'PASSWORD_REQUIRE_SPECIAL', value: 'true', type: 'BOOLEAN', description: '특수문자 필수' },
+  { key: 'PASSWORD_EXPIRY_DAYS', value: '90', type: 'NUMBER', description: '비밀번호 만료 기간(일)' },
+  { key: 'PASSWORD_HISTORY_COUNT', value: '5', type: 'NUMBER', description: '비밀번호 재사용 금지 횟수' },
+
+  // 계정 잠금 정책
+  { key: 'MAX_LOGIN_ATTEMPTS', value: '5', type: 'NUMBER', description: '최대 로그인 실패 횟수' },
+  { key: 'LOCKOUT_DURATION_MINUTES', value: '30', type: 'NUMBER', description: '계정 잠금 시간(분)' },
+
+  // 세션 정책
+  { key: 'SESSION_TIMEOUT_MINUTES', value: '30', type: 'NUMBER', description: '세션 타임아웃(분)' },
+  { key: 'MAX_CONCURRENT_SESSIONS', value: '3', type: 'NUMBER', description: '최대 동시 세션 수' },
+  { key: 'SESSION_WARNING_MINUTES', value: '5', type: 'NUMBER', description: '세션 만료 경고 시간(분)' },
+
+  // 토큰 정책
+  { key: 'ACCESS_TOKEN_EXPIRY_MINUTES', value: '15', type: 'NUMBER', description: 'Access Token 만료 시간(분)' },
+  { key: 'REFRESH_TOKEN_EXPIRY_DAYS', value: '7', type: 'NUMBER', description: 'Refresh Token 만료 시간(일)' },
+
+  // 감사 로그 정책
+  { key: 'AUDIT_LOG_RETENTION_DAYS', value: '365', type: 'NUMBER', description: '감사 로그 보존 기간(일)' },
+] as const
+
+// ============================================
+// 테스트 사용자 데이터 (Auth System)
 // ============================================
 const testUsers = [
-  { email: 'admin@example.com', name: '관리자', roleCode: 'ADMIN' },
-  { email: 'manager@example.com', name: '생산관리자', roleCode: 'MANAGER' },
-  { email: 'operator@example.com', name: '작업자', roleCode: 'OPERATOR' },
+  { email: 'admin@mes.local', name: '시스템 관리자', roleCode: 'SYSTEM_ADMIN', password: 'Admin123!' },
+  { email: 'security@mes.local', name: '보안 관리자', roleCode: 'SECURITY_ADMIN', password: 'Security123!' },
+  { email: 'operation@mes.local', name: '운영 관리자', roleCode: 'OPERATION_ADMIN', password: 'Operation123!' },
+  { email: 'production@mes.local', name: '생산 관리자', roleCode: 'PRODUCTION_MANAGER', password: 'Production123!' },
+  { email: 'user@mes.local', name: '일반 사용자', roleCode: 'USER', password: 'User123!' },
 ] as const
 
 // ============================================
-// 역할 및 사용자 시드 함수 (TSK-04-02)
+// 역할 및 사용자 시드 함수 (Auth System)
 // ============================================
 async function seedRolesAndUsers() {
-  console.log('🔐 Seeding roles and users...')
+  console.log('🔐 Seeding roles, permissions, and users...')
 
-  // 1. 역할 생성 (upsert로 멱등성 보장)
-  const createdRoles = await Promise.all(
-    roles.map((role) =>
-      prisma.role.upsert({
-        where: { code: role.code },
-        update: {},
+  // 1. 권한 생성
+  console.log('  Creating permissions...')
+  const createdPermissions = await Promise.all(
+    permissions.map((perm) =>
+      prisma.permission.upsert({
+        where: { code: perm.code },
+        update: { name: perm.name, type: perm.type, resource: perm.resource, action: perm.action },
         create: {
-          code: role.code,
-          name: role.name,
+          code: perm.code,
+          name: perm.name,
+          type: perm.type,
+          resource: perm.resource,
+          action: perm.action,
         },
       })
     )
   )
+  console.log(`  ✅ Created ${createdPermissions.length} permissions`)
 
-  console.log(`✅ Created ${createdRoles.length} roles:`, createdRoles.map((r) => r.code).join(', '))
+  // 권한 코드 → ID 매핑
+  const permMap = new Map(createdPermissions.map((p) => [p.code, p.id]))
 
-  // 역할 코드 → ID 매핑
-  const roleMap = new Map(createdRoles.map((r) => [r.code, r.id]))
+  // 2. 역할 생성 (부모 역할 없는 것 먼저)
+  console.log('  Creating roles...')
+  const roleMap = new Map<string, number>()
 
-  // 2. 테스트 사용자 생성
-  const defaultPassword = await hashPassword('password123')
+  // 부모 없는 역할 먼저 생성
+  for (const role of roles.filter((r) => r.parentCode === null)) {
+    const created = await prisma.role.upsert({
+      where: { code: role.code },
+      update: { name: role.name, description: role.description, level: role.level, isSystem: role.isSystem },
+      create: {
+        code: role.code,
+        name: role.name,
+        description: role.description,
+        level: role.level,
+        isSystem: role.isSystem,
+      },
+    })
+    roleMap.set(role.code, created.id)
+  }
 
-  const createdUsers = await Promise.all(
-    testUsers.map((user) =>
-      prisma.user.upsert({
-        where: { email: user.email },
+  // 부모 있는 역할 생성
+  for (const role of roles.filter((r) => r.parentCode !== null)) {
+    const parentId = roleMap.get(role.parentCode!)
+    const created = await prisma.role.upsert({
+      where: { code: role.code },
+      update: { name: role.name, description: role.description, level: role.level, isSystem: role.isSystem, parentId },
+      create: {
+        code: role.code,
+        name: role.name,
+        description: role.description,
+        level: role.level,
+        isSystem: role.isSystem,
+        parentId,
+      },
+    })
+    roleMap.set(role.code, created.id)
+  }
+  console.log(`  ✅ Created ${roleMap.size} roles`)
+
+  // 3. 역할-권한 매핑
+  console.log('  Creating role-permission mappings...')
+  for (const mapping of rolePermissions) {
+    const roleId = roleMap.get(mapping.roleCode)
+    if (!roleId) continue
+
+    const permCodes = mapping.permissionCodes[0] === '*'
+      ? permissions.map((p) => p.code)
+      : mapping.permissionCodes
+
+    for (const code of permCodes) {
+      const permId = permMap.get(code)
+      if (!permId) continue
+
+      await prisma.rolePermission.upsert({
+        where: { roleId_permissionId: { roleId, permissionId: permId } },
         update: {},
-        create: {
-          email: user.email,
-          password: defaultPassword,
-          name: user.name,
-          roleId: roleMap.get(user.roleCode)!,
-        },
+        create: { roleId, permissionId: permId },
       })
-    )
-  )
+    }
+  }
+  console.log(`  ✅ Created role-permission mappings`)
 
-  console.log(`✅ Created ${createdUsers.length} users:`, createdUsers.map((u) => u.email).join(', '))
+  // 4. 테스트 사용자 생성
+  console.log('  Creating test users...')
+  for (const user of testUsers) {
+    const hashedPassword = await hashPassword(user.password)
+    const roleId = roleMap.get(user.roleCode)
+    if (!roleId) continue
+
+    const createdUser = await prisma.user.upsert({
+      where: { email: user.email },
+      update: {},
+      create: {
+        email: user.email,
+        password: hashedPassword,
+        name: user.name,
+        mustChangePassword: false, // 테스트 사용자는 변경 불필요
+      },
+    })
+
+    // UserRole 매핑
+    await prisma.userRole.upsert({
+      where: { userId_roleId: { userId: createdUser.id, roleId } },
+      update: {},
+      create: { userId: createdUser.id, roleId },
+    })
+  }
+  console.log(`  ✅ Created ${testUsers.length} test users`)
+
+  // 5. 보안 설정 생성
+  console.log('  Creating security settings...')
+  for (const setting of securitySettings) {
+    await prisma.securitySetting.upsert({
+      where: { key: setting.key },
+      update: { value: setting.value, type: setting.type, description: setting.description },
+      create: setting,
+    })
+  }
+  console.log(`  ✅ Created ${securitySettings.length} security settings`)
 }
 
 // 테스트에서 사용할 수 있도록 export
@@ -242,6 +461,16 @@ const menus = [
     sortOrder: 3,
     isActive: true,
   },
+  {
+    id: 94,
+    code: 'AUDIT_LOG',
+    name: '감사 로그',
+    path: '/system/audit-logs',
+    icon: 'FileSearchOutlined',
+    parentId: 90,
+    sortOrder: 4,
+    isActive: true,
+  },
 
   // 테스트용 비활성 메뉴
   {
@@ -273,22 +502,60 @@ async function seedMenus() {
 }
 
 // ============================================
-// 역할-메뉴 매핑 데이터 (TSK-03-02)
+// 역할-메뉴 매핑 데이터 (Auth System)
 // ============================================
 
 /**
  * 역할별 메뉴 매핑 설정
- * - ADMIN: 모든 메뉴 접근
- * - MANAGER: 대시보드, 생산 관리, 샘플 화면 (시스템 관리 제외)
- * - OPERATOR: 대시보드, 작업 지시, 생산 실적 (BR-02에 의해 부모 자동 표시)
+ * - SYSTEM_ADMIN: 모든 메뉴 접근
+ * - OPERATION_ADMIN: 대시보드, 생산 관리, 샘플 화면, 시스템 관리
+ * - PRODUCTION_MANAGER: 대시보드, 생산 관리, 샘플 화면
+ * - USER: 대시보드, 샘플 화면
  */
 const roleMenuMappings: { roleCode: string; menuCodes: string[] }[] = [
-  // ADMIN - 모든 메뉴 (menuCodes: ['*']는 모든 메뉴 의미)
-  { roleCode: 'ADMIN', menuCodes: ['*'] },
+  // SYSTEM_ADMIN - 모든 메뉴
+  { roleCode: 'SYSTEM_ADMIN', menuCodes: ['*'] },
 
-  // MANAGER - 생산/품질/설비 관리 (시스템 관리 제외)
+  // SECURITY_ADMIN - 시스템 관리 + 감사 로그
   {
-    roleCode: 'MANAGER',
+    roleCode: 'SECURITY_ADMIN',
+    menuCodes: [
+      'DASHBOARD',
+      'DASHBOARD_MAIN',
+      'SYSTEM',
+      'USER_MGMT',
+      'ROLE_MGMT',
+      'MENU_MGMT',
+      'AUDIT_LOG',
+    ],
+  },
+
+  // OPERATION_ADMIN - 대시보드, 생산, 샘플, 시스템 관리
+  {
+    roleCode: 'OPERATION_ADMIN',
+    menuCodes: [
+      'DASHBOARD',
+      'DASHBOARD_MAIN',
+      'PRODUCTION',
+      'WORK_ORDER',
+      'PRODUCTION_RESULT',
+      'PRODUCTION_ENTRY',
+      'PRODUCTION_HISTORY',
+      'SAMPLE',
+      'SAMPLE_USER_LIST',
+      'SAMPLE_MASTER_DETAIL',
+      'SAMPLE_WIZARD',
+      'SYSTEM',
+      'USER_MGMT',
+      'ROLE_MGMT',
+      'MENU_MGMT',
+      'AUDIT_LOG',
+    ],
+  },
+
+  // PRODUCTION_MANAGER - 대시보드, 생산 관리, 샘플
+  {
+    roleCode: 'PRODUCTION_MANAGER',
     menuCodes: [
       'DASHBOARD',
       'DASHBOARD_MAIN',
@@ -304,19 +571,16 @@ const roleMenuMappings: { roleCode: string; menuCodes: string[] }[] = [
     ],
   },
 
-  // OPERATOR - 작업 관련만 (BR-02 규칙에 의해 부모 메뉴 자동 표시)
+  // USER - 대시보드, 샘플 화면
   {
-    roleCode: 'OPERATOR',
+    roleCode: 'USER',
     menuCodes: [
       'DASHBOARD',
       'DASHBOARD_MAIN',
-      'WORK_ORDER',
-      'PRODUCTION_ENTRY',
-      // 부모 메뉴 PRODUCTION, PRODUCTION_RESULT는
-      // BR-02 규칙에 의해 클라이언트에서 자동 표시됨
-      // 그러나 시드에서는 명시적으로 매핑하여 DB 조회 일관성 유지
-      'PRODUCTION',
-      'PRODUCTION_RESULT',
+      'SAMPLE',
+      'SAMPLE_USER_LIST',
+      'SAMPLE_MASTER_DETAIL',
+      'SAMPLE_WIZARD',
     ],
   },
 ]

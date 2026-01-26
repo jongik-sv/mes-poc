@@ -3,15 +3,16 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import { Form, Input, Button, Alert, Typography, theme } from 'antd'
+import { Form, Input, Button, Alert, Typography, Checkbox, theme } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 import { AUTH_MESSAGES } from '@/lib/constants/messages'
 
-const { Title, Text } = Typography
+const { Title, Text, Link } = Typography
 
 interface LoginFormValues {
   email: string
   password: string
+  rememberMe?: boolean
 }
 
 export function LoginForm() {
@@ -102,7 +103,7 @@ export function LoginForm() {
       {/* 에러 Alert */}
       {authError && (
         <Alert
-          data-testid="login-error-alert"
+          data-testid="error-message"
           message={authError}
           type="error"
           showIcon
@@ -177,8 +178,27 @@ export function LoginForm() {
           />
         </Form.Item>
 
+        {/* 자동 로그인 및 비밀번호 찾기 */}
+        <Form.Item className="mb-0">
+          <div className="flex justify-between items-center">
+            <Form.Item name="rememberMe" valuePropName="checked" noStyle>
+              <Checkbox data-testid="remember-checkbox">
+                <Text style={{ color: token.colorTextSecondary, fontSize: 13 }}>
+                  자동 로그인
+                </Text>
+              </Checkbox>
+            </Form.Item>
+            <Link
+              href="/forgot-password"
+              style={{ fontSize: 13 }}
+            >
+              비밀번호 찾기
+            </Link>
+          </div>
+        </Form.Item>
+
         {/* 로그인 버튼 */}
-        <Form.Item className="mb-0 mt-8">
+        <Form.Item className="mb-0 mt-6">
           <Button
             data-testid="login-button"
             type="primary"

@@ -36,47 +36,136 @@ model Menu {
 }
 
 // ============================================
-// Role Model - 역할 정의 (TSK-04-02)
+// Role Model - RBAC 역할 정의 (Auth System)
 // ============================================
 model Role {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique // ADMIN, MANAGER, OPERATOR
-  name      String
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  code        String   @unique // SYSTEM_ADMIN, SECURITY_ADMIN, USER 등
+  name        String   // 시스템 관리자, 보안 관리자 등
+  description String?
+  parentId    Int?     // 상위 역할 (계층 구조)
+  level       Int      @default(0) // 역할 레벨 (0이 최상위)
+  isSystem    Boolean  @default(false) // 시스템 역할 (삭제 불가)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  users     User[]
-  roleMenus RoleMenu[]
+  // 자기 참조 (계층 구조)
+  parent   Role?  @relation("RoleHierarchy", fields: [parentId], references: [id])
+  children Role[] @relation("RoleHierarchy")
 
+  // 관계
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+  roleMenus       RoleMenu[]
+
+  @@index([parentId])
+  @@index([isActive])
   @@map("roles")
 }
 
 // ============================================
-// User Model - 사용자 계정 (TSK-04-02)
+// User Model - 사용자 계정 (Auth System)
 // ============================================
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String   // bcrypt 해시
-  name      String
-  roleId    Int
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  Int       @id @default(autoincrement())
+  email               String    @unique
+  password            String    // bcrypt 해시
+  name                String
+  phone               String?
+  department          String?
+  isActive            Boolean   @default(true)
+  isLocked            Boolean   @default(false)
+  lockUntil           DateTime?
+  failedLoginAttempts Int       @default(0)
+  passwordChangedAt   DateTime  @default(now())
+  mustChangePassword  Boolean   @default(true) // 초기 비밀번호 변경 강제
+  lastLoginAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
-  role Role @relation(fields: [roleId], references: [id])
+  // 관계
+  userRoles           UserRole[]
+  sessions            Session[]
+  refreshTokens       RefreshToken[]
+  auditLogs           AuditLog[]
+  passwordHistory     PasswordHistory[]
+  passwordResetTokens PasswordResetToken[]
 
-  @@index([roleId])
+  @@index([email])
   @@index([isActive])
+  @@index([isLocked])
   @@map("users")
+}
+
+// ============================================
+// UserRole Model - 사용자-역할 매핑 (Auth System)
+// ============================================
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  roleId    Int
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+// ============================================
+// Permission Model - 권한 정의 (Auth System)
+// ============================================
+model Permission {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique // 예: "menu:read", "user:write", "report:export"
+  name        String   // 메뉴 조회, 사용자 수정, 리포트 내보내기
+  type        String   // MENU, SCREEN, API, DATA
+  resource    String   // 리소스 경로 (예: "/users", "/api/reports")
+  action      String   // CREATE, READ, UPDATE, DELETE, EXPORT
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 관계
+  rolePermissions RolePermission[]
+
+  @@index([type])
+  @@index([resource])
+  @@index([isActive])
+  @@map("permissions")
+}
+
+// ============================================
+// RolePermission Model - 역할-권한 매핑 (Auth System)
+// ============================================
+model RolePermission {
+  id           Int      @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+  @@map("role_permissions")
 }
 
 // ============================================
 // RoleMenu Model - 역할-메뉴 매핑 (TSK-03-02)
 // ============================================
 model RoleMenu {
-  id     Int @id @default(autoincrement())
-  roleId Int
-  menuId Int
+  id        Int      @id @default(autoincrement())
+  roleId    Int
+  menuId    Int
+  createdAt DateTime @default(now())
 
   role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
   menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
@@ -85,4 +174,119 @@ model RoleMenu {
   @@index([roleId])
   @@index([menuId])
   @@map("role_menus")
+}
+
+// ============================================
+// Session Model - 세션 관리 (Auth System)
+// ============================================
+model Session {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  token      String   @unique
+  userAgent  String?
+  ip         String?
+  deviceType String?  // DESKTOP, MOBILE, TABLET
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([token])
+  @@map("sessions")
+}
+
+// ============================================
+// RefreshToken Model - 리프레시 토큰 (Auth System)
+// ============================================
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  token     String    @unique
+  family    String?   // 토큰 패밀리 (Rotation 감지용)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+// ============================================
+// PasswordHistory Model - 비밀번호 이력 (Auth System)
+// ============================================
+model PasswordHistory {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("password_history")
+}
+
+// ============================================
+// AuditLog Model - 감사 로그 (Auth System)
+// ============================================
+model AuditLog {
+  id           Int      @id @default(autoincrement())
+  userId       Int?     // 인증 실패 시 null 가능
+  action       String   // LOGIN, LOGOUT, LOGIN_FAILED, PASSWORD_CHANGE, PERMISSION_CHANGE 등
+  resource     String?  // 대상 리소스 (예: "user", "role", "menu")
+  resourceId   String?  // 대상 리소스 ID
+  details      String?  // JSON 형태의 상세 정보
+  ip           String?
+  userAgent    String?
+  status       String   // SUCCESS, FAILURE
+  errorMessage String?
+  createdAt    DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@index([resource, resourceId])
+  @@index([status])
+  @@map("audit_logs")
+}
+
+// ============================================
+// SecuritySetting Model - 보안 설정 (Auth System)
+// ============================================
+model SecuritySetting {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String
+  type        String   // STRING, NUMBER, BOOLEAN, JSON
+  description String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("security_settings")
+}
+
+// ============================================
+// PasswordResetToken Model - 비밀번호 재설정 토큰 (Auth System)
+// ============================================
+model PasswordResetToken {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
 }

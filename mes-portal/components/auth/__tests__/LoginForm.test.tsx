@@ -178,7 +178,7 @@ describe('LoginForm', () => {
       await user.click(screen.getByRole('button', { name: /로그인/i }))
 
       await waitFor(() => {
-        const alert = screen.getByTestId('login-error-alert')
+        const alert = screen.getByTestId('error-message')
         expect(alert).toBeInTheDocument()
         expect(alert).toHaveTextContent(AUTH_MESSAGES.AUTH_FAILED)
       })
@@ -200,7 +200,7 @@ describe('LoginForm', () => {
       await user.click(screen.getByRole('button', { name: /로그인/i }))
 
       await waitFor(() => {
-        const alert = screen.getByTestId('login-error-alert')
+        const alert = screen.getByTestId('error-message')
         expect(alert).toBeInTheDocument()
         expect(alert).toHaveTextContent(AUTH_MESSAGES.ACCOUNT_INACTIVE)
       })

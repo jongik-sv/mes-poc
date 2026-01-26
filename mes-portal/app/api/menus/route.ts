@@ -42,10 +42,14 @@ export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
       )
     }
 
-    // 2. 사용자 정보 조회
+    // 2. 사용자 정보 조회 (UserRole 기반)
     const user = await prisma.user.findUnique({
       where: { id: parseInt(session.user.id) },
-      include: { role: true },
+      include: {
+        userRoles: {
+          include: { role: true },
+        },
+      },
     })
 
     // 3. 사용자 활성 상태 검증
@@ -63,7 +67,11 @@ export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
     }
 
     // 4. 역할 기반 메뉴 조회 (BR-02, BR-03, BR-04, BR-05)
-    const menus = await menuService.findByRole(user.roleId)
+    // 사용자의 모든 역할 ID 추출
+    const roleIds = user.userRoles.map((ur) => ur.roleId)
+    // 첫 번째 역할로 메뉴 조회 (향후 여러 역할 통합 필요)
+    const primaryRoleId = roleIds[0] || 0
+    const menus = await menuService.findByRole(primaryRoleId)
 
     return NextResponse.json({
       success: true,
@@ -127,7 +135,11 @@ export async function POST(
     // 관리자 권한 확인 (ADMIN만 메뉴 생성 가능)
     const user = await prisma.user.findUnique({
       where: { id: parseInt(session.user.id) },
-      include: { role: true },
+      include: {
+        userRoles: {
+          include: { role: true },
+        },
+      },
     })
 
     if (!user || !user.isActive) {
@@ -143,8 +155,9 @@ export async function POST(
       )
     }
 
-    // ADMIN 역할만 메뉴 생성 가능 (roleId: 1)
-    if (user.roleId !== 1) {
+    // SYSTEM_ADMIN 역할만 메뉴 생성 가능
+    const isAdmin = user.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    if (!isAdmin) {
       return NextResponse.json(
         {
           success: false,

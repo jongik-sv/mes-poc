@@ -42,17 +42,22 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/equipment/maintenance': () =>
     import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.MaintenanceScreen })),
 
-  // 설정 > 사용자
+  // 설정 > 사용자 (레거시 경로)
   '/settings/user/list': () =>
     import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.UserListScreen })),
   '/settings/user/role': () =>
     import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.RoleScreen })),
 
-  // 설정 > 시스템
+  // 설정 > 시스템 (레거시 경로)
   '/settings/system/menu': () =>
     import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.MenuManageScreen })),
   '/settings/system/code': () =>
     import('@/screens/common/PlaceholderScreen').then((m) => ({ default: m.CodeManageScreen })),
+
+  // 시스템 관리 (Auth System - TSK-05-01, TSK-05-02)
+  '/system/users': () => import('@/screens/system/UserManagement'),
+  '/system/roles': () => import('@/screens/system/RoleManagement'),
+  '/system/audit-logs': () => import('@/screens/system/AuditLogs'),
 
   // 샘플 화면들 (개발용)
   '/sample/table': () => import('@/screens/sample/SampleTable'),

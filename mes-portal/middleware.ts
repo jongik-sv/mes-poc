@@ -12,6 +12,7 @@ export const config = {
     '/quality/:path*',
     '/equipment/:path*',
     '/settings/:path*',
+    '/system/:path*',
     '/sample/:path*',
     '/login',
     '/api/:path*',

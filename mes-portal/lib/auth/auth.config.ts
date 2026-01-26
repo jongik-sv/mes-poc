@@ -12,7 +12,8 @@ interface AuthUser {
   id: string
   email: string
   name: string
-  role: UserRole
+  roles: UserRole[]
+  permissions: string[]
 }
 
 interface Credentials {
@@ -33,10 +34,24 @@ export async function authorizeCredentials(
     return null
   }
 
-  // 사용자 조회
+  // 사용자 조회 (UserRole 관계 포함)
   const user = await prisma.user.findUnique({
     where: { email: credentials.email },
-    include: { role: true },
+    include: {
+      userRoles: {
+        include: {
+          role: {
+            include: {
+              roleMenus: {
+                include: {
+                  menu: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   })
 
   // 사용자 미존재
@@ -59,16 +74,35 @@ export async function authorizeCredentials(
     return null
   }
 
+  // 역할 목록 추출
+  const roles: UserRole[] = user.userRoles.map((ur) => ({
+    id: ur.role.id,
+    code: ur.role.code,
+    name: ur.role.name,
+  }))
+
+  // 권한 목록 추출 (역할별 메뉴 접근 권한)
+  const permissionsSet = new Set<string>()
+  user.userRoles.forEach((ur) => {
+    // SYSTEM_ADMIN 역할은 모든 권한 부여
+    if (ur.role.code === 'SYSTEM_ADMIN') {
+      permissionsSet.add('*')
+    }
+    ur.role.roleMenus.forEach((rm) => {
+      // 메뉴 코드 기반 권한 추가
+      if (rm.menu.code) {
+        permissionsSet.add(`menu:${rm.menu.code}`)
+      }
+    })
+  })
+
   // 인증 성공
   return {
     id: String(user.id),
     email: user.email,
     name: user.name,
-    role: {
-      id: user.role.id,
-      code: user.role.code,
-      name: user.role.name,
-    },
+    roles,
+    permissions: Array.from(permissionsSet),
   }
 }
 
@@ -84,7 +118,8 @@ export async function jwtCallback({
 }): Promise<JWT> {
   if (user) {
     token.id = user.id
-    token.role = user.role
+    token.roles = user.roles
+    token.permissions = user.permissions
   }
   return token
 }
@@ -101,7 +136,8 @@ export async function sessionCallback({
 }): Promise<{ user: AuthUser; expires: string }> {
   if (token) {
     session.user.id = token.id as string
-    session.user.role = token.role as UserRole
+    session.user.roles = token.roles as UserRole[]
+    session.user.permissions = token.permissions as string[]
   }
   return session
 }

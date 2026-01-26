@@ -1,0 +1,234 @@
+/**
+ * TSK-05-01: 사용자 상세 관리 API
+ *
+ * GET /api/users/:id - 사용자 상세 조회
+ * PUT /api/users/:id - 사용자 수정
+ * DELETE /api/users/:id - 사용자 삭제 (비활성화)
+ */
+
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
+
+interface RouteParams {
+  params: Promise<{ id: string }>
+}
+
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  try {
+    const { id: idStr } = await params
+    const id = parseInt(idStr, 10)
+
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { success: false, error: '유효하지 않은 ID입니다' },
+        { status: 400 }
+      )
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        userRoles: {
+          include: {
+            role: {
+              select: {
+                id: true,
+                code: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: '사용자를 찾을 수 없습니다' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        department: user.department,
+        isActive: user.isActive,
+        isLocked: user.isLocked,
+        lockUntil: user.lockUntil?.toISOString() ?? null,
+        mustChangePassword: user.mustChangePassword,
+        lastLoginAt: user.lastLoginAt?.toISOString() ?? null,
+        roles: user.userRoles.map((ur) => ur.role),
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      },
+    })
+  } catch (error) {
+    console.error('[Users] GET detail error:', error)
+    return NextResponse.json(
+      { success: false, error: '사용자 조회 중 오류가 발생했습니다' },
+      { status: 500 }
+    )
+  }
+}
+
+interface UpdateUserDto {
+  name?: string
+  phone?: string
+  department?: string
+  isActive?: boolean
+  roleIds?: number[]
+}
+
+export async function PUT(request: NextRequest, { params }: RouteParams) {
+  try {
+    const { id: idStr } = await params
+    const id = parseInt(idStr, 10)
+
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { success: false, error: '유효하지 않은 ID입니다' },
+        { status: 400 }
+      )
+    }
+
+    const existingUser = await prisma.user.findUnique({ where: { id } })
+    if (!existingUser) {
+      return NextResponse.json(
+        { success: false, error: '사용자를 찾을 수 없습니다' },
+        { status: 404 }
+      )
+    }
+
+    const body: UpdateUserDto = await request.json()
+
+    // 트랜잭션으로 사용자 수정 및 역할 업데이트
+    const user = await prisma.$transaction(async (tx) => {
+      // 사용자 정보 업데이트
+      const updated = await tx.user.update({
+        where: { id },
+        data: {
+          name: body.name,
+          phone: body.phone,
+          department: body.department,
+          isActive: body.isActive,
+        },
+        include: {
+          userRoles: {
+            include: {
+              role: {
+                select: {
+                  id: true,
+                  code: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+
+      // 역할 업데이트 (제공된 경우)
+      if (body.roleIds !== undefined) {
+        // 기존 역할 삭제
+        await tx.userRole.deleteMany({ where: { userId: id } })
+
+        // 새 역할 할당
+        if (body.roleIds.length > 0) {
+          await tx.userRole.createMany({
+            data: body.roleIds.map((roleId) => ({
+              userId: id,
+              roleId,
+            })),
+          })
+        }
+
+        // 역할 다시 조회
+        const userWithRoles = await tx.user.findUnique({
+          where: { id },
+          include: {
+            userRoles: {
+              include: {
+                role: {
+                  select: {
+                    id: true,
+                    code: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        return userWithRoles!
+      }
+
+      return updated
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        department: user.department,
+        isActive: user.isActive,
+        isLocked: user.isLocked,
+        roles: user.userRoles.map((ur) => ur.role),
+        updatedAt: user.updatedAt.toISOString(),
+      },
+    })
+  } catch (error) {
+    console.error('[Users] PUT error:', error)
+    return NextResponse.json(
+      { success: false, error: '사용자 수정 중 오류가 발생했습니다' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  try {
+    const { id: idStr } = await params
+    const id = parseInt(idStr, 10)
+
+    if (isNaN(id)) {
+      return NextResponse.json(
+        { success: false, error: '유효하지 않은 ID입니다' },
+        { status: 400 }
+      )
+    }
+
+    const existingUser = await prisma.user.findUnique({ where: { id } })
+    if (!existingUser) {
+      return NextResponse.json(
+        { success: false, error: '사용자를 찾을 수 없습니다' },
+        { status: 404 }
+      )
+    }
+
+    // 소프트 삭제 (비활성화)
+    await prisma.user.update({
+      where: { id },
+      data: { isActive: false },
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: '사용자가 비활성화되었습니다',
+    })
+  } catch (error) {
+    console.error('[Users] DELETE error:', error)
+    return NextResponse.json(
+      { success: false, error: '사용자 삭제 중 오류가 발생했습니다' },
+      { status: 500 }
+    )
+  }
+}

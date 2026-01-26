@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 <!-- - 화면 작업에는 vercel-react-best-practices, web-design-guidelines 스킬 사용 -->
 - UI 작업은 ui-ux-pro-max 스킬(Claude Code)을 반드시 사용, 스킬이 없으면 ui-ux-pro-max 명령어를 사용한다.
 - 코드 작업은 반드시 context7 mcp로 정합성을 확인 작업한다.
+- 특별한 지시가 없으면 코드는 TDD로 개발한다.
 
 ## 프로젝트 구조
 
@@ -100,7 +101,7 @@ Task 작업 시 `/wf:*` 명령어를 사용하여 표준화된 개발 프로세�
 - `console.log` 프로덕션 코드 포함 금지
 - 하드코딩된 문자열/숫자 금지
 
-## 테스트 트러블슈팅
+<!-- ## 테스트 트러블슈팅
 
 ### React 19 테스트 프로세스 미종료 문제
 
@@ -113,6 +114,6 @@ Task 작업 시 `/wf:*` 명령어를 사용하여 표준화된 개발 프로세�
 import { setImmediate, clearImmediate } from "timers";
 globalThis.setImmediate = setImmediate;
 globalThis.clearImmediate = clearImmediate;
-```
+``` -->
 
 참고: [React #26608](https://github.com/facebook/react/issues/26608)
