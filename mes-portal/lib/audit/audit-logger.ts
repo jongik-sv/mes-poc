@@ -40,7 +40,7 @@ export type AuditStatus = 'SUCCESS' | 'FAILURE'
  * 감사 로그 생성 파라미터
  */
 export interface CreateAuditLogParams {
-  userId?: number | null
+  userId?: string | null
   action: AuditAction
   resource?: string
   resourceId?: string
@@ -101,7 +101,7 @@ export function extractClientInfo(request: Request): {
  * 인증 성공 로그 생성 헬퍼
  */
 export async function logAuthSuccess(
-  userId: number,
+  userId: string,
   request: Request
 ): Promise<void> {
   const { ip, userAgent } = extractClientInfo(request)
@@ -122,7 +122,7 @@ export async function logAuthFailure(
   email: string,
   reason: string,
   request: Request,
-  userId?: number | null
+  userId?: string | null
 ): Promise<void> {
   const { ip, userAgent } = extractClientInfo(request)
   await createAuditLog({
@@ -141,7 +141,7 @@ export async function logAuthFailure(
  * 로그아웃 로그 생성 헬퍼
  */
 export async function logLogout(
-  userId: number,
+  userId: string,
   request: Request
 ): Promise<void> {
   const { ip, userAgent } = extractClientInfo(request)
@@ -159,7 +159,7 @@ export async function logLogout(
  * 비밀번호 변경 로그 생성 헬퍼
  */
 export async function logPasswordChange(
-  userId: number,
+  userId: string,
   request: Request,
   success: boolean = true
 ): Promise<void> {
@@ -179,7 +179,7 @@ export async function logPasswordChange(
  * 계정 잠금 로그 생성 헬퍼
  */
 export async function logAccountLocked(
-  userId: number,
+  userId: string,
   reason: string,
   request?: Request
 ): Promise<void> {

@@ -3,8 +3,8 @@ import { prisma } from '@/lib/prisma'
 import type { JWT } from 'next-auth/jwt'
 
 interface UserRole {
-  id: number
-  code: string
+  roleId: number
+  roleCd: string
   name: string
 }
 
@@ -22,6 +22,14 @@ interface Credentials {
 }
 
 /**
+ * Permission config JSON 구조
+ */
+interface PermissionConfig {
+  actions: ('CREATE' | 'READ' | 'UPDATE' | 'DELETE' | 'EXPORT' | 'IMPORT')[]
+  fieldConstraints?: { [fieldName: string]: string | string[] }
+}
+
+/**
  * Credentials 인증 로직
  * @param credentials 이메일/비밀번호
  * @returns 인증된 사용자 정보 또는 null
@@ -29,22 +37,29 @@ interface Credentials {
 export async function authorizeCredentials(
   credentials: Credentials
 ): Promise<AuthUser | null> {
-  // 입력값 검증
   if (!credentials?.email || !credentials?.password) {
     return null
   }
 
-  // 사용자 조회 (UserRole 관계 포함)
+  // User → UserRoleGroup → RoleGroup → RoleGroupRole → Role → RolePermission → Permission
   const user = await prisma.user.findUnique({
     where: { email: credentials.email },
     include: {
-      userRoles: {
+      userRoleGroups: {
         include: {
-          role: {
+          roleGroup: {
             include: {
-              roleMenus: {
+              roleGroupRoles: {
                 include: {
-                  menu: true,
+                  role: {
+                    include: {
+                      rolePermissions: {
+                        include: {
+                          permission: true,
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -54,17 +69,14 @@ export async function authorizeCredentials(
     },
   })
 
-  // 사용자 미존재
   if (!user) {
     return null
   }
 
-  // 비활성 계정
   if (!user.isActive) {
     return null
   }
 
-  // 비밀번호 검증
   const isValidPassword = await bcrypt.compare(
     credentials.password,
     user.password
@@ -74,31 +86,52 @@ export async function authorizeCredentials(
     return null
   }
 
-  // 역할 목록 추출
-  const roles: UserRole[] = user.userRoles.map((ur) => ({
-    id: ur.role.id,
-    code: ur.role.code,
-    name: ur.role.name,
-  }))
-
-  // 권한 목록 추출 (역할별 메뉴 접근 권한)
-  const permissionsSet = new Set<string>()
-  user.userRoles.forEach((ur) => {
-    // SYSTEM_ADMIN 역할은 모든 권한 부여
-    if (ur.role.code === 'SYSTEM_ADMIN') {
-      permissionsSet.add('*')
-    }
-    ur.role.roleMenus.forEach((rm) => {
-      // 메뉴 코드 기반 권한 추가
-      if (rm.menu.code) {
-        permissionsSet.add(`menu:${rm.menu.code}`)
+  // 역할 목록 추출 (중복 제거)
+  const roleMap = new Map<number, UserRole>()
+  user.userRoleGroups.forEach((urg) => {
+    urg.roleGroup.roleGroupRoles.forEach((rgr) => {
+      const role = rgr.role
+      if (!roleMap.has(role.roleId)) {
+        roleMap.set(role.roleId, {
+          roleId: role.roleId,
+          roleCd: role.roleCd,
+          name: role.name,
+        })
       }
     })
   })
+  const roles = Array.from(roleMap.values())
 
-  // 인증 성공
+  // 권한 목록 추출 (Permission.config JSON 파싱)
+  const permissionsSet = new Set<string>()
+  user.userRoleGroups.forEach((urg) => {
+    urg.roleGroup.roleGroupRoles.forEach((rgr) => {
+      const role = rgr.role
+      // SYSTEM_ADMIN 역할은 모든 권한 부여
+      if (role.roleCd === 'SYSTEM_ADMIN') {
+        permissionsSet.add('*')
+      }
+      role.rolePermissions.forEach((rp) => {
+        const permission = rp.permission
+        try {
+          const config: PermissionConfig = JSON.parse(permission.config)
+          config.actions.forEach((action) => {
+            // menuId 기반 권한 코드: "menuId:action" 형식
+            if (permission.menuId) {
+              permissionsSet.add(`${permission.menuId}:${action.toLowerCase()}`)
+            }
+            // permissionCd 기반 권한 코드도 추가
+            permissionsSet.add(`${permission.permissionCd}:${action.toLowerCase()}`)
+          })
+        } catch {
+          // config JSON 파싱 실패 시 무시
+        }
+      })
+    })
+  })
+
   return {
-    id: String(user.id),
+    id: user.userId,
     email: user.email,
     name: user.name,
     roles,

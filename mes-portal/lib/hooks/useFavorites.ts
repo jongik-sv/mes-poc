@@ -13,17 +13,17 @@ import { FAVORITES_CONFIG } from '@/lib/types/favorites'
  * 메뉴 아이템 인터페이스 (API 응답 호환)
  */
 interface MenuItem {
-  id: string
-  code: string
+  menuId: string
+  menuCd: string
   name: string
   path: string | null
   icon: string | null
-  sortOrder: number
+  sortOrder: string
   children?: MenuItem[]
 }
 
 interface UseFavoritesOptions {
-  userId: number
+  userId: string
   allMenus: MenuItem[]
 }
 
@@ -72,11 +72,11 @@ export function useFavorites({
   // 유효한 즐겨찾기 메뉴 목록
   const favoriteMenus = useMemo<FavoriteMenuItem[]>(() => {
     return favoriteIds
-      .map((id) => leafMenus.find((menu) => menu.id === id))
+      .map((id) => leafMenus.find((menu) => menu.menuId === id))
       .filter((menu): menu is MenuItem => menu !== undefined)
       .map((menu) => ({
-        id: menu.id,
-        code: menu.code,
+        menuId: menu.menuId,
+        menuCd: menu.menuCd,
         name: menu.name,
         path: menu.path as string,
         icon: menu.icon,
@@ -93,7 +93,7 @@ export function useFavorites({
         const data: FavoriteData = JSON.parse(stored)
         // 유효한 메뉴 ID만 필터링
         const validIds = data.menuIds.filter((id) =>
-          leafMenus.some((menu) => menu.id === id)
+          leafMenus.some((menu) => menu.menuId === id)
         )
         setFavoriteIds(validIds)
       } else {
@@ -179,7 +179,7 @@ export function useFavorites({
       }
 
       // 유효한 메뉴인지 확인
-      const menu = leafMenus.find((m) => m.id === menuId)
+      const menu = leafMenus.find((m) => m.menuId === menuId)
       if (!menu) {
         message.error('유효하지 않은 메뉴입니다.')
         return

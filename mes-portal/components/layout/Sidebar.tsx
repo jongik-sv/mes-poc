@@ -64,13 +64,13 @@ const iconMap: Record<string, ReactNode> = {
 }
 
 export interface MenuItem {
-  id: string
-  code: string
+  menuId: string
+  menuCd: string
   name: string
   path?: string
   icon?: string
   children?: MenuItem[]
-  sortOrder: number
+  sortOrder: string
   isActive: boolean
 }
 
@@ -108,7 +108,7 @@ const convertToMenuItems = (
 
   return menus
     .filter((menu) => menu.isActive)
-    .sort((a, b) => a.sortOrder - b.sortOrder)
+    .sort((a, b) => a.sortOrder.localeCompare(b.sortOrder))
     .map((menu) => {
       const hasChildren = menu.children && menu.children.length > 0
       const baseIcon = getIcon(menu.icon)
@@ -118,7 +118,7 @@ const convertToMenuItems = (
       const icon = level === 1 ? baseIcon : null
 
       if (!hasChildren || level >= maxLevel) {
-        const isFavorited = favoriteOptions?.isFavorite(menu.id) ?? false
+        const isFavorited = favoriteOptions?.isFavorite(menu.menuId) ?? false
         const labelWithFavorite =
           favoriteOptions && isLeaf && !collapsed ? (
             <div className="flex items-center justify-between w-full group">
@@ -126,7 +126,7 @@ const convertToMenuItems = (
               {isFavorited ? (
                 <FavoriteButton
                   isFavorite={true}
-                  onToggle={() => favoriteOptions.toggleFavorite(menu.id)}
+                  onToggle={() => favoriteOptions.toggleFavorite(menu.menuId)}
                   disabled={false}
                   className="ml-2 flex-shrink-0"
                   showTooltip={true}
@@ -134,7 +134,7 @@ const convertToMenuItems = (
               ) : (
                 <FavoriteButton
                   isFavorite={false}
-                  onToggle={() => favoriteOptions.toggleFavorite(menu.id)}
+                  onToggle={() => favoriteOptions.toggleFavorite(menu.menuId)}
                   disabled={!favoriteOptions.canAddFavorite()}
                   className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2 flex-shrink-0"
                   showTooltip={true}
@@ -146,16 +146,16 @@ const convertToMenuItems = (
           )
 
         const menuItem: NonNullable<MenuProps['items']>[number] = {
-          key: menu.id,
+          key: menu.menuId,
           icon,
           label: labelWithFavorite,
-          'data-testid': `menu-${menu.code.toLowerCase()}`,
+          'data-testid': `menu-${menu.menuCd.toLowerCase()}`,
         }
         return menuItem
       }
 
       const subMenuItem: NonNullable<MenuProps['items']>[number] = {
-        key: menu.id,
+        key: menu.menuId,
         icon,
         label: <span className="truncate">{menu.name}</span>,
         children: convertToMenuItems(
@@ -166,7 +166,7 @@ const convertToMenuItems = (
           level + 1,
           maxLevel
         ),
-        'data-testid': `menu-${menu.code.toLowerCase()}`,
+        'data-testid': `menu-${menu.menuCd.toLowerCase()}`,
       }
       return subMenuItem
     })
@@ -191,7 +191,7 @@ export const findMenuById = (
   id: string
 ): MenuItem | null => {
   for (const menu of menus) {
-    if (menu.id === id) return menu
+    if (menu.menuId === id) return menu
     if (menu.children) {
       const found = findMenuById(menu.children, id)
       if (found) return found
@@ -206,14 +206,14 @@ export const findParentKeys = (
   parents: string[] = []
 ): string[] => {
   for (const menu of menus) {
-    if (menu.id === targetId) return parents
+    if (menu.menuId === targetId) return parents
     if (menu.children) {
       const found = findParentKeys(menu.children, targetId, [
         ...parents,
-        menu.id,
+        menu.menuId,
       ])
-      if (found.length > 0 || menu.children.some((child) => child.id === targetId)) {
-        return found.length > 0 ? found : [...parents, menu.id]
+      if (found.length > 0 || menu.children.some((child) => child.menuId === targetId)) {
+        return found.length > 0 ? found : [...parents, menu.menuId]
       }
     }
   }
@@ -257,7 +257,7 @@ export function Sidebar({
         onCollapsedChange(false)  // 사이드바 펼침
       }
       if (onOpenChange) {
-        onOpenChange([...openKeys, menu.id])  // 메뉴 확장
+        onOpenChange([...openKeys, menu.menuId])  // 메뉴 확장
       }
       return  // 부모 메뉴는 path가 없으므로 조기 반환
     }

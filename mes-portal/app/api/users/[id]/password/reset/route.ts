@@ -14,17 +14,9 @@ interface RouteParams {
 
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idStr } = await params
-    const id = parseInt(idStr, 10)
+    const { id } = await params
 
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { success: false, error: '유효하지 않은 ID입니다' },
-        { status: 400 }
-      )
-    }
-
-    const user = await prisma.user.findUnique({ where: { id } })
+    const user = await prisma.user.findUnique({ where: { userId: id } })
     if (!user) {
       return NextResponse.json(
         { success: false, error: '사용자를 찾을 수 없습니다' },
@@ -37,7 +29,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const hashedPassword = await hashPassword(defaultPassword)
 
     await prisma.user.update({
-      where: { id },
+      where: { userId: id },
       data: {
         password: hashedPassword,
         mustChangePassword: true,
@@ -51,7 +43,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         userId: id,
         action: 'PASSWORD_RESET',
         resource: 'user',
-        resourceId: String(id),
+        resourceId: id,
         details: JSON.stringify({ reason: 'ADMIN_RESET' }),
         status: 'SUCCESS',
       },

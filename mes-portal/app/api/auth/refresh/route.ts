@@ -30,13 +30,21 @@ export async function POST(request: NextRequest) {
       include: {
         user: {
           include: {
-            userRoles: {
+            userRoleGroups: {
               include: {
-                role: {
+                roleGroup: {
                   include: {
-                    rolePermissions: {
+                    roleGroupRoles: {
                       include: {
-                        permission: true,
+                        role: {
+                          include: {
+                            rolePermissions: {
+                              include: {
+                                permission: true,
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                   },
@@ -111,23 +119,27 @@ export async function POST(request: NextRequest) {
     await prisma.refreshToken.create({
       data: {
         token: newRefreshToken,
-        userId: user.id,
+        userId: user.userId,
         family: tokenRecord.family, // 같은 family 유지
         expiresAt: refreshTokenExpiry,
       },
     })
 
     // 역할 및 권한 추출
-    const roles = user.userRoles.map((ur) => ({
-      id: ur.role.id,
-      code: ur.role.code,
-      name: ur.role.name,
-    }))
+    const roles = user.userRoleGroups.flatMap((urg) =>
+      urg.roleGroup.roleGroupRoles.map((rgr) => ({
+        id: rgr.role.roleId,
+        code: rgr.role.roleCd,
+        name: rgr.role.name,
+      }))
+    )
 
     const permissions = [
       ...new Set(
-        user.userRoles.flatMap((ur) =>
-          ur.role.rolePermissions.map((rp) => rp.permission.code)
+        user.userRoleGroups.flatMap((urg) =>
+          urg.roleGroup.roleGroupRoles.flatMap((rgr) =>
+            rgr.role.rolePermissions.map((rp) => rp.permission.permissionCd)
+          )
         )
       ),
     ]
@@ -137,7 +149,7 @@ export async function POST(request: NextRequest) {
       data: {
         refreshToken: newRefreshToken,
         user: {
-          id: user.id,
+          id: user.userId,
           email: user.email,
           name: user.name,
           roles,

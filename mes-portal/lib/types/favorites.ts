@@ -6,7 +6,7 @@
  * 즐겨찾기 데이터 인터페이스 (localStorage 저장용)
  */
 export interface FavoriteData {
-  userId: number
+  userId: string
   menuIds: string[]
   updatedAt: string
 }
@@ -15,8 +15,8 @@ export interface FavoriteData {
  * 즐겨찾기 메뉴 아이템 인터페이스
  */
 export interface FavoriteMenuItem {
-  id: string
-  code: string
+  menuId: string
+  menuCd: string
   name: string
   path: string
   icon: string | null

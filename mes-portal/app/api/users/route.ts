@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@/lib/generated/prisma'
+import { Prisma } from '@/lib/generated/prisma/client'
 import { hashPassword } from '@/lib/auth/password'
 
 interface UserQuery {
@@ -15,7 +15,7 @@ interface UserQuery {
   pageSize: number
   search?: string
   status?: 'active' | 'inactive' | 'locked'
-  roleId?: number
+  roleGroupId?: number
 }
 
 function parseQueryParams(
@@ -42,11 +42,11 @@ function parseQueryParams(
     query.status = status as UserQuery['status']
   }
 
-  const roleIdStr = searchParams.get('roleId')
-  if (roleIdStr) {
-    const roleId = parseInt(roleIdStr, 10)
-    if (!isNaN(roleId)) {
-      query.roleId = roleId
+  const roleGroupIdStr = searchParams.get('roleGroupId')
+  if (roleGroupIdStr) {
+    const roleGroupId = parseInt(roleGroupIdStr, 10)
+    if (!isNaN(roleGroupId)) {
+      query.roleGroupId = roleGroupId
     }
   }
 
@@ -72,9 +72,9 @@ function buildWhereClause(query: UserQuery): Prisma.UserWhereInput {
     where.isLocked = true
   }
 
-  if (query.roleId) {
-    where.userRoles = {
-      some: { roleId: query.roleId },
+  if (query.roleGroupId) {
+    where.userRoleGroups = {
+      some: { roleGroupId: query.roleGroupId },
     }
   }
 
@@ -98,12 +98,12 @@ export async function GET(request: NextRequest) {
       prisma.user.findMany({
         where,
         include: {
-          userRoles: {
+          userRoleGroups: {
             include: {
-              role: {
+              roleGroup: {
                 select: {
-                  id: true,
-                  code: true,
+                  roleGroupId: true,
+                  roleGroupCd: true,
                   name: true,
                 },
               },
@@ -118,14 +118,14 @@ export async function GET(request: NextRequest) {
     ])
 
     const data = users.map((user) => ({
-      id: user.id,
+      id: user.userId,
       email: user.email,
       name: user.name,
       phone: user.phone,
       department: user.department,
       isActive: user.isActive,
       isLocked: user.isLocked,
-      roles: user.userRoles.map((ur) => ur.role),
+      roleGroups: user.userRoleGroups.map((urg) => urg.roleGroup),
       lastLoginAt: user.lastLoginAt?.toISOString() ?? null,
       createdAt: user.createdAt.toISOString(),
     }))
@@ -150,11 +150,12 @@ export async function GET(request: NextRequest) {
 }
 
 interface CreateUserDto {
+  userId: string
   email: string
   name: string
   phone?: string
   department?: string
-  roleIds: number[]
+  roleGroupIds?: number[]
   isActive?: boolean
 }
 
@@ -163,9 +164,9 @@ export async function POST(request: NextRequest) {
     const body: CreateUserDto = await request.json()
 
     // 유효성 검사
-    if (!body.email || !body.name) {
+    if (!body.userId || !body.email || !body.name) {
       return NextResponse.json(
-        { success: false, error: '이메일과 이름은 필수입니다' },
+        { success: false, error: '사번, 이메일, 이름은 필수입니다' },
         { status: 400 }
       )
     }
@@ -182,6 +183,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // userId 중복 확인
+    const existingUserId = await prisma.user.findUnique({
+      where: { userId: body.userId },
+    })
+
+    if (existingUserId) {
+      return NextResponse.json(
+        { success: false, error: '이미 등록된 사번입니다' },
+        { status: 400 }
+      )
+    }
+
     // 기본 비밀번호 생성 (초기 비밀번호)
     const defaultPassword = 'Password123!'
     const hashedPassword = await hashPassword(defaultPassword)
@@ -189,6 +202,7 @@ export async function POST(request: NextRequest) {
     // 사용자 생성
     const user = await prisma.user.create({
       data: {
+        userId: body.userId,
         email: body.email,
         name: body.name,
         password: hashedPassword,
@@ -196,21 +210,21 @@ export async function POST(request: NextRequest) {
         department: body.department ?? null,
         isActive: body.isActive ?? true,
         mustChangePassword: true,
-        userRoles: body.roleIds?.length
+        userRoleGroups: body.roleGroupIds?.length
           ? {
-              create: body.roleIds.map((roleId) => ({
-                roleId,
+              create: body.roleGroupIds.map((roleGroupId) => ({
+                roleGroupId,
               })),
             }
           : undefined,
       },
       include: {
-        userRoles: {
+        userRoleGroups: {
           include: {
-            role: {
+            roleGroup: {
               select: {
-                id: true,
-                code: true,
+                roleGroupId: true,
+                roleGroupCd: true,
                 name: true,
               },
             },
@@ -223,14 +237,14 @@ export async function POST(request: NextRequest) {
       {
         success: true,
         data: {
-          id: user.id,
+          id: user.userId,
           email: user.email,
           name: user.name,
           phone: user.phone,
           department: user.department,
           isActive: user.isActive,
           isLocked: user.isLocked,
-          roles: user.userRoles.map((ur) => ur.role),
+          roleGroups: user.userRoleGroups.map((urg) => urg.roleGroup),
           createdAt: user.createdAt.toISOString(),
         },
       },

@@ -1,17 +1,21 @@
 /**
  * 메뉴 타입 정의 (TSK-03-01)
+ * RBAC 리디자인: category path 기반 트리 구조
  */
 
 /**
  * 메뉴 아이템 인터페이스 - API 응답용
+ * category path (예: "조업관리/생산실적")로 트리를 구축
  */
 export interface MenuItem {
-  id: number
-  code: string
+  menuId: number
+  menuCd: string
   name: string
   path: string | null
   icon: string | null
-  sortOrder: number
+  sortOrder: string
+  category: string
+  systemId: string
   children: MenuItem[]
 }
 
@@ -19,12 +23,13 @@ export interface MenuItem {
  * 메뉴 생성 DTO
  */
 export interface CreateMenuDto {
-  code: string
+  menuCd: string
   name: string
+  systemId: string
+  category: string
   path?: string | null
   icon?: string | null
-  parentId?: number | null
-  sortOrder?: number
+  sortOrder?: string
   isActive?: boolean
 }
 
@@ -32,12 +37,12 @@ export interface CreateMenuDto {
  * 메뉴 수정 DTO
  */
 export interface UpdateMenuDto {
-  code?: string
+  menuCd?: string
   name?: string
+  category?: string
   path?: string | null
   icon?: string | null
-  parentId?: number | null
-  sortOrder?: number
+  sortOrder?: string
   isActive?: boolean
 }
 
@@ -95,9 +100,7 @@ export const MenuErrorCode = {
   USER_INACTIVE: 'USER_INACTIVE',
   MENU_NOT_FOUND: 'MENU_NOT_FOUND',
   DUPLICATE_MENU_CODE: 'DUPLICATE_MENU_CODE',
-  MAX_DEPTH_EXCEEDED: 'MAX_DEPTH_EXCEEDED',
-  CIRCULAR_REFERENCE: 'CIRCULAR_REFERENCE',
-  HAS_CHILDREN: 'HAS_CHILDREN',
+  INVALID_CATEGORY: 'INVALID_CATEGORY',
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   DB_CONNECTION_ERROR: 'DB_CONNECTION_ERROR',
   DB_ERROR: 'DB_ERROR',

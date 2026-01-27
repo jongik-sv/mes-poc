@@ -1,9 +1,9 @@
 /**
- * 개별 메뉴 API 엔드포인트 (TSK-03-01)
+ * 개별 메뉴 API 엔드포인트
  *
  * GET /api/menus/:id - 단일 메뉴 조회
- * PUT /api/menus/:id - 메뉴 수정 (Phase 2)
- * DELETE /api/menus/:id - 메뉴 삭제 (Phase 2)
+ * PUT /api/menus/:id - 메뉴 수정
+ * DELETE /api/menus/:id - 메뉴 삭제
  */
 
 import { NextResponse } from 'next/server'
@@ -17,7 +17,6 @@ interface RouteParams {
 
 /**
  * GET /api/menus/:id
- * 단일 메뉴 조회
  */
 export async function GET(
   _request: Request,
@@ -58,12 +57,14 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: {
-        id: menu.id,
-        code: menu.code,
+        menuId: menu.menuId,
+        menuCd: menu.menuCd,
         name: menu.name,
         path: menu.path,
         icon: menu.icon,
         sortOrder: menu.sortOrder,
+        category: menu.category,
+        systemId: menu.systemId,
         children: [],
       },
     })
@@ -85,7 +86,6 @@ export async function GET(
 
 /**
  * PUT /api/menus/:id
- * 메뉴 수정 (Phase 2 관리자 기능)
  */
 export async function PUT(
   request: Request,
@@ -114,12 +114,14 @@ export async function PUT(
     return NextResponse.json({
       success: true,
       data: {
-        id: menu.id,
-        code: menu.code,
+        menuId: menu.menuId,
+        menuCd: menu.menuCd,
         name: menu.name,
         path: menu.path,
         icon: menu.icon,
         sortOrder: menu.sortOrder,
+        category: menu.category,
+        systemId: menu.systemId,
         children: [],
       },
     })
@@ -154,7 +156,6 @@ export async function PUT(
 
 /**
  * DELETE /api/menus/:id
- * 메뉴 삭제 (Phase 2 관리자 기능)
  */
 export async function DELETE(
   _request: Request,

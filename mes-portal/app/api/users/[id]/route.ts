@@ -15,25 +15,17 @@ interface RouteParams {
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idStr } = await params
-    const id = parseInt(idStr, 10)
-
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { success: false, error: '유효하지 않은 ID입니다' },
-        { status: 400 }
-      )
-    }
+    const { id } = await params
 
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { userId: id },
       include: {
-        userRoles: {
+        userRoleGroups: {
           include: {
-            role: {
+            roleGroup: {
               select: {
-                id: true,
-                code: true,
+                roleGroupId: true,
+                roleGroupCd: true,
                 name: true,
               },
             },
@@ -52,7 +44,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({
       success: true,
       data: {
-        id: user.id,
+        id: user.userId,
         email: user.email,
         name: user.name,
         phone: user.phone,
@@ -62,7 +54,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         lockUntil: user.lockUntil?.toISOString() ?? null,
         mustChangePassword: user.mustChangePassword,
         lastLoginAt: user.lastLoginAt?.toISOString() ?? null,
-        roles: user.userRoles.map((ur) => ur.role),
+        roleGroups: user.userRoleGroups.map((urg) => urg.roleGroup),
         createdAt: user.createdAt.toISOString(),
         updatedAt: user.updatedAt.toISOString(),
       },
@@ -81,22 +73,14 @@ interface UpdateUserDto {
   phone?: string
   department?: string
   isActive?: boolean
-  roleIds?: number[]
+  roleGroupIds?: number[]
 }
 
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idStr } = await params
-    const id = parseInt(idStr, 10)
+    const { id } = await params
 
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { success: false, error: '유효하지 않은 ID입니다' },
-        { status: 400 }
-      )
-    }
-
-    const existingUser = await prisma.user.findUnique({ where: { id } })
+    const existingUser = await prisma.user.findUnique({ where: { userId: id } })
     if (!existingUser) {
       return NextResponse.json(
         { success: false, error: '사용자를 찾을 수 없습니다' },
@@ -106,11 +90,11 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     const body: UpdateUserDto = await request.json()
 
-    // 트랜잭션으로 사용자 수정 및 역할 업데이트
+    // 트랜잭션으로 사용자 수정 및 역할그룹 업데이트
     const user = await prisma.$transaction(async (tx) => {
       // 사용자 정보 업데이트
       const updated = await tx.user.update({
-        where: { id },
+        where: { userId: id },
         data: {
           name: body.name,
           phone: body.phone,
@@ -118,12 +102,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           isActive: body.isActive,
         },
         include: {
-          userRoles: {
+          userRoleGroups: {
             include: {
-              role: {
+              roleGroup: {
                 select: {
-                  id: true,
-                  code: true,
+                  roleGroupId: true,
+                  roleGroupCd: true,
                   name: true,
                 },
               },
@@ -132,31 +116,31 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         },
       })
 
-      // 역할 업데이트 (제공된 경우)
-      if (body.roleIds !== undefined) {
-        // 기존 역할 삭제
-        await tx.userRole.deleteMany({ where: { userId: id } })
+      // 역할그룹 업데이트 (제공된 경우)
+      if (body.roleGroupIds !== undefined) {
+        // 기존 역할그룹 삭제
+        await tx.userRoleGroup.deleteMany({ where: { userId: id } })
 
-        // 새 역할 할당
-        if (body.roleIds.length > 0) {
-          await tx.userRole.createMany({
-            data: body.roleIds.map((roleId) => ({
+        // 새 역할그룹 할당
+        if (body.roleGroupIds.length > 0) {
+          await tx.userRoleGroup.createMany({
+            data: body.roleGroupIds.map((roleGroupId) => ({
               userId: id,
-              roleId,
+              roleGroupId,
             })),
           })
         }
 
-        // 역할 다시 조회
-        const userWithRoles = await tx.user.findUnique({
-          where: { id },
+        // 역할그룹 다시 조회
+        const userWithRoleGroups = await tx.user.findUnique({
+          where: { userId: id },
           include: {
-            userRoles: {
+            userRoleGroups: {
               include: {
-                role: {
+                roleGroup: {
                   select: {
-                    id: true,
-                    code: true,
+                    roleGroupId: true,
+                    roleGroupCd: true,
                     name: true,
                   },
                 },
@@ -165,7 +149,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
           },
         })
 
-        return userWithRoles!
+        return userWithRoleGroups!
       }
 
       return updated
@@ -174,14 +158,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({
       success: true,
       data: {
-        id: user.id,
+        id: user.userId,
         email: user.email,
         name: user.name,
         phone: user.phone,
         department: user.department,
         isActive: user.isActive,
         isLocked: user.isLocked,
-        roles: user.userRoles.map((ur) => ur.role),
+        roleGroups: user.userRoleGroups.map((urg) => urg.roleGroup),
         updatedAt: user.updatedAt.toISOString(),
       },
     })
@@ -196,17 +180,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    const { id: idStr } = await params
-    const id = parseInt(idStr, 10)
+    const { id } = await params
 
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { success: false, error: '유효하지 않은 ID입니다' },
-        { status: 400 }
-      )
-    }
-
-    const existingUser = await prisma.user.findUnique({ where: { id } })
+    const existingUser = await prisma.user.findUnique({ where: { userId: id } })
     if (!existingUser) {
       return NextResponse.json(
         { success: false, error: '사용자를 찾을 수 없습니다' },
@@ -216,7 +192,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     // 소프트 삭제 (비활성화)
     await prisma.user.update({
-      where: { id },
+      where: { userId: id },
       data: { isActive: false },
     })
 

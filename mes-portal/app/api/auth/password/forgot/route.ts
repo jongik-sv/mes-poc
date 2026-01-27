@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       // 기존 토큰 무효화 (usedAt 설정)
       await prisma.passwordResetToken.updateMany({
         where: {
-          userId: user.id,
+          userId: user.userId,
           usedAt: null,
         },
         data: {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
       await prisma.passwordResetToken.create({
         data: {
-          userId: user.id,
+          userId: user.userId,
           token,
           expiresAt,
         },
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       // 감사 로그
       await prisma.auditLog.create({
         data: {
-          userId: user.id,
+          userId: user.userId,
           action: 'PASSWORD_RESET_REQUESTED',
           status: 'SUCCESS',
         },

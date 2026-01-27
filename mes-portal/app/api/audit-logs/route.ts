@@ -9,12 +9,12 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@/lib/generated/prisma'
+import { Prisma } from '@/lib/generated/prisma/client'
 
 interface AuditLogQuery {
   page: number
   pageSize: number
-  userId?: number
+  userId?: string
   action?: string[]
   resource?: string
   status?: 'SUCCESS' | 'FAILURE'
@@ -45,14 +45,10 @@ function parseQueryParams(request: NextRequest): AuditLogQuery | { error: string
 
   const query: AuditLogQuery = { page, pageSize }
 
-  // userId 필터
+  // userId 필터 (now String)
   const userIdStr = searchParams.get('userId')
   if (userIdStr) {
-    const userId = parseInt(userIdStr, 10)
-    if (isNaN(userId)) {
-      return { error: '유효하지 않은 userId입니다' }
-    }
-    query.userId = userId
+    query.userId = userIdStr
   }
 
   // action 필터 (쉼표 구분 복수 가능)
@@ -162,7 +158,7 @@ export async function GET(request: NextRequest) {
         include: {
           user: {
             select: {
-              id: true,
+              userId: true,
               name: true,
               email: true,
             },

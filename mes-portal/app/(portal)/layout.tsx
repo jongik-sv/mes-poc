@@ -61,11 +61,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const menus = menuData.menus as MenuItem[]
 
   // useFavorites에 필요한 MenuItem 형식으로 변환
-  type ConvertedMenu = { id: string; code: string; name: string; path: string | null; icon: string | null; sortOrder: number; children?: ConvertedMenu[] }
+  type ConvertedMenu = { menuId: string; menuCd: string; name: string; path: string | null; icon: string | null; sortOrder: string; children?: ConvertedMenu[] }
   const allMenusForFavorites = useMemo(() => {
     const convertMenu = (menu: MenuItem): ConvertedMenu => ({
-      id: menu.id,
-      code: menu.code,
+      menuId: menu.menuId,
+      menuCd: menu.menuCd,
       name: menu.name,
       path: menu.path ?? null,
       icon: menu.icon ?? null,
@@ -83,7 +83,7 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
     canAddFavorite,
     isLoading: isFavoriteLoading,
   } = useFavorites({
-    userId: 1, // MVP: 하드코딩된 사용자 ID
+    userId: '1', // MVP: 하드코딩된 사용자 ID
     allMenus: allMenusForFavorites,
   })
 
@@ -137,8 +137,8 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const currentMenu = findMenuByPath(menus, pathname)
     if (currentMenu) {
-      setSelectedKeys([currentMenu.id])
-      const parents = findParentKeys(menus, currentMenu.id)
+      setSelectedKeys([currentMenu.menuId])
+      const parents = findParentKeys(menus, currentMenu.menuId)
       if (parents.length > 0) {
         setOpenKeys((prev) => {
           const newKeys = [...new Set([...prev, ...parents])]
@@ -157,23 +157,23 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
           setCollapsed(false)
           // 해당 메뉴 확장
           setOpenKeys((prev) => {
-            if (prev.includes(menu.id)) return prev
-            return [...prev, menu.id]
+            if (prev.includes(menu.menuId)) return prev
+            return [...prev, menu.menuId]
           })
         }
         return
       }
 
       if (menu.path) {
-        setSelectedKeys([menu.id])
+        setSelectedKeys([menu.menuId])
 
         // 탭으로 열기 (URL 변경 없이 MDI 탭 내에서 화면 로드)
         const tab: Tab = {
-          id: menu.id,
+          id: menu.menuId,
           title: menu.name,
           path: menu.path,
           icon: menu.icon,
-          closable: menu.id !== 'dashboard', // 대시보드는 닫기 불가
+          closable: menu.menuId !== 'dashboard', // 대시보드는 닫기 불가
         }
         openTab(tab)
       }
@@ -208,15 +208,15 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   const handleSearchSelect = useCallback(
     (menu: SearchableMenuItem) => {
       if (menu.path) {
-        setSelectedKeys([menu.id])
+        setSelectedKeys([menu.menuId])
 
         // 탭으로 열기
         const tab: Tab = {
-          id: menu.id,
+          id: menu.menuId,
           title: menu.name,
           path: menu.path,
           icon: menu.icon,
-          closable: menu.id !== '1', // 대시보드(ID: 1)는 닫기 불가
+          closable: menu.menuId !== '1', // 대시보드(ID: 1)는 닫기 불가
         }
         openTab(tab)
         setIsSearchOpen(false)
@@ -228,11 +228,11 @@ function PortalLayoutContent({ children }: { children: React.ReactNode }) {
   // 즐겨찾기 메뉴 클릭 핸들러 (TSK-03-04)
   const handleFavoriteMenuClick = useCallback(
     (menu: FavoriteMenuItem) => {
-      setSelectedKeys([menu.id])
+      setSelectedKeys([menu.menuId])
 
       // 탭으로 열기
       const tab: Tab = {
-        id: menu.id,
+        id: menu.menuId,
         title: menu.name,
         path: menu.path,
         icon: menu.icon ?? undefined,

@@ -63,11 +63,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const userId = parseInt(session.user.id)
+    const userId = session.user.id
 
     // 사용자 조회
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { userId },
       include: {
         passwordHistory: {
           orderBy: { createdAt: 'desc' },
@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
     await prisma.$transaction([
       // 비밀번호 업데이트
       prisma.user.update({
-        where: { id: userId },
+        where: { userId },
         data: {
           password: newPasswordHash,
           passwordChangedAt: new Date(),

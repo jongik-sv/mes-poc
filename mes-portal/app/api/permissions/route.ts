@@ -22,11 +22,11 @@ interface PermissionListItem {
   id: number
   code: string
   name: string
-  type: string
-  resource: string
-  action: string
+  config: string
   description: string | null
   isActive: boolean
+  systemId: string
+  menuId: number | null
   roleCount: number
 }
 
@@ -66,19 +66,15 @@ export async function GET(
     const page = parseInt(searchParams.get('page') || '1')
     const pageSize = parseInt(searchParams.get('pageSize') || '10')
     const search = searchParams.get('search') || ''
-    const type = searchParams.get('type')
     const isActiveParam = searchParams.get('isActive')
 
     // where 조건 구성
     const where: Record<string, unknown> = {}
     if (search) {
       where.OR = [
-        { code: { contains: search } },
+        { permissionCd: { contains: search } },
         { name: { contains: search } },
       ]
-    }
-    if (type) {
-      where.type = type
     }
     if (isActiveParam !== null && isActiveParam !== '') {
       where.isActive = isActiveParam === 'true'
@@ -92,7 +88,7 @@ export async function GET(
       where,
       skip: (page - 1) * pageSize,
       take: pageSize,
-      orderBy: [{ type: 'asc' }, { code: 'asc' }],
+      orderBy: [{ permissionCd: 'asc' }],
       include: {
         _count: {
           select: {
@@ -103,14 +99,14 @@ export async function GET(
     })
 
     const items: PermissionListItem[] = permissions.map((perm) => ({
-      id: perm.id,
-      code: perm.code,
+      id: perm.permissionId,
+      code: perm.permissionCd,
       name: perm.name,
-      type: perm.type,
-      resource: perm.resource,
-      action: perm.action,
+      config: perm.config,
       description: perm.description,
       isActive: perm.isActive,
+      systemId: perm.systemId,
+      menuId: perm.menuId,
       roleCount: perm._count.rolePermissions,
     }))
 
@@ -140,11 +136,11 @@ export async function GET(
 }
 
 interface CreatePermissionDto {
-  code: string
+  permissionCd: string
   name: string
-  type: 'MENU' | 'SCREEN' | 'API' | 'DATA'
-  resource: string
-  action: 'CREATE' | 'READ' | 'UPDATE' | 'DELETE'
+  config: string
+  systemId: string
+  menuId?: number
   description?: string
   isActive?: boolean
 }
@@ -174,16 +170,24 @@ export async function POST(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
+      where: { userId: session.user.id },
       include: {
-        userRoles: {
-          include: { role: true },
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
         },
       },
     })
 
-    const isAdmin = user?.userRoles.some(
-      (ur) => ur.role.code === 'SYSTEM_ADMIN'
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
     )
     if (!isAdmin) {
       return NextResponse.json(
@@ -201,13 +205,13 @@ export async function POST(
     const body: CreatePermissionDto = await request.json()
 
     // 필수 필드 검증
-    if (!body.code || !body.name || !body.type || !body.resource || !body.action) {
+    if (!body.permissionCd || !body.name || !body.config || !body.systemId) {
       return NextResponse.json(
         {
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
-            message: 'code, name, type, resource, action은 필수입니다',
+            message: 'permissionCd, name, config, systemId는 필수입니다',
           },
         },
         { status: 400 }
@@ -216,7 +220,7 @@ export async function POST(
 
     // 중복 코드 검사
     const existing = await prisma.permission.findUnique({
-      where: { code: body.code },
+      where: { permissionCd: body.permissionCd },
     })
     if (existing) {
       return NextResponse.json(
@@ -234,11 +238,11 @@ export async function POST(
     // 권한 생성
     const permission = await prisma.permission.create({
       data: {
-        code: body.code,
+        permissionCd: body.permissionCd,
         name: body.name,
-        type: body.type,
-        resource: body.resource,
-        action: body.action,
+        config: body.config,
+        systemId: body.systemId,
+        menuId: body.menuId ?? null,
         description: body.description || null,
         isActive: body.isActive !== false,
       },
@@ -254,11 +258,11 @@ export async function POST(
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'PERMISSION_CREATE',
         resource: 'Permission',
-        resourceId: String(permission.id),
-        details: JSON.stringify({ code: permission.code, name: permission.name }),
+        resourceId: String(permission.permissionId),
+        details: JSON.stringify({ code: permission.permissionCd, name: permission.name }),
         status: 'SUCCESS',
       },
     })
@@ -267,14 +271,14 @@ export async function POST(
       {
         success: true,
         data: {
-          id: permission.id,
-          code: permission.code,
+          id: permission.permissionId,
+          code: permission.permissionCd,
           name: permission.name,
-          type: permission.type,
-          resource: permission.resource,
-          action: permission.action,
+          config: permission.config,
           description: permission.description,
           isActive: permission.isActive,
+          systemId: permission.systemId,
+          menuId: permission.menuId,
           roleCount: permission._count.rolePermissions,
         },
       },

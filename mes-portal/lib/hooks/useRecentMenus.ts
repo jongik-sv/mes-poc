@@ -10,8 +10,8 @@ const STORAGE_KEY = 'mes-portal-recent-menus'
 const MAX_RECENT_MENUS = 10
 
 export interface RecentMenuItem {
-  id: string
-  code: string
+  menuId: string
+  menuCd: string
   name: string
   path: string
   icon?: string
@@ -62,7 +62,7 @@ export function useRecentMenus(): UseRecentMenusReturn {
     (menu: Omit<RecentMenuItem, 'visitedAt'>) => {
       setRecentMenus((prev) => {
         // 이미 존재하면 제거 (맨 앞으로 이동시키기 위해)
-        const filtered = prev.filter((item) => item.id !== menu.id)
+        const filtered = prev.filter((item) => item.menuId !== menu.menuId)
 
         // 새 메뉴 아이템 생성
         const newItem: RecentMenuItem = {

@@ -1,70 +1,71 @@
 /**
- * CASL Ability 정의 (TSK-03-02)
+ * CASL Ability 정의 (RBAC 재설계)
  *
- * RBAC 기반 권한 체크를 위한 CASL Ability 구현
+ * Permission.config JSON 기반 권한 체크를 위한 CASL Ability 구현
+ * Subject는 menuId 또는 permissionCd 기반
  */
 
 import { AbilityBuilder, PureAbility, AbilityClass } from '@casl/ability'
+import type { MergedPermission } from './permission-merge'
 
 // 가능한 액션 타입
-export type Actions = 'create' | 'read' | 'update' | 'delete' | 'manage'
+export type Actions =
+  | 'create'
+  | 'read'
+  | 'update'
+  | 'delete'
+  | 'export'
+  | 'import'
+  | 'manage'
 
-// 가능한 리소스 타입
-export type Subjects =
-  | 'User'
-  | 'Role'
-  | 'Permission'
-  | 'Menu'
-  | 'AuditLog'
-  | 'all'
+// Subject는 menuId(숫자) 또는 permissionCd(문자열) 또는 'all'
+export type Subjects = string
 
 // App Ability 타입
 export type AppAbility = PureAbility<[Actions, Subjects]>
 export const AppAbility = PureAbility as AbilityClass<AppAbility>
 
 /**
+ * Permission config JSON 구조
+ */
+export interface PermissionConfig {
+  actions: ('CREATE' | 'READ' | 'UPDATE' | 'DELETE' | 'EXPORT' | 'IMPORT')[]
+  fieldConstraints?: { [fieldName: string]: string | string[] }
+}
+
+/**
  * 권한 코드 배열로 CASL Ability 생성
  *
- * @param permissions - 권한 코드 배열 (예: ['user:read', 'role:create'])
+ * @param permissions - 권한 코드 배열 (예: ['1:read', 'PERM_USER:create', '*'])
  * @returns CASL Ability 인스턴스
  *
  * @example
- * const ability = defineAbilityFor(['user:read', 'user:create'])
- * ability.can('read', 'User') // true
- * ability.can('delete', 'User') // false
+ * const ability = defineAbilityFor(['1:read', '1:create'])
+ * ability.can('read', '1') // true  (menuId=1에 대한 read)
+ * ability.can('delete', '1') // false
  */
 export function defineAbilityFor(permissions: string[]): AppAbility {
   const { can, build } = new AbilityBuilder<AppAbility>(AppAbility)
 
   permissions.forEach((permission) => {
-    // 권한 코드 파싱 (예: 'user:read' -> resource='user', action='read')
-    const parts = permission.split(':')
-    if (parts.length !== 2) {
-      // 잘못된 형식은 무시
+    // 와일드카드 - 모든 권한
+    if (permission === '*') {
+      can('manage', 'all')
       return
     }
 
-    const [resource, action] = parts
+    const parts = permission.split(':')
+    if (parts.length !== 2) {
+      return
+    }
 
-    // 리소스 이름 정규화 (첫 글자 대문자)
-    const normalizedResource =
-      resource === 'all'
-        ? 'all'
-        : (resource.charAt(0).toUpperCase() +
-            resource.slice(1).toLowerCase()) as Subjects
-
-    // 액션 정규화
+    const [subject, action] = parts
     const normalizedAction = action.toLowerCase() as Actions
 
-    // manage 액션은 모든 작업 허용
     if (normalizedAction === 'manage') {
-      can('create', normalizedResource)
-      can('read', normalizedResource)
-      can('update', normalizedResource)
-      can('delete', normalizedResource)
-      can('manage', normalizedResource)
+      can('manage', subject)
     } else {
-      can(normalizedAction, normalizedResource)
+      can(normalizedAction, subject)
     }
   })
 
@@ -76,7 +77,7 @@ export function defineAbilityFor(permissions: string[]): AppAbility {
  *
  * @param permissions - 사용자의 권한 코드 배열
  * @param action - 확인할 액션
- * @param subject - 확인할 리소스
+ * @param subject - 확인할 리소스 (menuId 문자열 또는 permissionCd)
  * @returns 권한 여부
  */
 export function hasPermission(
@@ -93,28 +94,67 @@ export function hasPermission(
 }
 
 /**
- * 권한 코드에서 액션과 리소스 추출
+ * MergedPermission 배열로 CASL Ability 생성
  *
- * @param permissionCode - 권한 코드 (예: 'user:read')
- * @returns { action, resource } 또는 null
+ * @param permissions - 병합된 권한 배열
+ * @returns CASL Ability 인스턴스
+ */
+export function defineAbilityFromMergedPermissions(
+  permissions: MergedPermission[]
+): AppAbility {
+  const { can, build } = new AbilityBuilder<AppAbility>(AppAbility)
+
+  permissions.forEach((perm) => {
+    perm.actions.forEach((action) => {
+      if (action === 'manage') {
+        can('manage', 'all')
+        return
+      }
+
+      const normalizedAction = action.toLowerCase() as Actions
+
+      if (perm.menuId !== null && perm.menuId !== undefined) {
+        if (perm.menuId === 0 && perm.menuName === 'all') {
+          can(normalizedAction, 'all')
+        } else {
+          can(normalizedAction, String(perm.menuId))
+        }
+      } else {
+        // menuId 없으면 permissionCd 첫번째를 subject로 사용
+        if (perm.permissionCd.length > 0) {
+          perm.permissionCd.forEach((cd) => {
+            can(normalizedAction, cd)
+          })
+        }
+      }
+    })
+  })
+
+  return build()
+}
+
+/**
+ * 권한 코드에서 액션과 subject 추출
+ *
+ * @param permissionCode - 권한 코드 (예: '1:read', 'PERM_USER:create')
+ * @returns { action, subject } 또는 null
  */
 export function parsePermissionCode(
   permissionCode: string
-): { action: Actions; resource: Subjects } | null {
+): { action: Actions; subject: Subjects } | null {
+  if (permissionCode === '*') {
+    return { action: 'manage', subject: 'all' }
+  }
+
   const parts = permissionCode.split(':')
   if (parts.length !== 2) {
     return null
   }
 
-  const [resource, action] = parts
-  const normalizedResource =
-    resource === 'all'
-      ? 'all'
-      : (resource.charAt(0).toUpperCase() +
-          resource.slice(1).toLowerCase()) as Subjects
+  const [subject, action] = parts
 
   return {
     action: action.toLowerCase() as Actions,
-    resource: normalizedResource,
+    subject,
   }
 }

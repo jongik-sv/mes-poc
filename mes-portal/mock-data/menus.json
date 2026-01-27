@@ -1,312 +1,312 @@
 {
   "menus": [
     {
-      "id": "1",
-      "code": "DASHBOARD",
+      "menuId": "1",
+      "menuCd": "DASHBOARD",
       "name": "대시보드",
       "path": "/dashboard",
       "icon": "DashboardOutlined",
-      "sortOrder": 1,
+      "sortOrder": "100",
       "isActive": true
     },
     {
-      "id": "2",
-      "code": "PRODUCTION",
+      "menuId": "2",
+      "menuCd": "PRODUCTION",
       "name": "생산",
       "icon": "BuildOutlined",
-      "sortOrder": 2,
+      "sortOrder": "200",
       "isActive": true,
       "children": [
         {
-          "id": "2-1",
-          "code": "WORK_ORDER",
+          "menuId": "2-1",
+          "menuCd": "WORK_ORDER",
           "name": "작업 지시",
           "path": "/production/work-order",
           "icon": "FileTextOutlined",
-          "sortOrder": 1,
+          "sortOrder": "210",
           "isActive": true
         },
         {
-          "id": "2-2",
-          "code": "PRODUCTION_STATUS",
+          "menuId": "2-2",
+          "menuCd": "PRODUCTION_STATUS",
           "name": "생산 현황",
           "path": "/production/status",
           "icon": "LineChartOutlined",
-          "sortOrder": 2,
+          "sortOrder": "220",
           "isActive": true
         },
         {
-          "id": "2-3",
-          "code": "PRODUCTION_RESULT",
+          "menuId": "2-3",
+          "menuCd": "PRODUCTION_RESULT",
           "name": "실적 입력",
           "path": "/production/result",
           "icon": "EditOutlined",
-          "sortOrder": 3,
+          "sortOrder": "230",
           "isActive": true
         }
       ]
     },
     {
-      "id": "3",
-      "code": "QUALITY",
+      "menuId": "3",
+      "menuCd": "QUALITY",
       "name": "품질",
       "icon": "CheckCircleOutlined",
-      "sortOrder": 3,
+      "sortOrder": "300",
       "isActive": true,
       "children": [
         {
-          "id": "3-1",
-          "code": "INSPECTION",
+          "menuId": "3-1",
+          "menuCd": "INSPECTION",
           "name": "검사 관리",
           "path": "/quality/inspection",
           "icon": "SearchOutlined",
-          "sortOrder": 1,
+          "sortOrder": "310",
           "isActive": true
         },
         {
-          "id": "3-2",
-          "code": "DEFECT",
+          "menuId": "3-2",
+          "menuCd": "DEFECT",
           "name": "불량 관리",
           "path": "/quality/defect",
           "icon": "WarningOutlined",
-          "sortOrder": 2,
+          "sortOrder": "320",
           "isActive": true
         }
       ]
     },
     {
-      "id": "4",
-      "code": "EQUIPMENT",
+      "menuId": "4",
+      "menuCd": "EQUIPMENT",
       "name": "설비",
       "icon": "ToolOutlined",
-      "sortOrder": 4,
+      "sortOrder": "400",
       "isActive": true,
       "children": [
         {
-          "id": "4-1",
-          "code": "EQUIPMENT_STATUS",
+          "menuId": "4-1",
+          "menuCd": "EQUIPMENT_STATUS",
           "name": "설비 현황",
           "path": "/equipment/status",
           "icon": "DesktopOutlined",
-          "sortOrder": 1,
+          "sortOrder": "410",
           "isActive": true
         },
         {
-          "id": "4-2",
-          "code": "MAINTENANCE",
+          "menuId": "4-2",
+          "menuCd": "MAINTENANCE",
           "name": "유지보수",
           "path": "/equipment/maintenance",
           "icon": "ToolOutlined",
-          "sortOrder": 2,
+          "sortOrder": "420",
           "isActive": true
         }
       ]
     },
     {
-      "id": "6",
-      "code": "SAMPLE",
+      "menuId": "6",
+      "menuCd": "SAMPLE",
       "name": "샘플 화면",
       "icon": "AppstoreOutlined",
-      "sortOrder": 6,
+      "sortOrder": "600",
       "isActive": true,
       "children": [
         {
-          "id": "6-1",
-          "code": "SAMPLE_USER_LIST",
+          "menuId": "6-1",
+          "menuCd": "SAMPLE_USER_LIST",
           "name": "사용자 목록",
           "path": "/sample/user-list",
           "icon": "UnorderedListOutlined",
-          "sortOrder": 1,
+          "sortOrder": "610",
           "isActive": true
         },
         {
-          "id": "6-2",
-          "code": "SAMPLE_MASTER_DETAIL",
+          "menuId": "6-2",
+          "menuCd": "SAMPLE_MASTER_DETAIL",
           "name": "마스터-디테일",
           "path": "/sample/master-detail",
           "icon": "SplitCellsOutlined",
-          "sortOrder": 2,
+          "sortOrder": "620",
           "isActive": true
         },
         {
-          "id": "6-3",
-          "code": "SAMPLE_WIZARD",
+          "menuId": "6-3",
+          "menuCd": "SAMPLE_WIZARD",
           "name": "설정 마법사",
           "path": "/sample/setting-wizard",
           "icon": "FundProjectionScreenOutlined",
-          "sortOrder": 3,
+          "sortOrder": "630",
           "isActive": true
         },
         {
-          "id": "6-4",
-          "code": "SAMPLE_WORK_CALENDAR",
+          "menuId": "6-4",
+          "menuCd": "SAMPLE_WORK_CALENDAR",
           "name": "작업 일정 캘린더",
           "path": "/sample/work-calendar",
           "icon": "HistoryOutlined",
-          "sortOrder": 4,
+          "sortOrder": "640",
           "isActive": true
         },
         {
-          "id": "6-5",
-          "code": "SAMPLE_ORGANIZATION_TREE",
+          "menuId": "6-5",
+          "menuCd": "SAMPLE_ORGANIZATION_TREE",
           "name": "조직/부서 트리",
           "path": "/sample/organization-tree",
           "icon": "TeamOutlined",
-          "sortOrder": 5,
+          "sortOrder": "650",
           "isActive": true
         },
         {
-          "id": "6-6",
-          "code": "SAMPLE_PRODUCTION_GANTT",
+          "menuId": "6-6",
+          "menuCd": "SAMPLE_PRODUCTION_GANTT",
           "name": "생산 계획 간트",
           "path": "/sample/production-gantt",
           "icon": "BarChartOutlined",
-          "sortOrder": 6,
+          "sortOrder": "660",
           "isActive": true
         },
         {
-          "id": "6-7",
-          "code": "SAMPLE_INVENTORY_DETAIL",
+          "menuId": "6-7",
+          "menuCd": "SAMPLE_INVENTORY_DETAIL",
           "name": "재고 현황 조회",
           "path": "/sample/inventory-detail",
           "icon": "DatabaseOutlined",
-          "sortOrder": 7,
+          "sortOrder": "670",
           "isActive": true
         },
         {
-          "id": "6-8",
-          "code": "SAMPLE_EQUIPMENT_MONITOR",
+          "menuId": "6-8",
+          "menuCd": "SAMPLE_EQUIPMENT_MONITOR",
           "name": "설비 모니터링",
           "path": "/sample/equipment-monitor",
           "icon": "MonitorOutlined",
-          "sortOrder": 8,
+          "sortOrder": "680",
           "isActive": true
         },
         {
-          "id": "6-9",
-          "code": "SAMPLE_QUALITY_INSPECTION",
+          "menuId": "6-9",
+          "menuCd": "SAMPLE_QUALITY_INSPECTION",
           "name": "품질 검사 입력",
           "path": "/sample/quality-inspection",
           "icon": "FormOutlined",
-          "sortOrder": 9,
+          "sortOrder": "690",
           "isActive": true
         },
         {
-          "id": "6-10",
-          "code": "SAMPLE_MATERIAL_HISTORY",
+          "menuId": "6-10",
+          "menuCd": "SAMPLE_MATERIAL_HISTORY",
           "name": "자재 입출고 내역",
           "path": "/sample/material-history",
           "icon": "SwapOutlined",
-          "sortOrder": 10,
+          "sortOrder": "700",
           "isActive": true
         },
         {
-          "id": "6-11",
-          "code": "SAMPLE_WORK_ORDER_FORM",
+          "menuId": "6-11",
+          "menuCd": "SAMPLE_WORK_ORDER_FORM",
           "name": "작업 지시 등록",
           "path": "/sample/work-order-form",
           "icon": "FormOutlined",
-          "sortOrder": 11,
+          "sortOrder": "710",
           "isActive": true
         },
         {
-          "id": "6-12",
-          "code": "SAMPLE_PROCESS_MANAGEMENT",
+          "menuId": "6-12",
+          "menuCd": "SAMPLE_PROCESS_MANAGEMENT",
           "name": "공정 관리",
           "path": "/sample/process-management",
           "icon": "SettingOutlined",
-          "sortOrder": 12,
+          "sortOrder": "720",
           "isActive": true
         },
         {
-          "id": "6-13",
-          "code": "SAMPLE_NOTIFICATION_SETTINGS",
+          "menuId": "6-13",
+          "menuCd": "SAMPLE_NOTIFICATION_SETTINGS",
           "name": "알림 설정",
           "path": "/sample/notification-settings",
           "icon": "BellOutlined",
-          "sortOrder": 13,
+          "sortOrder": "730",
           "isActive": true
         },
         {
-          "id": "6-14",
-          "code": "SAMPLE_DATA_TABLE_SHOWCASE",
+          "menuId": "6-14",
+          "menuCd": "SAMPLE_DATA_TABLE_SHOWCASE",
           "name": "데이터 테이블 종합",
           "path": "/sample/data-table-showcase",
           "icon": "TableOutlined",
-          "sortOrder": 14,
+          "sortOrder": "740",
           "isActive": true
         }
       ]
     },
     {
-      "id": "5",
-      "code": "SETTINGS",
+      "menuId": "5",
+      "menuCd": "SETTINGS",
       "name": "설정",
       "icon": "SettingOutlined",
-      "sortOrder": 5,
+      "sortOrder": "500",
       "isActive": true,
       "children": [
         {
-          "id": "5-1",
-          "code": "USER",
+          "menuId": "5-1",
+          "menuCd": "USER",
           "name": "사용자",
           "icon": "UserOutlined",
-          "sortOrder": 1,
+          "sortOrder": "510",
           "isActive": true,
           "children": [
             {
-              "id": "5-1-1",
-              "code": "USER_LIST",
+              "menuId": "5-1-1",
+              "menuCd": "USER_LIST",
               "name": "사용자 관리",
               "path": "/system/users",
               "icon": "TeamOutlined",
-              "sortOrder": 1,
+              "sortOrder": "511",
               "isActive": true
             },
             {
-              "id": "5-1-2",
-              "code": "ROLE",
+              "menuId": "5-1-2",
+              "menuCd": "ROLE",
               "name": "역할 관리",
               "path": "/system/roles",
               "icon": "SafetyCertificateOutlined",
-              "sortOrder": 2,
+              "sortOrder": "512",
               "isActive": true
             },
             {
-              "id": "5-1-3",
-              "code": "AUDIT_LOG",
+              "menuId": "5-1-3",
+              "menuCd": "AUDIT_LOG",
               "name": "감사 로그",
               "path": "/system/audit-logs",
               "icon": "FileSearchOutlined",
-              "sortOrder": 3,
+              "sortOrder": "513",
               "isActive": true
             }
           ]
         },
         {
-          "id": "5-2",
-          "code": "SYSTEM",
+          "menuId": "5-2",
+          "menuCd": "SYSTEM",
           "name": "시스템",
           "icon": "ControlOutlined",
-          "sortOrder": 2,
+          "sortOrder": "520",
           "isActive": true,
           "children": [
             {
-              "id": "5-2-1",
-              "code": "MENU_MANAGE",
+              "menuId": "5-2-1",
+              "menuCd": "MENU_MANAGE",
               "name": "메뉴 관리",
               "path": "/settings/system/menu",
               "icon": "MenuOutlined",
-              "sortOrder": 1,
+              "sortOrder": "521",
               "isActive": true
             },
             {
-              "id": "5-2-2",
-              "code": "CODE_MANAGE",
+              "menuId": "5-2-2",
+              "menuCd": "CODE_MANAGE",
               "name": "코드 관리",
               "path": "/settings/system/code",
               "icon": "DatabaseOutlined",
-              "sortOrder": 2,
+              "sortOrder": "522",
               "isActive": true
             }
           ]

@@ -34,12 +34,16 @@ const mockBcryptCompare = bcrypt.compare as Mock
 const mockBcryptHash = bcrypt.hash as Mock
 const mockUserFindUnique = prisma.user.findUnique as Mock
 
-// Mock 데이터
+// Mock 데이터 - 새로운 RBAC 구조 (다중 역할)
 const mockAdminRole = {
   id: 1,
-  code: 'ADMIN',
+  code: 'SYSTEM_ADMIN',
   name: '시스템 관리자',
   createdAt: new Date(),
+  roleMenus: [
+    { menu: { code: 'DASHBOARD' } },
+    { menu: { code: 'USER_MGMT' } },
+  ],
 }
 
 const mockUserRole = {
@@ -47,18 +51,23 @@ const mockUserRole = {
   code: 'USER',
   name: '일반 사용자',
   createdAt: new Date(),
+  roleMenus: [
+    { menu: { code: 'DASHBOARD' } },
+  ],
 }
 
+// userRoles 관계를 포함한 사용자 데이터
 const mockAdminUser = {
   id: 1,
   email: 'admin@test.com',
   password: '$2b$10$hashedpassword',
   name: '관리자',
-  roleId: 1,
   isActive: true,
   createdAt: new Date(),
   updatedAt: new Date(),
-  role: mockAdminRole,
+  userRoles: [
+    { role: mockAdminRole },
+  ],
 }
 
 const mockInactiveUser = {
@@ -66,11 +75,12 @@ const mockInactiveUser = {
   email: 'inactive@test.com',
   password: '$2b$10$hashedpassword',
   name: '비활성 사용자',
-  roleId: 2,
   isActive: false,
   createdAt: new Date(),
   updatedAt: new Date(),
-  role: mockUserRole,
+  userRoles: [
+    { role: mockUserRole },
+  ],
 }
 
 describe('authorizeCredentials', () => {
@@ -94,11 +104,26 @@ describe('authorizeCredentials', () => {
       id: '1',
       email: 'admin@test.com',
       name: '관리자',
-      role: { id: 1, code: 'ADMIN', name: '시스템 관리자' },
+      roles: [{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }],
+      permissions: expect.arrayContaining(['*']), // SYSTEM_ADMIN은 모든 권한
     })
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { email: 'admin@test.com' },
-      include: { role: true },
+      include: {
+        userRoles: {
+          include: {
+            role: {
+              include: {
+                roleMenus: {
+                  include: {
+                    menu: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     })
     expect(bcrypt.compare).toHaveBeenCalledWith('test1234', mockAdminUser.password)
   })
@@ -197,7 +222,8 @@ describe('JWT Callback', () => {
       id: '1',
       email: 'admin@test.com',
       name: '관리자',
-      role: { id: 1, code: 'ADMIN', name: '시스템 관리자' },
+      roles: [{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }],
+      permissions: ['*', 'menu:DASHBOARD'],
     }
 
     // Act
@@ -205,14 +231,16 @@ describe('JWT Callback', () => {
 
     // Assert
     expect(result.id).toBe('1')
-    expect(result.role).toEqual({ id: 1, code: 'ADMIN', name: '시스템 관리자' })
+    expect(result.roles).toEqual([{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }])
+    expect(result.permissions).toEqual(['*', 'menu:DASHBOARD'])
   })
 
   it('should preserve existing token without user', async () => {
     // Arrange
     const token = {
       id: '1',
-      role: { id: 1, code: 'ADMIN', name: '시스템 관리자' },
+      roles: [{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }],
+      permissions: ['*'],
     }
 
     // Act
@@ -220,7 +248,7 @@ describe('JWT Callback', () => {
 
     // Assert
     expect(result.id).toBe('1')
-    expect(result.role).toEqual({ id: 1, code: 'ADMIN', name: '시스템 관리자' })
+    expect(result.roles).toEqual([{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }])
   })
 })
 
@@ -229,12 +257,13 @@ describe('Session Callback', () => {
   it('should add user info to session from token', async () => {
     // Arrange
     const session = {
-      user: { id: '', email: '', name: '', role: { id: 0, code: '', name: '' } },
+      user: { id: '', email: '', name: '', roles: [], permissions: [] },
       expires: new Date().toISOString(),
     }
     const token = {
       id: '1',
-      role: { id: 1, code: 'ADMIN', name: '시스템 관리자' },
+      roles: [{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }],
+      permissions: ['*', 'menu:DASHBOARD'],
     }
 
     // Act
@@ -242,6 +271,7 @@ describe('Session Callback', () => {
 
     // Assert
     expect(result.user.id).toBe('1')
-    expect(result.user.role).toEqual({ id: 1, code: 'ADMIN', name: '시스템 관리자' })
+    expect(result.user.roles).toEqual([{ id: 1, code: 'SYSTEM_ADMIN', name: '시스템 관리자' }])
+    expect(result.user.permissions).toEqual(['*', 'menu:DASHBOARD'])
   })
 })

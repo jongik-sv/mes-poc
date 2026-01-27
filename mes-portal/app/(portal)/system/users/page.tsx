@@ -2,6 +2,7 @@
 
 /**
  * TSK-05-01: 사용자 관리 화면
+ * TSK-03-02: 사용자 상세 Drawer (역할그룹/시스템 접근/최종 권한 탭)
  *
  * 기능:
  * - 사용자 목록 조회 (검색, 필터, 페이징)
@@ -9,6 +10,7 @@
  * - 역할 할당
  * - 계정 잠금/해제
  * - 비밀번호 초기화
+ * - 사용자 상세: 역할그룹, 시스템 접근, 최종 권한
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -28,6 +30,9 @@ import {
   Dropdown,
   Popconfirm,
   message,
+  Drawer,
+  Tabs,
+  Descriptions,
   Spin,
 } from 'antd'
 import type { TableProps, MenuProps } from 'antd'
@@ -70,6 +75,26 @@ interface PaginationInfo {
   totalPages: number
 }
 
+interface RoleGroup {
+  id: number
+  roleGroupCd: string
+  name: string
+  system: string
+  roles: Role[]
+}
+
+interface UserSystem {
+  systemId: string
+  name: string
+  menuSet: string
+}
+
+interface UserPermission {
+  menuName: string
+  actions: string[]
+  fieldConstraints: string[]
+}
+
 type StatusFilter = 'all' | 'active' | 'inactive' | 'locked'
 
 export default function UsersPage() {
@@ -93,6 +118,15 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [roleModalOpen, setRoleModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+
+  // Drawer 상태
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerUser, setDrawerUser] = useState<User | null>(null)
+  const [drawerTab, setDrawerTab] = useState('roleGroups')
+  const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([])
+  const [userSystems, setUserSystems] = useState<UserSystem[]>([])
+  const [userPermissions, setUserPermissions] = useState<UserPermission[]>([])
+  const [drawerLoading, setDrawerLoading] = useState(false)
 
   const [form] = Form.useForm()
   const [roleForm] = Form.useForm()
@@ -141,6 +175,35 @@ export default function UsersPage() {
     fetchUsers()
     fetchRoles()
   }, [fetchUsers, fetchRoles])
+
+  // Drawer 열기
+  const openDrawer = async (user: User) => {
+    setDrawerUser(user)
+    setDrawerTab('roleGroups')
+    setDrawerOpen(true)
+    setDrawerLoading(true)
+
+    try {
+      const [rgRes, sysRes, permRes] = await Promise.all([
+        fetch(`/api/users/${user.id}/role-groups`),
+        fetch(`/api/users/${user.id}/systems`),
+        fetch(`/api/users/${user.id}/permissions`),
+      ])
+      const [rgData, sysData, permData] = await Promise.all([
+        rgRes.json(),
+        sysRes.json(),
+        permRes.json(),
+      ])
+
+      if (rgData.success) setRoleGroups(rgData.data)
+      if (sysData.success) setUserSystems(sysData.data)
+      if (permData.success) setUserPermissions(permData.data)
+    } catch {
+      // ignore
+    } finally {
+      setDrawerLoading(false)
+    }
+  }
 
   // 검색 핸들러
   const handleSearch = () => {
@@ -368,6 +431,56 @@ export default function UsersPage() {
     },
   ]
 
+  // 역할그룹 테이블 컬럼
+  const roleGroupColumns: TableProps<RoleGroup>['columns'] = [
+    { title: '그룹 코드', dataIndex: 'roleGroupCd', key: 'roleGroupCd' },
+    { title: '그룹명', dataIndex: 'name', key: 'name' },
+    { title: '시스템', dataIndex: 'system', key: 'system' },
+    {
+      title: '포함 역할',
+      key: 'roles',
+      render: (_, record) => (
+        <Space size={[0, 4]} wrap>
+          {record.roles.map((r) => (
+            <Tag key={r.id} color="blue">{r.name}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+  ]
+
+  // 시스템 접근 테이블 컬럼
+  const systemColumns: TableProps<UserSystem>['columns'] = [
+    { title: '시스템 ID', dataIndex: 'systemId', key: 'systemId' },
+    { title: '시스템명', dataIndex: 'name', key: 'name' },
+    { title: '메뉴셋', dataIndex: 'menuSet', key: 'menuSet' },
+  ]
+
+  // 최종 권한 테이블 컬럼
+  const permissionColumns: TableProps<UserPermission>['columns'] = [
+    { title: '메뉴', dataIndex: 'menuName', key: 'menuName' },
+    {
+      title: '액션',
+      key: 'actions',
+      render: (_, record) => (
+        <Space size={[0, 4]} wrap>
+          {record.actions.map((a) => (
+            <Tag key={a} color="green">{a}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: '필드 제약',
+      key: 'fieldConstraints',
+      render: (_, record) => (
+        record.fieldConstraints.length > 0
+          ? record.fieldConstraints.join(', ')
+          : '-'
+      ),
+    },
+  ]
+
   // 테이블 컬럼 정의
   const columns: TableProps<User>['columns'] = [
     {
@@ -413,7 +526,7 @@ export default function UsersPage() {
       width: 80,
       render: (_, record) => (
         <Dropdown menu={{ items: getActionMenuItems(record) }} trigger={['click']}>
-          <Button type="text" icon={<MoreOutlined />} />
+          <Button type="text" icon={<MoreOutlined />} onClick={(e) => e.stopPropagation()} />
         </Dropdown>
       ),
     },
@@ -483,8 +596,66 @@ export default function UsersPage() {
               setPagination((prev) => ({ ...prev, page, pageSize }))
             },
           }}
+          onRow={(record) => ({
+            onClick: () => openDrawer(record),
+            style: { cursor: 'pointer' },
+          })}
         />
       </Card>
+
+      {/* 사용자 상세 Drawer */}
+      <Drawer
+        title={`사용자 상세 - ${drawerUser?.name || ''}`}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        width={800}
+      >
+        {drawerLoading ? (
+          <div className="flex justify-center py-8"><Spin /></div>
+        ) : (
+          <Tabs activeKey={drawerTab} onChange={setDrawerTab} items={[
+            {
+              key: 'roleGroups',
+              label: '역할그룹',
+              children: (
+                <Table
+                  columns={roleGroupColumns}
+                  dataSource={roleGroups}
+                  rowKey="id"
+                  pagination={false}
+                  size="small"
+                />
+              ),
+            },
+            {
+              key: 'systems',
+              label: '시스템 접근',
+              children: (
+                <Table
+                  columns={systemColumns}
+                  dataSource={userSystems}
+                  rowKey="systemId"
+                  pagination={false}
+                  size="small"
+                />
+              ),
+            },
+            {
+              key: 'permissions',
+              label: '최종 권한',
+              children: (
+                <Table
+                  columns={permissionColumns}
+                  dataSource={userPermissions}
+                  rowKey="menuName"
+                  pagination={false}
+                  size="small"
+                />
+              ),
+            },
+          ]} />
+        )}
+      </Drawer>
 
       {/* 등록/수정 모달 */}
       <Modal

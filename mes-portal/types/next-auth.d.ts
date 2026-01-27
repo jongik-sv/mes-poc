@@ -2,8 +2,8 @@ import 'next-auth'
 import 'next-auth/jwt'
 
 interface UserRole {
-  id: number
-  code: string
+  roleId: number
+  roleCd: string
   name: string
 }
 

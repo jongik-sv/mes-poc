@@ -24,19 +24,19 @@ interface RoleDetail {
   code: string
   name: string
   description: string | null
-  parentId: number | null
+  parentRoleId: number | null
   level: number
   isSystem: boolean
   isActive: boolean
+  systemId: string
   permissions: Array<{
     id: number
     code: string
     name: string
-    type: string
   }>
-  users: Array<{
+  roleGroups: Array<{
     id: number
-    email: string
+    code: string
     name: string
   }>
 }
@@ -65,13 +65,13 @@ export async function GET(
     const roleId = parseInt(id)
 
     const role = await prisma.role.findUnique({
-      where: { id: roleId },
+      where: { roleId },
       include: {
         rolePermissions: {
           include: { permission: true },
         },
-        userRoles: {
-          include: { user: true },
+        roleGroupRoles: {
+          include: { roleGroup: true },
         },
       },
     })
@@ -89,24 +89,24 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: {
-        id: role.id,
-        code: role.code,
+        id: role.roleId,
+        code: role.roleCd,
         name: role.name,
         description: role.description,
-        parentId: role.parentId,
+        parentRoleId: role.parentRoleId,
         level: role.level,
         isSystem: role.isSystem,
         isActive: role.isActive,
+        systemId: role.systemId,
         permissions: role.rolePermissions.map((rp) => ({
-          id: rp.permission.id,
-          code: rp.permission.code,
+          id: rp.permission.permissionId,
+          code: rp.permission.permissionCd,
           name: rp.permission.name,
-          type: rp.permission.type,
         })),
-        users: role.userRoles.map((ur) => ({
-          id: ur.user.id,
-          email: ur.user.email,
-          name: ur.user.name,
+        roleGroups: role.roleGroupRoles.map((rgr) => ({
+          id: rgr.roleGroup.roleGroupId,
+          code: rgr.roleGroup.roleGroupCd,
+          name: rgr.roleGroup.name,
         })),
       },
     })
@@ -125,7 +125,7 @@ export async function GET(
 interface UpdateRoleDto {
   name?: string
   description?: string
-  parentId?: number | null
+  parentRoleId?: number | null
   isActive?: boolean
 }
 
@@ -151,11 +151,25 @@ export async function PUT(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: { userRoles: { include: { role: true } } },
+      where: { userId: session.user.id },
+      include: {
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
-    const isAdmin = user?.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -170,7 +184,7 @@ export async function PUT(
     const roleId = parseInt(id)
     const body: UpdateRoleDto = await request.json()
 
-    const existing = await prisma.role.findUnique({ where: { id: roleId } })
+    const existing = await prisma.role.findUnique({ where: { roleId } })
     if (!existing) {
       return NextResponse.json(
         {
@@ -181,14 +195,14 @@ export async function PUT(
       )
     }
 
-    // 레벨 재계산 (parentId 변경 시)
+    // 레벨 재계산 (parentRoleId 변경 시)
     let level = existing.level
-    if (body.parentId !== undefined) {
-      if (body.parentId === null) {
+    if (body.parentRoleId !== undefined) {
+      if (body.parentRoleId === null) {
         level = 0
       } else {
         const parent = await prisma.role.findUnique({
-          where: { id: body.parentId },
+          where: { roleId: body.parentRoleId },
         })
         if (parent) {
           level = parent.level + 1
@@ -197,27 +211,27 @@ export async function PUT(
     }
 
     const role = await prisma.role.update({
-      where: { id: roleId },
+      where: { roleId },
       data: {
         name: body.name ?? existing.name,
         description: body.description ?? existing.description,
-        parentId: body.parentId !== undefined ? body.parentId : existing.parentId,
+        parentRoleId: body.parentRoleId !== undefined ? body.parentRoleId : existing.parentRoleId,
         level,
         isActive: body.isActive ?? existing.isActive,
       },
       include: {
         rolePermissions: { include: { permission: true } },
-        userRoles: { include: { user: true } },
+        roleGroupRoles: { include: { roleGroup: true } },
       },
     })
 
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'ROLE_UPDATE',
         resource: 'Role',
-        resourceId: String(role.id),
+        resourceId: String(role.roleId),
         details: JSON.stringify(body),
         status: 'SUCCESS',
       },
@@ -226,24 +240,24 @@ export async function PUT(
     return NextResponse.json({
       success: true,
       data: {
-        id: role.id,
-        code: role.code,
+        id: role.roleId,
+        code: role.roleCd,
         name: role.name,
         description: role.description,
-        parentId: role.parentId,
+        parentRoleId: role.parentRoleId,
         level: role.level,
         isSystem: role.isSystem,
         isActive: role.isActive,
+        systemId: role.systemId,
         permissions: role.rolePermissions.map((rp) => ({
-          id: rp.permission.id,
-          code: rp.permission.code,
+          id: rp.permission.permissionId,
+          code: rp.permission.permissionCd,
           name: rp.permission.name,
-          type: rp.permission.type,
         })),
-        users: role.userRoles.map((ur) => ({
-          id: ur.user.id,
-          email: ur.user.email,
-          name: ur.user.name,
+        roleGroups: role.roleGroupRoles.map((rgr) => ({
+          id: rgr.roleGroup.roleGroupId,
+          code: rgr.roleGroup.roleGroupCd,
+          name: rgr.roleGroup.name,
         })),
       },
     })
@@ -281,11 +295,25 @@ export async function DELETE(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: { userRoles: { include: { role: true } } },
+      where: { userId: session.user.id },
+      include: {
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
-    const isAdmin = user?.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -299,7 +327,7 @@ export async function DELETE(
     const { id } = await params
     const roleId = parseInt(id)
 
-    const existing = await prisma.role.findUnique({ where: { id: roleId } })
+    const existing = await prisma.role.findUnique({ where: { roleId } })
     if (!existing) {
       return NextResponse.json(
         {
@@ -324,16 +352,16 @@ export async function DELETE(
       )
     }
 
-    await prisma.role.delete({ where: { id: roleId } })
+    await prisma.role.delete({ where: { roleId } })
 
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'ROLE_DELETE',
         resource: 'Role',
         resourceId: String(roleId),
-        details: JSON.stringify({ code: existing.code, name: existing.name }),
+        details: JSON.stringify({ code: existing.roleCd, name: existing.name }),
         status: 'SUCCESS',
       },
     })

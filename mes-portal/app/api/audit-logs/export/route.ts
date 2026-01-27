@@ -8,10 +8,10 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@/lib/generated/prisma'
+import { Prisma } from '@/lib/generated/prisma/client'
 
 interface ExportQuery {
-  userId?: number
+  userId?: string
   action?: string[]
   resource?: string
   status?: 'SUCCESS' | 'FAILURE'
@@ -27,11 +27,7 @@ function parseExportParams(request: NextRequest): ExportQuery | { error: string 
   // userId 필터
   const userIdStr = searchParams.get('userId')
   if (userIdStr) {
-    const userId = parseInt(userIdStr, 10)
-    if (isNaN(userId)) {
-      return { error: '유효하지 않은 userId입니다' }
-    }
-    query.userId = userId
+    query.userId = userIdStr
   }
 
   // action 필터
@@ -153,7 +149,7 @@ export async function GET(request: NextRequest) {
       include: {
         user: {
           select: {
-            id: true,
+            userId: true,
             name: true,
             email: true,
           },

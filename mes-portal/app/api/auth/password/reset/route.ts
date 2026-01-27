@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
     await prisma.$transaction([
       // 비밀번호 업데이트
       prisma.user.update({
-        where: { id: resetToken.userId },
+        where: { userId: resetToken.userId },
         data: {
           password: newPasswordHash,
           passwordChangedAt: new Date(),

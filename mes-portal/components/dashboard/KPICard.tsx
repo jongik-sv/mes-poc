@@ -152,7 +152,9 @@ export function KPICard({
   'data-testid': testId,
 }: KPICardProps) {
   const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === 'dark'
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => setMounted(true), [])
+  const isDark = mounted ? resolvedTheme === 'dark' : false
   const { value, unit, change, changeType } = data
 
   // 포맷팅된 값 (BR-006, BR-007, BR-008)

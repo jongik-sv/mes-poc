@@ -2,11 +2,13 @@
 
 /**
  * TSK-05-02: 역할 관리 화면
+ * TSK-03-02: 권한 할당 탭 추가
  *
  * 기능:
  * - 역할 목록 조회
  * - 역할 등록/수정/삭제
  * - 역할-권한 매핑
+ * - 역할 상세 Drawer (기본 정보 + 권한 할당 탭)
  */
 
 import { useState, useEffect, useCallback } from 'react'
@@ -23,8 +25,11 @@ import {
   Checkbox,
   Popconfirm,
   message,
-  Spin,
+  Drawer,
+  Tabs,
   Tree,
+  Descriptions,
+  Spin,
 } from 'antd'
 import type { TableProps, TreeDataNode } from 'antd'
 import {
@@ -57,6 +62,25 @@ interface Permission {
   description: string | null
 }
 
+interface MenuItem {
+  id: number
+  name: string
+  code: string
+  parentId: number | null
+  category: string
+  children?: MenuItem[]
+}
+
+interface MenuPermission {
+  id: number
+  code: string
+  name: string
+  type: string
+  resource: string
+  action: string
+  menuId: number
+}
+
 export default function RolesPage() {
   const [roles, setRoles] = useState<Role[]>([])
   const [permissions, setPermissions] = useState<Permission[]>([])
@@ -68,6 +92,18 @@ export default function RolesPage() {
   const [permissionModalOpen, setPermissionModalOpen] = useState(false)
   const [selectedRole, setSelectedRole] = useState<Role | null>(null)
   const [selectedPermissions, setSelectedPermissions] = useState<number[]>([])
+
+  // Drawer 상태
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerRole, setDrawerRole] = useState<Role | null>(null)
+  const [drawerTab, setDrawerTab] = useState('info')
+  const [menus, setMenus] = useState<MenuItem[]>([])
+  const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null)
+  const [menuPermissions, setMenuPermissions] = useState<MenuPermission[]>([])
+  const [rolePermissionIds, setRolePermissionIds] = useState<number[]>([])
+  const [menuLoading, setMenuLoading] = useState(false)
+  const [permLoading, setPermLoading] = useState(false)
+  const [savingPermissions, setSavingPermissions] = useState(false)
 
   const [form] = Form.useForm()
 
@@ -102,10 +138,109 @@ export default function RolesPage() {
     }
   }, [])
 
+  // 메뉴 목록 조회
+  const fetchMenus = useCallback(async () => {
+    setMenuLoading(true)
+    try {
+      const response = await fetch('/api/menus')
+      const data = await response.json()
+      if (data.success) {
+        setMenus(data.data)
+      }
+    } catch {
+      // 무시
+    } finally {
+      setMenuLoading(false)
+    }
+  }, [])
+
+  // 역할의 권한 목록 조회
+  const fetchRolePermissions = useCallback(async (roleId: number) => {
+    try {
+      const response = await fetch(`/api/roles/${roleId}/permissions`)
+      const data = await response.json()
+      if (data.success) {
+        setRolePermissionIds(data.data.map((p: Permission) => p.id))
+      }
+    } catch {
+      setRolePermissionIds([])
+    }
+  }, [])
+
+  // 메뉴별 권한 조회
+  const fetchMenuPermissions = useCallback(async (menuId: number) => {
+    setPermLoading(true)
+    try {
+      const response = await fetch(`/api/permissions?menuId=${menuId}`)
+      const data = await response.json()
+      if (data.success) {
+        setMenuPermissions(data.data)
+      }
+    } catch {
+      setMenuPermissions([])
+    } finally {
+      setPermLoading(false)
+    }
+  }, [])
+
   useEffect(() => {
     fetchRoles()
     fetchPermissions()
   }, [fetchRoles, fetchPermissions])
+
+  // Drawer 열기 (행 클릭)
+  const openDrawer = (role: Role) => {
+    setDrawerRole(role)
+    setDrawerTab('info')
+    setDrawerOpen(true)
+    fetchMenus()
+    fetchRolePermissions(role.id)
+  }
+
+  // 메뉴 트리 선택
+  const handleMenuSelect = (menuId: number) => {
+    setSelectedMenuId(menuId)
+    fetchMenuPermissions(menuId)
+  }
+
+  // 권한 할당 저장
+  const handleSavePermissions = async () => {
+    if (!drawerRole) return
+    setSavingPermissions(true)
+    try {
+      const response = await fetch(`/api/roles/${drawerRole.id}/permissions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ permissionIds: rolePermissionIds }),
+      })
+      const data = await response.json()
+      if (data.success) {
+        message.success('권한이 저장되었습니다')
+      } else {
+        message.error(data.error || '권한 저장 중 오류가 발생했습니다')
+      }
+    } catch {
+      message.error('권한 저장 중 오류가 발생했습니다')
+    } finally {
+      setSavingPermissions(false)
+    }
+  }
+
+  // 권한 체크박스 변경
+  const handlePermissionCheck = (permId: number, checked: boolean) => {
+    setRolePermissionIds((prev) =>
+      checked ? [...prev, permId] : prev.filter((id) => id !== permId)
+    )
+  }
+
+  // 메뉴 트리 데이터 변환
+  const buildMenuTreeData = (items: MenuItem[]): TreeDataNode[] => {
+    return items.map((item) => ({
+      title: item.name,
+      key: item.id,
+      children: item.children ? buildMenuTreeData(item.children) : [],
+    }))
+  }
 
   // 역할 등록/수정 모달 열기
   const openFormModal = (role?: Role) => {
@@ -275,14 +410,14 @@ export default function RolesPage() {
           <Button
             type="link"
             icon={<SettingOutlined />}
-            onClick={() => openPermissionModal(record)}
+            onClick={(e) => { e.stopPropagation(); openPermissionModal(record) }}
           >
             권한
           </Button>
           <Button
             type="link"
             icon={<EditOutlined />}
-            onClick={() => openFormModal(record)}
+            onClick={(e) => { e.stopPropagation(); openFormModal(record) }}
           >
             수정
           </Button>
@@ -299,6 +434,7 @@ export default function RolesPage() {
               danger
               icon={<DeleteOutlined />}
               disabled={record.isSystem}
+              onClick={(e) => e.stopPropagation()}
             >
               삭제
             </Button>
@@ -329,8 +465,100 @@ export default function RolesPage() {
           rowKey="id"
           loading={loading}
           pagination={false}
+          onRow={(record) => ({
+            onClick: () => openDrawer(record),
+            style: { cursor: 'pointer' },
+          })}
         />
       </Card>
+
+      {/* 역할 상세 Drawer */}
+      <Drawer
+        title={`역할 상세 - ${drawerRole?.name || ''}`}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        width={720}
+      >
+        <Tabs activeKey={drawerTab} onChange={setDrawerTab} items={[
+          {
+            key: 'info',
+            label: '기본 정보',
+            children: drawerRole ? (
+              <Descriptions column={1} bordered>
+                <Descriptions.Item label="역할 코드">{drawerRole.code}</Descriptions.Item>
+                <Descriptions.Item label="역할명">{drawerRole.name}</Descriptions.Item>
+                <Descriptions.Item label="설명">{drawerRole.description || '-'}</Descriptions.Item>
+                <Descriptions.Item label="상위 역할">{getParentName(drawerRole.parentId)}</Descriptions.Item>
+                <Descriptions.Item label="시스템 역할">{drawerRole.isSystem ? '예' : '아니오'}</Descriptions.Item>
+                <Descriptions.Item label="상태">
+                  {drawerRole.isActive ? <Tag color="green">활성</Tag> : <Tag>비활성</Tag>}
+                </Descriptions.Item>
+              </Descriptions>
+            ) : null,
+          },
+          {
+            key: 'permissions',
+            label: '권한 할당',
+            children: (
+              <div className="flex gap-4">
+                {/* 왼쪽: 메뉴 트리 */}
+                <div className="w-1/3 border-r pr-4">
+                  <h3 className="font-semibold mb-2">메뉴 목록</h3>
+                  {menuLoading ? (
+                    <Spin />
+                  ) : (
+                    <Tree
+                      treeData={buildMenuTreeData(menus)}
+                      defaultExpandAll
+                      onSelect={(keys) => {
+                        if (keys.length > 0) {
+                          handleMenuSelect(Number(keys[0]))
+                        }
+                      }}
+                      selectedKeys={selectedMenuId ? [selectedMenuId] : []}
+                    />
+                  )}
+                </div>
+                {/* 오른쪽: 권한 체크박스 */}
+                <div className="w-2/3">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="font-semibold">권한 목록</h3>
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={handleSavePermissions}
+                      loading={savingPermissions}
+                    >
+                      저장
+                    </Button>
+                  </div>
+                  {permLoading ? (
+                    <Spin />
+                  ) : selectedMenuId ? (
+                    menuPermissions.length > 0 ? (
+                      <Space direction="vertical">
+                        {menuPermissions.map((perm) => (
+                          <Checkbox
+                            key={perm.id}
+                            checked={rolePermissionIds.includes(perm.id)}
+                            onChange={(e) => handlePermissionCheck(perm.id, e.target.checked)}
+                          >
+                            {perm.name} ({perm.code})
+                          </Checkbox>
+                        ))}
+                      </Space>
+                    ) : (
+                      <div className="text-gray-400">이 메뉴에 등록된 권한이 없습니다</div>
+                    )
+                  ) : (
+                    <div className="text-gray-400">메뉴를 선택하세요</div>
+                  )}
+                </div>
+              </div>
+            ),
+          },
+        ]} />
+      </Drawer>
 
       {/* 역할 등록/수정 모달 */}
       <Modal

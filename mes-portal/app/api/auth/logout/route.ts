@@ -19,7 +19,7 @@ export async function POST() {
       )
     }
 
-    const userId = parseInt(session.user.id)
+    const userId = session.user.id
 
     // 감사 로그 기록 (LOGOUT)
     await prisma.auditLog.create({

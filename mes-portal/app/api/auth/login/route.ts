@@ -34,13 +34,21 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { email },
       include: {
-        userRoles: {
+        userRoleGroups: {
           include: {
-            role: {
+            roleGroup: {
               include: {
-                rolePermissions: {
+                roleGroupRoles: {
                   include: {
-                    permission: true,
+                    role: {
+                      include: {
+                        rolePermissions: {
+                          include: {
+                            permission: true,
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },
@@ -96,7 +104,7 @@ export async function POST(request: NextRequest) {
       }
       // 잠금 해제 시간이 지났으면 잠금 해제
       await prisma.user.update({
-        where: { id: user.id },
+        where: { userId: user.userId },
         data: {
           isLocked: false,
           lockUntil: null,
@@ -111,7 +119,7 @@ export async function POST(request: NextRequest) {
     if (!isValidPassword) {
       // 실패 횟수 증가
       const updatedUser = await prisma.user.update({
-        where: { id: user.id },
+        where: { userId: user.userId },
         data: {
           failedLoginAttempts: { increment: 1 },
         },
@@ -120,7 +128,7 @@ export async function POST(request: NextRequest) {
       // 5회 실패 시 계정 잠금 (30분)
       if (updatedUser.failedLoginAttempts >= 5) {
         await prisma.user.update({
-          where: { id: user.id },
+          where: { userId: user.userId },
           data: {
             isLocked: true,
             lockUntil: new Date(Date.now() + 30 * 60 * 1000),
@@ -130,7 +138,7 @@ export async function POST(request: NextRequest) {
         // 감사 로그 (ACCOUNT_LOCKED)
         await prisma.auditLog.create({
           data: {
-            userId: user.id,
+            userId: user.userId,
             action: 'ACCOUNT_LOCKED',
             status: 'SUCCESS',
             details: JSON.stringify({ reason: 'MAX_LOGIN_ATTEMPTS' }),
@@ -152,7 +160,7 @@ export async function POST(request: NextRequest) {
       // 감사 로그 (LOGIN_FAILED)
       await prisma.auditLog.create({
         data: {
-          userId: user.id,
+          userId: user.userId,
           action: 'LOGIN_FAILED',
           status: 'FAILURE',
           details: JSON.stringify({ reason: 'INVALID_PASSWORD' }),
@@ -194,17 +202,21 @@ export async function POST(request: NextRequest) {
       throw error
     }
 
-    // 역할 및 권한 추출
-    const roles = user.userRoles.map((ur) => ({
-      id: ur.role.id,
-      code: ur.role.code,
-      name: ur.role.name,
-    }))
+    // 역할 및 권한 추출 (userRoleGroups -> roleGroup -> roleGroupRoles -> role)
+    const roles = user.userRoleGroups.flatMap((urg) =>
+      urg.roleGroup.roleGroupRoles.map((rgr) => ({
+        id: rgr.role.roleId,
+        code: rgr.role.roleCd,
+        name: rgr.role.name,
+      }))
+    )
 
     const permissions = [
       ...new Set(
-        user.userRoles.flatMap((ur) =>
-          ur.role.rolePermissions.map((rp) => rp.permission.code)
+        user.userRoleGroups.flatMap((urg) =>
+          urg.roleGroup.roleGroupRoles.flatMap((rgr) =>
+            rgr.role.rolePermissions.map((rp) => rp.permission.permissionCd)
+          )
         )
       ),
     ]
@@ -229,7 +241,7 @@ export async function POST(request: NextRequest) {
       success: true,
       data: {
         user: {
-          id: user.id,
+          id: user.userId,
           email: user.email,
           name: user.name,
           roles,

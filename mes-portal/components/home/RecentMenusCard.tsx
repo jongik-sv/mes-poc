@@ -94,7 +94,7 @@ export function RecentMenusCard({ onMenuClick }: RecentMenusCardProps) {
         <div className="divide-y" style={{ borderColor: token.colorBorderSecondary }}>
           {recentMenus.map((menu) => (
             <button
-              key={menu.id}
+              key={menu.menuId}
               onClick={() => onMenuClick?.(menu)}
               className="w-full px-4 py-3 flex items-center justify-between transition-colors cursor-pointer"
               style={{
@@ -112,7 +112,7 @@ export function RecentMenusCard({ onMenuClick }: RecentMenusCardProps) {
               <div className="flex flex-col gap-0.5">
                 <Text strong>{menu.name}</Text>
                 <Text type="secondary" className="text-xs">
-                  {menu.code} · {dayjs(menu.visitedAt).fromNow()}
+                  {menu.menuCd} · {dayjs(menu.visitedAt).fromNow()}
                 </Text>
               </div>
               <RightOutlined style={{ color: token.colorTextQuaternary }} />

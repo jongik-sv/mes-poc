@@ -1,0 +1,227 @@
+# wbs.yaml - RBAC 재설계 프로젝트
+project:
+  id: rbac-redesign
+  name: "RBAC Redesign - 멀티 테넌트 + RoleGroup 기반 권한 관리 시스템 재설계"
+  description: "기존 단순 RBAC → 멀티 테넌트(System) + RoleGroup 기반 + 자동 상속 + 필드 수준 접근 제어 + 선분 이력"
+  version: "0.1.0"
+  status: active
+  createdAt: "2026-01-27"
+  updatedAt: "2026-01-27"
+
+wbs:
+  version: "1.0"
+  depth: 3
+  projectRoot: mes-portal
+  strategy: "Phase 순서: 스키마 → API → 권한 로직 → 화면. TDD 기반 개발."
+
+workPackages:
+  - id: WP-01
+    title: "데이터베이스 스키마 확장"
+    status: planned
+    priority: critical
+    schedule: "2026-01-27 ~"
+    tasks:
+      - id: TSK-01-01
+        title: "Prisma 스키마 확장 및 마이그레이션"
+        category: development
+        domain: database
+        status: "[  ]"
+        priority: critical
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [prisma, migration, schema]
+        depends: []
+        blockedBy: null
+        testResult: null
+        note: "신규 모델 + 이력 테이블 18개 포함"
+        requirements:
+          prdRef: "PRD §4.1~4.4, §4.7"
+          items:
+            - "System, MenuSet, MenuSetMenu, RoleGroup, RoleGroupRole, UserRoleGroup, UserSystemMenuSet 모델 추가"
+            - "Menu 모델 변경: parentMenuId self-ref → category path + varchar sortOrder"
+            - "Role 모델 변경: systemId NOT NULL 추가, parentRoleId 계층 유지"
+            - "Permission 모델 변경: config JSON (actions + fieldConstraints), menuId FK, systemId NOT NULL"
+            - "UserRole, RoleMenu 테이블 제거"
+            - "마스터 이력 8개 + 매핑 이력 5개 테이블 생성 (SCD Type 2)"
+          acceptance:
+            - "prisma migrate dev 성공"
+            - "모든 FK 관계 정상 작동"
+            - "seed 데이터 정상 삽입"
+          techSpec:
+            - "Prisma 7.x"
+            - "systemId: String PK/FK (NOT NULL)"
+            - "userId: String PK (사번 형식)"
+            - "이력 테이블: validFrom/validTo 선분 구조"
+          dataModel:
+            - "TRD §3 전체 Prisma 스키마 참조"
+
+  - id: WP-02
+    title: "백엔드 API 개발"
+    status: planned
+    priority: critical
+    schedule: "2026-01-27 ~"
+    tasks:
+      - id: TSK-02-01
+        title: "System / MenuSet / Menu CRUD API"
+        category: development
+        domain: backend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [api, system, menu-set, menu]
+        depends: [TSK-01-01]
+        blockedBy: null
+        testResult: null
+        note: "멀티 테넌트 + 메뉴 구성 기반 API"
+        requirements:
+          prdRef: "PRD §4.1, §4.2"
+          items:
+            - "System CRUD API (GET/POST/PUT/DELETE /api/systems)"
+            - "MenuSet CRUD API + 메뉴 할당/해제 (POST /api/menu-sets/:id/menus)"
+            - "Menu CRUD API (category path 기반)"
+            - "UserSystemMenuSet 관리 (사용자별 시스템-메뉴세트 매핑)"
+            - "도메인 기반 시스템 식별 로직"
+          acceptance:
+            - "System CRUD 정상 동작"
+            - "MenuSet에 메뉴 할당/해제 가능"
+            - "사용자별 시스템-메뉴세트 매핑 가능"
+          techSpec:
+            - "Next.js Route Handlers"
+            - "zod 입력 검증"
+            - "Prisma Client"
+          apiSpec:
+            - "TRD §5.2 System API"
+            - "TRD §5.3 MenuSet API"
+
+      - id: TSK-02-02
+        title: "RoleGroup / Role / Permission CRUD + 할당 API"
+        category: development
+        domain: backend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [api, role-group, role, permission]
+        depends: [TSK-01-01]
+        blockedBy: null
+        testResult: null
+        note: "역할/권한 관리 + 사용자 할당 API"
+        requirements:
+          prdRef: "PRD §4.3, §4.4"
+          items:
+            - "RoleGroup CRUD + 역할 할당/해제 API"
+            - "Permission CRUD API (config JSON: actions + fieldConstraints)"
+            - "역할-권한 할당 API (POST /api/roles/:roleId/permissions)"
+            - "사용자-역할그룹 할당/해제 API"
+            - "사용자 최종 권한 조회 API (병합된 결과)"
+            - "이력 기록/조회 API (SCD Type 2)"
+          acceptance:
+            - "RoleGroup CRUD + 역할 할당 정상 동작"
+            - "Permission config JSON 저장/조회 정상"
+            - "사용자-역할그룹 할당/해제 정상"
+            - "이력 기록 자동 생성 확인"
+          techSpec:
+            - "Next.js Route Handlers"
+            - "zod 입력 검증"
+            - "Prisma transaction으로 이력 동시 기록"
+          apiSpec:
+            - "TRD §5.1 Permission API"
+            - "TRD §5.4 RoleGroup API"
+            - "TRD §5.5 User 확장 API"
+            - "TRD §5.6 이력 조회 API"
+
+  - id: WP-03
+    title: "권한 체크 로직 및 화면 개발"
+    status: planned
+    priority: high
+    schedule: "2026-01-27 ~"
+    tasks:
+      - id: TSK-03-01
+        title: "권한 병합 및 체크 로직 구현"
+        category: development
+        domain: backend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [auth, permission, merge, casl]
+        depends: [TSK-02-02]
+        blockedBy: null
+        testResult: null
+        note: "핵심 권한 로직 - 병합 + CASL Ability 생성"
+        requirements:
+          prdRef: "PRD §4.5, §4.6"
+          items:
+            - "권한 병합 로직: 같은 menuId 복수 Permission → Union 병합"
+            - "actions 합집합, fieldConstraints 값 합집합, 한쪽 없음 시 제약 해제"
+            - "Role 계층 탐색 (parentRoleId) → 하위 권한 자동 포함"
+            - "lib/auth/ability.ts 수정 (menuId + config 기반 CASL Ability 생성)"
+            - "서버 측 권한 체크 미들웨어"
+            - "화면 컴포넌트용 권한 체크 Hook (usePermission)"
+          acceptance:
+            - "병합 로직 200ms 이내"
+            - "actions 합집합 정상"
+            - "fieldConstraints 병합 규칙 3가지 모두 통과"
+            - "Role 계층 자동 상속 정상"
+          techSpec:
+            - "CASL 6.x"
+            - "기본 설계서 §2.2 Permission 병합 로직 참조"
+
+      - id: TSK-03-02
+        title: "시스템/역할그룹/권한 정의 관리 화면"
+        category: development
+        domain: frontend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [ui, system, role-group, permission]
+        depends: [TSK-02-01, TSK-02-02]
+        blockedBy: null
+        testResult: null
+        note: "CRUD 관리 화면 3개 + 기존 화면 개선 2개"
+        requirements:
+          prdRef: "PRD §5.2~5.6"
+          items:
+            - "/system/systems: 시스템 CRUD 테이블 (코드, 이름, 도메인, 상태)"
+            - "/system/role-groups: 역할그룹 CRUD + 포함 역할 관리"
+            - "/system/permissions: 메뉴 트리 + 권한 상세 패널 + 생성/수정 모달 (Actions 체크박스, fieldConstraints 동적 추가)"
+            - "/system/roles 개선: [권한 할당] 탭 추가, 메뉴 트리 기반 권한 체크박스 매트릭스"
+            - "/system/users 개선: [역할그룹] 탭, [시스템 접근] 탭, 최종 권한 표시"
+          acceptance:
+            - "각 화면 CRUD 정상 동작"
+            - "메뉴 트리 category 기반 렌더링 정상"
+            - "Permission config (actions + fieldConstraints) 편집 가능"
+          uiSpec:
+            - "기본 설계서 §1.2~1.6 화면 와이어프레임 참조"
+            - "Ant Design Table, Form, Modal, Tree, Tabs 사용"
+
+      - id: TSK-03-03
+        title: "권한 통합 관리 화면"
+        category: development
+        domain: frontend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        schedule: "2026-01-27 ~"
+        tags: [ui, authority, master-detail]
+        depends: [TSK-03-01, TSK-03-02]
+        blockedBy: null
+        testResult: null
+        note: "가장 복잡한 핵심 화면 - 3단 마스터-디테일"
+        requirements:
+          prdRef: "PRD §5.1"
+          items:
+            - "사용자 기준 3단 마스터-디테일 (역할그룹 → 역할 → 권한)"
+            - "각 컬럼: 상단(보유 목록) + 하단(전체 목록, 체크박스로 할당/해제)"
+            - "필터: 검색, 상태, 소유 여부, 레벨, 메뉴, 액션"
+            - "등록 확인 모달 (추가 할당/해제 변경사항 표시)"
+            - "반응형 동작 (상위 선택 시 하위 자동 갱신)"
+          acceptance:
+            - "3단 마스터-디테일 정상 동작"
+            - "할당/해제 후 즉시 반영"
+            - "확인 모달에 변경사항 정확히 표시"
+          uiSpec:
+            - "기본 설계서 §1.1 권한 통합 관리 화면 와이어프레임 참조"
+            - "Ant Design Table, Checkbox, Modal, Input.Search 사용"

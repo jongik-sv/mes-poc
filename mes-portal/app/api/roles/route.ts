@@ -23,12 +23,13 @@ interface RoleListItem {
   code: string
   name: string
   description: string | null
-  parentId: number | null
+  parentRoleId: number | null
   level: number
   isSystem: boolean
   isActive: boolean
+  systemId: string
   permissionCount: number
-  userCount: number
+  roleGroupCount: number
 }
 
 interface PaginatedResponse<T> {
@@ -73,7 +74,7 @@ export async function GET(
     const where: Record<string, unknown> = {}
     if (search) {
       where.OR = [
-        { code: { contains: search } },
+        { roleCd: { contains: search } },
         { name: { contains: search } },
       ]
     }
@@ -89,28 +90,29 @@ export async function GET(
       where,
       skip: (page - 1) * pageSize,
       take: pageSize,
-      orderBy: [{ level: 'asc' }, { id: 'asc' }],
+      orderBy: [{ level: 'asc' }, { roleId: 'asc' }],
       include: {
         _count: {
           select: {
             rolePermissions: true,
-            userRoles: true,
+            roleGroupRoles: true,
           },
         },
       },
     })
 
     const items: RoleListItem[] = roles.map((role) => ({
-      id: role.id,
-      code: role.code,
+      id: role.roleId,
+      code: role.roleCd,
       name: role.name,
       description: role.description,
-      parentId: role.parentId,
+      parentRoleId: role.parentRoleId,
       level: role.level,
       isSystem: role.isSystem,
       isActive: role.isActive,
+      systemId: role.systemId,
       permissionCount: role._count.rolePermissions,
-      userCount: role._count.userRoles,
+      roleGroupCount: role._count.roleGroupRoles,
     }))
 
     return NextResponse.json({
@@ -139,10 +141,11 @@ export async function GET(
 }
 
 interface CreateRoleDto {
-  code: string
+  roleCd: string
   name: string
+  systemId: string
   description?: string
-  parentId?: number
+  parentRoleId?: number
   isActive?: boolean
 }
 
@@ -171,16 +174,24 @@ export async function POST(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
+      where: { userId: session.user.id },
       include: {
-        userRoles: {
-          include: { role: true },
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
         },
       },
     })
 
-    const isAdmin = user?.userRoles.some(
-      (ur) => ur.role.code === 'SYSTEM_ADMIN'
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
     )
     if (!isAdmin) {
       return NextResponse.json(
@@ -198,13 +209,13 @@ export async function POST(
     const body: CreateRoleDto = await request.json()
 
     // 필수 필드 검증
-    if (!body.code || !body.name) {
+    if (!body.roleCd || !body.name || !body.systemId) {
       return NextResponse.json(
         {
           success: false,
           error: {
             code: 'VALIDATION_ERROR',
-            message: 'code와 name은 필수입니다',
+            message: 'roleCd, name, systemId는 필수입니다',
           },
         },
         { status: 400 }
@@ -213,7 +224,7 @@ export async function POST(
 
     // 중복 코드 검사
     const existing = await prisma.role.findUnique({
-      where: { code: body.code },
+      where: { roleCd: body.roleCd },
     })
     if (existing) {
       return NextResponse.json(
@@ -230,9 +241,9 @@ export async function POST(
 
     // 부모 역할 레벨 조회 (있는 경우)
     let level = 0
-    if (body.parentId) {
+    if (body.parentRoleId) {
       const parent = await prisma.role.findUnique({
-        where: { id: body.parentId },
+        where: { roleId: body.parentRoleId },
       })
       if (parent) {
         level = parent.level + 1
@@ -242,10 +253,11 @@ export async function POST(
     // 역할 생성
     const role = await prisma.role.create({
       data: {
-        code: body.code,
+        roleCd: body.roleCd,
         name: body.name,
+        systemId: body.systemId,
         description: body.description || null,
-        parentId: body.parentId || null,
+        parentRoleId: body.parentRoleId || null,
         level,
         isSystem: false,
         isActive: body.isActive !== false,
@@ -254,7 +266,7 @@ export async function POST(
         _count: {
           select: {
             rolePermissions: true,
-            userRoles: true,
+            roleGroupRoles: true,
           },
         },
       },
@@ -263,11 +275,11 @@ export async function POST(
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'ROLE_CREATE',
         resource: 'Role',
-        resourceId: String(role.id),
-        details: JSON.stringify({ code: role.code, name: role.name }),
+        resourceId: String(role.roleId),
+        details: JSON.stringify({ code: role.roleCd, name: role.name }),
         status: 'SUCCESS',
       },
     })
@@ -276,16 +288,17 @@ export async function POST(
       {
         success: true,
         data: {
-          id: role.id,
-          code: role.code,
+          id: role.roleId,
+          code: role.roleCd,
           name: role.name,
           description: role.description,
-          parentId: role.parentId,
+          parentRoleId: role.parentRoleId,
           level: role.level,
           isSystem: role.isSystem,
           isActive: role.isActive,
+          systemId: role.systemId,
           permissionCount: role._count.rolePermissions,
-          userCount: role._count.userRoles,
+          roleGroupCount: role._count.roleGroupRoles,
         },
       },
       { status: 201 }

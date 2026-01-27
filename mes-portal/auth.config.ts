@@ -2,8 +2,8 @@ import type { NextAuthConfig } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
 interface UserRole {
-  id: number
-  code: string
+  roleId: number
+  roleCd: string
   name: string
 }
 
@@ -42,17 +42,25 @@ export const authConfig: NextAuthConfig = {
           return null
         }
 
-        // 사용자 조회 (UserRole 기반)
+        // 사용자 조회 (UserRoleGroup → RoleGroup → RoleGroupRole → Role → RolePermission → Permission)
         const user = await prisma.user.findUnique({
           where: { email },
           include: {
-            userRoles: {
+            userRoleGroups: {
               include: {
-                role: {
+                roleGroup: {
                   include: {
-                    rolePermissions: {
+                    roleGroupRoles: {
                       include: {
-                        permission: true,
+                        role: {
+                          include: {
+                            rolePermissions: {
+                              include: {
+                                permission: true,
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                   },
@@ -79,7 +87,7 @@ export const authConfig: NextAuthConfig = {
           }
           // 잠금 해제
           await prisma.user.update({
-            where: { id: user.id },
+            where: { userId: user.userId },
             data: {
               isLocked: false,
               lockUntil: null,
@@ -93,7 +101,7 @@ export const authConfig: NextAuthConfig = {
         if (!isValidPassword) {
           // 로그인 실패 횟수 증가
           const updatedUser = await prisma.user.update({
-            where: { id: user.id },
+            where: { userId: user.userId },
             data: {
               failedLoginAttempts: { increment: 1 },
             },
@@ -102,7 +110,7 @@ export const authConfig: NextAuthConfig = {
           // 5회 실패 시 계정 잠금 (30분)
           if (updatedUser.failedLoginAttempts >= 5) {
             await prisma.user.update({
-              where: { id: user.id },
+              where: { userId: user.userId },
               data: {
                 isLocked: true,
                 lockUntil: new Date(Date.now() + 30 * 60 * 1000),
@@ -113,7 +121,7 @@ export const authConfig: NextAuthConfig = {
           // 감사 로그 기록 (LOGIN_FAILED)
           await prisma.auditLog.create({
             data: {
-              userId: user.id,
+              userId: user.userId,
               action: 'LOGIN_FAILED',
               status: 'FAILURE',
               details: JSON.stringify({ reason: 'INVALID_PASSWORD' }),
@@ -125,7 +133,7 @@ export const authConfig: NextAuthConfig = {
 
         // 로그인 성공: 실패 횟수 초기화, 마지막 로그인 시간 갱신
         await prisma.user.update({
-          where: { id: user.id },
+          where: { userId: user.userId },
           data: {
             failedLoginAttempts: 0,
             lastLoginAt: new Date(),
@@ -135,29 +143,33 @@ export const authConfig: NextAuthConfig = {
         // 감사 로그 기록 (LOGIN)
         await prisma.auditLog.create({
           data: {
-            userId: user.id,
+            userId: user.userId,
             action: 'LOGIN',
             status: 'SUCCESS',
           },
         })
 
-        // 역할 및 권한 추출
-        const roles = user.userRoles.map((ur) => ({
-          id: ur.role.id,
-          code: ur.role.code,
-          name: ur.role.name,
-        }))
+        // 역할 및 권한 추출 (userRoleGroups → roleGroup → roleGroupRoles → role)
+        const roles = user.userRoleGroups.flatMap((urg) =>
+          urg.roleGroup.roleGroupRoles.map((rgr) => ({
+            roleId: rgr.role.roleId,
+            roleCd: rgr.role.roleCd,
+            name: rgr.role.name,
+          }))
+        )
 
-        const permissions = [
+        const permissions: string[] = [
           ...new Set(
-            user.userRoles.flatMap((ur) =>
-              ur.role.rolePermissions.map((rp) => rp.permission.code)
+            user.userRoleGroups.flatMap((urg) =>
+              urg.roleGroup.roleGroupRoles.flatMap((rgr) =>
+                rgr.role.rolePermissions.map((rp) => rp.permission.permissionCd)
+              )
             )
           ),
         ]
 
         return {
-          id: String(user.id),
+          id: user.userId,
           email: user.email,
           name: user.name,
           roles,

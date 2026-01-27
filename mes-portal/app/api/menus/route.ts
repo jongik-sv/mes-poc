@@ -1,15 +1,10 @@
 /**
- * 메뉴 API 엔드포인트 (TSK-03-01, TSK-03-03)
+ * 메뉴 API 엔드포인트
  *
- * GET /api/menus - 권한별 계층형 메뉴 목록 조회
- * POST /api/menus - 메뉴 생성 (Phase 2)
+ * GET /api/menus - 사용자별 계층형 메뉴 목록 조회
+ * POST /api/menus - 메뉴 생성 (관리자)
  *
- * 비즈니스 규칙:
- * - BR-01: 인증된 사용자만 메뉴 조회 가능
- * - BR-02: 자식 메뉴 권한 있으면 부모 메뉴 자동 표시
- * - BR-03: ADMIN(Role ID=1)은 모든 메뉴 접근
- * - BR-04: isActive=false인 메뉴는 제외
- * - BR-05: sortOrder 오름차순 정렬
+ * RBAC 리디자인: UserSystemMenuSet + MenuSet 기반 메뉴 접근
  */
 
 import { NextResponse } from 'next/server'
@@ -21,13 +16,11 @@ import { MenuErrorCode } from '@/lib/types/menu'
 
 /**
  * GET /api/menus
- * 권한별 계층형 메뉴 목록 조회
- *
- * @returns {ApiResponse<MenuItem[]>} 계층형 메뉴 트리
+ * 사용자별 계층형 메뉴 목록 조회
  */
-export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
+export async function GET(request: Request): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
   try {
-    // 1. Auth.js 세션 검증 (BR-01)
+    // 1. Auth.js 세션 검증
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -42,17 +35,16 @@ export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
       )
     }
 
-    // 2. 사용자 정보 조회 (UserRole 기반)
+    const userId = session.user.id
+    const { searchParams } = new URL(request.url)
+    const systemId = searchParams.get('systemId')
+
+    // 2. 사용자 활성 상태 검증
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: {
-        userRoles: {
-          include: { role: true },
-        },
-      },
+      where: { userId },
+      select: { userId: true, isActive: true },
     })
 
-    // 3. 사용자 활성 상태 검증
     if (!user || !user.isActive) {
       return NextResponse.json(
         {
@@ -66,12 +58,13 @@ export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
       )
     }
 
-    // 4. 역할 기반 메뉴 조회 (BR-02, BR-03, BR-04, BR-05)
-    // 사용자의 모든 역할 ID 추출
-    const roleIds = user.userRoles.map((ur) => ur.roleId)
-    // 첫 번째 역할로 메뉴 조회 (향후 여러 역할 통합 필요)
-    const primaryRoleId = roleIds[0] || 0
-    const menus = await menuService.findByRole(primaryRoleId)
+    // 3. systemId가 있으면 사용자별 메뉴, 없으면 전체 메뉴
+    let menus: MenuItem[]
+    if (systemId) {
+      menus = await menuService.findByUser(userId, systemId)
+    } else {
+      menus = await menuService.findAll()
+    }
 
     return NextResponse.json({
       success: true,
@@ -108,16 +101,12 @@ export async function GET(): Promise<NextResponse<ApiResponse<MenuItem[]>>> {
 
 /**
  * POST /api/menus
- * 메뉴 생성 (Phase 2 관리자 기능)
- *
- * @param request - 요청 객체 (CreateMenuDto body)
- * @returns {ApiResponse<MenuItem>} 생성된 메뉴
+ * 메뉴 생성 (관리자)
  */
 export async function POST(
   request: Request
 ): Promise<NextResponse<ApiResponse<MenuItem | null>>> {
   try {
-    // Auth.js 세션 검증
     const session = await auth()
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -132,12 +121,22 @@ export async function POST(
       )
     }
 
-    // 관리자 권한 확인 (ADMIN만 메뉴 생성 가능)
+    const userId = session.user.id
+
+    // 사용자 활성 상태 + 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
+      where: { userId },
       include: {
-        userRoles: {
-          include: { role: true },
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
         },
       },
     })
@@ -155,8 +154,10 @@ export async function POST(
       )
     }
 
-    // SYSTEM_ADMIN 역할만 메뉴 생성 가능
-    const isAdmin = user.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    // SYSTEM_ADMIN 역할 확인
+    const isAdmin = user.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -177,12 +178,14 @@ export async function POST(
       {
         success: true,
         data: {
-          id: menu.id,
-          code: menu.code,
+          menuId: menu.menuId,
+          menuCd: menu.menuCd,
           name: menu.name,
           path: menu.path,
           icon: menu.icon,
           sortOrder: menu.sortOrder,
+          category: menu.category,
+          systemId: menu.systemId,
           children: [],
         },
       },

@@ -23,11 +23,11 @@ interface PermissionDetail {
   id: number
   code: string
   name: string
-  type: string
-  resource: string
-  action: string
+  config: string
   description: string | null
   isActive: boolean
+  systemId: string
+  menuId: number | null
   roles: Array<{
     id: number
     code: string
@@ -59,7 +59,7 @@ export async function GET(
     const permissionId = parseInt(id)
 
     const permission = await prisma.permission.findUnique({
-      where: { id: permissionId },
+      where: { permissionId },
       include: {
         rolePermissions: {
           include: { role: true },
@@ -80,17 +80,17 @@ export async function GET(
     return NextResponse.json({
       success: true,
       data: {
-        id: permission.id,
-        code: permission.code,
+        id: permission.permissionId,
+        code: permission.permissionCd,
         name: permission.name,
-        type: permission.type,
-        resource: permission.resource,
-        action: permission.action,
+        config: permission.config,
         description: permission.description,
         isActive: permission.isActive,
+        systemId: permission.systemId,
+        menuId: permission.menuId,
         roles: permission.rolePermissions.map((rp) => ({
-          id: rp.role.id,
-          code: rp.role.code,
+          id: rp.role.roleId,
+          code: rp.role.roleCd,
           name: rp.role.name,
         })),
       },
@@ -135,11 +135,25 @@ export async function PUT(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: { userRoles: { include: { role: true } } },
+      where: { userId: session.user.id },
+      include: {
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
-    const isAdmin = user?.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -154,7 +168,7 @@ export async function PUT(
     const permissionId = parseInt(id)
     const body: UpdatePermissionDto = await request.json()
 
-    const existing = await prisma.permission.findUnique({ where: { id: permissionId } })
+    const existing = await prisma.permission.findUnique({ where: { permissionId } })
     if (!existing) {
       return NextResponse.json(
         {
@@ -166,7 +180,7 @@ export async function PUT(
     }
 
     const permission = await prisma.permission.update({
-      where: { id: permissionId },
+      where: { permissionId },
       data: {
         name: body.name ?? existing.name,
         description: body.description ?? existing.description,
@@ -180,10 +194,10 @@ export async function PUT(
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'PERMISSION_UPDATE',
         resource: 'Permission',
-        resourceId: String(permission.id),
+        resourceId: String(permission.permissionId),
         details: JSON.stringify(body),
         status: 'SUCCESS',
       },
@@ -192,17 +206,17 @@ export async function PUT(
     return NextResponse.json({
       success: true,
       data: {
-        id: permission.id,
-        code: permission.code,
+        id: permission.permissionId,
+        code: permission.permissionCd,
         name: permission.name,
-        type: permission.type,
-        resource: permission.resource,
-        action: permission.action,
+        config: permission.config,
         description: permission.description,
         isActive: permission.isActive,
+        systemId: permission.systemId,
+        menuId: permission.menuId,
         roles: permission.rolePermissions.map((rp) => ({
-          id: rp.role.id,
-          code: rp.role.code,
+          id: rp.role.roleId,
+          code: rp.role.roleCd,
           name: rp.role.name,
         })),
       },
@@ -241,11 +255,25 @@ export async function DELETE(
 
     // 관리자 권한 확인
     const user = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: { userRoles: { include: { role: true } } },
+      where: { userId: session.user.id },
+      include: {
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
-    const isAdmin = user?.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    const isAdmin = user?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -259,7 +287,7 @@ export async function DELETE(
     const { id } = await params
     const permissionId = parseInt(id)
 
-    const existing = await prisma.permission.findUnique({ where: { id: permissionId } })
+    const existing = await prisma.permission.findUnique({ where: { permissionId } })
     if (!existing) {
       return NextResponse.json(
         {
@@ -270,16 +298,16 @@ export async function DELETE(
       )
     }
 
-    await prisma.permission.delete({ where: { id: permissionId } })
+    await prisma.permission.delete({ where: { permissionId } })
 
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
+        userId: session.user.id,
         action: 'PERMISSION_DELETE',
         resource: 'Permission',
         resourceId: String(permissionId),
-        details: JSON.stringify({ code: existing.code, name: existing.name }),
+        details: JSON.stringify({ code: existing.permissionCd, name: existing.name }),
         status: 'SUCCESS',
       },
     })

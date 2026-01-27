@@ -18,12 +18,12 @@ import { MenuIcon } from '../layout/MenuIcon'
  * 검색 가능한 메뉴 아이템 인터페이스
  */
 export interface SearchableMenuItem {
-  id: string
-  code: string
+  menuId: string
+  menuCd: string
   name: string
   path?: string
   icon?: string
-  sortOrder: number
+  sortOrder: string
   children?: SearchableMenuItem[]
 }
 
@@ -276,7 +276,7 @@ export function GlobalSearch({
           aria-controls="search-results"
           aria-activedescendant={
             searchResults.length > 0
-              ? `search-result-item-${searchResults[selectedIndex]?.menu.id}`
+              ? `search-result-item-${searchResults[selectedIndex]?.menu.menuId}`
               : undefined
           }
         />
@@ -312,7 +312,7 @@ export function GlobalSearch({
 
               return (
                 <div
-                  key={result.menu.id}
+                  key={result.menu.menuId}
                   className={`
                     px-4 py-3 cursor-pointer transition-colors
                     ${isSelected ? 'selected bg-blue-50 dark:bg-blue-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
@@ -327,7 +327,7 @@ export function GlobalSearch({
                   }
                   onClick={() => handleResultClick(result)}
                   onMouseEnter={() => setSelectedIndex(index)}
-                  data-testid={`search-result-item-${result.menu.id}`}
+                  data-testid={`search-result-item-${result.menu.menuId}`}
                   role="option"
                   aria-selected={isSelected}
                   aria-disabled={isFolder}

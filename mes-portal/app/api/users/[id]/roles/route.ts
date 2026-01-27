@@ -1,7 +1,7 @@
 /**
- * 사용자-역할 할당 API 엔드포인트 (TSK-03-01)
+ * 사용자-역할그룹 할당 API 엔드포인트 (TSK-03-01)
  *
- * PUT /api/users/:id/roles - 사용자-역할 할당 설정
+ * PUT /api/users/:id/roles - 사용자-역할그룹 할당 설정
  */
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -17,27 +17,27 @@ interface ApiResponse<T> {
   }
 }
 
-interface UserRolesResponse {
-  userId: number
-  roles: Array<{
+interface UserRoleGroupsResponse {
+  userId: string
+  roleGroups: Array<{
     id: number
     code: string
     name: string
   }>
 }
 
-interface UpdateUserRolesDto {
-  roleIds: number[]
+interface UpdateUserRoleGroupsDto {
+  roleGroupIds: number[]
 }
 
 /**
  * PUT /api/users/:id/roles
- * 사용자-역할 할당 설정 (기존 할당 삭제 후 새로 생성)
+ * 사용자-역할그룹 할당 설정 (기존 할당 삭제 후 새로 생성)
  */
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-): Promise<NextResponse<ApiResponse<UserRolesResponse>>> {
+): Promise<NextResponse<ApiResponse<UserRoleGroupsResponse>>> {
   try {
     const session = await auth()
     if (!session?.user?.id) {
@@ -52,11 +52,25 @@ export async function PUT(
 
     // 관리자 권한 확인
     const adminUser = await prisma.user.findUnique({
-      where: { id: parseInt(session.user.id) },
-      include: { userRoles: { include: { role: true } } },
+      where: { userId: session.user.id },
+      include: {
+        userRoleGroups: {
+          include: {
+            roleGroup: {
+              include: {
+                roleGroupRoles: {
+                  include: { role: true },
+                },
+              },
+            },
+          },
+        },
+      },
     })
 
-    const isAdmin = adminUser?.userRoles.some((ur) => ur.role.code === 'SYSTEM_ADMIN')
+    const isAdmin = adminUser?.userRoleGroups.some((urg) =>
+      urg.roleGroup.roleGroupRoles.some((rgr) => rgr.role.roleCd === 'SYSTEM_ADMIN')
+    )
     if (!isAdmin) {
       return NextResponse.json(
         {
@@ -67,11 +81,10 @@ export async function PUT(
       )
     }
 
-    const { id } = await params
-    const userId = parseInt(id)
+    const { id: userId } = await params
 
     // 대상 사용자 존재 확인
-    const targetUser = await prisma.user.findUnique({ where: { id: userId } })
+    const targetUser = await prisma.user.findUnique({ where: { userId } })
     if (!targetUser) {
       return NextResponse.json(
         {
@@ -82,48 +95,48 @@ export async function PUT(
       )
     }
 
-    const body: UpdateUserRolesDto = await request.json()
+    const body: UpdateUserRoleGroupsDto = await request.json()
 
-    // roleIds 유효성 검사
-    if (!body.roleIds || !Array.isArray(body.roleIds)) {
+    // roleGroupIds 유효성 검사
+    if (!body.roleGroupIds || !Array.isArray(body.roleGroupIds)) {
       return NextResponse.json(
         {
           success: false,
-          error: { code: 'VALIDATION_ERROR', message: 'roleIds는 필수입니다' },
+          error: { code: 'VALIDATION_ERROR', message: 'roleGroupIds는 필수입니다' },
         },
         { status: 400 }
       )
     }
 
     // 기존 할당 삭제
-    await prisma.userRole.deleteMany({
+    await prisma.userRoleGroup.deleteMany({
       where: { userId },
     })
 
     // 새 할당 생성
-    if (body.roleIds.length > 0) {
-      await prisma.userRole.createMany({
-        data: body.roleIds.map((roleId) => ({
+    if (body.roleGroupIds.length > 0) {
+      await prisma.userRoleGroup.createMany({
+        data: body.roleGroupIds.map((roleGroupId) => ({
           userId,
-          roleId,
+          roleGroupId,
         })),
       })
     }
 
-    // 새로 할당된 역할 조회
-    const userRoles = await prisma.userRole.findMany({
+    // 새로 할당된 역할그룹 조회
+    const userRoleGroups = await prisma.userRoleGroup.findMany({
       where: { userId },
-      include: { role: true },
+      include: { roleGroup: true },
     })
 
     // 감사 로그
     await prisma.auditLog.create({
       data: {
-        userId: parseInt(session.user.id),
-        action: 'USER_ROLE_UPDATE',
+        userId: session.user.id,
+        action: 'USER_ROLE_GROUP_UPDATE',
         resource: 'User',
-        resourceId: String(userId),
-        details: JSON.stringify({ roleIds: body.roleIds }),
+        resourceId: userId,
+        details: JSON.stringify({ roleGroupIds: body.roleGroupIds }),
         status: 'SUCCESS',
       },
     })
@@ -132,10 +145,10 @@ export async function PUT(
       success: true,
       data: {
         userId,
-        roles: userRoles.map((ur) => ({
-          id: ur.role.id,
-          code: ur.role.code,
-          name: ur.role.name,
+        roleGroups: userRoleGroups.map((urg) => ({
+          id: urg.roleGroup.roleGroupId,
+          code: urg.roleGroup.roleGroupCd,
+          name: urg.roleGroup.name,
         })),
       },
     })

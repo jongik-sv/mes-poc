@@ -14,15 +14,23 @@ export async function GET() {
 
   // 사용자의 역할 및 권한 정보 조회
   const user = await prisma.user.findUnique({
-    where: { id: parseInt(session.user.id) },
+    where: { userId: session.user.id },
     include: {
-      userRoles: {
+      userRoleGroups: {
         include: {
-          role: {
+          roleGroup: {
             include: {
-              rolePermissions: {
+              roleGroupRoles: {
                 include: {
-                  permission: true,
+                  role: {
+                    include: {
+                      rolePermissions: {
+                        include: {
+                          permission: true,
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -40,16 +48,20 @@ export async function GET() {
   }
 
   // 역할 및 권한 추출
-  const roles = user.userRoles.map((ur) => ({
-    id: ur.role.id,
-    code: ur.role.code,
-    name: ur.role.name,
-  }))
+  const roles = user.userRoleGroups.flatMap((urg) =>
+    urg.roleGroup.roleGroupRoles.map((rgr) => ({
+      id: rgr.role.roleId,
+      code: rgr.role.roleCd,
+      name: rgr.role.name,
+    }))
+  )
 
   const permissions = [
     ...new Set(
-      user.userRoles.flatMap((ur) =>
-        ur.role.rolePermissions.map((rp) => rp.permission.code)
+      user.userRoleGroups.flatMap((urg) =>
+        urg.roleGroup.roleGroupRoles.flatMap((rgr) =>
+          rgr.role.rolePermissions.map((rp) => rp.permission.permissionCd)
+        )
       )
     ),
   ]
@@ -57,7 +69,7 @@ export async function GET() {
   return NextResponse.json({
     success: true,
     data: {
-      id: user.id,
+      id: user.userId,
       email: user.email,
       name: user.name,
       department: user.department,

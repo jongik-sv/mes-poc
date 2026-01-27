@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       include: {
         user: {
           select: {
-            id: true,
+            userId: true,
             name: true,
             email: true,
           },

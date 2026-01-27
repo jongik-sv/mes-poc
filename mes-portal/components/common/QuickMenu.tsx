@@ -77,7 +77,7 @@ export function QuickMenu({
             type: 'group' as const,
           },
           ...favoriteMenus.map((menu) => ({
-            key: menu.id.toString(),
+            key: menu.menuId,
             icon: <MenuIcon iconName={menu.icon ?? undefined} />,
             label: menu.name,
             onClick: () => onMenuClick(menu),

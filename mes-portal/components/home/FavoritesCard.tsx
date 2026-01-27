@@ -81,7 +81,7 @@ export function FavoritesCard({ favoriteMenus, isLoading, onMenuClick }: Favorit
         <div className="divide-y" style={{ borderColor: token.colorBorderSecondary }}>
           {favoriteMenus.map((menu) => (
             <button
-              key={menu.id}
+              key={menu.menuId}
               onClick={() => onMenuClick?.(menu)}
               className="w-full px-4 py-3 flex items-center justify-between transition-colors cursor-pointer"
               style={{
@@ -99,7 +99,7 @@ export function FavoritesCard({ favoriteMenus, isLoading, onMenuClick }: Favorit
               <div className="flex flex-col gap-0.5">
                 <Text strong>{menu.name}</Text>
                 <Text type="secondary" className="text-xs">
-                  {menu.code}
+                  {menu.menuCd}
                 </Text>
               </div>
               <RightOutlined style={{ color: token.colorTextQuaternary }} />

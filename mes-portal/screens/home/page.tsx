@@ -20,18 +20,18 @@ export default function HomeScreen() {
 
   // useFavorites에 필요한 MenuItem 형식으로 변환
   type ConvertedMenu = {
-    id: string
-    code: string
+    menuId: string
+    menuCd: string
     name: string
     path: string | null
     icon: string | null
-    sortOrder: number
+    sortOrder: string
     children?: ConvertedMenu[]
   }
   const allMenusForFavorites = useMemo(() => {
     const convertMenu = (menu: MenuItem): ConvertedMenu => ({
-      id: menu.id,
-      code: menu.code,
+      menuId: menu.menuId,
+      menuCd: menu.menuCd,
       name: menu.name,
       path: menu.path ?? null,
       icon: menu.icon ?? null,
@@ -43,7 +43,7 @@ export default function HomeScreen() {
 
   // 즐겨찾기 훅
   const { favoriteMenus, isLoading: isFavoriteLoading } = useFavorites({
-    userId: 1, // MVP: 하드코딩된 사용자 ID
+    userId: '1', // MVP: 하드코딩된 사용자 ID
     allMenus: allMenusForFavorites,
   })
 
@@ -55,7 +55,7 @@ export default function HomeScreen() {
 
       // 탭으로 열기
       const tab: Tab = {
-        id: menu.id,
+        id: menu.menuId,
         title: menu.name,
         path: path,
         icon: menu.icon ?? undefined,
@@ -65,8 +65,8 @@ export default function HomeScreen() {
 
       // 최근 사용 메뉴에 추가
       addRecentMenu({
-        id: menu.id,
-        code: menu.code,
+        menuId: menu.menuId,
+        menuCd: menu.menuCd,
         name: menu.name,
         path: path,
         icon: menu.icon ?? undefined,
@@ -80,7 +80,7 @@ export default function HomeScreen() {
     const dashboardMenu = menus.find((m) => m.path === '/dashboard')
     if (dashboardMenu) {
       const tab: Tab = {
-        id: dashboardMenu.id,
+        id: dashboardMenu.menuId,
         title: dashboardMenu.name,
         path: dashboardMenu.path!,
         icon: dashboardMenu.icon,
