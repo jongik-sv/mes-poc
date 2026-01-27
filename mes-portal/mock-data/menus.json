@@ -280,6 +280,42 @@
               "icon": "FileSearchOutlined",
               "sortOrder": "513",
               "isActive": true
+            },
+            {
+              "menuId": "5-1-4",
+              "menuCd": "AUTHORITY",
+              "name": "권한 통합 관리",
+              "path": "/system/authority",
+              "icon": "KeyOutlined",
+              "sortOrder": "514",
+              "isActive": true
+            },
+            {
+              "menuId": "5-1-5",
+              "menuCd": "SYSTEM_MANAGE",
+              "name": "시스템 관리",
+              "path": "/system/systems",
+              "icon": "ClusterOutlined",
+              "sortOrder": "515",
+              "isActive": true
+            },
+            {
+              "menuId": "5-1-6",
+              "menuCd": "ROLE_GROUP",
+              "name": "역할그룹 관리",
+              "path": "/system/role-groups",
+              "icon": "ApartmentOutlined",
+              "sortOrder": "516",
+              "isActive": true
+            },
+            {
+              "menuId": "5-1-7",
+              "menuCd": "PERMISSION",
+              "name": "권한 정의 관리",
+              "path": "/system/permissions",
+              "icon": "LockOutlined",
+              "sortOrder": "517",
+              "isActive": true
             }
           ]
         },

@@ -59,6 +59,12 @@ export const screenRegistry: Readonly<Record<string, ScreenLoader>> = Object.fre
   '/system/roles': () => import('@/screens/system/RoleManagement'),
   '/system/audit-logs': () => import('@/screens/system/AuditLogs'),
 
+  // RBAC 재설계 화면
+  '/system/authority': () => import('@/app/(portal)/system/authority/page'),
+  '/system/systems': () => import('@/app/(portal)/system/systems/page'),
+  '/system/role-groups': () => import('@/app/(portal)/system/role-groups/page'),
+  '/system/permissions': () => import('@/app/(portal)/system/permissions/page'),
+
   // 샘플 화면들 (개발용)
   '/sample/table': () => import('@/screens/sample/SampleTable'),
   '/sample/form': () => import('@/screens/sample/SampleForm'),
