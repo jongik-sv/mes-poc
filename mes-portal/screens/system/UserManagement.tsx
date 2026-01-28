@@ -391,7 +391,7 @@ export default function UserManagement() {
       key: 'roles',
       render: (_, record) => (
         <Space size={[0, 4]} wrap>
-          {record.roles.map((role) => (
+          {(record.roles ?? []).map((role) => (
             <Tag key={role.id} color="blue">
               {role.name}
             </Tag>

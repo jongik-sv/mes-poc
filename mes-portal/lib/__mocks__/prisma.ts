@@ -1,31 +1,49 @@
 /**
- * Prisma Mock for Unit Tests
+ * Prisma Mock for Unit Tests (Vitest compatible)
  *
- * Jest가 자동으로 이 파일을 찾아서 '@/lib/prisma'를 mock합니다.
- * jest-mock-extended를 사용하여 PrismaClient의 모든 메서드를 자동으로 mock합니다.
- *
- * @usage
- * 테스트 파일에서 자동으로 mock됨. 별도 import 불필요.
- *
- * // mock 동작 설정이 필요한 경우:
- * import prisma from '@/lib/prisma'
- * (prisma.user.findUnique as jest.Mock).mockResolvedValue({ ... })
+ * vitest가 자동으로 이 파일을 찾아서 '@/lib/prisma'를 mock합니다.
+ * vitest의 vi.fn()을 사용하여 PrismaClient 메서드를 mock합니다.
  */
 
-import { PrismaClient } from '@/lib/generated/prisma/client'
-import { mockDeep, mockReset, DeepMockProxy } from 'jest-mock-extended'
+import { vi, beforeEach } from 'vitest'
 
-export type MockPrismaClient = DeepMockProxy<PrismaClient>
+function createRecursiveProxy(): Record<string, unknown> {
+  return new Proxy(
+    {},
+    {
+      get: (_target, prop) => {
+        if (prop === 'then') return undefined
+        if (prop === '$transaction') {
+          return vi.fn().mockImplementation(async (fn: (tx: unknown) => unknown) => {
+            return fn(createRecursiveProxy())
+          })
+        }
+        if (prop === '$connect' || prop === '$disconnect') {
+          return vi.fn()
+        }
+        return createModelProxy()
+      },
+    }
+  )
+}
 
-const prismaMock = mockDeep<PrismaClient>() as unknown as MockPrismaClient
+function createModelProxy(): Record<string, unknown> {
+  return new Proxy(
+    {},
+    {
+      get: (_target, prop) => {
+        if (prop === 'then') return undefined
+        return vi.fn().mockResolvedValue(null)
+      },
+    }
+  )
+}
 
-// 각 테스트 전에 mock 상태 초기화
+const prismaMock = createRecursiveProxy()
+
 beforeEach(() => {
-  mockReset(prismaMock)
+  // Reset is handled by vi.clearAllMocks() in setup
 })
 
-// named export
 export const prisma = prismaMock
-
-// default export
 export default prismaMock

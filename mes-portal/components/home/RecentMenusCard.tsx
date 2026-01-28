@@ -92,9 +92,9 @@ export function RecentMenusCard({ onMenuClick }: RecentMenusCardProps) {
         </div>
       ) : (
         <div className="divide-y" style={{ borderColor: token.colorBorderSecondary }}>
-          {recentMenus.map((menu) => (
+          {recentMenus.map((menu, index) => (
             <button
-              key={menu.menuId}
+              key={menu.menuId ?? index}
               onClick={() => onMenuClick?.(menu)}
               className="w-full px-4 py-3 flex items-center justify-between transition-colors cursor-pointer"
               style={{

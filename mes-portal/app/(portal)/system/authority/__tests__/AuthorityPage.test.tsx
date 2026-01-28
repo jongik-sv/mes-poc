@@ -1,75 +1,58 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { App } from 'antd'
 import AuthorityPage from '../page'
 
+function renderWithApp(ui: React.ReactElement) {
+  return render(<App>{ui}</App>)
+}
+
 const mockUsers = [
-  { id: 1, name: '홍길동', email: 'hong@test.com', isActive: true },
-  { id: 2, name: '김철수', email: 'kim@test.com', isActive: false },
+  { userId: 'user1', name: '홍길동', email: 'hong@test.com', isActive: true },
+  { userId: 'user2', name: '김철수', email: 'kim@test.com', isActive: false },
 ]
 
-const mockOwnedRoleGroups = [
-  { id: 1, code: 'RG_ADMIN', name: '관리자 그룹', isActive: true },
+const mockAssignedRoleGroups = [
+  { roleGroupId: 1, roleGroupCd: 'RG_ADMIN', name: '관리자 그룹', description: null, systemId: 1, isActive: true },
 ]
 
 const mockAllRoleGroups = [
-  { id: 1, code: 'RG_ADMIN', name: '관리자 그룹', isActive: true },
-  { id: 2, code: 'RG_USER', name: '사용자 그룹', isActive: true },
-  { id: 3, code: 'RG_VIEWER', name: '뷰어 그룹', isActive: false },
+  { roleGroupId: 1, roleGroupCd: 'RG_ADMIN', name: '관리자 그룹', description: null, systemId: 1, isActive: true },
+  { roleGroupId: 2, roleGroupCd: 'RG_USER', name: '사용자 그룹', description: null, systemId: 1, isActive: true },
 ]
 
-const mockOwnedRoles = [
-  { id: 1, code: 'ADMIN', name: '관리자', isActive: true },
-]
-
-const mockAllRoles = [
-  { id: 1, code: 'ADMIN', name: '관리자', isActive: true },
-  { id: 2, code: 'USER', name: '일반 사용자', isActive: true },
-]
-
-const mockOwnedPermissions = [
-  { id: 1, code: 'USER_READ', name: '사용자 조회', type: 'MENU', resource: 'users', action: 'read' },
-]
-
-const mockAllPermissions = [
-  { id: 1, code: 'USER_READ', name: '사용자 조회', type: 'MENU', resource: 'users', action: 'read' },
-  { id: 2, code: 'USER_WRITE', name: '사용자 수정', type: 'MENU', resource: 'users', action: 'write' },
-]
+const mockMenuSimulation = {
+  menus: [
+    {
+      key: '1',
+      title: '생산관리',
+      icon: 'BuildOutlined',
+      children: [
+        { key: '2', title: '작업지시', icon: 'FileTextOutlined', path: '/production/order' },
+      ],
+    },
+  ],
+  summary: { totalMenus: 1, totalCategories: 1 },
+}
 
 beforeEach(() => {
   vi.spyOn(global, 'fetch').mockImplementation((url, options) => {
     const urlStr = typeof url === 'string' ? url : url.toString()
     const method = (options as RequestInit | undefined)?.method || 'GET'
 
-    // GET /api/users
-    if (urlStr.includes('/api/users') && !urlStr.includes('/role-groups') && method === 'GET') {
+    if (urlStr === '/api/users' && method === 'GET') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockUsers }) } as Response)
     }
-    // GET /api/users/:id/role-groups
-    if (urlStr.match(/\/api\/users\/\d+\/role-groups$/) && method === 'GET') {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockOwnedRoleGroups }) } as Response)
+    if (urlStr.match(/\/api\/users\/[^/]+\/role-groups$/) && method === 'GET') {
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockAssignedRoleGroups }) } as Response)
     }
-    // GET /api/role-groups (all)
     if (urlStr === '/api/role-groups' && method === 'GET') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockAllRoleGroups }) } as Response)
     }
-    // GET /api/role-groups/:id/roles
-    if (urlStr.match(/\/api\/role-groups\/\d+\/roles$/) && method === 'GET') {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockOwnedRoles }) } as Response)
+    if (urlStr.match(/\/api\/users\/[^/]+\/menus/) && method === 'GET') {
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockMenuSimulation }) } as Response)
     }
-    // GET /api/roles (all)
-    if (urlStr === '/api/roles' && method === 'GET') {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockAllRoles }) } as Response)
-    }
-    // GET /api/roles/:id/permissions
-    if (urlStr.match(/\/api\/roles\/\d+\/permissions$/) && method === 'GET') {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockOwnedPermissions }) } as Response)
-    }
-    // GET /api/permissions (all)
-    if (urlStr === '/api/permissions' && method === 'GET') {
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true, data: mockAllPermissions }) } as Response)
-    }
-    // PUT (save) endpoints
     if (method === 'PUT') {
       return Promise.resolve({ ok: true, json: () => Promise.resolve({ success: true }) } as Response)
     }
@@ -77,25 +60,25 @@ beforeEach(() => {
   })
 })
 
-describe('AuthorityPage', () => {
-  it('AT-001: 페이지 타이틀 "권한 통합 관리" 렌더링', async () => {
-    render(<AuthorityPage />)
+describe('AuthorityPage (3-column)', () => {
+  it('AT-001: 페이지 타이틀 렌더링', async () => {
+    renderWithApp(<AuthorityPage />)
     await waitFor(() => {
-      expect(screen.getByText('권한 통합 관리')).toBeInTheDocument()
+      expect(screen.getByText('사용자 권한 할당')).toBeInTheDocument()
     })
   })
 
   it('AT-002: 사용자 목록 렌더링', async () => {
-    render(<AuthorityPage />)
+    renderWithApp(<AuthorityPage />)
     await waitFor(() => {
       expect(screen.getByText('홍길동')).toBeInTheDocument()
       expect(screen.getByText('김철수')).toBeInTheDocument()
     })
   })
 
-  it('AT-003: 사용자 선택 시 역할그룹 로드', async () => {
+  it('AT-003: 사용자 선택 시 역할그룹 및 메뉴 시뮬레이션 로드', async () => {
     const user = userEvent.setup()
-    render(<AuthorityPage />)
+    renderWithApp(<AuthorityPage />)
 
     await waitFor(() => {
       expect(screen.getByText('홍길동')).toBeInTheDocument()
@@ -105,100 +88,108 @@ describe('AuthorityPage', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/users/1/role-groups')
+        expect.stringContaining('/api/users/user1/role-groups')
       )
-      // "관리자 그룹" appears in both owned and all tables
-      expect(screen.getAllByText('관리자 그룹').length).toBeGreaterThanOrEqual(1)
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/api/users/user1/menus')
+      )
     })
   })
 
-  it('AT-004: 역할그룹 선택 시 역할 로드', async () => {
-    const user = userEvent.setup()
-    render(<AuthorityPage />)
+  it('AT-004: 사용자 미선택 시 Empty 표시', async () => {
+    renderWithApp(<AuthorityPage />)
+    await waitFor(() => {
+      const empties = screen.getAllByText('사용자를 선택해주세요')
+      expect(empties.length).toBe(2) // 중앙 + 우측 패널
+    })
+  })
 
-    // Select user first
+  it('AT-005: 메뉴 시뮬레이션 트리 렌더링', async () => {
+    const user = userEvent.setup()
+    renderWithApp(<AuthorityPage />)
+
     await waitFor(() => {
       expect(screen.getByText('홍길동')).toBeInTheDocument()
     })
+
     await user.click(screen.getByText('홍길동'))
 
     await waitFor(() => {
-      expect(screen.getAllByText('관리자 그룹').length).toBeGreaterThanOrEqual(1)
+      expect(screen.getByText('생산관리')).toBeInTheDocument()
+      expect(screen.getByText('작업지시')).toBeInTheDocument()
+    })
+  })
+
+  it('AT-006: 메뉴 시뮬레이션 요약 정보 표시', async () => {
+    const user = userEvent.setup()
+    renderWithApp(<AuthorityPage />)
+
+    await waitFor(() => {
+      expect(screen.getByText('홍길동')).toBeInTheDocument()
     })
 
-    // Click on the first "관리자 그룹" (owned table)
-    await user.click(screen.getAllByText('관리자 그룹')[0])
+    await user.click(screen.getByText('홍길동'))
+
+    await waitFor(() => {
+      expect(screen.getByText(/1개 메뉴/)).toBeInTheDocument()
+      expect(screen.getByText(/1개 카테고리/)).toBeInTheDocument()
+    })
+  })
+
+  it('AT-007: 할당 저장 버튼 동작', async () => {
+    const user = userEvent.setup()
+    renderWithApp(<AuthorityPage />)
+
+    await waitFor(() => {
+      expect(screen.getByText('홍길동')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByText('홍길동'))
+
+    await waitFor(() => {
+      expect(screen.getByText('할당 저장')).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByText('할당 저장'))
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/role-groups/1/roles')
+        expect.stringContaining('/api/users/user1/role-groups'),
+        expect.objectContaining({ method: 'PUT' })
       )
     })
   })
 
-  it('AT-005: 역할 선택 시 권한 로드', async () => {
+  it('AT-008: 미저장 변경 시 다른 사용자 선택 경고', async () => {
     const user = userEvent.setup()
-    render(<AuthorityPage />)
+    renderWithApp(<AuthorityPage />)
 
-    // Select user
     await waitFor(() => {
       expect(screen.getByText('홍길동')).toBeInTheDocument()
     })
+
+    // 첫 번째 사용자 선택
     await user.click(screen.getByText('홍길동'))
 
     await waitFor(() => {
       expect(screen.getAllByText('관리자 그룹').length).toBeGreaterThanOrEqual(1)
     })
 
-    // Select role group
-    await user.click(screen.getAllByText('관리자 그룹')[0])
-
-    await waitFor(() => {
-      // "관리자" appears in both owned and all roles tables
-      expect(screen.getAllByText('관리자').length).toBeGreaterThanOrEqual(1)
-    })
-
-    // Click on owned role row (first "관리자")
-    await user.click(screen.getAllByText('관리자')[0])
-
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/roles/1/permissions')
-      )
-    })
-  })
-
-  it('AT-006: 변경 확인 모달 표시', async () => {
-    const user = userEvent.setup()
-    render(<AuthorityPage />)
-
-    // Select user to enable role group panel
-    await waitFor(() => {
-      expect(screen.getByText('홍길동')).toBeInTheDocument()
-    })
-    await user.click(screen.getByText('홍길동'))
-
-    await waitFor(() => {
-      expect(screen.getAllByText('관리자 그룹').length).toBeGreaterThanOrEqual(1)
-    })
-
-    // Find the checkbox for "사용자 그룹" in the all-rolegroups panel to make a change
-    const allRoleGroupsCheckboxes = await screen.findAllByRole('checkbox')
-    // Click a checkbox to add an unowned role group
-    const unownedCheckbox = allRoleGroupsCheckboxes.find((cb) => {
+    // 체크박스 변경 (사용자 그룹 추가)
+    const checkboxes = await screen.findAllByRole('checkbox')
+    const userGroupCheckbox = checkboxes.find((cb) => {
       const row = cb.closest('tr')
       return row?.textContent?.includes('사용자 그룹')
     })
-    if (unownedCheckbox) {
-      await user.click(unownedCheckbox)
+    if (userGroupCheckbox) {
+      await user.click(userGroupCheckbox)
     }
 
-    // Click save button for role groups
-    const saveButtons = screen.getAllByText('저장')
-    await user.click(saveButtons[0])
+    // 다른 사용자 선택 시도
+    await user.click(screen.getByText('김철수'))
 
     await waitFor(() => {
-      expect(screen.getByText('변경 확인')).toBeInTheDocument()
+      expect(screen.getByText('미저장 변경사항')).toBeInTheDocument()
     })
   })
 })

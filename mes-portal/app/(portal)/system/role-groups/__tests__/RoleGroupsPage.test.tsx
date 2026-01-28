@@ -1,7 +1,12 @@
-import { render, screen, waitFor, within } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { App } from 'antd'
 import RoleGroupsPage from '../page'
+
+function renderWithApp(ui: React.ReactElement) {
+  return render(<App>{ui}</App>)
+}
 
 const mockRoleGroups = {
   success: true,
@@ -50,23 +55,40 @@ const mockSystems = {
 const mockRoles = {
   success: true,
   data: [
-    { id: 1, code: 'ROLE_ADMIN', name: '관리자' },
-    { id: 2, code: 'ROLE_USER', name: '사용자' },
-    { id: 3, code: 'ROLE_VIEWER', name: '조회자' },
+    { id: 1, roleCd: 'ROLE_ADMIN', name: '관리자', isActive: true, systemId: 1 },
+    { id: 2, roleCd: 'ROLE_USER', name: '사용자', isActive: true, systemId: 1 },
+    { id: 3, roleCd: 'ROLE_VIEWER', name: '조회자', isActive: true, systemId: 1 },
   ],
 }
 
 const mockGroupRoles = {
   success: true,
   data: [
-    { id: 1, code: 'ROLE_ADMIN', name: '관리자' },
+    { id: 1, roleCd: 'ROLE_ADMIN', name: '관리자', isActive: true, systemId: 1 },
+  ],
+}
+
+const mockPermissions = {
+  success: true,
+  data: [
+    { id: 1, permissionCd: 'PERM_READ', name: '읽기', isActive: true, menuId: null, config: '{}' },
+  ],
+}
+
+const mockRolePermissions = {
+  success: true,
+  data: [
+    { id: 1, permissionCd: 'PERM_READ', name: '읽기', isActive: true, menuId: null, config: '{}' },
   ],
 }
 
 function setupFetchMock() {
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
-    if (url.includes('/api/role-groups') && url.includes('/roles')) {
+    if (url.match(/\/api\/roles\/\d+\/permissions/)) {
+      return Response.json(mockRolePermissions)
+    }
+    if (url.match(/\/api\/role-groups\/\d+\/roles/)) {
       return Response.json(mockGroupRoles)
     }
     if (url.includes('/api/role-groups')) {
@@ -78,6 +100,9 @@ function setupFetchMock() {
     if (url.includes('/api/roles')) {
       return Response.json(mockRoles)
     }
+    if (url.includes('/api/permissions')) {
+      return Response.json(mockPermissions)
+    }
     return Response.json({ success: false })
   })
 }
@@ -87,13 +112,20 @@ describe('RoleGroupsPage', () => {
     setupFetchMock()
   })
 
-  it('페이지 제목 "역할그룹 관리"를 렌더링한다', async () => {
-    render(<RoleGroupsPage />)
-    expect(screen.getByText('역할그룹 관리')).toBeInTheDocument()
+  it('페이지 제목 "역할그룹 정의"를 렌더링한다', async () => {
+    renderWithApp(<RoleGroupsPage />)
+    expect(screen.getByText('역할그룹 정의')).toBeInTheDocument()
+  })
+
+  it('3-column 레이아웃이 렌더링된다', async () => {
+    renderWithApp(<RoleGroupsPage />)
+    expect(screen.getByText('역할그룹 목록')).toBeInTheDocument()
+    expect(screen.getByText('역할 관리')).toBeInTheDocument()
+    expect(screen.getByText('권한 관리')).toBeInTheDocument()
   })
 
   it('테이블에 역할그룹 목록을 표시한다', async () => {
-    render(<RoleGroupsPage />)
+    renderWithApp(<RoleGroupsPage />)
     await waitFor(() => {
       expect(screen.getByText('관리자 그룹')).toBeInTheDocument()
       expect(screen.getByText('RG_ADMIN')).toBeInTheDocument()
@@ -102,52 +134,45 @@ describe('RoleGroupsPage', () => {
     })
   })
 
-  it('등록 버튼 클릭 시 생성 모달이 열린다', async () => {
-    const user = userEvent.setup()
-    render(<RoleGroupsPage />)
-
-    const createBtn = screen.getByRole('button', { name: /역할그룹 등록/ })
-    await user.click(createBtn)
-
-    await waitFor(() => {
-      expect(screen.getByText('역할그룹 등록', { selector: '.ant-modal-title' })).toBeInTheDocument()
-    })
+  it('역할그룹 미선택 시 중앙 패널에 안내 메시지를 표시한다', async () => {
+    renderWithApp(<RoleGroupsPage />)
+    expect(screen.getByText('역할그룹을 선택해주세요')).toBeInTheDocument()
   })
 
-  it('생성 모달에 시스템 셀렉트 드롭다운이 존재한다', async () => {
-    const user = userEvent.setup()
-    render(<RoleGroupsPage />)
-
-    const createBtn = screen.getByRole('button', { name: /역할그룹 등록/ })
-    await user.click(createBtn)
-
-    await waitFor(() => {
-      expect(screen.getByText('역할그룹 등록', { selector: '.ant-modal-title' })).toBeInTheDocument()
-    })
-
-    // Verify system select placeholder is rendered
-    expect(screen.getByText('소속 시스템을 선택하세요')).toBeInTheDocument()
-
-    // Verify systems API was called
-    expect(globalThis.fetch).toHaveBeenCalledWith(expect.stringContaining('/api/systems'))
+  it('역할 미선택 시 우측 패널에 안내 메시지를 표시한다', async () => {
+    renderWithApp(<RoleGroupsPage />)
+    expect(screen.getByText('역할그룹을 먼저 선택해주세요')).toBeInTheDocument()
   })
 
-  it('역할 관리 버튼 클릭 시 역할 할당 모달이 열린다', async () => {
+  it('역할그룹 행 클릭 시 중앙 역할 패널이 갱신된다', async () => {
     const user = userEvent.setup()
-    render(<RoleGroupsPage />)
+    renderWithApp(<RoleGroupsPage />)
 
     await waitFor(() => {
       expect(screen.getByText('관리자 그룹')).toBeInTheDocument()
     })
 
-    const roleBtns = screen.getAllByRole('button', { name: /역할/ })
-    // Find the "역할" button in the action column (not the header "역할그룹 등록")
-    const roleManageBtn = roleBtns.find(btn => btn.textContent === '역할')
-    expect(roleManageBtn).toBeTruthy()
-    await user.click(roleManageBtn!)
+    await user.click(screen.getByText('관리자 그룹'))
 
     await waitFor(() => {
-      expect(screen.getByText(/역할 관리/)).toBeInTheDocument()
+      expect(screen.getByText('역할 관리 — 관리자 그룹')).toBeInTheDocument()
     })
+  })
+
+  it('등록 버튼 클릭 시 역할그룹 등록 모달이 열린다', async () => {
+    const user = userEvent.setup()
+    renderWithApp(<RoleGroupsPage />)
+
+    const createBtns = screen.getAllByRole('button', { name: /등록/ })
+    await user.click(createBtns[0])
+
+    await waitFor(() => {
+      expect(screen.getByText('역할그룹 등록')).toBeInTheDocument()
+    })
+  })
+
+  it('시스템 필터와 상태 필터가 렌더링된다', async () => {
+    renderWithApp(<RoleGroupsPage />)
+    expect(screen.getByPlaceholderText('이름 또는 코드 검색')).toBeInTheDocument()
   })
 })

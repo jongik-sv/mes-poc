@@ -233,3 +233,29 @@ body {
 [data-theme='dark'] .editable-cell-hover:hover {
   background-color: #1E3A5F; /* dark blue */
 }
+
+/* Ant Design Table이 flex 컨테이너 안에서 전체 높이를 채우도록 */
+.table-fill-height {
+  height: 100%;
+}
+.table-fill-height .ant-table-wrapper,
+.table-fill-height .ant-table,
+.table-fill-height .ant-spin-nested-loading,
+.table-fill-height .ant-spin-container,
+.table-fill-height .ant-table-container {
+  height: 100%;
+}
+.table-fill-height .ant-table-body,
+.table-fill-height .ant-table-content {
+  max-height: none !important;
+  overflow: auto !important;
+  height: calc(100% - 39px);
+}
+
+/* Card body가 flex 컨테이너에서 전체 높이를 채우도록 */
+.card-fill-body > .ant-card-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

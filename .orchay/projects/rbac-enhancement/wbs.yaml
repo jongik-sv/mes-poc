@@ -1,0 +1,140 @@
+project:
+  id: rbac-enhancement
+  name: RBAC 권한 관리 화면 분리
+  description: 기존 /system/authority 4-column 화면을 역할그룹 정의 + 사용자 역할그룹 할당 2개 화면으로 분리
+  version: 0.1.0
+  status: active
+  createdAt: "2026-01-28"
+  updatedAt: "2026-01-28"
+  parentProject: mes-portal
+wbs:
+  version: "1.0"
+  depth: 3
+  projectRoot: mes-portal
+  strategy: |
+    역할그룹 정의 화면 먼저 구현 후 사용자 할당 화면 구현
+    - TSK-01-01: 역할그룹 정의 화면 (기존 role-groups 확장)
+    - TSK-02-01: 사용자 역할그룹 할당 화면 (기존 authority 재구성)
+    - TSK-03-01: 메뉴 시뮬레이션 API (TSK-02-01 의존)
+workPackages:
+  - id: WP-01
+    title: 역할그룹 정의 화면
+    status: planned
+    priority: high
+    description: 역할그룹/역할/권한 CRUD 및 매핑 관리 3-column master-detail 화면
+    tasks:
+      - id: TSK-01-01
+        title: 역할그룹 정의 화면 구현
+        category: development
+        domain: frontend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        tags:
+          - rbac
+          - role-group
+          - role
+          - permission
+          - crud
+          - master-detail
+        depends: []
+        requirements:
+          prdRef: PRD 4.1
+          items:
+            - 기존 role-groups 페이지를 3-column 레이아웃으로 확장
+            - 좌측 역할그룹 목록 (기존 CRUD 유지)
+            - 중앙 역할 관리 (할당/해제 + CRUD)
+            - 우측 권한 관리 (할당/해제 + CRUD)
+            - 행 클릭으로 하위 패널 연쇄 갱신
+          acceptance:
+            - 역할그룹 행 클릭 시 중앙 역할 패널 갱신
+            - 할당된 역할 클릭 시 우측 권한 패널 갱신
+            - 각 컬럼 CRUD 동작 정상
+            - 할당 저장 기능 동작
+            - 전체 화면 레이아웃 (MDI 탭 영역 채움)
+          techSpec:
+            - "레이아웃: h-full flex flex-col + flex-1 overflow-hidden"
+            - "컬럼 비율: 35% / 33% / 32%"
+            - "컴포넌트: Card, Table, Modal, Popconfirm, Input, Select, Button"
+            - "API: /api/role-groups, /api/roles, /api/permissions (기존)"
+
+  - id: WP-02
+    title: 사용자 역할그룹 할당 화면
+    status: planned
+    priority: high
+    description: 사용자 선택 → 역할그룹 할당 + 메뉴 시뮬레이션 3-column 화면
+    tasks:
+      - id: TSK-02-01
+        title: 사용자 역할그룹 할당 화면 구현
+        category: development
+        domain: frontend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        tags:
+          - rbac
+          - user
+          - authority
+          - menu-simulation
+        depends:
+          - TSK-01-01
+          - TSK-03-01
+        requirements:
+          prdRef: PRD 4.2
+          items:
+            - 기존 authority 페이지를 3-column 레이아웃으로 재구성
+            - 좌측 사용자 목록 (검색, 상태 필터)
+            - 중앙 역할그룹 할당 (보유 + 전체 체크박스, 저장)
+            - 우측 메뉴 시뮬레이션 (Tree 컴포넌트, read-only)
+            - 체크박스 변경 시 메뉴 시뮬레이션 실시간 갱신
+          acceptance:
+            - 사용자 행 클릭 시 역할그룹 + 메뉴 시뮬레이션 갱신
+            - 역할그룹 체크박스 변경 시 메뉴 트리 실시간 갱신 (저장 전)
+            - 저장 버튼으로 할당 반영
+            - 메뉴 트리에 사이드바 아이콘 매핑 표시
+            - 접근 가능 메뉴 수/카테고리 수 요약 표시
+            - 전체 화면 레이아웃
+          techSpec:
+            - "레이아웃: h-full flex flex-col + flex-1 overflow-hidden"
+            - "컬럼 비율: 30% / 35% / 35%"
+            - "메뉴 트리: Ant Design Tree, defaultExpandAll"
+            - "아이콘: Sidebar.tsx iconMap 재사용"
+            - "API: /api/users, /api/users/:id/role-groups, /api/users/:id/menus"
+
+  - id: WP-03
+    title: 메뉴 시뮬레이션 API
+    status: planned
+    priority: high
+    description: 사용자 역할그룹 기반 접근 가능 메뉴 트리 조회 API
+    tasks:
+      - id: TSK-03-01
+        title: 사용자 메뉴 시뮬레이션 API 구현
+        category: development
+        domain: backend
+        status: "[  ]"
+        priority: high
+        assignee: "-"
+        tags:
+          - api
+          - rbac
+          - menu
+          - simulation
+        depends: []
+        requirements:
+          prdRef: PRD 4.3
+          items:
+            - "GET /api/users/:id/menus 엔드포인트 생성"
+            - roleGroupIds 쿼리 파라미터로 시뮬레이션 지원
+            - 역할그룹 → 역할 → 권한 → 메뉴 체인 조회
+            - category path 기반 트리 구조 빌드
+            - 중복 메뉴 제거
+          acceptance:
+            - 사용자 ID로 실제 할당 기반 메뉴 트리 조회
+            - roleGroupIds 파라미터로 시뮬레이션 메뉴 트리 조회
+            - 응답에 summary (totalMenus, totalCategories) 포함
+            - 트리 노드에 icon, path 정보 포함
+          techSpec:
+            - "파일: app/api/users/[id]/menus/route.ts"
+            - "서비스: MenuService.buildCategoryTree 활용"
+            - "조인: UserRoleGroup → RoleGroupRole → RolePermission → Permission → Menu"
+            - "응답: MenuTreeResponse { menus, summary }"

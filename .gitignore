@@ -61,4 +61,4 @@ nul
 .playwright-mcp
 .orchay/logs/launcher.log
 .orchay/logs/orchay.log
-.claude/ralph-loop.local.md
+**/ralph-loop.*
